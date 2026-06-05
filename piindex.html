@@ -13,185 +13,201 @@ box-sizing:border-box;
 font-family:'Segoe UI',sans-serif;
 }
 
-body{
-width:100vw;
-height:100vh;
+html,body{
+width:100%;
+height:100%;
 overflow:hidden;
-background:linear-gradient(135deg,#eaf8ff,#ffffff);
-display:flex;
-justify-content:center;
-align-items:center;
+background:linear-gradient(135deg,#eef8ff,#ffffff);
 }
 
 .container{
 width:100%;
 height:100%;
-position:relative;
-overflow:hidden;
+display:flex;
+flex-direction:column;
+align-items:center;
+padding:1%;
 }
 
-/* Temple Roof */
-.roof{
-position:absolute;
-top:4%;
-left:50%;
-transform:translateX(-50%);
-width:65%;
+/* Header */
+
+.header{
+width:100%;
 height:18%;
-background:linear-gradient(to bottom,#f4f4f4,#d9d9d9);
-clip-path:polygon(50% 0%,100% 100%,0% 100%);
-box-shadow:0 4px 15px rgba(0,0,0,.2);
 display:flex;
 justify-content:center;
 align-items:center;
+position:relative;
 }
 
-.roof h1{
-color:#0099ff;
+.roof{
+position:absolute;
+width:70%;
+height:100%;
+background:linear-gradient(to bottom,#ececec,#d7d7d7);
+clip-path:polygon(50% 0%,100% 100%,0% 100%);
+opacity:.9;
+}
+
+.header h1{
+position:relative;
+z-index:2;
 font-size:2.3vw;
+color:#0084ff;
 font-weight:700;
-text-shadow:1px 1px 3px rgba(0,0,0,.15);
+text-shadow:2px 2px 5px rgba(0,0,0,.15);
 }
 
-/* Base */
-.base{
-position:absolute;
-bottom:8%;
-left:50%;
-transform:translateX(-50%);
-width:78%;
-height:5%;
-background:linear-gradient(to bottom,#ececec,#cfcfcf);
-border-radius:8px;
-}
-
-/* Instructions */
 .instructions{
-position:absolute;
-top:25%;
-left:50%;
-transform:translateX(-50%);
+margin-top:0.5%;
+padding:.6% 1.5%;
+background:white;
+border-radius:50px;
 font-size:1vw;
 font-weight:600;
-color:#444;
-background:white;
-padding:8px 18px;
-border-radius:25px;
-box-shadow:0 3px 10px rgba(0,0,0,.12);
+box-shadow:0 4px 12px rgba(0,0,0,.12);
+color:#555;
 }
 
 /* Pillars */
-.pillars{
-position:absolute;
-bottom:13%;
-width:100%;
+
+.pillarRow{
+width:90%;
+height:35%;
 display:flex;
 justify-content:center;
+align-items:flex-end;
 gap:3%;
+margin-top:1%;
 }
 
 .pillar{
-width:12%;
-height:48vh;
-border-radius:18px;
+width:14%;
+height:100%;
+border-radius:20px 20px 0 0;
 cursor:pointer;
-position:relative;
-transition:.4s;
 display:flex;
 justify-content:center;
 align-items:center;
-overflow:hidden;
-box-shadow:0 8px 20px rgba(0,0,0,.25);
+transition:.4s;
+box-shadow:0 8px 15px rgba(0,0,0,.18);
+position:relative;
 }
 
 .pillar:hover{
-transform:translateY(-12px) scale(1.05);
+transform:translateY(-10px);
 }
 
-.pillar span{
+.pillar.active{
+transform:translateY(-12px);
+box-shadow:0 0 20px rgba(255,255,255,.9),
+0 0 35px rgba(0,150,255,.5);
+}
+
+.vertical{
 writing-mode:vertical-rl;
 transform:rotate(180deg);
+color:white;
 font-size:2vw;
 font-weight:700;
-color:white;
-text-align:center;
 letter-spacing:1px;
 }
 
-.water{
-background:linear-gradient(to right,#ff0000,#c60000);
+.red{
+background:linear-gradient(90deg,#ff1b1b,#d80000);
 }
 
-.seed{
-background:linear-gradient(to right,#00ff33,#00b326);
+.green{
+background:linear-gradient(90deg,#00ff3c,#00c92f);
 }
 
-.feed{
-background:linear-gradient(to right,#e4e600,#b7b900);
+.yellow{
+background:linear-gradient(90deg,#e6e600,#c1c100);
 }
 
-.practice{
-background:linear-gradient(to right,#1f7cff,#0052cc);
+.blue{
+background:linear-gradient(90deg,#3686ff,#0050d8);
+}
+
+/* Base */
+
+.base{
+width:92%;
+height:4%;
+background:linear-gradient(to bottom,#e5e5e5,#cfcfcf);
+border-radius:8px;
+margin-top:0.3%;
+}
+
+/* Progress */
+
+.progress{
+margin-top:1%;
+font-size:1vw;
+font-weight:700;
+color:#444;
+}
+
+.counter{
+color:#0084ff;
 }
 
 /* Info Panel */
 
 .infoPanel{
-position:absolute;
-right:2%;
-top:30%;
-width:27%;
-height:45%;
+width:92%;
+height:28%;
+margin-top:1%;
 background:white;
 border-radius:20px;
-padding:20px;
-box-shadow:0 8px 25px rgba(0,0,0,.18);
+box-shadow:0 8px 25px rgba(0,0,0,.15);
 display:flex;
-flex-direction:column;
+align-items:center;
 justify-content:center;
-}
-
-.infoTitle{
-font-size:1.6vw;
-font-weight:700;
-color:#0077cc;
-margin-bottom:15px;
+padding:1.5%;
 text-align:center;
+transition:.3s;
 }
 
-.infoText{
+.infoContent{
+max-width:90%;
+}
+
+.icon{
+font-size:3vw;
+margin-bottom:.5%;
+}
+
+.title{
+font-size:1.8vw;
+font-weight:700;
+color:#0077d9;
+margin-bottom:.8%;
+}
+
+.desc{
 font-size:1.05vw;
 line-height:1.6;
 color:#444;
-text-align:center;
 }
 
-.badge{
-margin:auto;
-font-size:3vw;
+/* Completion */
+
+.complete{
+background:linear-gradient(135deg,#e8fff0,#f5fffa);
+border:3px solid #00c853;
+}
+
+.complete .title{
+color:#00a63a;
 }
 
 .footer{
-position:absolute;
-bottom:1%;
-width:100%;
-text-align:center;
-font-size:.95vw;
-font-weight:600;
+margin-top:auto;
+font-size:1vw;
+font-weight:700;
 color:#444;
-}
-
-.glow{
-animation:glow 1.2s infinite alternate;
-}
-
-@keyframes glow{
-from{
-box-shadow:0 0 10px rgba(255,255,255,.4);
-}
-to{
-box-shadow:0 0 25px rgba(255,255,255,.9);
-}
+padding-bottom:.5%;
 }
 
 </style>
@@ -201,50 +217,54 @@ box-shadow:0 0 25px rgba(255,255,255,.9);
 
 <div class="container">
 
-<div class="roof">
+<div class="header">
+<div class="roof"></div>
 <h1>🐟 मत्स्य पालन (Aquaculture)</h1>
 </div>
 
 <div class="instructions">
-👇 किसी भी स्तंभ पर क्लिक करें
+👇 सभी स्तंभों पर क्लिक करके जानें कि सफल मत्स्य पालन किन आधारों पर टिका है
 </div>
 
-<div class="pillars">
+<div class="pillarRow">
 
-<div class="pillar water glow"
-onclick="showInfo('जल प्रबंधन','💧','पानी की गुणवत्ता, pH, घुलित ऑक्सीजन तथा तापमान का उचित प्रबंधन मछलियों के स्वस्थ विकास के लिए आवश्यक है।')">
-<span>जल प्रबंधन</span>
+<div class="pillar red" id="p1"
+onclick="showInfo(1)">
+<div class="vertical">जल प्रबंधन</div>
 </div>
 
-<div class="pillar seed glow"
-onclick="showInfo('बीज प्रबंधन','🐠','उच्च गुणवत्ता वाले स्वस्थ मत्स्य बीज का चयन बेहतर जीवितता, वृद्धि और उत्पादन सुनिश्चित करता है।')">
-<span>बीज प्रबंधन</span>
+<div class="pillar green" id="p2"
+onclick="showInfo(2)">
+<div class="vertical">बीज प्रबंधन</div>
 </div>
 
-<div class="pillar feed glow"
-onclick="showInfo('आहार प्रबंधन','🌾','संतुलित एवं उचित मात्रा में आहार देने से मछलियों की वृद्धि तेज होती है और लागत नियंत्रित रहती है।')">
-<span>आहार प्रबंधन</span>
+<div class="pillar yellow" id="p3"
+onclick="showInfo(3)">
+<div class="vertical">आहार प्रबंधन</div>
 </div>
 
-<div class="pillar practice glow"
-onclick="showInfo('श्रेष्ठ प्रबंधन पद्धतियाँ','🏆','नियमित निगरानी, रिकॉर्ड रखना, जैव सुरक्षा तथा समय पर सुधारात्मक कार्यवाही उत्पादन बढ़ाने में मदद करती है।')">
-<span>श्रेष्ठ प्रबंधन पद्धतियाँ</span>
+<div class="pillar blue" id="p4"
+onclick="showInfo(4)">
+<div class="vertical">श्रेष्ठ प्रबंधन</div>
 </div>
 
 </div>
 
 <div class="base"></div>
 
-<div class="infoPanel" id="panel">
-
-<div class="badge">🏛️</div>
-
-<div class="infoTitle">
-मत्स्य पालन के 4 स्तंभ
+<div class="progress">
+खोज प्रगति:
+<span class="counter" id="progress">0 / 4</span>
 </div>
 
-<div class="infoText">
-सफल मत्स्य पालन इन चार महत्वपूर्ण स्तंभों पर आधारित है। किसी भी स्तंभ पर क्लिक करके अधिक जानकारी प्राप्त करें।
+<div class="infoPanel" id="panel">
+
+<div class="infoContent">
+<div class="icon">🏛️</div>
+<div class="title">मत्स्य पालन के 4 स्तंभ</div>
+<div class="desc">
+ऊपर दिए गए किसी भी स्तंभ पर क्लिक करें और जानें कि सफल मत्स्य पालन के लिए कौन-कौन से प्रबंधन क्षेत्र महत्वपूर्ण हैं।
+</div>
 </div>
 
 </div>
@@ -257,21 +277,87 @@ onclick="showInfo('श्रेष्ठ प्रबंधन पद्धत�
 
 <script>
 
-function showInfo(title,icon,text){
+let visited=[];
 
-document.getElementById('panel').innerHTML=
-`
-<div class="badge">${icon}</div>
+function showInfo(id){
 
-<div class="infoTitle">
-${title}
+document.querySelectorAll('.pillar')
+.forEach(p=>p.classList.remove('active'));
+
+document.getElementById("p"+id)
+.classList.add("active");
+
+if(!visited.includes(id)){
+visited.push(id);
+}
+
+document.getElementById("progress").innerHTML=
+visited.length+" / 4";
+
+let panel=document.getElementById("panel");
+
+switch(id){
+
+case 1:
+panel.innerHTML=`
+<div class="infoContent">
+<div class="icon">💧</div>
+<div class="title">जल प्रबंधन</div>
+<div class="desc">
+पानी की गुणवत्ता, pH, तापमान तथा घुलित ऑक्सीजन का सही स्तर बनाए रखना स्वस्थ मछली उत्पादन की नींव है।
 </div>
+</div>`;
+break;
 
-<div class="infoText">
-${text}
+case 2:
+panel.innerHTML=`
+<div class="infoContent">
+<div class="icon">🐟</div>
+<div class="title">बीज प्रबंधन</div>
+<div class="desc">
+अच्छी गुणवत्ता वाले स्वस्थ मत्स्य बीज का चयन बेहतर वृद्धि, जीवितता तथा अधिक उत्पादन सुनिश्चित करता है।
 </div>
-`;
+</div>`;
+break;
 
+case 3:
+panel.innerHTML=`
+<div class="infoContent">
+<div class="icon">🌾</div>
+<div class="title">आहार प्रबंधन</div>
+<div class="desc">
+संतुलित एवं सही मात्रा में आहार देने से वृद्धि दर बढ़ती है और उत्पादन लागत को नियंत्रित रखने में मदद मिलती है।
+</div>
+</div>`;
+break;
+
+case 4:
+panel.innerHTML=`
+<div class="infoContent">
+<div class="icon">🏆</div>
+<div class="title">श्रेष्ठ प्रबंधन पद्धतियाँ</div>
+<div class="desc">
+नियमित निगरानी, रिकॉर्ड रखना, जैव सुरक्षा तथा समय पर सुधारात्मक कार्यवाही उत्पादन बढ़ाने में महत्वपूर्ण भूमिका निभाती है।
+</div>
+</div>`;
+break;
+}
+
+if(visited.length===4){
+
+panel.classList.add("complete");
+
+panel.innerHTML=`
+<div class="infoContent">
+<div class="icon">🎉</div>
+<div class="title">बधाई हो!</div>
+<div class="desc">
+आपने मत्स्य पालन के सभी 4 महत्वपूर्ण स्तंभों का अध्ययन कर लिया है।
+<br><br>
+<strong>जल प्रबंधन + बीज प्रबंधन + आहार प्रबंधन + श्रेष्ठ प्रबंधन पद्धतियाँ = सफल एवं लाभदायक मत्स्य पालन</strong>
+</div>
+</div>`;
+}
 }
 
 </script>
