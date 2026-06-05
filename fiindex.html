@@ -3,482 +3,325 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>तालाब के लिए सही pH चुनें</title>
+<title>जल का pH चुनें</title>
 
 <style>
-
 *{
 margin:0;
 padding:0;
 box-sizing:border-box;
-font-family:'Nirmala UI',sans-serif;
+font-family:'Segoe UI',sans-serif;
 }
 
-html,body{
+body{
+width:100vw;
+height:100vh;
+overflow:hidden;
+background:linear-gradient(135deg,#e8f7ff,#ffffff);
+}
+
+.container{
 width:100%;
 height:100%;
-overflow:hidden;
-background:#dff5ff;
-}
-
-/* STORYLINE SAFE STAGE */
-
-#stage{
-width:1280px;
-height:720px;
-position:absolute;
-left:50%;
-top:50%;
-transform:translate(-50%,-50%);
-background:linear-gradient(180deg,#eef9ff,#d7efff);
-overflow:hidden;
-}
-
-/* HEADER */
-
-.title{
-position:absolute;
-top:15px;
-left:0;
-width:100%;
-text-align:center;
-font-size:34px;
-font-weight:700;
-color:#005ea8;
-}
-
-.subtitle{
-position:absolute;
-top:60px;
-width:100%;
-text-align:center;
-font-size:18px;
-color:#555;
-}
-
-/* MAIN */
-
-.main{
-position:absolute;
-top:100px;
-left:30px;
-width:1220px;
-height:500px;
-display:grid;
-grid-template-columns:650px 540px;
-gap:30px;
-}
-
-/* POND */
-
-.pond{
-position:relative;
-width:650px;
-height:500px;
-border-radius:25px;
-overflow:hidden;
-background:linear-gradient(#78cfff,#0094ff);
-box-shadow:0 10px 25px rgba(0,0,0,.15);
-transition:.4s;
-}
-
-.sky{
-position:absolute;
-top:0;
-left:0;
-width:100%;
-height:180px;
-background:linear-gradient(#89d8ff,#6dc8ff);
-}
-
-.sun{
-position:absolute;
-right:35px;
-top:20px;
-font-size:70px;
-transition:.5s;
-}
-
-.water{
-position:absolute;
-bottom:0;
-width:100%;
-height:320px;
-background:linear-gradient(#33a7e8,#0079c8);
-}
-
-.fish{
-position:absolute;
-left:280px;
-top:260px;
-font-size:100px;
-animation:swim 4s infinite alternate ease-in-out;
-}
-
-@keyframes swim{
-from{
-transform:translateX(-30px);
-}
-to{
-transform:translateX(30px);
-}
-}
-
-.phDisplay{
-position:absolute;
-left:50%;
-top:20px;
-transform:translateX(-50%);
-background:white;
-padding:10px 25px;
-border-radius:15px;
-font-size:32px;
-font-weight:bold;
-box-shadow:0 5px 15px rgba(0,0,0,.1);
-}
-
-/* PANEL */
-
-.panel{
-background:white;
-border-radius:25px;
-padding:20px;
-box-shadow:0 10px 25px rgba(0,0,0,.12);
 display:flex;
 flex-direction:column;
+padding:1%;
 }
 
-.sliderTitle{
-font-size:28px;
-font-weight:bold;
-color:#005ea8;
-margin-bottom:15px;
-}
-
-.rangeValue{
-font-size:48px;
-font-weight:bold;
+.header{
 text-align:center;
-color:#0077cc;
+font-size:2vw;
+font-weight:700;
+color:#0066cc;
+margin-bottom:0.5%;
+}
+
+.content{
+flex:1;
+display:flex;
+gap:1%;
+}
+
+.left{
+width:35%;
+display:flex;
+flex-direction:column;
+justify-content:space-between;
+}
+
+.infoBox{
+background:white;
+border-radius:12px;
+padding:3%;
+box-shadow:0 4px 12px rgba(0,0,0,.15);
+}
+
+.infoBox h3{
+color:#0c8f4d;
+margin-bottom:10px;
+font-size:1.4vw;
+}
+
+.infoBox ul{
+padding-left:18px;
+}
+
+.infoBox li{
+margin-bottom:8px;
+font-size:1.05vw;
+}
+
+.right{
+width:65%;
+display:flex;
+flex-direction:column;
+justify-content:center;
+}
+
+.scaleContainer{
+background:white;
+border-radius:15px;
+padding:2%;
+box-shadow:0 4px 12px rgba(0,0,0,.15);
+}
+
+.instructions{
+text-align:center;
+font-size:1vw;
+font-weight:600;
+color:#555;
 margin-bottom:10px;
 }
 
-.sliderWrap{
-padding:0 10px;
-}
-
-input[type=range]{
-width:100%;
-height:10px;
-cursor:pointer;
-}
-
 .scale{
-display:flex;
-justify-content:space-between;
-font-size:14px;
-margin-top:5px;
-color:#666;
+display:grid;
+grid-template-columns:repeat(15,1fr);
+gap:4px;
+height:70px;
 }
 
-/* STATUS CARDS */
+.ph{
+display:flex;
+align-items:center;
+justify-content:center;
+font-weight:700;
+font-size:1vw;
+color:white;
+cursor:pointer;
+border-radius:8px;
+transition:.3s;
+}
 
-.status{
-margin-top:20px;
+.ph:hover{
+transform:translateY(-6px) scale(1.05);
+}
+
+.acid{background:#e53935;}
+.low{background:#ff7043;}
+.good{background:#00b050;}
+.high{background:#ff9800;}
+.dead{background:#7b1fa2;}
+
+.result{
+margin-top:15px;
+background:#f4faff;
+border:3px solid #2196f3;
+border-radius:12px;
+padding:15px;
+height:160px;
 display:flex;
 flex-direction:column;
-gap:10px;
-}
-
-.card{
-background:#f2f8ff;
-padding:12px 15px;
-border-radius:12px;
-border-left:6px solid #0077cc;
-}
-
-.card h3{
-font-size:18px;
-margin-bottom:4px;
-color:#005ea8;
-}
-
-.card p{
-font-size:20px;
-font-weight:600;
-}
-
-/* MESSAGE */
-
-.message{
-margin-top:15px;
-background:#fff8e7;
-border-left:6px solid #ffc107;
-padding:15px;
-border-radius:10px;
-font-size:18px;
-line-height:1.5;
-}
-
-/* SUMMARY */
-
-.summary{
-position:absolute;
-left:50%;
-bottom:20px;
-transform:translateX(-50%);
-width:1180px;
-background:#198754;
-color:white;
-padding:15px;
-border-radius:40px;
+justify-content:center;
+align-items:center;
 text-align:center;
-font-size:20px;
-display:none;
+}
+
+.resultTitle{
+font-size:1.6vw;
+font-weight:700;
+margin-bottom:10px;
+color:#0056b3;
+}
+
+.resultText{
+font-size:1.15vw;
+line-height:1.5;
+color:#333;
+}
+
+.legend{
+display:flex;
+justify-content:center;
+gap:15px;
+margin-top:10px;
+font-size:.85vw;
 font-weight:600;
+flex-wrap:wrap;
 }
 
-/* BUBBLES */
-
-.bubble{
-position:absolute;
+.tag{
+padding:6px 12px;
+border-radius:20px;
 color:white;
-opacity:.3;
-animation:float 8s linear infinite;
 }
 
-@keyframes float{
-from{
-transform:translateY(0);
+.footer{
+text-align:center;
+margin-top:5px;
+font-size:.85vw;
+font-weight:600;
+color:#666;
 }
-to{
-transform:translateY(-450px);
-}
-}
-
 </style>
 </head>
+
 <body>
 
-<div id="stage">
+<div class="container">
 
-<div class="title">
-तालाब के लिए सही pH चुनें
+<div class="header">
+🐟 अपने तालाब के पानी का pH चुनें
 </div>
 
-<div class="subtitle">
-स्लाइडर को खिसकाकर देखें कि pH का मछलियों पर क्या प्रभाव पड़ता है
+<div class="content">
+
+<div class="left">
+
+<div class="infoBox">
+<h3>✅ आदर्श pH</h3>
+<ul>
+<li><b>6.5 से 8.5</b> (सूर्योदय के समय)</li>
+<li>मछली उत्पादन के लिए सबसे उपयुक्त</li>
+<li>बेहतर वृद्धि एवं स्वास्थ्य</li>
+</ul>
 </div>
 
-<div class="main">
-
-<!-- LEFT -->
-
-<div class="pond" id="pond">
-
-<div class="sky">
-<div class="sun" id="sun">☀️</div>
+<div class="infoBox">
+<h3>⚠️ प्रतिकूल pH</h3>
+<ul>
+<li><b>4.5 से कम</b> — अत्यधिक अम्लीय</li>
+<li><b>11 या अधिक</b> — अत्यधिक क्षारीय</li>
+<li>उत्पादन एवं जीवित रहने पर प्रभाव</li>
+</ul>
 </div>
 
-<div class="phDisplay">
-pH = <span id="phDisplay">7.5</span>
+<div class="infoBox">
+<h3>🎯 निर्देश</h3>
+<ul>
+<li>नीचे किसी भी pH संख्या पर क्लिक करें</li>
+<li>उसका प्रभाव तुरंत देखें</li>
+</ul>
 </div>
 
-<div class="water"></div>
-
-<div class="fish">🐟</div>
-
 </div>
 
-<!-- RIGHT -->
+<div class="right">
 
-<div class="panel">
+<div class="scaleContainer">
 
-<div class="sliderTitle">
-pH स्तर चुनें
+<div class="instructions">
+👇 pH स्तर पर क्लिक करें
 </div>
-
-<div class="rangeValue" id="rangeValue">
-7.5
-</div>
-
-<div class="sliderWrap">
-
-<input
-type="range"
-min="0"
-max="14"
-step="0.1"
-value="7.5"
-oninput="updatePH(this.value)"
->
 
 <div class="scale">
-<span>0</span>
-<span>7</span>
-<span>14</span>
+
+<div class="ph acid" onclick="showInfo(0)">0</div>
+<div class="ph acid" onclick="showInfo(1)">1</div>
+<div class="ph acid" onclick="showInfo(2)">2</div>
+<div class="ph acid" onclick="showInfo(3)">3</div>
+
+<div class="ph low" onclick="showInfo(4)">4</div>
+<div class="ph low" onclick="showInfo(5)">5</div>
+<div class="ph low" onclick="showInfo(6)">6</div>
+
+<div class="ph good" onclick="showInfo(7)">7</div>
+<div class="ph good" onclick="showInfo(8)">8</div>
+
+<div class="ph high" onclick="showInfo(9)">9</div>
+<div class="ph high" onclick="showInfo(10)">10</div>
+
+<div class="ph dead" onclick="showInfo(11)">11</div>
+<div class="ph dead" onclick="showInfo(12)">12</div>
+<div class="ph dead" onclick="showInfo(13)">13</div>
+<div class="ph dead" onclick="showInfo(14)">14</div>
+
+</div>
+
+<div class="result" id="result">
+
+<div class="resultTitle">
+pH चुनें
+</div>
+
+<div class="resultText">
+तालाब के पानी का pH चुनकर उसका प्रभाव जानें।
 </div>
 
 </div>
 
-<div class="status">
-
-<div class="card">
-<h3>🐟 मछली स्वास्थ्य</h3>
-<p id="health">उत्तम</p>
-</div>
-
-<div class="card">
-<h3>📈 उत्पादन</h3>
-<p id="production">अधिक</p>
-</div>
-
-<div class="card">
-<h3>🥚 प्रजनन</h3>
-<p id="reproduction">अच्छा</p>
-</div>
-
-<div class="card">
-<h3>💡 सुझाव</h3>
-<p id="advice">आदर्श सीमा</p>
-</div>
-
-</div>
-
-<div class="message" id="message">
-यह pH सीमा मत्स्य पालन के लिए उपयुक्त मानी जाती है।
+<div class="legend">
+<span class="tag acid">अत्यधिक अम्लीय</span>
+<span class="tag low">कम pH</span>
+<span class="tag good">आदर्श</span>
+<span class="tag high">उच्च pH</span>
+<span class="tag dead">खतरनाक</span>
 </div>
 
 </div>
 
 </div>
 
-<div class="summary" id="summary">
-🏆 बहुत बढ़िया! pH 6.5 से 8.5 के बीच मछलियों की वृद्धि, स्वास्थ्य और उत्पादन सबसे बेहतर रहता है।
+</div>
+
+<div class="footer">
+🐠 सही pH = बेहतर वृद्धि + बेहतर प्रजनन + अधिक उत्पादन
 </div>
 
 </div>
 
 <script>
 
-for(let i=0;i<18;i++){
+function showInfo(ph){
 
-let b=document.createElement("div");
+let title="";
+let text="";
 
-b.className="bubble";
-
-b.innerHTML="○";
-
-b.style.left=Math.random()*650+"px";
-
-b.style.bottom=Math.random()*350+"px";
-
-b.style.fontSize=(10+Math.random()*25)+"px";
-
-b.style.animationDuration=(5+Math.random()*6)+"s";
-
-document.querySelector(".pond").appendChild(b);
-
+if(ph <= 3){
+title="☠️ अत्यधिक अम्लीय";
+text="यह pH मछलियों के लिए घातक हो सकता है। जीवित रहने की संभावना बहुत कम होती है।";
 }
-
-function updatePH(value){
-
-value=parseFloat(value);
-
-document.getElementById("rangeValue").innerHTML=
-value.toFixed(1);
-
-document.getElementById("phDisplay").innerHTML=
-value.toFixed(1);
-
-let health="";
-let production="";
-let reproduction="";
-let advice="";
-let msg="";
-let color="";
-
-if(value<4.5){
-
-health="गंभीर खतरा";
-production="बहुत कम";
-reproduction="नहीं";
-advice="तुरंत सुधार करें";
-
-msg="पानी बहुत अधिक अम्लीय है। मछलियों के जीवित रहने में कठिनाई हो सकती है.";
-
-color="#ff5b5b";
-
+else if(ph == 4){
+title="⚠️ अम्लीय मृत्यु बिंदु";
+text="pH 4 के आसपास मछलियों पर गंभीर नकारात्मक प्रभाव पड़ता है।";
 }
-
-else if(value<6.5){
-
-health="कमज़ोर";
-production="कम";
-reproduction="प्रभावित";
-advice="सुधार आवश्यक";
-
-msg="मछलियों की वृद्धि धीमी हो सकती है और तनाव बढ़ सकता है।";
-
-color="#ffb84d";
-
+else if(ph == 5){
+title="🚫 प्रजनन प्रभावित";
+text="pH 4-5 पर अधिकांश प्रजातियों का प्रजनन रुक सकता है।";
 }
-
-else if(value<=8.5){
-
-health="उत्तम";
-production="अधिक";
-reproduction="अच्छा";
-advice="आदर्श सीमा";
-
-msg="यह pH सीमा मत्स्य पालन के लिए सबसे उपयुक्त मानी जाती है।";
-
-color="#00aaff";
-
-document.getElementById("summary").style.display="block";
-
+else if(ph == 6){
+title="📉 धीमी वृद्धि";
+text="कुछ प्रजातियों में वृद्धि की गति कम हो सकती है।";
 }
-
-else if(value<11){
-
-health="तनावग्रस्त";
-production="घटता हुआ";
-reproduction="प्रभावित";
-advice="निगरानी रखें";
-
-msg="pH अधिक होने पर मछलियों में तनाव बढ़ सकता है।";
-
-color="#ffd24d";
-
+else if(ph >=7 && ph <=8){
+title="✅ सर्वोत्तम pH";
+text="मछली उत्पादन, वृद्धि और स्वास्थ्य के लिए सबसे अच्छा pH स्तर।";
 }
-
+else if(ph == 9){
+title="⚠️ सावधानी आवश्यक";
+text="अंडों और फ्राई (छोटी मछलियों) पर प्रतिकूल प्रभाव शुरू हो सकता है।";
+}
+else if(ph == 10){
+title="📉 उत्पादन में कमी";
+text="वृद्धि और प्रजनन दोनों प्रभावित हो सकते हैं। सुधार की आवश्यकता है।";
+}
 else{
-
-health="गंभीर खतरा";
-production="बहुत कम";
-reproduction="नहीं";
-advice="तुरंत सुधार करें";
-
-msg="पानी अत्यधिक क्षारीय है। यह मछलियों के लिए हानिकारक हो सकता है।";
-
-color="#ff5b5b";
-
+title="☠️ क्षारीय मृत्यु बिंदु";
+text="pH 11 या उससे अधिक मछलियों के लिए अत्यंत खतरनाक और घातक हो सकता है।";
 }
 
-document.getElementById("health").innerHTML=health;
-document.getElementById("production").innerHTML=production;
-document.getElementById("reproduction").innerHTML=reproduction;
-document.getElementById("advice").innerHTML=advice;
-document.getElementById("message").innerHTML=msg;
-
-document.getElementById("pond").style.background=
-`linear-gradient(${color},#0094ff)`;
-
-if(value<6.5 || value>8.5){
-
-document.getElementById("summary").style.display="none";
-
-}
+document.getElementById("result").innerHTML=
+'<div class="resultTitle">'+title+'</div>'+
+'<div class="resultText">'+text+'</div>';
 
 }
 
