@@ -1,56 +1,301 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>क्षारीयता और pH का संबंध</title>
+
 <style>
-html,body{
+
+*{
 margin:0;
 padding:0;
+box-sizing:border-box;
+font-family:"Nirmala UI",sans-serif;
+}
+
+html,body{
 width:100%;
 height:100%;
 overflow:hidden;
-background:#eef6fb;
-font-family:"Nirmala UI",sans-serif;
+background:#eaf6ff;
 }
 
 #stage{
 width:1280px;
 height:720px;
-position:absolute;
-left:50%;
-top:50%;
-transform:translate(-50%,-50%);
+margin:auto;
+position:relative;
 overflow:hidden;
-background:#eef6fb;
+background:linear-gradient(180deg,#f5fbff,#dff2ff);
 }
 
-/* TITLE */
+/* HEADER */
 
-.title{
-position:absolute;
-top:20px;
-left:40px;
-right:40px;
-text-align:center;
-font-size:46px;
-font-weight:700;
-color:#005ea8;
-}
-
-/* BUTTONS */
-
-.buttonBar{
-position:absolute;
-top:110px;
-left:90px;
-width:1100px;
+.header{
+height:90px;
 display:flex;
-justify-content:space-between;
+flex-direction:column;
+justify-content:center;
+align-items:center;
 }
 
-.levelBtn{
-width:190px;
-height:70px;
-border:none;
-border-radius:18px;
-font-size:22px;
+.header h1{
+font-size:40px;
+color:#005fa3;
+}
+
+.header p{
+font-size:18px;
+color:#555;
+}
+
+/* MAIN */
+
+.main{
+width:1220px;
+height:560px;
+margin:auto;
+display:flex;
+gap:20px;
+}
+
+/* LEFT */
+
+.leftPanel{
+width:420px;
+height:100%;
+background:white;
+border-radius:20px;
+padding:20px;
+box-shadow:0 5px 15px rgba(0,0,0,.12);
+}
+
+.leftPanel h2{
+text-align:center;
+color:#005fa3;
+margin-bottom:20px;
+}
+
+.level{
+height:80px;
+border-radius:15px;
+margin-bottom:12px;
+display:flex;
+align-items:center;
+justify-content:center;
+font-size:26px;
 font-weight:bold;
 cursor:pointer;
+transition:.3s;
+color:white;
 }
+
+.level:hover{
+transform:scale(1.03);
+}
+
+.level1{background:#d9534f;}
+.level2{background:#f0ad4e;}
+.level3{background:#f7d24f;color:#222;}
+.level4{background:#5cb85c;}
+.level5{background:#198754;}
+
+/* CENTER */
+
+.centerPanel{
+flex:1;
+background:white;
+border-radius:20px;
+padding:25px;
+box-shadow:0 5px 15px rgba(0,0,0,.12);
+position:relative;
+overflow:hidden;
+}
+
+.cardTitle{
+font-size:36px;
+font-weight:bold;
+color:#005fa3;
+margin-bottom:15px;
+}
+
+.range{
+font-size:60px;
+font-weight:bold;
+color:#198754;
+margin-bottom:20px;
+}
+
+.desc{
+font-size:24px;
+line-height:1.6;
+color:#333;
+}
+
+.effectBox{
+position:absolute;
+bottom:30px;
+left:25px;
+right:25px;
+background:#eef8ff;
+padding:20px;
+border-radius:15px;
+font-size:22px;
+line-height:1.5;
+border-left:8px solid #0077cc;
+}
+
+/* FOOTER */
+
+.footer{
+position:absolute;
+bottom:10px;
+left:50%;
+transform:translateX(-50%);
+width:1180px;
+background:#0d6efd;
+color:white;
+padding:12px;
+text-align:center;
+border-radius:40px;
+font-size:20px;
+font-weight:600;
+}
+
 </style>
+</head>
+<body>
+
+<div id="stage">
+
+<div class="header">
+<h1>क्षारीयता और pH का संबंध</h1>
+<p>विभिन्न क्षारीयता स्तरों पर क्लिक करके जानकारी देखें</p>
+</div>
+
+<div class="main">
+
+<div class="leftPanel">
+
+<h2>क्षारीयता स्तर</h2>
+
+<div class="level level1"
+onclick="showData('verylow')">
+बहुत कम
+</div>
+
+<div class="level level2"
+onclick="showData('low')">
+कम
+</div>
+
+<div class="level level3"
+onclick="showData('moderate')">
+मध्यम
+</div>
+
+<div class="level level4"
+onclick="showData('high')">
+उच्च
+</div>
+
+<div class="level level5"
+onclick="showData('veryhigh')">
+बहुत उच्च
+</div>
+
+</div>
+
+<div class="centerPanel">
+
+<div class="cardTitle" id="title">
+मध्यम क्षारीयता
+</div>
+
+<div class="range" id="range">
+pH 7 – 8.5
+</div>
+
+<div class="desc" id="desc">
+यह मत्स्य पालन के लिए सबसे उपयुक्त स्थिति मानी जाती है।
+इस स्तर पर पानी की pH स्थिर रहती है और मछलियों की वृद्धि अच्छी होती है।
+</div>
+
+<div class="effectBox" id="effect">
+✅ अच्छी बफर क्षमता<br>
+✅ pH में कम उतार-चढ़ाव<br>
+✅ बेहतर उत्पादन और स्वस्थ मछलियाँ
+</div>
+
+</div>
+
+</div>
+
+<div class="footer">
+निष्कर्ष: 50–300 mg/L क्षारीयता और pH 7–8.5 मत्स्य पालन के लिए सबसे उपयुक्त मानी जाती है।
+</div>
+
+</div>
+
+<script>
+
+const data={
+
+verylow:{
+title:"बहुत कम क्षारीयता",
+range:"pH 5 – 7",
+desc:"पानी की बफर क्षमता बहुत कम होती है। pH में दिन और रात के दौरान अधिक उतार-चढ़ाव हो सकता है।",
+effect:"⚠ pH अस्थिर रहता है<br>⚠ मछलियों पर तनाव बढ़ सकता है<br>⚠ उत्पादन प्रभावित हो सकता है"
+},
+
+low:{
+title:"कम क्षारीयता",
+range:"pH 5 – 7",
+desc:"पानी में कुछ बफर क्षमता होती है लेकिन pH अभी भी आसानी से बदल सकता है।",
+effect:"⚠ pH में उतार-चढ़ाव संभव<br>⚠ नियमित निगरानी आवश्यक<br>⚠ उत्पादन मध्यम रह सकता है"
+},
+
+moderate:{
+title:"मध्यम क्षारीयता",
+range:"pH 7 – 8.5",
+desc:"मत्स्य पालन के लिए आदर्श स्थिति। पानी अधिक स्थिर रहता है और मछलियों की वृद्धि अच्छी होती है।",
+effect:"✅ अच्छी बफर क्षमता<br>✅ स्थिर pH<br>✅ बेहतर वृद्धि और उत्पादन"
+},
+
+high:{
+title:"उच्च क्षारीयता",
+range:"pH 7 – 8.5",
+desc:"पानी की बफर क्षमता मजबूत होती है। pH में अचानक परिवर्तन की संभावना कम रहती है।",
+effect:"✅ स्थिर जल गुणवत्ता<br>✅ स्वस्थ वातावरण<br>✅ अच्छा उत्पादन"
+},
+
+veryhigh:{
+title:"बहुत उच्च क्षारीयता",
+range:"pH 9 या अधिक",
+desc:"क्षारीयता बहुत अधिक होने पर pH भी अधिक हो सकता है, जो मछलियों के लिए हानिकारक हो सकता है।",
+effect:"⚠ pH बहुत बढ़ सकता है<br>⚠ मछलियों पर तनाव<br>⚠ सुधारात्मक कार्रवाई आवश्यक"
+}
+
+};
+
+function showData(type){
+
+document.getElementById("title").innerHTML=
+data[type].title;
+
+document.getElementById("range").innerHTML=
+data[type].range;
+
+document.getElementById("desc").innerHTML=
+data[type].desc;
+
+document.getElementById("effect").innerHTML=
+data[type].effect;
+
+}
+
+</script>
+
+</body>
+</html>
