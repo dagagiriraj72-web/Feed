@@ -14,171 +14,295 @@ box-sizing:border-box;
 font-family:'Nirmala UI',sans-serif;
 }
 
-body{
+html,body{
+width:100%;
+height:100%;
 overflow:hidden;
 background:#dff5ff;
 }
 
-.container{
+/* STORYLINE SAFE STAGE */
+
+#stage{
 width:1280px;
 height:720px;
-margin:auto;
-background:linear-gradient(#eef9ff,#d7efff);
-position:relative;
+position:absolute;
+left:50%;
+top:50%;
+transform:translate(-50%,-50%);
+background:linear-gradient(180deg,#eef9ff,#d7efff);
+overflow:hidden;
 }
 
+/* HEADER */
+
 .title{
+position:absolute;
+top:15px;
+left:0;
+width:100%;
 text-align:center;
-padding:20px;
-font-size:42px;
-font-weight:bold;
+font-size:34px;
+font-weight:700;
 color:#005ea8;
 }
 
 .subtitle{
+position:absolute;
+top:60px;
+width:100%;
 text-align:center;
-font-size:20px;
-color:#444;
+font-size:18px;
+color:#555;
 }
 
+/* MAIN */
+
 .main{
-display:flex;
-padding:25px 40px;
+position:absolute;
+top:100px;
+left:30px;
+width:1220px;
+height:500px;
+display:grid;
+grid-template-columns:650px 540px;
 gap:30px;
 }
 
-/* LEFT */
+/* POND */
 
 .pond{
-width:500px;
-height:420px;
-background:linear-gradient(#78cfff,#0094ff);
-border-radius:25px;
 position:relative;
+width:650px;
+height:500px;
+border-radius:25px;
 overflow:hidden;
-box-shadow:0 8px 20px rgba(0,0,0,.15);
+background:linear-gradient(#78cfff,#0094ff);
+box-shadow:0 10px 25px rgba(0,0,0,.15);
+transition:.4s;
+}
+
+.sky{
+position:absolute;
+top:0;
+left:0;
+width:100%;
+height:180px;
+background:linear-gradient(#89d8ff,#6dc8ff);
+}
+
+.sun{
+position:absolute;
+right:35px;
+top:20px;
+font-size:70px;
+transition:.5s;
 }
 
 .water{
 position:absolute;
 bottom:0;
-height:75%;
 width:100%;
-background:rgba(0,120,255,.35);
+height:320px;
+background:linear-gradient(#33a7e8,#0079c8);
 }
 
 .fish{
 position:absolute;
-left:180px;
-top:140px;
-font-size:120px;
-transition:.5s;
+left:280px;
+top:260px;
+font-size:100px;
+animation:swim 4s infinite alternate ease-in-out;
+}
+
+@keyframes swim{
+from{
+transform:translateX(-30px);
+}
+to{
+transform:translateX(30px);
+}
 }
 
 .phDisplay{
 position:absolute;
-top:25px;
 left:50%;
+top:20px;
 transform:translateX(-50%);
 background:white;
-padding:12px 25px;
+padding:10px 25px;
 border-radius:15px;
-font-size:36px;
+font-size:32px;
 font-weight:bold;
+box-shadow:0 5px 15px rgba(0,0,0,.1);
 }
 
-/* RIGHT */
+/* PANEL */
 
 .panel{
-flex:1;
 background:white;
 border-radius:25px;
-padding:25px;
-box-shadow:0 8px 20px rgba(0,0,0,.12);
+padding:20px;
+box-shadow:0 10px 25px rgba(0,0,0,.12);
+display:flex;
+flex-direction:column;
 }
 
-.sliderBox{
-margin-bottom:25px;
+.sliderTitle{
+font-size:28px;
+font-weight:bold;
+color:#005ea8;
+margin-bottom:15px;
+}
+
+.rangeValue{
+font-size:48px;
+font-weight:bold;
+text-align:center;
+color:#0077cc;
+margin-bottom:10px;
+}
+
+.sliderWrap{
+padding:0 10px;
 }
 
 input[type=range]{
 width:100%;
+height:10px;
+cursor:pointer;
 }
 
+.scale{
+display:flex;
+justify-content:space-between;
+font-size:14px;
+margin-top:5px;
+color:#666;
+}
+
+/* STATUS CARDS */
+
 .status{
-display:grid;
-grid-template-columns:1fr 1fr;
-gap:15px;
+margin-top:20px;
+display:flex;
+flex-direction:column;
+gap:10px;
 }
 
 .card{
 background:#f2f8ff;
-padding:18px;
-border-radius:15px;
+padding:12px 15px;
+border-radius:12px;
+border-left:6px solid #0077cc;
 }
 
 .card h3{
+font-size:18px;
+margin-bottom:4px;
 color:#005ea8;
-margin-bottom:8px;
 }
 
 .card p{
 font-size:20px;
+font-weight:600;
+}
+
+/* MESSAGE */
+
+.message{
+margin-top:15px;
+background:#fff8e7;
+border-left:6px solid #ffc107;
+padding:15px;
+border-radius:10px;
+font-size:18px;
+line-height:1.5;
 }
 
 /* SUMMARY */
 
 .summary{
 position:absolute;
-bottom:20px;
 left:50%;
+bottom:20px;
 transform:translateX(-50%);
-width:90%;
+width:1180px;
 background:#198754;
 color:white;
 padding:15px;
-border-radius:50px;
+border-radius:40px;
 text-align:center;
-font-size:22px;
+font-size:20px;
 display:none;
+font-weight:600;
+}
+
+/* BUBBLES */
+
+.bubble{
+position:absolute;
+color:white;
+opacity:.3;
+animation:float 8s linear infinite;
+}
+
+@keyframes float{
+from{
+transform:translateY(0);
+}
+to{
+transform:translateY(-450px);
+}
 }
 
 </style>
 </head>
 <body>
 
-<div class="container">
+<div id="stage">
 
 <div class="title">
 तालाब के लिए सही pH चुनें
 </div>
 
 <div class="subtitle">
-स्लाइडर को खिसकाकर विभिन्न pH स्तरों का प्रभाव देखें
+स्लाइडर को खिसकाकर देखें कि pH का मछलियों पर क्या प्रभाव पड़ता है
 </div>
 
 <div class="main">
 
+<!-- LEFT -->
+
 <div class="pond" id="pond">
 
+<div class="sky">
+<div class="sun" id="sun">☀️</div>
+</div>
+
 <div class="phDisplay">
-pH = <span id="phValue">7.5</span>
+pH = <span id="phDisplay">7.5</span>
 </div>
 
 <div class="water"></div>
 
-<div class="fish" id="fish">
-🐟
-</div>
+<div class="fish">🐟</div>
 
 </div>
+
+<!-- RIGHT -->
 
 <div class="panel">
 
-<div class="sliderBox">
+<div class="sliderTitle">
+pH स्तर चुनें
+</div>
 
-<h2>pH स्तर चुनें</h2>
-<br>
+<div class="rangeValue" id="rangeValue">
+7.5
+</div>
+
+<div class="sliderWrap">
 
 <input
 type="range"
@@ -188,6 +312,12 @@ step="0.1"
 value="7.5"
 oninput="updatePH(this.value)"
 >
+
+<div class="scale">
+<span>0</span>
+<span>7</span>
+<span>14</span>
+</div>
 
 </div>
 
@@ -215,39 +345,69 @@ oninput="updatePH(this.value)"
 
 </div>
 
+<div class="message" id="message">
+यह pH सीमा मत्स्य पालन के लिए उपयुक्त मानी जाती है।
+</div>
+
 </div>
 
 </div>
 
 <div class="summary" id="summary">
-
-🏆 आदर्श pH सीमा 6.5 से 8.5 है। इसी सीमा में मछलियों की वृद्धि, स्वास्थ्य और उत्पादन सबसे बेहतर रहता है।
-
+🏆 बहुत बढ़िया! pH 6.5 से 8.5 के बीच मछलियों की वृद्धि, स्वास्थ्य और उत्पादन सबसे बेहतर रहता है।
 </div>
 
 </div>
 
 <script>
 
+for(let i=0;i<18;i++){
+
+let b=document.createElement("div");
+
+b.className="bubble";
+
+b.innerHTML="○";
+
+b.style.left=Math.random()*650+"px";
+
+b.style.bottom=Math.random()*350+"px";
+
+b.style.fontSize=(10+Math.random()*25)+"px";
+
+b.style.animationDuration=(5+Math.random()*6)+"s";
+
+document.querySelector(".pond").appendChild(b);
+
+}
+
 function updatePH(value){
 
 value=parseFloat(value);
 
-document.getElementById("phValue").innerHTML=value.toFixed(1);
+document.getElementById("rangeValue").innerHTML=
+value.toFixed(1);
+
+document.getElementById("phDisplay").innerHTML=
+value.toFixed(1);
 
 let health="";
 let production="";
 let reproduction="";
 let advice="";
+let msg="";
 let color="";
 
 if(value<4.5){
 
 health="गंभीर खतरा";
-production="नहीं";
-reproduction="संभव नहीं";
-advice="बहुत अम्लीय पानी";
-color="#ff4d4d";
+production="बहुत कम";
+reproduction="नहीं";
+advice="तुरंत सुधार करें";
+
+msg="पानी बहुत अधिक अम्लीय है। मछलियों के जीवित रहने में कठिनाई हो सकती है.";
+
+color="#ff5b5b";
 
 }
 
@@ -257,6 +417,9 @@ health="कमज़ोर";
 production="कम";
 reproduction="प्रभावित";
 advice="सुधार आवश्यक";
+
+msg="मछलियों की वृद्धि धीमी हो सकती है और तनाव बढ़ सकता है।";
+
 color="#ffb84d";
 
 }
@@ -267,10 +430,12 @@ health="उत्तम";
 production="अधिक";
 reproduction="अच्छा";
 advice="आदर्श सीमा";
+
+msg="यह pH सीमा मत्स्य पालन के लिए सबसे उपयुक्त मानी जाती है।";
+
 color="#00aaff";
 
-document.getElementById("summary")
-.style.display="block";
+document.getElementById("summary").style.display="block";
 
 }
 
@@ -279,7 +444,10 @@ else if(value<11){
 health="तनावग्रस्त";
 production="घटता हुआ";
 reproduction="प्रभावित";
-advice="pH अधिक है";
+advice="निगरानी रखें";
+
+msg="pH अधिक होने पर मछलियों में तनाव बढ़ सकता है।";
+
 color="#ffd24d";
 
 }
@@ -287,10 +455,13 @@ color="#ffd24d";
 else{
 
 health="गंभीर खतरा";
-production="नहीं";
-reproduction="संभव नहीं";
-advice="बहुत क्षारीय पानी";
-color="#ff4d4d";
+production="बहुत कम";
+reproduction="नहीं";
+advice="तुरंत सुधार करें";
+
+msg="पानी अत्यधिक क्षारीय है। यह मछलियों के लिए हानिकारक हो सकता है।";
+
+color="#ff5b5b";
 
 }
 
@@ -298,14 +469,14 @@ document.getElementById("health").innerHTML=health;
 document.getElementById("production").innerHTML=production;
 document.getElementById("reproduction").innerHTML=reproduction;
 document.getElementById("advice").innerHTML=advice;
+document.getElementById("message").innerHTML=msg;
 
 document.getElementById("pond").style.background=
 `linear-gradient(${color},#0094ff)`;
 
 if(value<6.5 || value>8.5){
 
-document.getElementById("summary")
-.style.display="none";
+document.getElementById("summary").style.display="none";
 
 }
 
