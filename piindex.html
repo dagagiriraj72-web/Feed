@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>मत्स्य पालन के 4 स्तंभ</title>
+
+<style>
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Segoe UI',sans-serif;
+}
+
+body{
+width:100vw;
+height:100vh;
+overflow:hidden;
+background:linear-gradient(135deg,#eaf8ff,#ffffff);
+display:flex;
+justify-content:center;
+align-items:center;
+}
+
+.container{
+width:100%;
+height:100%;
+position:relative;
+overflow:hidden;
+}
+
+/* Temple Roof */
+.roof{
+position:absolute;
+top:4%;
+left:50%;
+transform:translateX(-50%);
+width:65%;
+height:18%;
+background:linear-gradient(to bottom,#f4f4f4,#d9d9d9);
+clip-path:polygon(50% 0%,100% 100%,0% 100%);
+box-shadow:0 4px 15px rgba(0,0,0,.2);
+display:flex;
+justify-content:center;
+align-items:center;
+}
+
+.roof h1{
+color:#0099ff;
+font-size:2.3vw;
+font-weight:700;
+text-shadow:1px 1px 3px rgba(0,0,0,.15);
+}
+
+/* Base */
+.base{
+position:absolute;
+bottom:8%;
+left:50%;
+transform:translateX(-50%);
+width:78%;
+height:5%;
+background:linear-gradient(to bottom,#ececec,#cfcfcf);
+border-radius:8px;
+}
+
+/* Instructions */
+.instructions{
+position:absolute;
+top:25%;
+left:50%;
+transform:translateX(-50%);
+font-size:1vw;
+font-weight:600;
+color:#444;
+background:white;
+padding:8px 18px;
+border-radius:25px;
+box-shadow:0 3px 10px rgba(0,0,0,.12);
+}
+
+/* Pillars */
+.pillars{
+position:absolute;
+bottom:13%;
+width:100%;
+display:flex;
+justify-content:center;
+gap:3%;
+}
+
+.pillar{
+width:12%;
+height:48vh;
+border-radius:18px;
+cursor:pointer;
+position:relative;
+transition:.4s;
+display:flex;
+justify-content:center;
+align-items:center;
+overflow:hidden;
+box-shadow:0 8px 20px rgba(0,0,0,.25);
+}
+
+.pillar:hover{
+transform:translateY(-12px) scale(1.05);
+}
+
+.pillar span{
+writing-mode:vertical-rl;
+transform:rotate(180deg);
+font-size:2vw;
+font-weight:700;
+color:white;
+text-align:center;
+letter-spacing:1px;
+}
+
+.water{
+background:linear-gradient(to right,#ff0000,#c60000);
+}
+
+.seed{
+background:linear-gradient(to right,#00ff33,#00b326);
+}
+
+.feed{
+background:linear-gradient(to right,#e4e600,#b7b900);
+}
+
+.practice{
+background:linear-gradient(to right,#1f7cff,#0052cc);
+}
+
+/* Info Panel */
+
+.infoPanel{
+position:absolute;
+right:2%;
+top:30%;
+width:27%;
+height:45%;
+background:white;
+border-radius:20px;
+padding:20px;
+box-shadow:0 8px 25px rgba(0,0,0,.18);
+display:flex;
+flex-direction:column;
+justify-content:center;
+}
+
+.infoTitle{
+font-size:1.6vw;
+font-weight:700;
+color:#0077cc;
+margin-bottom:15px;
+text-align:center;
+}
+
+.infoText{
+font-size:1.05vw;
+line-height:1.6;
+color:#444;
+text-align:center;
+}
+
+.badge{
+margin:auto;
+font-size:3vw;
+}
+
+.footer{
+position:absolute;
+bottom:1%;
+width:100%;
+text-align:center;
+font-size:.95vw;
+font-weight:600;
+color:#444;
+}
+
+.glow{
+animation:glow 1.2s infinite alternate;
+}
+
+@keyframes glow{
+from{
+box-shadow:0 0 10px rgba(255,255,255,.4);
+}
+to{
+box-shadow:0 0 25px rgba(255,255,255,.9);
+}
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<div class="roof">
+<h1>🐟 मत्स्य पालन (Aquaculture)</h1>
+</div>
+
+<div class="instructions">
+👇 किसी भी स्तंभ पर क्लिक करें
+</div>
+
+<div class="pillars">
+
+<div class="pillar water glow"
+onclick="showInfo('जल प्रबंधन','💧','पानी की गुणवत्ता, pH, घुलित ऑक्सीजन तथा तापमान का उचित प्रबंधन मछलियों के स्वस्थ विकास के लिए आवश्यक है।')">
+<span>जल प्रबंधन</span>
+</div>
+
+<div class="pillar seed glow"
+onclick="showInfo('बीज प्रबंधन','🐠','उच्च गुणवत्ता वाले स्वस्थ मत्स्य बीज का चयन बेहतर जीवितता, वृद्धि और उत्पादन सुनिश्चित करता है।')">
+<span>बीज प्रबंधन</span>
+</div>
+
+<div class="pillar feed glow"
+onclick="showInfo('आहार प्रबंधन','🌾','संतुलित एवं उचित मात्रा में आहार देने से मछलियों की वृद्धि तेज होती है और लागत नियंत्रित रहती है।')">
+<span>आहार प्रबंधन</span>
+</div>
+
+<div class="pillar practice glow"
+onclick="showInfo('श्रेष्ठ प्रबंधन पद्धतियाँ','🏆','नियमित निगरानी, रिकॉर्ड रखना, जैव सुरक्षा तथा समय पर सुधारात्मक कार्यवाही उत्पादन बढ़ाने में मदद करती है।')">
+<span>श्रेष्ठ प्रबंधन पद्धतियाँ</span>
+</div>
+
+</div>
+
+<div class="base"></div>
+
+<div class="infoPanel" id="panel">
+
+<div class="badge">🏛️</div>
+
+<div class="infoTitle">
+मत्स्य पालन के 4 स्तंभ
+</div>
+
+<div class="infoText">
+सफल मत्स्य पालन इन चार महत्वपूर्ण स्तंभों पर आधारित है। किसी भी स्तंभ पर क्लिक करके अधिक जानकारी प्राप्त करें।
+</div>
+
+</div>
+
+<div class="footer">
+✅ मजबूत स्तंभ = स्वस्थ मछलियाँ + अधिक उत्पादन + अधिक लाभ
+</div>
+
+</div>
+
+<script>
+
+function showInfo(title,icon,text){
+
+document.getElementById('panel').innerHTML=
+`
+<div class="badge">${icon}</div>
+
+<div class="infoTitle">
+${title}
+</div>
+
+<div class="infoText">
+${text}
+</div>
+`;
+
+}
+
+</script>
+
+</body>
+</html>
