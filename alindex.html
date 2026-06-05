@@ -22,69 +22,73 @@ background:#eaf6ff;
 }
 
 #stage{
-width:1280px;
-height:720px;
-margin:auto;
-position:relative;
-overflow:hidden;
+width:100%;
+height:100vh;
 background:linear-gradient(180deg,#f5fbff,#dff2ff);
+overflow:hidden;
+display:flex;
+flex-direction:column;
 }
 
 /* HEADER */
 
 .header{
-height:90px;
+height:75px;
 display:flex;
 flex-direction:column;
 justify-content:center;
 align-items:center;
+flex-shrink:0;
 }
 
 .header h1{
-font-size:40px;
+font-size:32px;
 color:#005fa3;
+margin-bottom:4px;
 }
 
 .header p{
-font-size:18px;
+font-size:16px;
 color:#555;
 }
 
 /* MAIN */
 
 .main{
-width:1220px;
-height:560px;
-margin:auto;
+flex:1;
 display:flex;
-gap:20px;
+gap:15px;
+padding:10px 20px;
+overflow:hidden;
 }
 
-/* LEFT */
+/* LEFT PANEL */
 
 .leftPanel{
-width:420px;
-height:100%;
+width:320px;
 background:white;
-border-radius:20px;
-padding:20px;
-box-shadow:0 5px 15px rgba(0,0,0,.12);
+border-radius:18px;
+padding:15px;
+box-shadow:0 4px 12px rgba(0,0,0,.12);
+display:flex;
+flex-direction:column;
 }
 
 .leftPanel h2{
 text-align:center;
 color:#005fa3;
-margin-bottom:20px;
+margin-bottom:12px;
+font-size:24px;
 }
 
 .level{
-height:80px;
-border-radius:15px;
-margin-bottom:12px;
+height:62px;
+border-radius:12px;
+margin-bottom:10px;
 display:flex;
 align-items:center;
 justify-content:center;
-font-size:26px;
+font-size:22px;
 font-weight:bold;
 cursor:pointer;
 transition:.3s;
@@ -92,79 +96,83 @@ color:white;
 }
 
 .level:hover{
-transform:scale(1.03);
+transform:scale(1.02);
 }
 
 .level1{background:#d9534f;}
 .level2{background:#f0ad4e;}
-.level3{background:#f7d24f;color:#222;}
+.level3{
+background:#f7d24f;
+color:#222;
+}
 .level4{background:#5cb85c;}
 .level5{background:#198754;}
 
-/* CENTER */
+/* CENTER PANEL */
 
 .centerPanel{
 flex:1;
 background:white;
-border-radius:20px;
-padding:25px;
-box-shadow:0 5px 15px rgba(0,0,0,.12);
+border-radius:18px;
+padding:20px;
+box-shadow:0 4px 12px rgba(0,0,0,.12);
 position:relative;
 overflow:hidden;
+display:flex;
+flex-direction:column;
 }
 
 .cardTitle{
-font-size:36px;
+font-size:30px;
 font-weight:bold;
 color:#005fa3;
-margin-bottom:15px;
+margin-bottom:10px;
 }
 
 .range{
-font-size:60px;
+font-size:48px;
 font-weight:bold;
 color:#198754;
-margin-bottom:20px;
+margin-bottom:15px;
 }
 
 .desc{
-font-size:24px;
-line-height:1.6;
+font-size:22px;
+line-height:1.5;
 color:#333;
 }
 
 .effectBox{
-position:absolute;
-bottom:30px;
-left:25px;
-right:25px;
+margin-top:auto;
 background:#eef8ff;
-padding:20px;
-border-radius:15px;
-font-size:22px;
+padding:15px;
+border-radius:12px;
+font-size:20px;
 line-height:1.5;
-border-left:8px solid #0077cc;
+border-left:6px solid #0077cc;
 }
 
 /* FOOTER */
 
 .footer{
-position:absolute;
-bottom:10px;
-left:50%;
-transform:translateX(-50%);
-width:1180px;
+height:50px;
+flex-shrink:0;
+display:flex;
+align-items:center;
+justify-content:center;
+margin:8px 20px 12px;
 background:#0d6efd;
 color:white;
-padding:12px;
-text-align:center;
-border-radius:40px;
-font-size:20px;
+border-radius:30px;
+font-size:18px;
 font-weight:600;
+padding:0 15px;
+text-align:center;
 }
 
 </style>
 </head>
+
 <body>
 
 <div id="stage">
@@ -180,28 +188,23 @@ font-weight:600;
 
 <h2>क्षारीयता स्तर</h2>
 
-<div class="level level1"
-onclick="showData('verylow')">
+<div class="level level1" onclick="showData('verylow')">
 बहुत कम
 </div>
 
-<div class="level level2"
-onclick="showData('low')">
+<div class="level level2" onclick="showData('low')">
 कम
 </div>
 
-<div class="level level3"
-onclick="showData('moderate')">
+<div class="level level3" onclick="showData('moderate')">
 मध्यम
 </div>
 
-<div class="level level4"
-onclick="showData('high')">
+<div class="level level4" onclick="showData('high')">
 उच्च
 </div>
 
-<div class="level level5"
-onclick="showData('veryhigh')">
+<div class="level level5" onclick="showData('veryhigh')">
 बहुत उच्च
 </div>
 
@@ -240,7 +243,7 @@ pH 7 – 8.5
 
 <script>
 
-const data={
+const data = {
 
 verylow:{
 title:"बहुत कम क्षारीयता",
@@ -281,17 +284,10 @@ effect:"⚠ pH बहुत बढ़ सकता है<br>⚠ मछलिय
 
 function showData(type){
 
-document.getElementById("title").innerHTML=
-data[type].title;
-
-document.getElementById("range").innerHTML=
-data[type].range;
-
-document.getElementById("desc").innerHTML=
-data[type].desc;
-
-document.getElementById("effect").innerHTML=
-data[type].effect;
+document.getElementById("title").innerHTML=data[type].title;
+document.getElementById("range").innerHTML=data[type].range;
+document.getElementById("desc").innerHTML=data[type].desc;
+document.getElementById("effect").innerHTML=data[type].effect;
 
 }
 
