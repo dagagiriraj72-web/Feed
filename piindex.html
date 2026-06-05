@@ -82,7 +82,7 @@ margin-top:1%;
 }
 
 .pillar{
-width:14%;
+width:16%;
 height:100%;
 border-radius:20px 20px 0 0;
 cursor:pointer;
@@ -92,6 +92,8 @@ align-items:center;
 transition:.4s;
 box-shadow:0 8px 15px rgba(0,0,0,.18);
 position:relative;
+text-align:center;
+padding:10px;
 }
 
 .pillar:hover{
@@ -105,12 +107,13 @@ box-shadow:0 0 20px rgba(255,255,255,.9),
 }
 
 .vertical{
-writing-mode:vertical-rl;
-transform:rotate(180deg);
 color:white;
-font-size:2vw;
+font-size:1.15vw;
 font-weight:700;
-letter-spacing:1px;
+text-align:center;
+line-height:1.4;
+writing-mode:horizontal-tb;
+transform:none;
 }
 
 .red{
@@ -228,24 +231,28 @@ padding-bottom:.5%;
 
 <div class="pillarRow">
 
-<div class="pillar red" id="p1"
-onclick="showInfo(1)">
-<div class="vertical">जल प्रबंधन</div>
+<div class="pillar red" id="p1" onclick="showInfo(1)">
+<div class="vertical">
+जल<br>प्रबंधन
+</div>
 </div>
 
-<div class="pillar green" id="p2"
-onclick="showInfo(2)">
-<div class="vertical">बीज प्रबंधन</div>
+<div class="pillar green" id="p2" onclick="showInfo(2)">
+<div class="vertical">
+बीज<br>प्रबंधन
+</div>
 </div>
 
-<div class="pillar yellow" id="p3"
-onclick="showInfo(3)">
-<div class="vertical">आहार प्रबंधन</div>
+<div class="pillar yellow" id="p3" onclick="showInfo(3)">
+<div class="vertical">
+आहार<br>प्रबंधन
+</div>
 </div>
 
-<div class="pillar blue" id="p4"
-onclick="showInfo(4)">
-<div class="vertical">श्रेष्ठ प्रबंधन</div>
+<div class="pillar blue" id="p4" onclick="showInfo(4)">
+<div class="vertical">
+श्रेष्ठ<br>प्रबंधन
+</div>
 </div>
 
 </div>
