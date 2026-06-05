@@ -2,8 +2,9 @@
 <html lang="hi">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>दिनभर pH में बदलाव</title>
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+
+<title>दिनभर pH में होने वाले बदलाव</title>
 
 <style>
 
@@ -14,159 +15,179 @@ box-sizing:border-box;
 font-family:"Nirmala UI",sans-serif;
 }
 
-body{
-background:#dff3ff;
+html,body{
+width:100%;
+height:100%;
 overflow:hidden;
+background:#d8effb;
 }
 
-.container{
-width:1280px;
-height:720px;
-margin:auto;
-position:relative;
-background:linear-gradient(to bottom,#87ceeb,#dff3ff);
-overflow:hidden;
+#container{
+width:100%;
+height:100vh;
+display:flex;
+flex-direction:column;
+padding:1%;
 }
 
 /* HEADER */
 
 .header{
-height:90px;
+height:14%;
 text-align:center;
-padding-top:20px;
+display:flex;
+flex-direction:column;
+justify-content:center;
 }
 
 .header h1{
-font-size:42px;
+font-size:clamp(24px,3vw,52px);
 color:#005a9c;
 }
 
 .header p{
-font-size:20px;
-color:#444;
+font-size:clamp(14px,1.2vw,22px);
+color:#555;
+}
+
+/* CONTENT */
+
+.content{
+flex:1;
+display:grid;
+grid-template-columns:72% 28%;
+gap:1.5%;
 }
 
 /* POND */
 
-.scene{
-position:absolute;
-top:110px;
-left:40px;
-width:700px;
-height:380px;
-border-radius:20px;
+.pond{
+position:relative;
+border-radius:25px;
 overflow:hidden;
-background:linear-gradient(#87CEEB,#00A2FF);
-box-shadow:0 8px 20px rgba(0,0,0,.2);
+background:linear-gradient(#7ec9f3,#1597e5);
+box-shadow:0 8px 20px rgba(0,0,0,.15);
+}
+
+.sky{
+height:45%;
+background:linear-gradient(#7ec9f3,#63b8eb);
+position:relative;
+}
+
+.water{
+height:55%;
+background:linear-gradient(#35a8e8,#0d87ca);
 }
 
 .sun{
 position:absolute;
-top:25px;
-right:40px;
-font-size:80px;
-transition:.5s;
-}
-
-.water{
-position:absolute;
-bottom:0;
-width:100%;
-height:220px;
-background:linear-gradient(#38bdf8,#0284c7);
+right:6%;
+top:10%;
+font-size:clamp(40px,5vw,80px);
 }
 
 .fish{
 position:absolute;
-left:280px;
-top:180px;
-font-size:90px;
-animation:swim 5s infinite alternate;
+left:50%;
+top:60%;
+transform:translate(-50%,-50%);
+font-size:clamp(50px,8vw,120px);
+animation:swim 4s infinite alternate;
 }
 
 @keyframes swim{
-from{transform:translateX(-50px);}
-to{transform:translateX(50px);}
+from{transform:translate(-55%,-50%);}
+to{transform:translate(-45%,-50%);}
 }
 
 /* INFO */
 
-.info{
-position:absolute;
-right:40px;
-top:110px;
-width:450px;
-height:380px;
-background:white;
-border-radius:20px;
-padding:25px;
+.panel{
+background:#fff;
+border-radius:25px;
+padding:4%;
+display:flex;
+flex-direction:column;
+justify-content:space-between;
 box-shadow:0 8px 20px rgba(0,0,0,.15);
 }
 
-.phBox{
+.phbox{
+background:#eef8ff;
+border-radius:18px;
+padding:4%;
 text-align:center;
-padding:15px;
-background:#eaf7ff;
-border-radius:15px;
-margin-bottom:20px;
 }
 
-.phValue{
-font-size:70px;
+.phbox h3{
+font-size:clamp(14px,1.2vw,22px);
+}
+
+.ph{
+font-size:clamp(40px,5vw,80px);
 font-weight:bold;
 color:#0077cc;
 }
 
-.info h2{
+.stageTitle{
+font-size:clamp(20px,2vw,34px);
 color:#005a9c;
-margin-bottom:15px;
+font-weight:bold;
+margin-top:15px;
 }
 
-.info p{
-font-size:24px;
-line-height:1.6;
+.desc{
+font-size:clamp(14px,1.3vw,24px);
+line-height:1.5;
+margin-top:15px;
 }
 
-/* TIMELINE */
+/* BUTTONS */
 
 .timeline{
-position:absolute;
-bottom:120px;
-left:50%;
-transform:translateX(-50%);
+height:14%;
 display:flex;
-gap:20px;
+justify-content:center;
+align-items:center;
+gap:1%;
+margin-top:1%;
 }
 
-.timeBtn{
-width:180px;
-height:80px;
+.btn{
 border:none;
-border-radius:15px;
 cursor:pointer;
-font-size:22px;
-font-weight:bold;
+border-radius:14px;
 background:white;
+padding:10px;
+min-width:150px;
+font-size:clamp(14px,1vw,20px);
+font-weight:bold;
 box-shadow:0 4px 10px rgba(0,0,0,.15);
 transition:.3s;
 }
 
-.timeBtn:hover{
-transform:translateY(-5px);
+.btn:hover{
+transform:translateY(-3px);
 }
 
-/* COMPLETION */
+.btn.active{
+background:#0077cc;
+color:white;
+}
 
-.complete{
+/* SUMMARY */
+
+.summary{
 position:absolute;
-bottom:20px;
 left:50%;
+bottom:2%;
 transform:translateX(-50%);
 background:#198754;
 color:white;
-padding:18px 35px;
-font-size:24px;
-border-radius:50px;
+padding:12px 28px;
+border-radius:40px;
+font-size:clamp(14px,1vw,22px);
 display:none;
 }
 
@@ -175,16 +196,20 @@ display:none;
 
 <body>
 
-<div class="container">
+<div id="container">
 
 <div class="header">
 <h1>दिनभर pH में होने वाले बदलाव</h1>
 <p>समय के अनुसार pH में होने वाले परिवर्तन को समझें</p>
 </div>
 
-<div class="scene">
+<div class="content">
 
-<div class="sun" id="sun">🌅</div>
+<div class="pond">
+
+<div class="sky">
+<div class="sun" id="icon">🌅</div>
+</div>
 
 <div class="water"></div>
 
@@ -192,68 +217,46 @@ display:none;
 
 </div>
 
-<div class="info">
+<div class="panel">
 
-<div class="phBox">
+<div>
 
-<div>वर्तमान pH</div>
-
-<div class="phValue" id="ph">
-7.5
+<div class="phbox">
+<h3>वर्तमान pH</h3>
+<div class="ph" id="phValue">7.5</div>
 </div>
 
-</div>
-
-<h2 id="title">
+<div class="stageTitle" id="title">
 🌅 सूर्योदय
-</h2>
+</div>
 
-<p id="desc">
+<div class="desc" id="desc">
 रातभर श्वसन होने के कारण इस समय pH सबसे कम होता है।
-</p>
+</div>
+
+</div>
+
+</div>
 
 </div>
 
 <div class="timeline">
 
-<button class="timeBtn"
-onclick="showStage(0)">
-🌅<br>सूर्योदय
-</button>
-
-<button class="timeBtn"
-onclick="showStage(1)">
-☀️<br>सुबह
-</button>
-
-<button class="timeBtn"
-onclick="showStage(2)">
-🌞<br>दोपहर
-</button>
-
-<button class="timeBtn"
-onclick="showStage(3)">
-🌇<br>शाम
-</button>
-
-<button class="timeBtn"
-onclick="showStage(4)">
-🌙<br>रात
-</button>
+<button class="btn" onclick="showStage(0,this)">🌅 सूर्योदय</button>
+<button class="btn" onclick="showStage(1,this)">☀️ सुबह</button>
+<button class="btn" onclick="showStage(2,this)">🌞 दोपहर</button>
+<button class="btn" onclick="showStage(3,this)">🌇 शाम</button>
+<button class="btn" onclick="showStage(4,this)">🌙 रात</button>
 
 </div>
 
-<div class="complete" id="complete">
-
-🏆 मुख्य सीख: दिन में pH बढ़ता है और रात में घटता है। इसलिए pH की जाँच सुबह और शाम दोनों समय करनी चाहिए।
-
 </div>
 
+<div class="summary" id="summary">
+🏆 मुख्य सीख: दिन में pH बढ़ता है और रात में घटता है।
 </div>
 
 <script>
-
-let visited=[false,false,false,false,false];
 
 const stages=[
 
@@ -268,53 +271,50 @@ desc:"रातभर श्वसन होने के कारण इस �
 icon:"☀️",
 title:"सुबह",
 ph:"8.0",
-desc:"सूरज की रोशनी बढ़ने लगती है। पौधे भोजन बनाना शुरू करते हैं।"
+desc:"सूरज निकलने के बाद पौधे सक्रिय होने लगते हैं और pH बढ़ने लगता है।"
 },
 
 {
 icon:"🌞",
 title:"दोपहर",
 ph:"8.8",
-desc:"अधिक प्रकाश के कारण pH तेजी से बढ़ने लगता है।"
+desc:"अधिक रोशनी के कारण pH तेजी से बढ़ता है।"
 },
 
 {
 icon:"🌇",
 title:"शाम",
 ph:"9.5",
-desc:"यह दिन का सबसे अधिक pH स्तर होता है।"
+desc:"दिन का सबसे अधिक pH स्तर आमतौर पर शाम के समय देखा जाता है।"
 },
 
 {
 icon:"🌙",
 title:"रात",
 ph:"7.8",
-desc:"प्रकाश संश्लेषण रुक जाता है और pH फिर कम होने लगता है।"
+desc:"रात में प्रकाश संश्लेषण रुक जाता है और pH फिर कम होने लगता है।"
 }
 
 ];
 
-function showStage(i){
+let visited=[false,false,false,false,false];
+
+function showStage(i,btn){
+
+document.getElementById("icon").innerHTML=stages[i].icon;
+document.getElementById("title").innerHTML=stages[i].icon+" "+stages[i].title;
+document.getElementById("phValue").innerHTML=stages[i].ph;
+document.getElementById("desc").innerHTML=stages[i].desc;
+
+document.querySelectorAll(".btn")
+.forEach(b=>b.classList.remove("active"));
+
+btn.classList.add("active");
 
 visited[i]=true;
 
-document.getElementById("sun").innerHTML=
-stages[i].icon;
-
-document.getElementById("ph").innerHTML=
-stages[i].ph;
-
-document.getElementById("title").innerHTML=
-stages[i].icon+" "+stages[i].title;
-
-document.getElementById("desc").innerHTML=
-stages[i].desc;
-
 if(visited.every(v=>v)){
-
-document.getElementById("complete")
-.style.display="block";
-
+document.getElementById("summary").style.display="block";
 }
 
 }
