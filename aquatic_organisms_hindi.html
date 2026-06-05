@@ -1,0 +1,640 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>जलीय जीव</title>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;600;800&family=Hind:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    width: 960px;
+    height: 540px;
+    overflow: hidden;
+    font-family: 'Hind', sans-serif;
+    background: #0a1628;
+  }
+
+  .slide {
+    width: 960px;
+    height: 540px;
+    position: relative;
+    background: linear-gradient(180deg, #0d2b5e 0%, #0a3d6b 35%, #0a5a7a 70%, #0d7a6e 100%);
+    overflow: hidden;
+  }
+
+  /* Animated bubbles */
+  .bubble {
+    position: absolute;
+    border-radius: 50%;
+    background: radial-gradient(circle at 30% 30%, rgba(255,255,255,0.3), rgba(255,255,255,0.05));
+    border: 1px solid rgba(255,255,255,0.2);
+    animation: rise linear infinite;
+  }
+  .bubble:nth-child(1)  { width:10px; height:10px; left:5%;   bottom:-20px; animation-duration:8s;  animation-delay:0s; }
+  .bubble:nth-child(2)  { width:6px;  height:6px;  left:15%;  bottom:-20px; animation-duration:10s; animation-delay:2s; }
+  .bubble:nth-child(3)  { width:14px; height:14px; left:28%;  bottom:-20px; animation-duration:7s;  animation-delay:1s; }
+  .bubble:nth-child(4)  { width:8px;  height:8px;  left:45%;  bottom:-20px; animation-duration:9s;  animation-delay:3s; }
+  .bubble:nth-child(5)  { width:12px; height:12px; left:60%;  bottom:-20px; animation-duration:11s; animation-delay:0.5s; }
+  .bubble:nth-child(6)  { width:7px;  height:7px;  left:75%;  bottom:-20px; animation-duration:8s;  animation-delay:4s; }
+  .bubble:nth-child(7)  { width:10px; height:10px; left:88%;  bottom:-20px; animation-duration:6s;  animation-delay:1.5s; }
+  .bubble:nth-child(8)  { width:5px;  height:5px;  left:38%;  bottom:-20px; animation-duration:12s; animation-delay:2.5s; }
+
+  @keyframes rise {
+    0%   { transform: translateY(0) translateX(0); opacity: 0; }
+    10%  { opacity: 1; }
+    90%  { opacity: 0.6; }
+    100% { transform: translateY(-560px) translateX(20px); opacity: 0; }
+  }
+
+  /* Seaweed */
+  .seaweed {
+    position: absolute;
+    bottom: 0;
+    width: 20px;
+    height: 80px;
+    transform-origin: bottom center;
+    animation: sway 3s ease-in-out infinite;
+  }
+  .seaweed svg { width: 100%; height: 100%; }
+  .sw1 { left: 18px;  animation-delay: 0s; }
+  .sw2 { left: 42px;  animation-delay: 0.5s; height: 60px; }
+  .sw3 { right: 25px; animation-delay: 0.8s; height: 70px; }
+  .sw4 { right: 50px; animation-delay: 0.3s; height: 55px; }
+
+  @keyframes sway {
+    0%,100% { transform: rotate(-8deg); }
+    50%      { transform: rotate(8deg); }
+  }
+
+  /* Sandy bottom */
+  .sand {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 55px;
+    background: linear-gradient(180deg, #c8a96e 0%, #b8935a 100%);
+    border-radius: 50% 50% 0 0 / 20px 20px 0 0;
+  }
+  .sand::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 20px;
+    background: radial-gradient(ellipse 60px 10px at 20% 50%, rgba(255,255,255,0.15) 0%, transparent 100%),
+                radial-gradient(ellipse 40px 8px at 60% 50%, rgba(255,255,255,0.1) 0%, transparent 100%),
+                radial-gradient(ellipse 50px 9px at 85% 40%, rgba(255,255,255,0.12) 0%, transparent 100%);
+  }
+
+  /* Title */
+  .title {
+    position: absolute;
+    top: 14px;
+    left: 0; right: 0;
+    text-align: center;
+    font-family: 'Baloo 2', cursive;
+    font-size: 30px;
+    font-weight: 800;
+    color: #fff;
+    text-shadow: 0 0 20px rgba(100,220,255,0.8), 0 2px 8px rgba(0,0,0,0.6);
+    letter-spacing: 2px;
+    animation: titleGlow 3s ease-in-out infinite;
+  }
+  .title span { color: #7ef0ff; }
+
+  @keyframes titleGlow {
+    0%,100% { text-shadow: 0 0 20px rgba(100,220,255,0.6), 0 2px 8px rgba(0,0,0,0.6); }
+    50%      { text-shadow: 0 0 35px rgba(100,220,255,1),   0 2px 8px rgba(0,0,0,0.6); }
+  }
+
+  /* Subtitle */
+  .subtitle {
+    position: absolute;
+    top: 50px;
+    left: 0; right: 0;
+    text-align: center;
+    font-size: 13px;
+    color: rgba(200,240,255,0.7);
+    letter-spacing: 4px;
+    font-weight: 500;
+    text-transform: uppercase;
+  }
+
+  /* Nav dots */
+  .nav-dots {
+    position: absolute;
+    bottom: 65px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 10px;
+    z-index: 20;
+  }
+  .nav-dot {
+    width: 10px; height: 10px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.3);
+    border: 2px solid rgba(255,255,255,0.5);
+    cursor: pointer;
+    transition: all 0.3s;
+  }
+  .nav-dot.active {
+    background: #7ef0ff;
+    border-color: #7ef0ff;
+    box-shadow: 0 0 10px #7ef0ff;
+    transform: scale(1.2);
+  }
+
+  /* Cards container */
+  .cards-container {
+    position: absolute;
+    top: 78px;
+    left: 0; right: 0;
+    bottom: 90px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 30px;
+    gap: 16px;
+  }
+
+  /* Info Card */
+  .info-card {
+    flex: 1;
+    max-width: 220px;
+    background: rgba(255,255,255,0.07);
+    backdrop-filter: blur(10px);
+    border: 1.5px solid rgba(255,255,255,0.15);
+    border-radius: 18px;
+    padding: 18px 16px;
+    cursor: pointer;
+    transition: all 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    position: relative;
+    overflow: hidden;
+    opacity: 0;
+    transform: translateY(30px);
+    animation: cardIn 0.6s forwards;
+  }
+  .info-card:nth-child(1) { animation-delay: 0.2s; }
+  .info-card:nth-child(2) { animation-delay: 0.4s; }
+  .info-card:nth-child(3) { animation-delay: 0.6s; }
+  .info-card:nth-child(4) { animation-delay: 0.8s; }
+
+  @keyframes cardIn {
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .info-card::before {
+    content: '';
+    position: absolute;
+    top: -40%;
+    left: -40%;
+    width: 80%;
+    height: 80%;
+    background: radial-gradient(circle, rgba(255,255,255,0.08), transparent);
+    border-radius: 50%;
+    transition: all 0.4s;
+  }
+
+  .info-card:hover {
+    transform: translateY(-8px) scale(1.03);
+    border-color: rgba(126,240,255,0.6);
+    background: rgba(255,255,255,0.13);
+    box-shadow: 0 15px 40px rgba(0,0,0,0.4), 0 0 20px rgba(126,240,255,0.2);
+  }
+  .info-card:hover::before {
+    top: -20%;
+    left: -20%;
+    width: 140%;
+    height: 140%;
+  }
+
+  .info-card.active {
+    transform: translateY(-10px) scale(1.05);
+    border-color: rgba(126,240,255,0.9);
+    background: rgba(126,240,255,0.12);
+    box-shadow: 0 20px 50px rgba(0,0,0,0.5), 0 0 30px rgba(126,240,255,0.3);
+  }
+
+  .card-icon {
+    font-size: 36px;
+    text-align: center;
+    margin-bottom: 8px;
+    display: block;
+    animation: iconBob 2s ease-in-out infinite;
+  }
+  .info-card:nth-child(1) .card-icon { animation-delay: 0s; }
+  .info-card:nth-child(2) .card-icon { animation-delay: 0.5s; }
+  .info-card:nth-child(3) .card-icon { animation-delay: 1s; }
+  .info-card:nth-child(4) .card-icon { animation-delay: 1.5s; }
+
+  @keyframes iconBob {
+    0%,100% { transform: translateY(0); }
+    50%      { transform: translateY(-5px); }
+  }
+
+  .card-title-hi {
+    font-family: 'Baloo 2', cursive;
+    font-size: 16px;
+    font-weight: 800;
+    color: #7ef0ff;
+    text-align: center;
+    margin-bottom: 2px;
+    text-shadow: 0 0 10px rgba(126,240,255,0.5);
+  }
+  .card-title-en {
+    font-size: 10px;
+    color: rgba(200,240,255,0.5);
+    text-align: center;
+    margin-bottom: 8px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+
+  .card-divider {
+    width: 40px;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, #7ef0ff, transparent);
+    margin: 0 auto 8px;
+    border-radius: 2px;
+  }
+
+  .card-desc {
+    font-size: 11.5px;
+    color: rgba(220,240,255,0.85);
+    line-height: 1.5;
+    text-align: center;
+  }
+
+  /* Detail panel */
+  .detail-panel {
+    position: absolute;
+    bottom: 0;
+    left: 0; right: 0;
+    height: 0;
+    background: linear-gradient(135deg, rgba(10,20,50,0.97), rgba(10,40,70,0.97));
+    border-top: 2px solid rgba(126,240,255,0.4);
+    backdrop-filter: blur(20px);
+    overflow: hidden;
+    transition: height 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    z-index: 30;
+    display: flex;
+    align-items: center;
+    padding: 0 40px;
+    gap: 30px;
+  }
+  .detail-panel.open { height: 160px; }
+
+  .detail-close {
+    position: absolute;
+    top: 12px; right: 18px;
+    width: 28px; height: 28px;
+    background: rgba(126,240,255,0.15);
+    border: 1px solid rgba(126,240,255,0.4);
+    border-radius: 50%;
+    color: #7ef0ff;
+    font-size: 16px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+    z-index: 31;
+  }
+  .detail-close:hover {
+    background: rgba(126,240,255,0.3);
+    transform: rotate(90deg);
+  }
+
+  .detail-big-icon { font-size: 60px; flex-shrink: 0; }
+
+  .detail-text { flex: 1; }
+  .detail-title-hi {
+    font-family: 'Baloo 2', cursive;
+    font-size: 22px;
+    font-weight: 800;
+    color: #7ef0ff;
+    margin-bottom: 2px;
+  }
+  .detail-title-en {
+    font-size: 11px;
+    color: rgba(200,240,255,0.5);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+  .detail-desc {
+    font-size: 13px;
+    color: rgba(220,240,255,0.9);
+    line-height: 1.6;
+  }
+
+  .detail-examples {
+    flex: 1;
+  }
+  .detail-examples-title {
+    font-size: 11px;
+    color: rgba(126,240,255,0.7);
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-bottom: 8px;
+  }
+  .example-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+  .chip {
+    background: rgba(126,240,255,0.1);
+    border: 1px solid rgba(126,240,255,0.25);
+    border-radius: 20px;
+    padding: 3px 10px;
+    font-size: 11px;
+    color: rgba(220,240,255,0.8);
+  }
+
+  /* Progress bar */
+  .progress-bar {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    height: 3px;
+    background: linear-gradient(90deg, #7ef0ff, #3bb8f0);
+    transition: width 0.4s;
+    z-index: 40;
+    box-shadow: 0 0 8px rgba(126,240,255,0.7);
+  }
+
+  /* Instruction */
+  .instruction {
+    position: absolute;
+    top: 56px;
+    left: 0; right: 0;
+    text-align: center;
+    font-size: 11px;
+    color: rgba(200,240,255,0.5);
+    letter-spacing: 1px;
+    animation: pulse 2s ease-in-out infinite;
+  }
+  @keyframes pulse { 0%,100%{opacity:0.4} 50%{opacity:0.9} }
+
+  /* Fish swimming */
+  .fish {
+    position: absolute;
+    font-size: 22px;
+    animation: swim 12s linear infinite;
+    top: 120px;
+    filter: drop-shadow(0 2px 6px rgba(0,0,0,0.4));
+  }
+  .fish2 { font-size: 14px; top: 180px; animation-duration: 18s; animation-delay: -6s; }
+  .fish3 { font-size: 16px; top: 100px; animation-duration: 20s; animation-delay: -10s; }
+
+  @keyframes swim {
+    0%   { left: -60px;  transform: scaleX(1); }
+    49%  { left: 1020px; transform: scaleX(1); }
+    50%  { left: 1020px; transform: scaleX(-1); }
+    99%  { left: -60px;  transform: scaleX(-1); }
+    100% { left: -60px;  transform: scaleX(1); }
+  }
+
+  /* Wave top */
+  .wave {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 8px;
+    background: linear-gradient(90deg, transparent, rgba(126,240,255,0.2), rgba(126,240,255,0.4), rgba(126,240,255,0.2), transparent);
+    animation: waveMove 4s linear infinite;
+  }
+  @keyframes waveMove {
+    0% { background-position: 0% 0%; }
+    100% { background-position: 200% 0%; }
+  }
+
+  /* Light rays */
+  .rays {
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 200px;
+    pointer-events: none;
+    overflow: hidden;
+  }
+  .ray {
+    position: absolute;
+    top: 0;
+    width: 60px;
+    height: 200px;
+    background: linear-gradient(180deg, rgba(126,240,255,0.08), transparent);
+    transform-origin: top center;
+    animation: rayFlicker 5s ease-in-out infinite;
+  }
+  .ray:nth-child(1) { left: 15%; transform: rotate(-15deg); animation-delay: 0s; }
+  .ray:nth-child(2) { left: 35%; transform: rotate(-5deg);  animation-delay: 1s; }
+  .ray:nth-child(3) { left: 55%; transform: rotate(5deg);   animation-delay: 0.5s; }
+  .ray:nth-child(4) { left: 75%; transform: rotate(15deg);  animation-delay: 1.5s; }
+
+  @keyframes rayFlicker {
+    0%,100% { opacity: 0.5; }
+    50% { opacity: 1; }
+  }
+</style>
+</head>
+<body>
+<div class="slide" id="slide">
+
+  <!-- Decorative elements -->
+  <div class="rays">
+    <div class="ray"></div>
+    <div class="ray"></div>
+    <div class="ray"></div>
+    <div class="ray"></div>
+  </div>
+
+  <div class="bubble"></div><div class="bubble"></div>
+  <div class="bubble"></div><div class="bubble"></div>
+  <div class="bubble"></div><div class="bubble"></div>
+  <div class="bubble"></div><div class="bubble"></div>
+
+  <div class="fish">🐟</div>
+  <div class="fish fish2">🐠</div>
+  <div class="fish fish3">🐡</div>
+
+  <!-- Sand bottom -->
+  <div class="sand"></div>
+
+  <!-- Seaweed -->
+  <div class="seaweed sw1">
+    <svg viewBox="0 0 20 80"><path d="M10 80 C5 65 15 50 10 35 C5 20 15 5 10 0" stroke="#2d9e4f" stroke-width="3" fill="none" stroke-linecap="round"/></svg>
+  </div>
+  <div class="seaweed sw2">
+    <svg viewBox="0 0 20 80"><path d="M10 80 C15 60 5 45 10 30 C15 15 5 5 10 0" stroke="#27a045" stroke-width="3" fill="none" stroke-linecap="round"/></svg>
+  </div>
+  <div class="seaweed sw3">
+    <svg viewBox="0 0 20 80"><path d="M10 80 C5 65 15 50 10 35 C5 20 15 5 10 0" stroke="#239e48" stroke-width="3" fill="none" stroke-linecap="round"/></svg>
+  </div>
+  <div class="seaweed sw4">
+    <svg viewBox="0 0 20 80"><path d="M10 80 C15 60 5 45 10 30 C15 15 5 5 10 0" stroke="#2db356" stroke-width="3" fill="none" stroke-linecap="round"/></svg>
+  </div>
+
+  <!-- Title -->
+  <div class="title">जलीय <span>जीव</span></div>
+  <div class="subtitle">Aquatic Organisms</div>
+  <div class="instruction">किसी भी कार्ड पर क्लिक करें और अधिक जानें ↓</div>
+
+  <!-- Cards -->
+  <div class="cards-container">
+
+    <div class="info-card" onclick="openDetail(0)" id="card-0">
+      <span class="card-icon">🔬</span>
+      <div class="card-title-hi">प्लैंकटन</div>
+      <div class="card-title-en">Plankton</div>
+      <div class="card-divider"></div>
+      <div class="card-desc">पानी की सतह पर तैरने वाले सूक्ष्म जीव</div>
+    </div>
+
+    <div class="info-card" onclick="openDetail(1)" id="card-1">
+      <span class="card-icon">🌿</span>
+      <div class="card-title-hi">फ़ाइटोप्लैंकटन</div>
+      <div class="card-title-en">Phytoplankton</div>
+      <div class="card-divider"></div>
+      <div class="card-desc">सूक्ष्म जलीय पौधे जो पारिस्थितिकी तंत्र का भोजन बनाते हैं</div>
+    </div>
+
+    <div class="info-card" onclick="openDetail(2)" id="card-2">
+      <span class="card-icon">🦐</span>
+      <div class="card-title-hi">ज़ूप्लैंकटन</div>
+      <div class="card-title-en">Zooplankton</div>
+      <div class="card-divider"></div>
+      <div class="card-desc">सूक्ष्म जलीय जंतु जो नग्न आंखों से भी दिखते हैं</div>
+    </div>
+
+    <div class="info-card" onclick="openDetail(3)" id="card-3">
+      <span class="card-icon">🐟</span>
+      <div class="card-title-hi">नेक्टन</div>
+      <div class="card-title-en">Nekton</div>
+      <div class="card-divider"></div>
+      <div class="card-desc">स्वतंत्र रूप से तैरने वाले जीव</div>
+    </div>
+
+    <div class="info-card" onclick="openDetail(4)" id="card-4">
+      <span class="card-icon">🦀</span>
+      <div class="card-title-hi">बेंथोस</div>
+      <div class="card-title-en">Benthos</div>
+      <div class="card-divider"></div>
+      <div class="card-desc">जल के तल पर रहने वाले जीव</div>
+    </div>
+
+  </div>
+
+  <!-- Nav dots -->
+  <div class="nav-dots" id="navDots">
+    <div class="nav-dot active" onclick="goCard(0)"></div>
+    <div class="nav-dot" onclick="goCard(1)"></div>
+    <div class="nav-dot" onclick="goCard(2)"></div>
+    <div class="nav-dot" onclick="goCard(3)"></div>
+    <div class="nav-dot" onclick="goCard(4)"></div>
+  </div>
+
+  <!-- Detail panel -->
+  <div class="detail-panel" id="detailPanel">
+    <button class="detail-close" onclick="closeDetail()">✕</button>
+    <div class="detail-big-icon" id="detailIcon">🔬</div>
+    <div class="detail-text">
+      <div class="detail-title-hi" id="detailTitleHi">प्लैंकटन</div>
+      <div class="detail-title-en" id="detailTitleEn">PLANKTON</div>
+      <div class="detail-desc" id="detailDesc"></div>
+    </div>
+    <div class="detail-examples">
+      <div class="detail-examples-title">उदाहरण / Examples</div>
+      <div class="example-chips" id="detailExamples"></div>
+    </div>
+  </div>
+
+  <!-- Progress bar -->
+  <div class="progress-bar" id="progressBar" style="width:20%"></div>
+
+</div>
+
+<script>
+const data = [
+  {
+    icon: '🔬',
+    titleHi: 'प्लैंकटन',
+    titleEn: 'PLANKTON',
+    desc: 'ये सूक्ष्म जीव होते हैं जो जल की सतह के पास तैरते हैं। इनकी गति पानी की धाराओं पर निर्भर करती है। जलीय खाद्य श्रृंखला का आधार हैं।',
+    examples: ['फ़ाइटोप्लैंकटन', 'ज़ूप्लैंकटन', 'Algae', 'Diatoms']
+  },
+  {
+    icon: '🌿',
+    titleHi: 'फ़ाइटोप्लैंकटन',
+    titleEn: 'PHYTOPLANKTON',
+    desc: 'ये सूक्ष्म जलीय पौधे हैं जो प्रकाश-संश्लेषण (Photosynthesis) करते हैं। जलीय पारिस्थितिकी तंत्र के लिए अधिकांश भोजन इन्हीं से मिलता है।',
+    examples: ['Diatoms', 'Cyanobacteria', 'Dinoflagellates', 'Green Algae']
+  },
+  {
+    icon: '🦐',
+    titleHi: 'ज़ूप्लैंकटन',
+    titleEn: 'ZOOPLANKTON',
+    desc: 'ये सूक्ष्म जलीय जंतु हैं। कुछ इतने बड़े होते हैं कि नग्न आंखों से दिख सकते हैं। ये फ़ाइटोप्लैंकटन को खाकर अपनी ऊर्जा प्राप्त करते हैं।',
+    examples: ['Rotifers', 'Protozoans', 'Daphnia', 'Copepods', 'Cladocera']
+  },
+  {
+    icon: '🐟',
+    titleHi: 'नेक्टन',
+    titleEn: 'NEKTON',
+    desc: 'ये जीव जल धाराओं के विरुद्ध भी स्वतंत्र रूप से तैर सकते हैं। इनमें मांसपेशियाँ और पंख होते हैं जो इन्हें शक्तिशाली तैराक बनाते हैं।',
+    examples: ['मछलियाँ (Fish)', 'कछुए (Turtles)', 'Whales', 'Squid', 'Dolphins']
+  },
+  {
+    icon: '🦀',
+    titleHi: 'बेंथोस',
+    titleEn: 'BENTHOS',
+    desc: 'ये जीव जल के तल पर या तलछट में रहते हैं। कई बेंथिक जीव कठोर सतहों से जुड़े रहते हैं और अपघटक (Decomposer) की भूमिका निभाते हैं।',
+    examples: ['Mussels', 'Worms', 'केकड़ा (Crab)', 'Starfish', 'Clams']
+  }
+];
+
+let activeCard = -1;
+
+function openDetail(idx) {
+  const d = data[idx];
+  document.getElementById('detailIcon').textContent = d.icon;
+  document.getElementById('detailTitleHi').textContent = d.titleHi;
+  document.getElementById('detailTitleEn').textContent = d.titleEn;
+  document.getElementById('detailDesc').textContent = d.desc;
+  const chipsEl = document.getElementById('detailExamples');
+  chipsEl.innerHTML = d.examples.map(e => `<span class="chip">${e}</span>`).join('');
+  document.getElementById('detailPanel').classList.add('open');
+
+  // Reset cards
+  document.querySelectorAll('.info-card').forEach((c,i) => {
+    c.classList.toggle('active', i === idx);
+  });
+
+  // Update dots
+  document.querySelectorAll('.nav-dot').forEach((dot, i) => {
+    dot.classList.toggle('active', i === idx);
+  });
+
+  // Progress
+  document.getElementById('progressBar').style.width = ((idx+1)/5*100) + '%';
+
+  activeCard = idx;
+}
+
+function closeDetail() {
+  document.getElementById('detailPanel').classList.remove('open');
+  document.querySelectorAll('.info-card').forEach(c => c.classList.remove('active'));
+  activeCard = -1;
+}
+
+function goCard(idx) {
+  openDetail(idx);
+}
+</script>
+</body>
+</html>
