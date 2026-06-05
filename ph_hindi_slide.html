@@ -1,0 +1,722 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>तालाब में pH का उतार-चढ़ाव</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Tiro+Devanagari+Hindi:ital@0;1&family=Hind:wght@400;500;600;700&display=swap');
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    width: 1280px;
+    height: 720px;
+    overflow: hidden;
+    font-family: 'Hind', sans-serif;
+    background: #0a1628;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .bg-art {
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse at 20% 80%, rgba(16,120,80,0.18) 0%, transparent 50%),
+      radial-gradient(ellipse at 80% 20%, rgba(30,80,180,0.18) 0%, transparent 50%),
+      linear-gradient(160deg, #0a1628 0%, #0e2040 60%, #0a1628 100%);
+    pointer-events: none;
+  }
+
+  .wave-bg {
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 180px;
+    opacity: 0.07;
+    pointer-events: none;
+  }
+
+  /* HEADER */
+  .header {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 18px 40px 12px;
+    border-bottom: 1px solid rgba(80,200,140,0.18);
+    background: rgba(10,22,40,0.6);
+    backdrop-filter: blur(4px);
+  }
+
+  .header h1 {
+    font-family: 'Tiro Devanagari Hindi', serif;
+    font-size: 26px;
+    font-weight: 400;
+    color: #7ef5c0;
+    letter-spacing: 0.5px;
+    text-align: center;
+    text-shadow: 0 0 24px rgba(126,245,192,0.4);
+  }
+
+  .header .subtitle {
+    font-size: 13px;
+    color: rgba(180,210,255,0.65);
+    text-align: center;
+    margin-top: 3px;
+    font-weight: 400;
+    letter-spacing: 0.3px;
+  }
+
+  /* MAIN LAYOUT */
+  .main {
+    position: relative;
+    z-index: 2;
+    flex: 1;
+    display: grid;
+    grid-template-columns: 340px 1fr 260px;
+    gap: 0;
+    padding: 16px 24px 12px;
+  }
+
+  /* LEFT PANEL - INFO CARDS */
+  .left-panel {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding-right: 20px;
+  }
+
+  .info-card {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(126,245,192,0.12);
+    border-radius: 10px;
+    padding: 12px 14px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .info-card::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 3px;
+    background: var(--card-color, #7ef5c0);
+    border-radius: 3px 0 0 3px;
+  }
+
+  .info-card:hover, .info-card.active {
+    background: rgba(126,245,192,0.08);
+    border-color: rgba(126,245,192,0.35);
+    transform: translateX(3px);
+  }
+
+  .info-card.active {
+    box-shadow: 0 0 0 1px rgba(126,245,192,0.2), 0 4px 20px rgba(0,0,0,0.3);
+  }
+
+  .card-time {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--card-color, #7ef5c0);
+    margin-bottom: 4px;
+  }
+
+  .card-title {
+    font-family: 'Hind', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    color: rgba(255,255,255,0.92);
+    margin-bottom: 3px;
+  }
+
+  .card-desc {
+    font-family: 'Hind', sans-serif;
+    font-size: 12.5px;
+    color: rgba(180,210,255,0.7);
+    line-height: 1.45;
+  }
+
+  .card-ph {
+    display: inline-block;
+    margin-top: 5px;
+    background: rgba(0,0,0,0.3);
+    border-radius: 20px;
+    padding: 2px 10px;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--card-color, #7ef5c0);
+  }
+
+  /* CHART AREA */
+  .chart-area {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 0 12px;
+  }
+
+  .chart-wrap {
+    position: relative;
+    width: 100%;
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  canvas#phChart {
+    max-width: 100%;
+    max-height: 100%;
+  }
+
+  .chart-legend {
+    display: flex;
+    gap: 20px;
+    margin-top: 8px;
+  }
+
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12px;
+    color: rgba(180,210,255,0.75);
+  }
+
+  .legend-dot {
+    width: 20px;
+    height: 3px;
+    border-radius: 2px;
+  }
+
+  /* RIGHT PANEL */
+  .right-panel {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding-left: 16px;
+    border-left: 1px solid rgba(126,245,192,0.1);
+  }
+
+  .ph-meter {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(100,160,255,0.15);
+    border-radius: 12px;
+    padding: 14px;
+    text-align: center;
+  }
+
+  .ph-label {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    color: rgba(180,210,255,0.55);
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+
+  .ph-value {
+    font-size: 42px;
+    font-weight: 700;
+    color: #7ef5c0;
+    line-height: 1;
+    transition: all 0.4s ease;
+    text-shadow: 0 0 20px rgba(126,245,192,0.5);
+  }
+
+  .ph-bar-wrap {
+    margin-top: 10px;
+    height: 8px;
+    border-radius: 4px;
+    background: rgba(255,255,255,0.08);
+    overflow: hidden;
+  }
+
+  .ph-bar-fill {
+    height: 100%;
+    border-radius: 4px;
+    background: linear-gradient(90deg, #4af, #7ef5c0);
+    transition: width 0.5s ease;
+  }
+
+  .key-facts {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .fact-title {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    color: rgba(180,210,255,0.5);
+    text-transform: uppercase;
+    margin-bottom: 2px;
+  }
+
+  .fact-item {
+    background: rgba(255,255,255,0.03);
+    border-radius: 8px;
+    padding: 9px 12px;
+    border: 1px solid rgba(255,255,255,0.06);
+    transition: all 0.3s;
+  }
+
+  .fact-item.highlight {
+    background: rgba(126,245,192,0.07);
+    border-color: rgba(126,245,192,0.2);
+  }
+
+  .fact-icon {
+    font-size: 16px;
+    margin-bottom: 2px;
+  }
+
+  .fact-text {
+    font-family: 'Hind', sans-serif;
+    font-size: 12.5px;
+    color: rgba(220,235,255,0.82);
+    line-height: 1.4;
+  }
+
+  /* TIME SLIDER */
+  .time-slider-wrap {
+    position: relative;
+    z-index: 2;
+    padding: 8px 24px 14px;
+    background: rgba(10,22,40,0.5);
+    border-top: 1px solid rgba(126,245,192,0.08);
+  }
+
+  .slider-label {
+    font-size: 11px;
+    letter-spacing: 0.8px;
+    color: rgba(180,210,255,0.55);
+    text-transform: uppercase;
+    font-weight: 600;
+    margin-bottom: 6px;
+    text-align: center;
+  }
+
+  #timeSlider {
+    -webkit-appearance: none;
+    width: 100%;
+    height: 5px;
+    border-radius: 3px;
+    background: rgba(255,255,255,0.1);
+    outline: none;
+    cursor: pointer;
+  }
+
+  #timeSlider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: #7ef5c0;
+    cursor: pointer;
+    box-shadow: 0 0 10px rgba(126,245,192,0.6);
+    border: 2px solid rgba(255,255,255,0.3);
+  }
+
+  .time-labels {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 5px;
+    font-size: 11px;
+    color: rgba(180,210,255,0.45);
+  }
+
+  /* Pointer line on chart */
+  .chart-time-display {
+    font-size: 13px;
+    font-weight: 600;
+    color: rgba(255,255,255,0.7);
+    text-align: center;
+    margin-bottom: 4px;
+  }
+
+  /* animate in */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .info-card { animation: fadeUp 0.5s ease both; }
+  .info-card:nth-child(1) { animation-delay: 0.1s; }
+  .info-card:nth-child(2) { animation-delay: 0.2s; }
+  .info-card:nth-child(3) { animation-delay: 0.3s; }
+  .info-card:nth-child(4) { animation-delay: 0.4s; }
+
+  .active-dot {
+    display: inline-block;
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--card-color, #7ef5c0);
+    margin-right: 5px;
+    animation: pulse 1.5s infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.5; transform: scale(0.7); }
+  }
+</style>
+</head>
+<body>
+
+<div class="bg-art"></div>
+
+<svg class="wave-bg" viewBox="0 0 1280 180" preserveAspectRatio="none">
+  <path d="M0,90 C200,40 400,140 640,90 C880,40 1080,140 1280,90 L1280,180 L0,180 Z" fill="#50c8a0"/>
+</svg>
+
+<!-- HEADER -->
+<div class="header">
+  <div>
+    <h1>तालाब में pH का उतार-चढ़ाव</h1>
+    <div class="subtitle">दिन और रात के दौरान pH के मान — प्रकाश संश्लेषण और श्वसन का प्रभाव</div>
+  </div>
+</div>
+
+<!-- MAIN -->
+<div class="main">
+
+  <!-- LEFT CARDS -->
+  <div class="left-panel" id="leftCards">
+    <div class="info-card active" data-step="0" style="--card-color:#f5a623">
+      <div class="card-time"><span class="active-dot"></span>सूर्योदय — 6 बजे</div>
+      <div class="card-title">pH सबसे कम</div>
+      <div class="card-desc">रात भर श्वसन होने से CO₂ जमा होती है, जिससे pH गिरकर सबसे न्यूनतम हो जाती है।</div>
+      <span class="card-ph">pH ≈ 7.0–7.5</span>
+    </div>
+
+    <div class="info-card" data-step="1" style="--card-color:#5bc8af">
+      <div class="card-time">सुबह — 8–12 बजे</div>
+      <div class="card-title">प्रकाश संश्लेषण शुरू</div>
+      <div class="card-desc">सूर्य की रोशनी बढ़ने से शैवाल CO₂ का उपयोग करने लगते हैं — pH धीरे-धीरे बढ़ती है।</div>
+      <span class="card-ph">pH ≈ 7.5–8.5</span>
+    </div>
+
+    <div class="info-card" data-step="2" style="--card-color:#7ef5c0">
+      <div class="card-time">दोपहर बाद — 18 बजे</div>
+      <div class="card-title">pH चरम पर 🌿</div>
+      <div class="card-desc">तेज़ धूप में प्रकाश संश्लेषण अधिकतम होता है। उच्च उत्पादक तालाब में pH 9.5 तक पहुँचती है।</div>
+      <span class="card-ph">pH ≈ 8.5–9.5</span>
+    </div>
+
+    <div class="info-card" data-step="3" style="--card-color:#7a9eff">
+      <div class="card-time">रात — 24 बजे के बाद</div>
+      <div class="card-title">pH गिरने लगती है</div>
+      <div class="card-desc">प्रकाश संश्लेषण बंद। केवल श्वसन जारी रहता है, CO₂ बढ़ती है और pH फिर घटती है।</div>
+      <span class="card-ph">pH ≈ 8–7</span>
+    </div>
+  </div>
+
+  <!-- CHART -->
+  <div class="chart-area">
+    <div class="chart-time-display" id="timeDisplay">⏱ समय: 6:00 बजे (सूर्योदय)</div>
+    <div class="chart-wrap">
+      <canvas id="phChart" width="580" height="350"></canvas>
+    </div>
+    <div class="chart-legend">
+      <div class="legend-item"><div class="legend-dot" style="background:#7ef5c0;"></div> उच्च उत्पादक तालाब</div>
+      <div class="legend-item"><div class="legend-dot" style="background:#7a9eff; opacity:0.7;"></div> सामान्य तालाब</div>
+      <div class="legend-item"><div class="legend-dot" style="background:#f5a623; width:2px; border-left: 2px dashed #f5a623;"></div> वर्तमान समय</div>
+    </div>
+  </div>
+
+  <!-- RIGHT PANEL -->
+  <div class="right-panel">
+    <div class="ph-meter">
+      <div class="ph-label">वर्तमान pH मान</div>
+      <div class="ph-value" id="phDisplay">7.0</div>
+      <div class="ph-bar-wrap">
+        <div class="ph-bar-fill" id="phBar" style="width:0%"></div>
+      </div>
+    </div>
+
+    <div class="key-facts">
+      <div class="fact-title">मुख्य तथ्य</div>
+
+      <div class="fact-item" id="fact1">
+        <div class="fact-icon">🌱</div>
+        <div class="fact-text"><strong>प्रकाश संश्लेषण</strong> — CO₂ का उपयोग होता है → pH बढ़ती है</div>
+      </div>
+
+      <div class="fact-item" id="fact2">
+        <div class="fact-icon">🌙</div>
+        <div class="fact-text"><strong>श्वसन</strong> — CO₂ निकलती है → pH घटती है</div>
+      </div>
+
+      <div class="fact-item" id="fact3">
+        <div class="fact-icon">🐠</div>
+        <div class="fact-text">तालाब जितना <strong>अधिक उत्पादक</strong>, उतना ही अधिक pH उतार-चढ़ाव होता है।</div>
+      </div>
+
+      <div class="fact-item" id="fact4">
+        <div class="fact-icon">🔄</div>
+        <div class="fact-text">यह <strong>चक्र</strong> हर दिन दोहराता है — यह एक प्राकृतिक प्रक्रिया है।</div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- SLIDER -->
+<div class="time-slider-wrap">
+  <div class="slider-label">समय बदलें — स्लाइडर घुमाएँ</div>
+  <input type="range" id="timeSlider" min="0" max="100" value="0" step="1">
+  <div class="time-labels">
+    <span>6:00 (सूर्योदय)</span>
+    <span>12:00 (दोपहर)</span>
+    <span>18:00 (सूर्यास्त)</span>
+    <span>24:00 (रात)</span>
+    <span>6:00 (अगला दिन)</span>
+  </div>
+</div>
+
+<script>
+const canvas = document.getElementById('phChart');
+const ctx = canvas.getContext('2d');
+
+const W = 580, H = 350;
+canvas.width = W; canvas.height = H;
+
+const PAD = { top: 20, right: 20, bottom: 40, left: 50 };
+const CW = W - PAD.left - PAD.right;
+const CH = H - PAD.top - PAD.bottom;
+
+// pH data over time (6h to 30h = next 6h)
+// time points in hours (6,9,12,15,18,21,24,27,30)
+const times = [6,9,12,15,18,21,24,27,30];
+const phHigh = [7.0, 7.8, 8.5, 9.0, 9.5, 9.0, 8.2, 7.5, 7.0];
+const phNorm = [7.2, 7.6, 8.0, 8.3, 8.5, 8.1, 7.8, 7.5, 7.2];
+
+function phToY(ph) {
+  return PAD.top + CH - ((ph - 6.5) / (10 - 6.5)) * CH;
+}
+
+function timeToX(t) {
+  return PAD.left + ((t - 6) / (30 - 6)) * CW;
+}
+
+function interpPH(arr, frac) {
+  const idx = frac * (arr.length - 1);
+  const lo = Math.floor(idx);
+  const hi = Math.min(lo + 1, arr.length - 1);
+  const t = idx - lo;
+  return arr[lo] + t * (arr[hi] - arr[lo]);
+}
+
+let currentFrac = 0;
+let animFramePH = null;
+
+function drawChart(frac) {
+  ctx.clearRect(0, 0, W, H);
+
+  // Grid
+  ctx.strokeStyle = 'rgba(255,255,255,0.07)';
+  ctx.lineWidth = 1;
+  [7, 8, 9].forEach(ph => {
+    const y = phToY(ph);
+    ctx.beginPath();
+    ctx.moveTo(PAD.left, y);
+    ctx.lineTo(PAD.left + CW, y);
+    ctx.stroke();
+  });
+
+  // Vertical time guides
+  [6,12,18,24,30].forEach(t => {
+    const x = timeToX(t);
+    ctx.beginPath();
+    ctx.moveTo(x, PAD.top);
+    ctx.lineTo(x, PAD.top + CH);
+    ctx.stroke();
+  });
+
+  // Y-axis labels
+  ctx.fillStyle = 'rgba(180,210,255,0.55)';
+  ctx.font = '12px Hind';
+  ctx.textAlign = 'right';
+  [7, 8, 9].forEach(ph => {
+    ctx.fillText('pH ' + ph, PAD.left - 6, phToY(ph) + 4);
+  });
+
+  // X-axis labels
+  ctx.textAlign = 'center';
+  ['6h','12h','18h','24h','6h'].forEach((label, i) => {
+    const t = [6, 12, 18, 24, 30][i];
+    ctx.fillText(label, timeToX(t), PAD.top + CH + 18);
+  });
+
+  // Normal pond curve (dashed)
+  ctx.beginPath();
+  ctx.setLineDash([5,5]);
+  ctx.strokeStyle = 'rgba(122,158,255,0.6)';
+  ctx.lineWidth = 2;
+  times.forEach((t, i) => {
+    const x = timeToX(t), y = phToY(phNorm[i]);
+    i === 0 ? ctx.moveTo(x,y) : ctx.lineTo(x,y);
+  });
+  ctx.stroke();
+  ctx.setLineDash([]);
+
+  // High productive pond curve
+  ctx.beginPath();
+  ctx.strokeStyle = '#7ef5c0';
+  ctx.lineWidth = 3;
+  times.forEach((t, i) => {
+    const x = timeToX(t), y = phToY(phHigh[i]);
+    i === 0 ? ctx.moveTo(x,y) : ctx.lineTo(x,y);
+  });
+  ctx.stroke();
+
+  // Shaded area under high curve
+  ctx.beginPath();
+  times.forEach((t, i) => {
+    const x = timeToX(t), y = phToY(phHigh[i]);
+    i === 0 ? ctx.moveTo(x,y) : ctx.lineTo(x,y);
+  });
+  ctx.lineTo(timeToX(30), phToY(6.5));
+  ctx.lineTo(timeToX(6), phToY(6.5));
+  ctx.closePath();
+  const grad = ctx.createLinearGradient(0, PAD.top, 0, PAD.top + CH);
+  grad.addColorStop(0, 'rgba(126,245,192,0.15)');
+  grad.addColorStop(1, 'rgba(126,245,192,0.01)');
+  ctx.fillStyle = grad;
+  ctx.fill();
+
+  // Current time line
+  const curX = PAD.left + frac * CW;
+  ctx.beginPath();
+  ctx.strokeStyle = 'rgba(245,166,35,0.85)';
+  ctx.lineWidth = 2;
+  ctx.setLineDash([6,3]);
+  ctx.moveTo(curX, PAD.top);
+  ctx.lineTo(curX, PAD.top + CH);
+  ctx.stroke();
+  ctx.setLineDash([]);
+
+  // Current pH dot on high curve
+  const curPH = interpPH(phHigh, frac);
+  const dotX = curX, dotY = phToY(curPH);
+  ctx.beginPath();
+  ctx.arc(dotX, dotY, 7, 0, Math.PI * 2);
+  ctx.fillStyle = '#7ef5c0';
+  ctx.fill();
+  ctx.strokeStyle = '#fff';
+  ctx.lineWidth = 2;
+  ctx.stroke();
+
+  // Label near dot
+  ctx.fillStyle = '#7ef5c0';
+  ctx.font = 'bold 13px Hind';
+  ctx.textAlign = dotX > W - 80 ? 'right' : 'left';
+  ctx.fillText(curPH.toFixed(1), dotX + (dotX > W - 80 ? -10 : 10), dotY - 8);
+
+  // Night shading
+  const nightStart = timeToX(18), nightEnd = timeToX(30);
+  ctx.fillStyle = 'rgba(10,20,60,0.18)';
+  ctx.fillRect(nightStart, PAD.top, nightEnd - nightStart, CH);
+
+  // "रात" label
+  ctx.fillStyle = 'rgba(180,210,255,0.3)';
+  ctx.font = '11px Hind';
+  ctx.textAlign = 'center';
+  ctx.fillText('🌙 रात', (nightStart + nightEnd) / 2, PAD.top + 14);
+}
+
+function updateFromSlider(val) {
+  const frac = val / 100;
+  currentFrac = frac;
+  const totalHours = 24; // 6h to 30h = 24 hours
+  const hourOffset = frac * 24;
+  const hour = 6 + hourOffset;
+  const h = Math.floor(hour % 24);
+  const isNextDay = hour >= 24;
+  const timeStr = (isNextDay ? 'अगले दिन ' : '') + h + ':00 बजे';
+
+  // Update time display
+  const curPH = interpPH(phHigh, frac);
+  document.getElementById('timeDisplay').textContent = '⏱ समय: ' + timeStr;
+  document.getElementById('phDisplay').textContent = curPH.toFixed(1);
+
+  const barPct = ((curPH - 6.5) / (9.5 - 6.5)) * 100;
+  document.getElementById('phBar').style.width = barPct + '%';
+
+  // Color transitions
+  const ph = curPH;
+  let phColor = '#7ef5c0';
+  if (ph < 7.5) phColor = '#f5a623';
+  else if (ph < 8.5) phColor = '#5bc8af';
+  else if (ph > 9) phColor = '#ef5';
+  document.getElementById('phDisplay').style.color = phColor;
+  document.getElementById('phDisplay').style.textShadow = '0 0 20px ' + phColor + '80';
+
+  // Highlight active card
+  const step = frac < 0.2 ? 0 : frac < 0.5 ? 1 : frac < 0.7 ? 2 : 3;
+  document.querySelectorAll('.info-card').forEach((c, i) => {
+    c.classList.toggle('active', i === step);
+    const dot = c.querySelector('.active-dot');
+    if (dot) { if (i !== step) dot.remove(); }
+    if (i === step && !c.querySelector('.active-dot')) {
+      const d = document.createElement('span');
+      d.className = 'active-dot';
+      c.querySelector('.card-time').prepend(d);
+    }
+  });
+
+  // Fact highlights
+  const facts = ['fact1','fact2','fact3','fact4'];
+  facts.forEach((id, i) => {
+    const el = document.getElementById(id);
+    if ((frac < 0.5 && i === 0) || (frac >= 0.5 && i === 1)) {
+      el.classList.add('highlight');
+    } else {
+      el.classList.remove('highlight');
+    }
+  });
+
+  drawChart(frac);
+}
+
+document.getElementById('timeSlider').addEventListener('input', function() {
+  updateFromSlider(parseInt(this.value));
+});
+
+// Smooth auto-play on load
+let autoVal = 0;
+let playing = true;
+function autoPlay() {
+  if (!playing) return;
+  autoVal += 0.4;
+  if (autoVal > 100) { autoVal = 100; playing = false; }
+  document.getElementById('timeSlider').value = autoVal;
+  updateFromSlider(autoVal);
+  if (playing) requestAnimationFrame(autoPlay);
+}
+
+// Initial draw then animate
+updateFromSlider(0);
+setTimeout(() => requestAnimationFrame(autoPlay), 600);
+
+// Click cards to jump
+document.querySelectorAll('.info-card').forEach((card, i) => {
+  card.addEventListener('click', () => {
+    const vals = [0, 30, 60, 85];
+    document.getElementById('timeSlider').value = vals[i];
+    updateFromSlider(vals[i]);
+  });
+});
+</script>
+</body>
+</html>
