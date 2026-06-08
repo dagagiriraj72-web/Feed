@@ -6,6 +6,7 @@
 <title>Change Agility & Results Agility</title>
 
 <style>
+
 *{
 margin:0;
 padding:0;
@@ -14,131 +15,160 @@ font-family:'Segoe UI',sans-serif;
 }
 
 body{
-width:100vw;
-height:100vh;
 display:flex;
 justify-content:center;
 align-items:center;
-background:#f3efeb;
+height:100vh;
+background:#f4f1ed;
 overflow:hidden;
 }
 
 .slide{
 width:1280px;
 height:720px;
-background:#f3efeb;
-padding:25px 40px;
+padding:25px 35px;
+background:#f4f1ed;
 overflow:hidden;
 }
 
-h1{
+.title{
 text-align:center;
 font-size:52px;
 font-weight:700;
 color:#1f2f5a;
-margin-bottom:25px;
-}
-
-.container{
-display:flex;
-gap:30px;
-height:580px;
-}
-
-.card{
-flex:1;
-background:#fff;
-border-radius:22px;
-padding:25px;
-box-shadow:0 8px 20px rgba(0,0,0,0.08);
-cursor:pointer;
-transition:.4s;
-position:relative;
-overflow:hidden;
-}
-
-.card:hover{
-transform:translateY(-6px);
-}
-
-.header{
-display:flex;
-align-items:center;
-gap:20px;
 margin-bottom:20px;
 }
 
+.main{
+display:flex;
+gap:25px;
+height:600px;
+}
+
+/* LEFT NAVIGATION */
+
+.leftPanel{
+width:350px;
+background:#fff;
+border-radius:22px;
+padding:20px;
+box-shadow:0 8px 20px rgba(0,0,0,.08);
+}
+
+.instruction{
+text-align:center;
+font-size:18px;
+font-weight:600;
+color:#777;
+margin-bottom:20px;
+}
+
+.item{
+display:flex;
+align-items:center;
+gap:15px;
+padding:18px;
+border-radius:16px;
+cursor:pointer;
+margin-bottom:15px;
+transition:.3s;
+}
+
+.item:hover{
+background:#f7f7f7;
+transform:translateX(5px);
+}
+
+.item.active{
+background:#eef3ff;
+border-left:6px solid #1f2f5a;
+}
+
 .icon{
-width:90px;
-height:90px;
+width:70px;
+height:70px;
 border-radius:50%;
 display:flex;
 justify-content:center;
 align-items:center;
-font-size:42px;
+font-size:32px;
 color:#fff;
 flex-shrink:0;
 }
 
-.change .icon{
-background:#3e9787;
+.change{
+background:#3f9a87;
 }
 
-.results .icon{
+.results{
 background:#5c69c7;
 }
 
-.title{
-font-size:34px;
+.label{
+font-size:28px;
 font-weight:700;
 color:#1f2f5a;
 }
 
-.content{
-opacity:0;
-transform:translateY(20px);
-transition:.5s;
-pointer-events:none;
+/* RIGHT PANEL */
+
+.rightPanel{
+flex:1;
+background:#fff;
+border-radius:22px;
+padding:30px;
+box-shadow:0 8px 20px rgba(0,0,0,.08);
+position:relative;
+overflow:hidden;
 }
 
-.card.active .content{
-opacity:1;
-transform:translateY(0);
-pointer-events:auto;
+.character{
+position:absolute;
+top:20px;
+right:25px;
+font-size:90px;
+opacity:.12;
+}
+
+.heading{
+font-size:42px;
+font-weight:700;
+color:#1f2f5a;
+margin-bottom:10px;
+}
+
+.subHeading{
+font-size:22px;
+color:#666;
+margin-bottom:25px;
+font-style:italic;
 }
 
 ul{
-padding-left:30px;
+padding-left:28px;
 }
 
 li{
 font-size:26px;
 line-height:1.45;
-margin-bottom:12px;
+margin-bottom:18px;
 color:#444;
 }
 
-.clickText{
+.tip{
 position:absolute;
-bottom:18px;
-left:0;
-right:0;
-text-align:center;
+left:30px;
+right:30px;
+bottom:25px;
+background:#f8f9ff;
+padding:14px;
+border-radius:14px;
 font-size:20px;
 font-weight:600;
-color:#888;
-animation:pulse 1.5s infinite;
+text-align:center;
+color:#1f2f5a;
 }
 
-.card.active .clickText{
-display:none;
-}
-
-@keyframes pulse{
-0%{opacity:.4;}
-50%{opacity:1;}
-100%{opacity:.4;}
-}
 </style>
 </head>
 
@@ -146,18 +176,48 @@ display:none;
 
 <div class="slide">
 
-<h1>Change Agility & Results Agility</h1>
-
-<div class="container">
-
-<div class="card change" onclick="toggleCard(this)">
-
-<div class="header">
-<div class="icon">🔄</div>
-<div class="title">Change Agility</div>
+<div class="title">
+Change Agility & Results Agility
 </div>
 
-<div class="content">
+<div class="main">
+
+<!-- LEFT SIDE -->
+
+<div class="leftPanel">
+
+<div class="instruction">
+Click a dimension to explore
+</div>
+
+<div class="item active" onclick="showContent('change',this)">
+<div class="icon change">🔄</div>
+<div class="label">Change Agility</div>
+</div>
+
+<div class="item" onclick="showContent('results',this)">
+<div class="icon results">🎯</div>
+<div class="label">Results Agility</div>
+</div>
+
+</div>
+
+<!-- RIGHT SIDE -->
+
+<div class="rightPanel">
+
+<div class="character">🧑‍💼</div>
+
+<div id="content">
+
+<div class="heading">
+Change Agility
+</div>
+
+<div class="subHeading">
+Embracing and driving change
+</div>
+
 <ul>
 <li>Sees challenges as opportunities for growth</li>
 <li>Champions and drives organizational change</li>
@@ -165,30 +225,12 @@ display:none;
 <li>Challenges the status quo constructively</li>
 <li>Continuously seeks better methods</li>
 </ul>
-</div>
-
-<div class="clickText">Click to Explore</div>
 
 </div>
 
-<div class="card results" onclick="toggleCard(this)">
-
-<div class="header">
-<div class="icon">🎯</div>
-<div class="title">Results Agility</div>
+<div class="tip">
+Learning-agile leaders embrace change before others do.
 </div>
-
-<div class="content">
-<ul>
-<li>Delivers results in first-time, tough conditions</li>
-<li>Builds high-performing teams under pressure</li>
-<li>Demonstrates resilience and resourcefulness</li>
-<li>Inspires confidence in others during uncertainty</li>
-<li>Focuses on outcomes, not just activities</li>
-</ul>
-</div>
-
-<div class="clickText">Click to Explore</div>
 
 </div>
 
@@ -197,16 +239,57 @@ display:none;
 </div>
 
 <script>
-function toggleCard(card){
 
-document.querySelectorAll('.card').forEach(c=>{
-if(c!==card){
-c.classList.remove('active');
-}
+function showContent(type,element){
+
+document.querySelectorAll('.item').forEach(i=>{
+i.classList.remove('active');
 });
 
-card.classList.toggle('active');
+element.classList.add('active');
+
+const panel=document.getElementById('content');
+
+if(type==="change"){
+
+panel.innerHTML=`
+<div class="heading">Change Agility</div>
+
+<div class="subHeading">
+Embracing and driving change
+</div>
+
+<ul>
+<li>Sees challenges as opportunities for growth</li>
+<li>Champions and drives organizational change</li>
+<li>Experiments with new approaches fearlessly</li>
+<li>Challenges the status quo constructively</li>
+<li>Continuously seeks better methods</li>
+</ul>
+`;
 }
+
+if(type==="results"){
+
+panel.innerHTML=`
+<div class="heading">Results Agility</div>
+
+<div class="subHeading">
+Delivering results in new conditions
+</div>
+
+<ul>
+<li>Delivers results in first-time, tough conditions</li>
+<li>Builds high-performing teams under pressure</li>
+<li>Demonstrates resilience and resourcefulness</li>
+<li>Inspires confidence during uncertainty</li>
+<li>Focuses on outcomes, not just activities</li>
+</ul>
+`;
+}
+
+}
+
 </script>
 
 </body>
