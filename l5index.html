@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>Developing Learning Agility</title>
 
 <style>
@@ -11,102 +12,129 @@
 margin:0;
 padding:0;
 box-sizing:border-box;
-font-family:'Segoe UI',sans-serif;
+font-family:"Segoe UI",sans-serif;
 }
 
 body{
-background:#f4f2ef;
 display:flex;
 justify-content:center;
 align-items:center;
 height:100vh;
+background:#f4f1ed;
 overflow:hidden;
 }
 
 .slide{
 width:1280px;
 height:720px;
-padding:25px 35px;
-background:#f4f2ef;
+padding:20px 30px;
 overflow:hidden;
+background:#f4f1ed;
 }
 
 h1{
-font-size:56px;
+font-size:52px;
+font-weight:700;
 color:#1f2f5a;
 margin-bottom:5px;
 }
 
 .subtitle{
-font-size:24px;
+font-size:22px;
 color:#777;
 margin-bottom:20px;
 }
 
 .main{
 display:flex;
-height:560px;
+height:600px;
 gap:25px;
 }
 
+/* LEFT */
+
 .left{
 width:260px;
+background:#fff;
+border-radius:20px;
+box-shadow:0 6px 15px rgba(0,0,0,.08);
 display:flex;
 flex-direction:column;
-align-items:center;
 justify-content:center;
+align-items:center;
+padding:20px;
 }
 
 .character{
-font-size:180px;
-animation:bounce 2s infinite;
+font-size:150px;
+}
+
+.progressTitle{
+margin-top:15px;
+font-size:18px;
+font-weight:600;
+color:#666;
 }
 
 .progress{
-margin-top:20px;
 width:180px;
 height:14px;
 background:#ddd;
 border-radius:20px;
+margin-top:10px;
 overflow:hidden;
 }
 
 .fill{
-height:100%;
 width:0%;
+height:100%;
 background:#3f9a87;
-transition:.5s;
+transition:.4s;
 }
+
+/* RIGHT */
 
 .right{
 flex:1;
 display:flex;
 flex-direction:column;
-justify-content:space-between;
+}
+
+.steps{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:15px;
+margin-bottom:20px;
 }
 
 .step{
+background:#fff;
+border-radius:18px;
+padding:18px;
 display:flex;
 align-items:center;
-gap:20px;
-padding:12px;
-border-radius:18px;
+gap:15px;
 cursor:pointer;
 transition:.3s;
+box-shadow:0 6px 15px rgba(0,0,0,.08);
 }
 
 .step:hover{
-background:white;
+transform:translateY(-3px);
+}
+
+.step.active{
+border:4px solid #1f2f5a;
 }
 
 .num{
-width:70px;
-height:70px;
+width:65px;
+height:65px;
 border-radius:50%;
 display:flex;
 justify-content:center;
 align-items:center;
-font-size:30px;
+font-size:28px;
 font-weight:700;
 color:white;
 flex-shrink:0;
@@ -117,35 +145,48 @@ flex-shrink:0;
 .s3{background:#f0a81e;}
 .s4{background:#3f9a87;}
 
-.stepTitle{
-font-size:34px;
+.stepText{
+font-size:26px;
 font-weight:700;
 }
 
-.t1{color:#ea7746;}
-.t2{color:#1f2f5a;}
-.t3{color:#e89c12;}
-.t4{color:#3f9a87;}
+.c1{color:#ea7746;}
+.c2{color:#1f2f5a;}
+.c3{color:#e89b12;}
+.c4{color:#3f9a87;}
 
-.detailPanel{
-margin-top:15px;
-background:white;
-border-radius:20px;
-padding:25px;
-height:150px;
-box-shadow:0 8px 18px rgba(0,0,0,.08);
+.detail{
+flex:1;
+background:#fff;
+border-radius:22px;
+box-shadow:0 8px 20px rgba(0,0,0,.08);
+padding:30px;
 display:flex;
-align-items:center;
+flex-direction:column;
 justify-content:center;
-text-align:center;
-font-size:28px;
-line-height:1.4;
-color:#444;
-transition:.3s;
 }
 
-@keyframes bounce{
-50%{transform:translateY(-10px);}
+.detailTitle{
+font-size:40px;
+font-weight:700;
+color:#1f2f5a;
+margin-bottom:15px;
+}
+
+.detailText{
+font-size:28px;
+line-height:1.5;
+color:#444;
+}
+
+.tip{
+margin-top:25px;
+background:#f7f8ff;
+padding:16px;
+border-radius:12px;
+font-size:22px;
+font-weight:600;
+color:#1f2f5a;
 }
 
 </style>
@@ -164,6 +205,8 @@ transition:.3s;
 
 <div class="character">🧑‍💼</div>
 
+<div class="progressTitle">Journey Progress</div>
+
 <div class="progress">
 <div class="fill" id="fill"></div>
 </div>
@@ -172,29 +215,41 @@ transition:.3s;
 
 <div class="right">
 
-<div class="step" onclick="showStep(1)">
+<div class="steps">
+
+<div class="step active" onclick="showStep(1,this)">
 <div class="num s1">01</div>
-<div class="stepTitle t1">Be a Seeker</div>
+<div class="stepText c1">Be a Seeker</div>
 </div>
 
-<div class="step" onclick="showStep(2)">
+<div class="step" onclick="showStep(2,this)">
 <div class="num s2">02</div>
-<div class="stepTitle t2">Be a Sense-Maker</div>
+<div class="stepText c2">Be a Sense-Maker</div>
 </div>
 
-<div class="step" onclick="showStep(3)">
+<div class="step" onclick="showStep(3,this)">
 <div class="num s3">03</div>
-<div class="stepTitle t3">Be an Internalizer</div>
+<div class="stepText c3">Be an Internalizer</div>
 </div>
 
-<div class="step" onclick="showStep(4)">
+<div class="step" onclick="showStep(4,this)">
 <div class="num s4">04</div>
-<div class="stepTitle t4">Be an Applier</div>
+<div class="stepText c4">Be an Applier</div>
 </div>
 
-<div class="detailPanel" id="details">
+</div>
 
-👆 Click a strategy to explore how learning agility develops.
+<div class="detail" id="detail">
+
+<div class="detailTitle">Be a Seeker</div>
+
+<div class="detailText">
+Seek out new and diverse experiences. Immerse yourself in unfamiliar situations that broaden your skills and perspective.
+</div>
+
+<div class="tip">
+💡 Growth begins when you step outside your comfort zone.
+</div>
 
 </div>
 
@@ -206,20 +261,49 @@ transition:.3s;
 
 <script>
 
-const details = [
-"",
-"Seek out new and diverse experiences. Immerse yourself in unfamiliar situations that broaden your skills and perspective.",
-"Make meaning from experiences. Connect lessons learned to current challenges through reflection.",
-"Move from insight to identity. Let lessons reshape how you see yourself as a leader.",
-"Transfer learning to new contexts. Apply lessons from one situation to the next."
-];
+const content = {
 
-function showStep(step){
+1:{
+title:"Be a Seeker",
+text:"Seek out new and diverse experiences. Immerse yourself in unfamiliar situations that broaden your skills and perspective.",
+tip:"💡 Growth begins when you step outside your comfort zone."
+},
 
-document.getElementById("details").innerHTML=details[step];
+2:{
+title:"Be a Sense-Maker",
+text:"Connect lessons learned from experience to current challenges through reflection and pattern recognition.",
+tip:"💡 Reflection turns experience into learning."
+},
 
-const progress=(step/4)*100;
-document.getElementById("fill").style.width=progress+"%";
+3:{
+title:"Be an Internalizer",
+text:"Allow insights to shape your identity and leadership approach, not just your knowledge.",
+tip:"💡 Learning becomes powerful when it changes who you are."
+},
+
+4:{
+title:"Be an Applier",
+text:"Transfer lessons learned from one situation and apply them effectively in new contexts.",
+tip:"💡 Real learning is demonstrated through action."
+}
+
+};
+
+function showStep(id,el){
+
+document.querySelectorAll('.step').forEach(s=>{
+s.classList.remove('active');
+});
+
+el.classList.add('active');
+
+document.getElementById('detail').innerHTML=`
+<div class="detailTitle">${content[id].title}</div>
+<div class="detailText">${content[id].text}</div>
+<div class="tip">${content[id].tip}</div>
+`;
+
+document.getElementById('fill').style.width=(id*25)+"%";
 
 }
 
