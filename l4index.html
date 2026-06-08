@@ -3,83 +3,91 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>Assessing Learning Agility</title>
 
 <style>
+
 *{
 margin:0;
 padding:0;
 box-sizing:border-box;
-font-family:'Segoe UI',sans-serif;
+font-family:"Segoe UI",sans-serif;
 }
 
 body{
-width:100vw;
-height:100vh;
+background:#f5f2ee;
 display:flex;
 justify-content:center;
 align-items:center;
-background:#f5f1ed;
+height:100vh;
 overflow:hidden;
 }
 
 .slide{
 width:1280px;
 height:720px;
-background:#f5f1ed;
-padding:20px 40px;
+padding:20px 30px;
 overflow:hidden;
-position:relative;
 }
 
 .title{
-text-align:center;
-font-size:54px;
+font-size:52px;
 font-weight:700;
 color:#1f2f5a;
+text-align:center;
 margin-bottom:20px;
 }
 
-.grid{
+.subtitle{
+text-align:center;
+font-size:18px;
+color:#777;
+margin-bottom:20px;
+}
+
+/* TOP CARDS */
+
+.cardContainer{
 display:grid;
-grid-template-columns:1fr 1fr;
-grid-template-rows:1fr 1fr;
-gap:25px;
-height:600px;
+grid-template-columns:repeat(4,1fr);
+gap:20px;
+height:180px;
+margin-bottom:20px;
 }
 
 .card{
-background:white;
-border-radius:22px;
-padding:22px;
-display:flex;
-align-items:flex-start;
-gap:18px;
+background:#fff;
+border-radius:20px;
+box-shadow:0 6px 15px rgba(0,0,0,.08);
 cursor:pointer;
-box-shadow:0 8px 20px rgba(0,0,0,0.08);
-transition:all .4s ease;
-position:relative;
-overflow:hidden;
+transition:.3s;
+display:flex;
+flex-direction:column;
+align-items:center;
+justify-content:center;
+text-align:center;
+padding:15px;
 }
 
 .card:hover{
-transform:translateY(-6px);
+transform:translateY(-5px);
 }
 
 .card.active{
-transform:scale(1.02);
+border:4px solid #1f2f5a;
 }
 
 .icon{
-width:90px;
-height:90px;
+width:80px;
+height:80px;
 border-radius:50%;
 display:flex;
-justify-content:center;
 align-items:center;
-font-size:42px;
+justify-content:center;
+font-size:36px;
 color:white;
-flex-shrink:0;
+margin-bottom:12px;
 }
 
 .orange{background:#ea7746;}
@@ -87,64 +95,62 @@ flex-shrink:0;
 .yellow{background:#f0a81e;}
 .green{background:#3f9a87;}
 
-.content{
-flex:1;
-}
-
-.heading{
-font-size:30px;
+.cardTitle{
+font-size:24px;
 font-weight:700;
 color:#1f2f5a;
-margin-bottom:10px;
 }
 
-.short{
-font-size:24px;
-line-height:1.4;
-color:#555;
-}
+/* DETAIL PANEL */
 
-.details{
-max-height:0;
-overflow:hidden;
-transition:max-height .5s ease;
-font-size:22px;
-line-height:1.5;
-color:#444;
-margin-top:10px;
-}
-
-.card.active .details{
-max-height:180px;
-}
-
-.click{
-position:absolute;
-bottom:12px;
-right:18px;
-font-size:16px;
-font-weight:600;
-color:#888;
-animation:pulse 1.5s infinite;
-}
-
-.card.active .click{
-display:none;
+.detailPanel{
+height:420px;
+background:white;
+border-radius:22px;
+box-shadow:0 8px 20px rgba(0,0,0,.08);
+padding:30px;
+display:flex;
+gap:30px;
 }
 
 .character{
-position:absolute;
-bottom:20px;
-right:20px;
-font-size:60px;
-opacity:.15;
+width:220px;
+display:flex;
+justify-content:center;
+align-items:center;
+font-size:140px;
 }
 
-@keyframes pulse{
-0%{opacity:.4;}
-50%{opacity:1;}
-100%{opacity:.4;}
+.content{
+flex:1;
+display:flex;
+flex-direction:column;
+justify-content:center;
 }
+
+.heading{
+font-size:38px;
+font-weight:700;
+color:#1f2f5a;
+margin-bottom:15px;
+}
+
+.description{
+font-size:26px;
+line-height:1.6;
+color:#444;
+}
+
+.tip{
+margin-top:25px;
+padding:15px;
+background:#f7f8ff;
+border-radius:12px;
+font-size:22px;
+font-weight:600;
+color:#1f2f5a;
+}
+
 </style>
 </head>
 
@@ -154,101 +160,118 @@ opacity:.15;
 
 <div class="title">Assessing Learning Agility</div>
 
-<div class="grid">
+<div class="subtitle">
+Click an assessment method to explore.
+</div>
 
-<!-- Behavioral Interviews -->
-<div class="card" onclick="toggleCard(this)">
+<div class="cardContainer">
+
+<div class="card active" onclick="showData('behavioral',this)">
 <div class="icon orange">🔍</div>
-
-<div class="content">
-<div class="heading">Behavioral Interviews</div>
-
-<div class="short">
-Structured interviews exploring past challenges and adaptation to first-time situations.
+<div class="cardTitle">Behavioral Interviews</div>
 </div>
 
-<div class="details">
-Focuses on real-life examples of how individuals learned quickly, handled uncertainty, and applied lessons from experience.
-</div>
-</div>
-
-<div class="click">Click to Explore</div>
-</div>
-
-<!-- 360 Feedback -->
-<div class="card" onclick="toggleCard(this)">
+<div class="card" onclick="showData('feedback',this)">
 <div class="icon blue">🤝</div>
-
-<div class="content">
-<div class="heading">360-Degree Feedback</div>
-
-<div class="short">
-Multi-perspective feedback from managers, peers and direct reports.
+<div class="cardTitle">360° Feedback</div>
 </div>
 
-<div class="details">
-Provides insights into adaptability, collaboration, self-awareness and effectiveness across different situations.
-</div>
-</div>
-
-<div class="click">Click to Explore</div>
-</div>
-
-<!-- Psychometric -->
-<div class="card" onclick="toggleCard(this)">
+<div class="card" onclick="showData('psychometric',this)">
 <div class="icon yellow">📋</div>
-
-<div class="content">
-<div class="heading">Psychometric Assessments</div>
-
-<div class="short">
-Validated tools measure the dimensions of learning agility.
+<div class="cardTitle">Psychometric Assessments</div>
 </div>
 
-<div class="details">
-Assessment tools help identify strengths and development areas related to agility and adaptability.
-</div>
-</div>
-
-<div class="click">Click to Explore</div>
-</div>
-
-<!-- Observation -->
-<div class="card" onclick="toggleCard(this)">
+<div class="card" onclick="showData('observation',this)">
 <div class="icon green">⚡</div>
-
-<div class="content">
-<div class="heading">On-the-Job Observation</div>
-
-<div class="short">
-Observing responses to stretch assignments and new challenges.
-</div>
-
-<div class="details">
-Evaluates how individuals react in real-time when facing ambiguity, pressure and unfamiliar situations.
-</div>
-</div>
-
-<div class="click">Click to Explore</div>
+<div class="cardTitle">On-the-Job Observation</div>
 </div>
 
 </div>
+
+<div class="detailPanel">
 
 <div class="character">🧑‍💼</div>
+
+<div class="content" id="content">
+
+<div class="heading">
+Behavioral Interviews
+</div>
+
+<div class="description">
+Structured interviews exploring past challenges, rapid learning examples, and adaptation to first-time situations. These interviews help identify how individuals learn from experience and apply lessons in new contexts.
+</div>
+
+<div class="tip">
+💡 Focuses on real-world examples and demonstrated behaviors.
+</div>
+
+</div>
+
+</div>
 
 </div>
 
 <script>
-function toggleCard(card){
+
+function showData(type,el){
 
 document.querySelectorAll('.card').forEach(c=>{
-if(c!==card){
 c.classList.remove('active');
-}
 });
 
-card.classList.toggle('active');
+el.classList.add('active');
+
+const content=document.getElementById('content');
+
+const data={
+
+behavioral:`
+<div class="heading">Behavioral Interviews</div>
+<div class="description">
+Structured interviews exploring past challenges, rapid learning examples, and adaptation to first-time situations.
+</div>
+<div class="tip">
+💡 Focuses on real-world examples and demonstrated behaviors.
+</div>
+`,
+
+feedback:`
+<div class="heading">360-Degree Feedback</div>
+<div class="description">
+Multi-perspective feedback from managers, peers, and direct reports to evaluate agility, adaptability, and self-awareness.
+</div>
+<div class="tip">
+💡 Provides insights from multiple viewpoints.
+</div>
+`,
+
+psychometric:`
+<div class="heading">Psychometric Assessments</div>
+<div class="description">
+Validated tools such as the Burke Learning Agility Inventory help measure the dimensions of learning agility objectively.
+</div>
+<div class="tip">
+💡 Uses standardized assessment instruments.
+</div>
+`,
+
+observation:`
+<div class="heading">On-the-Job Observation</div>
+<div class="description">
+Tracking how individuals respond to stretch assignments, new roles, and ambiguous situations in real time.
+</div>
+<div class="tip">
+💡 Measures agility through actual workplace behavior.
+</div>
+`
+
+};
+
+content.innerHTML=data[type];
+
 }
+
 </script>
 
 </body>
