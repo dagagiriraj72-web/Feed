@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Assessing Learning Agility</title>
+
+<style>
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Segoe UI',sans-serif;
+}
+
+body{
+width:100vw;
+height:100vh;
+display:flex;
+justify-content:center;
+align-items:center;
+background:#f5f1ed;
+overflow:hidden;
+}
+
+.slide{
+width:1280px;
+height:720px;
+background:#f5f1ed;
+padding:20px 40px;
+overflow:hidden;
+position:relative;
+}
+
+.title{
+text-align:center;
+font-size:54px;
+font-weight:700;
+color:#1f2f5a;
+margin-bottom:20px;
+}
+
+.grid{
+display:grid;
+grid-template-columns:1fr 1fr;
+grid-template-rows:1fr 1fr;
+gap:25px;
+height:600px;
+}
+
+.card{
+background:white;
+border-radius:22px;
+padding:22px;
+display:flex;
+align-items:flex-start;
+gap:18px;
+cursor:pointer;
+box-shadow:0 8px 20px rgba(0,0,0,0.08);
+transition:all .4s ease;
+position:relative;
+overflow:hidden;
+}
+
+.card:hover{
+transform:translateY(-6px);
+}
+
+.card.active{
+transform:scale(1.02);
+}
+
+.icon{
+width:90px;
+height:90px;
+border-radius:50%;
+display:flex;
+justify-content:center;
+align-items:center;
+font-size:42px;
+color:white;
+flex-shrink:0;
+}
+
+.orange{background:#ea7746;}
+.blue{background:#1f2f5a;}
+.yellow{background:#f0a81e;}
+.green{background:#3f9a87;}
+
+.content{
+flex:1;
+}
+
+.heading{
+font-size:30px;
+font-weight:700;
+color:#1f2f5a;
+margin-bottom:10px;
+}
+
+.short{
+font-size:24px;
+line-height:1.4;
+color:#555;
+}
+
+.details{
+max-height:0;
+overflow:hidden;
+transition:max-height .5s ease;
+font-size:22px;
+line-height:1.5;
+color:#444;
+margin-top:10px;
+}
+
+.card.active .details{
+max-height:180px;
+}
+
+.click{
+position:absolute;
+bottom:12px;
+right:18px;
+font-size:16px;
+font-weight:600;
+color:#888;
+animation:pulse 1.5s infinite;
+}
+
+.card.active .click{
+display:none;
+}
+
+.character{
+position:absolute;
+bottom:20px;
+right:20px;
+font-size:60px;
+opacity:.15;
+}
+
+@keyframes pulse{
+0%{opacity:.4;}
+50%{opacity:1;}
+100%{opacity:.4;}
+}
+</style>
+</head>
+
+<body>
+
+<div class="slide">
+
+<div class="title">Assessing Learning Agility</div>
+
+<div class="grid">
+
+<!-- Behavioral Interviews -->
+<div class="card" onclick="toggleCard(this)">
+<div class="icon orange">🔍</div>
+
+<div class="content">
+<div class="heading">Behavioral Interviews</div>
+
+<div class="short">
+Structured interviews exploring past challenges and adaptation to first-time situations.
+</div>
+
+<div class="details">
+Focuses on real-life examples of how individuals learned quickly, handled uncertainty, and applied lessons from experience.
+</div>
+</div>
+
+<div class="click">Click to Explore</div>
+</div>
+
+<!-- 360 Feedback -->
+<div class="card" onclick="toggleCard(this)">
+<div class="icon blue">🤝</div>
+
+<div class="content">
+<div class="heading">360-Degree Feedback</div>
+
+<div class="short">
+Multi-perspective feedback from managers, peers and direct reports.
+</div>
+
+<div class="details">
+Provides insights into adaptability, collaboration, self-awareness and effectiveness across different situations.
+</div>
+</div>
+
+<div class="click">Click to Explore</div>
+</div>
+
+<!-- Psychometric -->
+<div class="card" onclick="toggleCard(this)">
+<div class="icon yellow">📋</div>
+
+<div class="content">
+<div class="heading">Psychometric Assessments</div>
+
+<div class="short">
+Validated tools measure the dimensions of learning agility.
+</div>
+
+<div class="details">
+Assessment tools help identify strengths and development areas related to agility and adaptability.
+</div>
+</div>
+
+<div class="click">Click to Explore</div>
+</div>
+
+<!-- Observation -->
+<div class="card" onclick="toggleCard(this)">
+<div class="icon green">⚡</div>
+
+<div class="content">
+<div class="heading">On-the-Job Observation</div>
+
+<div class="short">
+Observing responses to stretch assignments and new challenges.
+</div>
+
+<div class="details">
+Evaluates how individuals react in real-time when facing ambiguity, pressure and unfamiliar situations.
+</div>
+</div>
+
+<div class="click">Click to Explore</div>
+</div>
+
+</div>
+
+<div class="character">🧑‍💼</div>
+
+</div>
+
+<script>
+function toggleCard(card){
+
+document.querySelectorAll('.card').forEach(c=>{
+if(c!==card){
+c.classList.remove('active');
+}
+});
+
+card.classList.toggle('active');
+}
+</script>
+
+</body>
+</html>
