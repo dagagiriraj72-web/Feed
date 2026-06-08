@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>Key Takeaways Challenge</title>
 
 <style>
@@ -15,11 +16,11 @@ font-family:'Segoe UI',sans-serif;
 }
 
 body{
+background:#f4f1ed;
 display:flex;
 justify-content:center;
 align-items:center;
 height:100vh;
-background:#f4f1ed;
 overflow:hidden;
 }
 
@@ -31,72 +32,93 @@ background:#f4f1ed;
 overflow:hidden;
 }
 
-h1{
-font-size:56px;
+.title{
+font-size:52px;
 font-weight:700;
 color:#1f2f5a;
+text-align:center;
 margin-bottom:15px;
 }
 
-.top{
+.main{
 display:flex;
 gap:25px;
-height:180px;
+height:620px;
 }
 
-.characterBox{
-width:260px;
-background:white;
-border-radius:20px;
-box-shadow:0 8px 20px rgba(0,0,0,.08);
+/* LEFT PANEL */
+
+.leftPanel{
+width:360px;
 display:flex;
 flex-direction:column;
-justify-content:center;
-align-items:center;
+gap:20px;
+}
+
+.characterCard{
+background:#fff;
+border-radius:20px;
+padding:20px;
+text-align:center;
+box-shadow:0 6px 15px rgba(0,0,0,.08);
 }
 
 .character{
-font-size:95px;
+font-size:120px;
+line-height:1;
 }
 
 .name{
-font-size:24px;
+font-size:34px;
 font-weight:700;
 color:#1f2f5a;
+margin-top:10px;
 }
 
-.story{
+.storyCard{
 flex:1;
-background:white;
+background:#fff;
 border-radius:20px;
 padding:25px;
-box-shadow:0 8px 20px rgba(0,0,0,.08);
+box-shadow:0 6px 15px rgba(0,0,0,.08);
 display:flex;
-justify-content:center;
 align-items:center;
-font-size:28px;
-line-height:1.4;
-color:#444;
+justify-content:center;
 text-align:center;
+font-size:28px;
+line-height:1.5;
+color:#444;
+}
+
+/* RIGHT PANEL */
+
+.rightPanel{
+flex:1;
+display:flex;
+flex-direction:column;
+gap:20px;
 }
 
 .options{
 display:grid;
 grid-template-columns:1fr 1fr;
-gap:18px;
-margin-top:20px;
+gap:15px;
 }
 
 .option{
-background:white;
-padding:18px;
+background:#fff;
 border-radius:18px;
+padding:18px;
 cursor:pointer;
+box-shadow:0 6px 15px rgba(0,0,0,.08);
 transition:.3s;
-box-shadow:0 5px 12px rgba(0,0,0,.08);
 font-size:24px;
 font-weight:600;
 color:#444;
+min-height:90px;
+
+display:flex;
+align-items:center;
 }
 
 .option:hover{
@@ -105,45 +127,57 @@ background:#fff7f2;
 }
 
 .feedback{
-height:150px;
-margin-top:20px;
-background:white;
+flex:1;
+background:#fff;
 border-radius:20px;
-padding:20px;
-box-shadow:0 8px 20px rgba(0,0,0,.08);
+padding:30px;
+box-shadow:0 6px 15px rgba(0,0,0,.08);
+
 display:flex;
+flex-direction:column;
 justify-content:center;
-align-items:center;
-text-align:center;
-font-size:28px;
-line-height:1.4;
+}
+
+.feedbackTitle{
+font-size:34px;
+font-weight:700;
 color:#1f2f5a;
+margin-bottom:15px;
+}
+
+.feedbackText{
+font-size:28px;
+line-height:1.5;
+color:#444;
+}
+
+.progressWrap{
+margin-top:25px;
 }
 
 .progress{
-margin-top:15px;
-height:14px;
+height:12px;
 background:#ddd;
 border-radius:20px;
 overflow:hidden;
 }
 
 .fill{
-height:100%;
 width:0%;
+height:100%;
 background:#ea7746;
 transition:.4s;
 }
 
 .complete{
+margin-top:20px;
 display:none;
-margin-top:15px;
 background:#ea7746;
 color:white;
+padding:15px;
+border-radius:14px;
 text-align:center;
-padding:16px;
-border-radius:16px;
-font-size:28px;
+font-size:24px;
 font-weight:700;
 }
 
@@ -154,51 +188,89 @@ font-weight:700;
 
 <div class="slide">
 
-<h1>Key Takeaways</h1>
-
-<div class="top">
-
-<div class="characterBox">
-<div class="character">👩‍💼</div>
-<div class="name">Riya</div>
+<div class="title">
+Key Takeaways Challenge
 </div>
 
-<div class="story">
-Riya has been promoted to lead a new team. Help her make the right decisions.
+<div class="main">
+
+<!-- LEFT -->
+
+<div class="leftPanel">
+
+<div class="characterCard">
+
+<div class="character">
+👩‍💼
+</div>
+
+<div class="name">
+Riya
 </div>
 
 </div>
+
+<div class="storyCard">
+
+Riya has been promoted to lead a new team.
+Help her make the right decisions by applying what you've learned about Learning Agility.
+
+</div>
+
+</div>
+
+<!-- RIGHT -->
+
+<div class="rightPanel">
 
 <div class="options">
 
-<div class="option" onclick="showTakeaway(1)">
+<div class="option" onclick="showAnswer(1)">
 🧠 How should Riya identify future leaders?
 </div>
 
-<div class="option" onclick="showTakeaway(2)">
+<div class="option" onclick="showAnswer(2)">
 🔄 What capability should she focus on developing?
 </div>
 
-<div class="option" onclick="showTakeaway(3)">
+<div class="option" onclick="showAnswer(3)">
 🎯 What business impact can she expect?
 </div>
 
-<div class="option" onclick="showTakeaway(4)">
+<div class="option" onclick="showAnswer(4)">
 👀 Can learning agility be developed?
 </div>
 
 </div>
 
-<div class="feedback" id="feedback">
-Click each challenge to uncover the key learning.
+<div class="feedback">
+
+<div class="feedbackTitle">
+Click a challenge to begin
 </div>
+
+<div class="feedbackText" id="answer">
+
+Explore each challenge to uncover the key takeaways from this course.
+
+</div>
+
+<div class="progressWrap">
 
 <div class="progress">
 <div class="fill" id="fill"></div>
 </div>
 
 <div class="complete" id="complete">
-🎉 Start developing learning agility in your team today!
+🎉 Great job! Start developing learning agility in your team today.
+</div>
+
+</div>
+
+</div>
+
+</div>
+
 </div>
 
 </div>
@@ -207,31 +279,35 @@ Click each challenge to uncover the key learning.
 
 let completed=[];
 
-const takeaways = {
+const answers={
 
-1:"Learning Agility is one of the strongest predictors of leadership potential—beyond IQ and experience alone.",
+1:"Learning Agility is one of the strongest predictors of leadership potential, often outperforming IQ and experience alone.",
 
-2:"Learning Agility includes five dimensions: Mental, People, Change, Results Agility, and Self-Awareness.",
+2:"Focus on developing the five dimensions of Learning Agility: Mental, People, Change, Results Agility, and Self-Awareness.",
 
-3:"Organizations with learning-agile leaders achieve higher performance, innovation, and talent retention.",
+3:"Organizations with learning-agile leaders achieve stronger performance, innovation, and talent retention.",
 
-4:"Learning Agility is behavioral and can be assessed, developed, and strengthened through practice."
+4:"Yes. Learning Agility is behavioral and can be assessed, developed, and strengthened through deliberate practice."
 
 };
 
-function showTakeaway(id){
+function showAnswer(id){
 
-document.getElementById("feedback").innerHTML=takeaways[id];
+document.getElementById("answer").innerHTML=
+answers[id];
 
 if(!completed.includes(id)){
 completed.push(id);
 }
 
 let progress=(completed.length/4)*100;
-document.getElementById("fill").style.width=progress+"%";
+
+document.getElementById("fill").style.width=
+progress+"%";
 
 if(completed.length===4){
-document.getElementById("complete").style.display="block";
+document.getElementById("complete").style.display=
+"block";
 }
 
 }
