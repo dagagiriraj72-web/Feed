@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Learning Agility vs Traditional Learning</title>
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Segoe UI',sans-serif;
+}
+
+body{
+width:100vw;
+height:100vh;
+display:flex;
+justify-content:center;
+align-items:center;
+background:#f4f5f8;
+overflow:hidden;
+}
+
+.slide{
+width:1280px;
+height:720px;
+padding:20px 30px;
+background:#f4f5f8;
+overflow:hidden;
+}
+
+.title{
+font-size:48px;
+font-weight:700;
+text-align:center;
+color:#1f2458;
+margin-bottom:15px;
+}
+
+/* INSTRUCTION */
+
+.instruction{
+text-align:center;
+font-size:18px;
+color:#666;
+margin-bottom:15px;
+font-weight:600;
+}
+
+/* COMPARISON AREA */
+
+.comparison{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:25px;
+height:560px;
+}
+
+/* PANELS */
+
+.panel{
+background:#fff;
+border-radius:22px;
+padding:20px;
+box-shadow:0 8px 18px rgba(0,0,0,.08);
+display:flex;
+flex-direction:column;
+}
+
+.header{
+font-size:32px;
+font-weight:700;
+text-align:center;
+padding:15px;
+border-radius:15px;
+margin-bottom:18px;
+color:white;
+}
+
+.traditional .header{
+background:#9aa2b1;
+}
+
+.agility .header{
+background:linear-gradient(135deg,#5d63ff,#7a54ff);
+}
+
+/* CLICKABLE ROWS */
+
+.row{
+padding:14px 18px;
+margin-bottom:10px;
+background:#f4f6fb;
+border-radius:12px;
+cursor:pointer;
+transition:.3s;
+font-size:22px;
+font-weight:600;
+color:#444;
+}
+
+.row:hover{
+transform:translateX(5px);
+background:#e9edff;
+}
+
+.row.active{
+background:#dfe6ff;
+border-left:5px solid #5d63ff;
+}
+
+/* DETAIL PANEL */
+
+.detailBox{
+margin-top:auto;
+height:140px;
+background:#f8f9ff;
+border-radius:16px;
+padding:20px;
+display:flex;
+justify-content:center;
+align-items:center;
+text-align:center;
+font-size:24px;
+line-height:1.4;
+font-weight:600;
+color:#1f2458;
+}
+
+.vs{
+position:absolute;
+top:50%;
+left:50%;
+transform:translate(-50%,-50%);
+background:#5d63ff;
+color:white;
+width:70px;
+height:70px;
+border-radius:50%;
+display:flex;
+justify-content:center;
+align-items:center;
+font-size:26px;
+font-weight:700;
+box-shadow:0 6px 15px rgba(0,0,0,.2);
+}
+
+.wrapper{
+position:relative;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="slide">
+
+<div class="title">
+Learning Agility vs. Traditional Learning
+</div>
+
+<div class="instruction">
+Click any point to compare the two approaches
+</div>
+
+<div class="wrapper">
+
+<div class="comparison">
+
+<!-- LEFT PANEL -->
+
+<div class="panel traditional">
+
+<div class="header">
+Traditional Learning
+</div>
+
+<div class="row"
+onclick="showTraditional('knowledge',this)">
+📚 Acquiring knowledge & skills
+</div>
+
+<div class="row"
+onclick="showTraditional('iq',this)">
+🧠 IQ and book smarts
+</div>
+
+<div class="row"
+onclick="showTraditional('tests',this)">
+📝 Measured by test scores
+</div>
+
+<div class="row"
+onclick="showTraditional('fixed',this)">
+🔒 Fixed once learned
+</div>
+
+<div class="row"
+onclick="showTraditional('content',this)">
+📖 Content-focused
+</div>
+
+<div class="row"
+onclick="showTraditional('comfort',this)">
+😊 Comfortable & familiar
+</div>
+
+<div class="detailBox" id="leftDetail">
+
+Click a point to explore Traditional Learning.
+
+</div>
+
+</div>
+
+<!-- RIGHT PANEL -->
+
+<div class="panel agility">
+
+<div class="header">
+Learning Agility
+</div>
+
+<div class="row"
+onclick="showAgility('apply',this)">
+🚀 Applying lessons to new situations
+</div>
+
+<div class="row"
+onclick="showAgility('behavioral',this)">
+🌟 Behavioral & experiential
+</div>
+
+<div class="row"
+onclick="showAgility('adaptability',this)">
+🔄 Measured by adaptability in action
+</div>
+
+<div class="row"
+onclick="showAgility('evolving',this)">
+📈 Continuously evolving
+</div>
+
+<div class="row"
+onclick="showAgility('context',this)">
+🎯 Context-focused
+</div>
+
+<div class="row"
+onclick="showAgility('ambiguity',this)">
+⚡ Embraces discomfort & ambiguity
+</div>
+
+<div class="detailBox" id="rightDetail">
+
+Click a point to explore Learning Agility.
+
+</div>
+
+</div>
+
+</div>
+
+<div class="vs">VS</div>
+
+</div>
+
+</div>
+
+<script>
+
+function clearActive(){
+document.querySelectorAll('.row').forEach(r=>{
+r.classList.remove('active');
+});
+}
+
+function showTraditional(type,el){
+
+clearActive();
+el.classList.add('active');
+
+const details={
+
+knowledge:"Traditional learning focuses on acquiring knowledge and developing specific skills.",
+
+iq:"Success is often associated with intelligence, academic achievement, and expertise.",
+
+tests:"Learning is commonly measured through exams, assessments, and scores.",
+
+fixed:"Knowledge remains relatively stable once learned and mastered.",
+
+content:"The emphasis is on understanding content and information.",
+
+comfort:"Learning usually occurs in familiar and predictable environments."
+
+};
+
+document.getElementById('leftDetail').innerHTML=details[type];
+}
+
+function showAgility(type,el){
+
+clearActive();
+el.classList.add('active');
+
+const details={
+
+apply:"Learning Agility focuses on applying lessons learned to unfamiliar situations.",
+
+behavioral:"It is demonstrated through behavior, experiences, and actions.",
+
+adaptability:"Success is measured by how effectively a person adapts and performs.",
+
+evolving:"Learning Agility develops continuously through new experiences.",
+
+context:"The focus is on adapting knowledge to different situations and challenges.",
+
+ambiguity:"Learning-agile individuals thrive in uncertainty and unfamiliar environments."
+
+};
+
+document.getElementById('rightDetail').innerHTML=details[type];
+}
+
+</script>
+
+</body>
+</html>
