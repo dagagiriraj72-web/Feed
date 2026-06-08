@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Developing Learning Agility</title>
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Segoe UI',sans-serif;
+}
+
+body{
+background:#f4f2ef;
+display:flex;
+justify-content:center;
+align-items:center;
+height:100vh;
+overflow:hidden;
+}
+
+.slide{
+width:1280px;
+height:720px;
+padding:25px 35px;
+background:#f4f2ef;
+overflow:hidden;
+}
+
+h1{
+font-size:56px;
+color:#1f2f5a;
+margin-bottom:5px;
+}
+
+.subtitle{
+font-size:24px;
+color:#777;
+margin-bottom:20px;
+}
+
+.main{
+display:flex;
+height:560px;
+gap:25px;
+}
+
+.left{
+width:260px;
+display:flex;
+flex-direction:column;
+align-items:center;
+justify-content:center;
+}
+
+.character{
+font-size:180px;
+animation:bounce 2s infinite;
+}
+
+.progress{
+margin-top:20px;
+width:180px;
+height:14px;
+background:#ddd;
+border-radius:20px;
+overflow:hidden;
+}
+
+.fill{
+height:100%;
+width:0%;
+background:#3f9a87;
+transition:.5s;
+}
+
+.right{
+flex:1;
+display:flex;
+flex-direction:column;
+justify-content:space-between;
+}
+
+.step{
+display:flex;
+align-items:center;
+gap:20px;
+padding:12px;
+border-radius:18px;
+cursor:pointer;
+transition:.3s;
+}
+
+.step:hover{
+background:white;
+}
+
+.num{
+width:70px;
+height:70px;
+border-radius:50%;
+display:flex;
+justify-content:center;
+align-items:center;
+font-size:30px;
+font-weight:700;
+color:white;
+flex-shrink:0;
+}
+
+.s1{background:#ea7746;}
+.s2{background:#1f2f5a;}
+.s3{background:#f0a81e;}
+.s4{background:#3f9a87;}
+
+.stepTitle{
+font-size:34px;
+font-weight:700;
+}
+
+.t1{color:#ea7746;}
+.t2{color:#1f2f5a;}
+.t3{color:#e89c12;}
+.t4{color:#3f9a87;}
+
+.detailPanel{
+margin-top:15px;
+background:white;
+border-radius:20px;
+padding:25px;
+height:150px;
+box-shadow:0 8px 18px rgba(0,0,0,.08);
+display:flex;
+align-items:center;
+justify-content:center;
+text-align:center;
+font-size:28px;
+line-height:1.4;
+color:#444;
+transition:.3s;
+}
+
+@keyframes bounce{
+50%{transform:translateY(-10px);}
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="slide">
+
+<h1>Developing Learning Agility</h1>
+<div class="subtitle">Four Evidence-Based Strategies</div>
+
+<div class="main">
+
+<div class="left">
+
+<div class="character">🧑‍💼</div>
+
+<div class="progress">
+<div class="fill" id="fill"></div>
+</div>
+
+</div>
+
+<div class="right">
+
+<div class="step" onclick="showStep(1)">
+<div class="num s1">01</div>
+<div class="stepTitle t1">Be a Seeker</div>
+</div>
+
+<div class="step" onclick="showStep(2)">
+<div class="num s2">02</div>
+<div class="stepTitle t2">Be a Sense-Maker</div>
+</div>
+
+<div class="step" onclick="showStep(3)">
+<div class="num s3">03</div>
+<div class="stepTitle t3">Be an Internalizer</div>
+</div>
+
+<div class="step" onclick="showStep(4)">
+<div class="num s4">04</div>
+<div class="stepTitle t4">Be an Applier</div>
+</div>
+
+<div class="detailPanel" id="details">
+
+👆 Click a strategy to explore how learning agility develops.
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+<script>
+
+const details = [
+"",
+"Seek out new and diverse experiences. Immerse yourself in unfamiliar situations that broaden your skills and perspective.",
+"Make meaning from experiences. Connect lessons learned to current challenges through reflection.",
+"Move from insight to identity. Let lessons reshape how you see yourself as a leader.",
+"Transfer learning to new contexts. Apply lessons from one situation to the next."
+];
+
+function showStep(step){
+
+document.getElementById("details").innerHTML=details[step];
+
+const progress=(step/4)*100;
+document.getElementById("fill").style.width=progress+"%";
+
+}
+
+</script>
+
+</body>
+</html>
