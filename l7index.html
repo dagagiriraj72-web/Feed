@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Key Takeaways Challenge</title>
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Segoe UI',sans-serif;
+}
+
+body{
+display:flex;
+justify-content:center;
+align-items:center;
+height:100vh;
+background:#f4f1ed;
+overflow:hidden;
+}
+
+.slide{
+width:1280px;
+height:720px;
+padding:20px 30px;
+background:#f4f1ed;
+overflow:hidden;
+}
+
+h1{
+font-size:56px;
+font-weight:700;
+color:#1f2f5a;
+margin-bottom:15px;
+}
+
+.top{
+display:flex;
+gap:25px;
+height:180px;
+}
+
+.characterBox{
+width:260px;
+background:white;
+border-radius:20px;
+box-shadow:0 8px 20px rgba(0,0,0,.08);
+display:flex;
+flex-direction:column;
+justify-content:center;
+align-items:center;
+}
+
+.character{
+font-size:95px;
+}
+
+.name{
+font-size:24px;
+font-weight:700;
+color:#1f2f5a;
+}
+
+.story{
+flex:1;
+background:white;
+border-radius:20px;
+padding:25px;
+box-shadow:0 8px 20px rgba(0,0,0,.08);
+display:flex;
+justify-content:center;
+align-items:center;
+font-size:28px;
+line-height:1.4;
+color:#444;
+text-align:center;
+}
+
+.options{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:18px;
+margin-top:20px;
+}
+
+.option{
+background:white;
+padding:18px;
+border-radius:18px;
+cursor:pointer;
+transition:.3s;
+box-shadow:0 5px 12px rgba(0,0,0,.08);
+font-size:24px;
+font-weight:600;
+color:#444;
+}
+
+.option:hover{
+transform:translateY(-4px);
+background:#fff7f2;
+}
+
+.feedback{
+height:150px;
+margin-top:20px;
+background:white;
+border-radius:20px;
+padding:20px;
+box-shadow:0 8px 20px rgba(0,0,0,.08);
+display:flex;
+justify-content:center;
+align-items:center;
+text-align:center;
+font-size:28px;
+line-height:1.4;
+color:#1f2f5a;
+}
+
+.progress{
+margin-top:15px;
+height:14px;
+background:#ddd;
+border-radius:20px;
+overflow:hidden;
+}
+
+.fill{
+height:100%;
+width:0%;
+background:#ea7746;
+transition:.4s;
+}
+
+.complete{
+display:none;
+margin-top:15px;
+background:#ea7746;
+color:white;
+text-align:center;
+padding:16px;
+border-radius:16px;
+font-size:28px;
+font-weight:700;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="slide">
+
+<h1>Key Takeaways</h1>
+
+<div class="top">
+
+<div class="characterBox">
+<div class="character">👩‍💼</div>
+<div class="name">Riya</div>
+</div>
+
+<div class="story">
+Riya has been promoted to lead a new team. Help her make the right decisions.
+</div>
+
+</div>
+
+<div class="options">
+
+<div class="option" onclick="showTakeaway(1)">
+🧠 How should Riya identify future leaders?
+</div>
+
+<div class="option" onclick="showTakeaway(2)">
+🔄 What capability should she focus on developing?
+</div>
+
+<div class="option" onclick="showTakeaway(3)">
+🎯 What business impact can she expect?
+</div>
+
+<div class="option" onclick="showTakeaway(4)">
+👀 Can learning agility be developed?
+</div>
+
+</div>
+
+<div class="feedback" id="feedback">
+Click each challenge to uncover the key learning.
+</div>
+
+<div class="progress">
+<div class="fill" id="fill"></div>
+</div>
+
+<div class="complete" id="complete">
+🎉 Start developing learning agility in your team today!
+</div>
+
+</div>
+
+<script>
+
+let completed=[];
+
+const takeaways = {
+
+1:"Learning Agility is one of the strongest predictors of leadership potential—beyond IQ and experience alone.",
+
+2:"Learning Agility includes five dimensions: Mental, People, Change, Results Agility, and Self-Awareness.",
+
+3:"Organizations with learning-agile leaders achieve higher performance, innovation, and talent retention.",
+
+4:"Learning Agility is behavioral and can be assessed, developed, and strengthened through practice."
+
+};
+
+function showTakeaway(id){
+
+document.getElementById("feedback").innerHTML=takeaways[id];
+
+if(!completed.includes(id)){
+completed.push(id);
+}
+
+let progress=(completed.length/4)*100;
+document.getElementById("fill").style.width=progress+"%";
+
+if(completed.length===4){
+document.getElementById("complete").style.display="block";
+}
+
+}
+
+</script>
+
+</body>
+</html>
