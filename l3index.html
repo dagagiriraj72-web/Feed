@@ -11,88 +11,87 @@
 margin:0;
 padding:0;
 box-sizing:border-box;
-font-family:'Segoe UI',sans-serif;
+font-family:"Segoe UI",sans-serif;
 }
 
 body{
+background:#f4f1ed;
 display:flex;
 justify-content:center;
 align-items:center;
 height:100vh;
-background:#f4f1ed;
 overflow:hidden;
 }
 
 .slide{
 width:1280px;
 height:720px;
-padding:25px 35px;
 background:#f4f1ed;
+padding:20px 25px;
 overflow:hidden;
 }
 
 .title{
-text-align:center;
-font-size:52px;
+font-size:48px;
 font-weight:700;
+text-align:center;
 color:#1f2f5a;
-margin-bottom:20px;
+margin-bottom:15px;
 }
 
-.main{
+.container{
 display:flex;
-gap:25px;
-height:600px;
+gap:20px;
+height:620px;
 }
 
-/* LEFT NAVIGATION */
+/* LEFT PANEL */
 
 .leftPanel{
-width:350px;
-background:#fff;
-border-radius:22px;
+width:320px;
+background:white;
+border-radius:20px;
 padding:20px;
-box-shadow:0 8px 20px rgba(0,0,0,.08);
+box-shadow:0 5px 15px rgba(0,0,0,.08);
 }
 
 .instruction{
-text-align:center;
 font-size:18px;
 font-weight:600;
+text-align:center;
 color:#777;
 margin-bottom:20px;
 }
 
-.item{
+.dimension{
 display:flex;
 align-items:center;
 gap:15px;
-padding:18px;
-border-radius:16px;
+padding:15px;
+border-radius:15px;
 cursor:pointer;
 margin-bottom:15px;
 transition:.3s;
 }
 
-.item:hover{
+.dimension:hover{
 background:#f7f7f7;
-transform:translateX(5px);
 }
 
-.item.active{
+.dimension.active{
 background:#eef3ff;
-border-left:6px solid #1f2f5a;
+border-left:5px solid #1f2f5a;
 }
 
 .icon{
-width:70px;
-height:70px;
+width:65px;
+height:65px;
 border-radius:50%;
 display:flex;
 justify-content:center;
 align-items:center;
-font-size:32px;
-color:#fff;
+font-size:30px;
+color:white;
 flex-shrink:0;
 }
 
@@ -104,8 +103,8 @@ background:#3f9a87;
 background:#5c69c7;
 }
 
-.label{
-font-size:28px;
+.dimensionText{
+font-size:26px;
 font-weight:700;
 color:#1f2f5a;
 }
@@ -114,59 +113,66 @@ color:#1f2f5a;
 
 .rightPanel{
 flex:1;
-background:#fff;
-border-radius:22px;
-padding:30px;
-box-shadow:0 8px 20px rgba(0,0,0,.08);
-position:relative;
+background:white;
+border-radius:20px;
+padding:25px;
+box-shadow:0 5px 15px rgba(0,0,0,.08);
 overflow:hidden;
 }
 
-.character{
-position:absolute;
-top:20px;
-right:25px;
-font-size:90px;
-opacity:.12;
-}
-
 .heading{
-font-size:42px;
+font-size:40px;
 font-weight:700;
 color:#1f2f5a;
-margin-bottom:10px;
+margin-bottom:5px;
 }
 
 .subHeading{
-font-size:22px;
-color:#666;
-margin-bottom:25px;
-font-style:italic;
-}
-
-ul{
-padding-left:28px;
-}
-
-li{
-font-size:26px;
-line-height:1.45;
-margin-bottom:18px;
-color:#444;
-}
-
-.tip{
-position:absolute;
-left:30px;
-right:30px;
-bottom:25px;
-background:#f8f9ff;
-padding:14px;
-border-radius:14px;
 font-size:20px;
-font-weight:600;
-text-align:center;
+font-style:italic;
+color:#666;
+margin-bottom:20px;
+}
+
+.cards{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:15px;
+margin-bottom:20px;
+}
+
+.card{
+background:#f7f8ff;
+border-radius:15px;
+padding:18px;
+cursor:pointer;
+transition:.3s;
+border:2px solid transparent;
+}
+
+.card:hover{
+transform:translateY(-3px);
+border-color:#1f2f5a;
+}
+
+.cardTitle{
+font-size:22px;
+font-weight:700;
 color:#1f2f5a;
+}
+
+.detailBox{
+height:220px;
+background:#f9f9f9;
+border-radius:15px;
+padding:25px;
+display:flex;
+align-items:center;
+justify-content:center;
+text-align:center;
+font-size:28px;
+line-height:1.5;
+color:#444;
 }
 
 </style>
@@ -180,9 +186,7 @@ color:#1f2f5a;
 Change Agility & Results Agility
 </div>
 
-<div class="main">
-
-<!-- LEFT SIDE -->
+<div class="container">
 
 <div class="leftPanel">
 
@@ -190,23 +194,19 @@ Change Agility & Results Agility
 Click a dimension to explore
 </div>
 
-<div class="item active" onclick="showContent('change',this)">
+<div class="dimension active" onclick="showDimension('change',this)">
 <div class="icon change">🔄</div>
-<div class="label">Change Agility</div>
+<div class="dimensionText">Change Agility</div>
 </div>
 
-<div class="item" onclick="showContent('results',this)">
+<div class="dimension" onclick="showDimension('results',this)">
 <div class="icon results">🎯</div>
-<div class="label">Results Agility</div>
+<div class="dimensionText">Results Agility</div>
 </div>
 
 </div>
-
-<!-- RIGHT SIDE -->
 
 <div class="rightPanel">
-
-<div class="character">🧑‍💼</div>
 
 <div id="content">
 
@@ -218,18 +218,40 @@ Change Agility
 Embracing and driving change
 </div>
 
-<ul>
-<li>Sees challenges as opportunities for growth</li>
-<li>Champions and drives organizational change</li>
-<li>Experiments with new approaches fearlessly</li>
-<li>Challenges the status quo constructively</li>
-<li>Continuously seeks better methods</li>
-</ul>
+<div class="cards">
+
+<div class="card" onclick="showDetail('growth')">
+<div class="cardTitle">
+🌱 Opportunities for Growth
+</div>
+</div>
+
+<div class="card" onclick="showDetail('change')">
+<div class="cardTitle">
+🚀 Drives Change
+</div>
+</div>
+
+<div class="card" onclick="showDetail('experiment')">
+<div class="cardTitle">
+🧪 Experiments Fearlessly
+</div>
+</div>
+
+<div class="card" onclick="showDetail('status')">
+<div class="cardTitle">
+💡 Challenges Status Quo
+</div>
+</div>
 
 </div>
 
-<div class="tip">
-Learning-agile leaders embrace change before others do.
+<div class="detailBox" id="detailBox">
+
+Click a card to learn more.
+
+</div>
+
 </div>
 
 </div>
@@ -240,53 +262,115 @@ Learning-agile leaders embrace change before others do.
 
 <script>
 
-function showContent(type,element){
+function showDimension(type,el){
 
-document.querySelectorAll('.item').forEach(i=>{
-i.classList.remove('active');
+document.querySelectorAll('.dimension').forEach(d=>{
+d.classList.remove('active');
 });
 
-element.classList.add('active');
-
-const panel=document.getElementById('content');
+el.classList.add('active');
 
 if(type==="change"){
 
-panel.innerHTML=`
+document.getElementById('content').innerHTML=`
+
 <div class="heading">Change Agility</div>
 
 <div class="subHeading">
 Embracing and driving change
 </div>
 
-<ul>
-<li>Sees challenges as opportunities for growth</li>
-<li>Champions and drives organizational change</li>
-<li>Experiments with new approaches fearlessly</li>
-<li>Challenges the status quo constructively</li>
-<li>Continuously seeks better methods</li>
-</ul>
+<div class="cards">
+
+<div class="card" onclick="showDetail('growth')">
+<div class="cardTitle">🌱 Opportunities for Growth</div>
+</div>
+
+<div class="card" onclick="showDetail('change')">
+<div class="cardTitle">🚀 Drives Change</div>
+</div>
+
+<div class="card" onclick="showDetail('experiment')">
+<div class="cardTitle">🧪 Experiments Fearlessly</div>
+</div>
+
+<div class="card" onclick="showDetail('status')">
+<div class="cardTitle">💡 Challenges Status Quo</div>
+</div>
+
+</div>
+
+<div class="detailBox" id="detailBox">
+Click a card to learn more.
+</div>
+
 `;
+
 }
 
 if(type==="results"){
 
-panel.innerHTML=`
+document.getElementById('content').innerHTML=`
+
 <div class="heading">Results Agility</div>
 
 <div class="subHeading">
 Delivering results in new conditions
 </div>
 
-<ul>
-<li>Delivers results in first-time, tough conditions</li>
-<li>Builds high-performing teams under pressure</li>
-<li>Demonstrates resilience and resourcefulness</li>
-<li>Inspires confidence during uncertainty</li>
-<li>Focuses on outcomes, not just activities</li>
-</ul>
+<div class="cards">
+
+<div class="card" onclick="showDetail('deliver')">
+<div class="cardTitle">🏆 Delivers Results</div>
+</div>
+
+<div class="card" onclick="showDetail('teams')">
+<div class="cardTitle">👥 Builds Teams</div>
+</div>
+
+<div class="card" onclick="showDetail('resilience')">
+<div class="cardTitle">💪 Resilience</div>
+</div>
+
+<div class="card" onclick="showDetail('outcomes')">
+<div class="cardTitle">🎯 Focus on Outcomes</div>
+</div>
+
+</div>
+
+<div class="detailBox" id="detailBox">
+Click a card to learn more.
+</div>
+
 `;
+
 }
+
+}
+
+function showDetail(type){
+
+const details={
+
+growth:"Sees challenges as opportunities for growth and development.",
+
+change:"Champions and drives organizational change.",
+
+experiment:"Experiments with new approaches and learns quickly from experience.",
+
+status:"Challenges the status quo constructively and seeks better methods.",
+
+deliver:"Delivers results even in first-time and difficult situations.",
+
+teams:"Builds high-performing teams under pressure.",
+
+resilience:"Demonstrates resilience and resourcefulness during uncertainty.",
+
+outcomes:"Focuses on outcomes rather than simply completing activities."
+
+};
+
+document.getElementById("detailBox").innerHTML=details[type];
 
 }
 
