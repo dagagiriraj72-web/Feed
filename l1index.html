@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>5 Dimensions of Learning Agility</title>
+
+<style>
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:"Segoe UI",sans-serif;
+}
+
+body{
+width:100vw;
+height:100vh;
+overflow:hidden;
+background:#182c5b;
+}
+
+.container{
+width:100%;
+height:100%;
+padding:1.5%;
+display:flex;
+flex-direction:column;
+}
+
+.title{
+text-align:center;
+color:white;
+font-size:2.8vw;
+font-weight:700;
+margin-bottom:1%;
+}
+
+.cards{
+flex:1;
+display:flex;
+justify-content:space-between;
+align-items:flex-start;
+gap:1%;
+}
+
+.card{
+width:19%;
+height:100%;
+display:flex;
+flex-direction:column;
+align-items:center;
+text-align:center;
+padding:1%;
+border-radius:18px;
+transition:.35s;
+cursor:pointer;
+}
+
+.card:hover{
+background:rgba(255,255,255,.08);
+transform:translateY(-8px);
+}
+
+.icon{
+width:7vw;
+height:7vw;
+min-width:80px;
+min-height:80px;
+max-width:120px;
+max-height:120px;
+border-radius:50%;
+background:#eb7a46;
+display:flex;
+align-items:center;
+justify-content:center;
+font-size:3vw;
+color:white;
+margin-bottom:4%;
+box-shadow:0 5px 15px rgba(0,0,0,.3);
+}
+
+.heading{
+font-size:1.8vw;
+font-weight:700;
+color:white;
+line-height:1.2;
+margin-bottom:4%;
+}
+
+.desc{
+font-size:1.15vw;
+color:#dbe5ff;
+line-height:1.4;
+}
+
+.infoBox{
+height:17%;
+background:rgba(255,255,255,.08);
+border-radius:18px;
+display:flex;
+align-items:center;
+justify-content:center;
+padding:1.5%;
+text-align:center;
+margin-top:1%;
+}
+
+.infoText{
+font-size:1.3vw;
+color:white;
+line-height:1.5;
+max-width:90%;
+}
+
+.popup{
+position:absolute;
+top:50%;
+left:50%;
+transform:translate(-50%,-50%);
+width:42%;
+background:white;
+border-radius:20px;
+padding:2%;
+display:none;
+box-shadow:0 10px 30px rgba(0,0,0,.35);
+z-index:999;
+text-align:center;
+}
+
+.popup h2{
+color:#182c5b;
+margin-bottom:12px;
+font-size:2vw;
+}
+
+.popup p{
+font-size:1.2vw;
+line-height:1.6;
+color:#444;
+}
+
+.closeBtn{
+margin-top:15px;
+padding:10px 25px;
+border:none;
+border-radius:30px;
+background:#eb7a46;
+color:white;
+font-size:1vw;
+cursor:pointer;
+}
+
+.overlay{
+position:absolute;
+inset:0;
+background:rgba(0,0,0,.45);
+display:none;
+z-index:998;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<div class="title">
+The 5 Dimensions of Learning Agility
+</div>
+
+<div class="cards">
+
+<div class="card" onclick="showPopup('Mental Agility','Ability to think critically, analyze situations quickly, and make fresh connections between ideas. Learners with high mental agility solve problems creatively.')">
+<div class="icon">🧠</div>
+<div class="heading">Mental<br>Agility</div>
+<div class="desc">Critical thinking & fresh connections</div>
+</div>
+
+<div class="card" onclick="showPopup('People Agility','Ability to understand others, work effectively with different personalities, and learn through collaboration and diverse perspectives.')">
+<div class="icon">👥</div>
+<div class="heading">People<br>Agility</div>
+<div class="desc">Interpersonal skill & diverse perspectives</div>
+</div>
+
+<div class="card" onclick="showPopup('Change Agility','Willingness to embrace new experiences, adapt to uncertainty, and drive positive change in dynamic environments.')">
+<div class="icon">🔄</div>
+<div class="heading">Change<br>Agility</div>
+<div class="desc">Embracing & driving change</div>
+</div>
+
+<div class="card" onclick="showPopup('Results Agility','Capability to perform under new, challenging, and unfamiliar conditions while delivering results.')">
+<div class="icon">🎯</div>
+<div class="heading">Results<br>Agility</div>
+<div class="desc">Delivering under new conditions</div>
+</div>
+
+<div class="card" onclick="showPopup('Self Awareness','Understanding your strengths, weaknesses, impact on others, and continuously learning from feedback.')">
+<div class="icon">👁️</div>
+<div class="heading">Self<br>Awareness</div>
+<div class="desc">Understanding impact on others</div>
+</div>
+
+</div>
+
+<div class="infoBox">
+<div class="infoText">
+💡 Click on any dimension to learn more. These five dimensions, introduced by Lombardo & Eichinger (2000), form a globally recognized framework for leadership development and talent assessment.
+</div>
+</div>
+
+</div>
+
+<div class="overlay" id="overlay"></div>
+
+<div class="popup" id="popup">
+<h2 id="popupTitle"></h2>
+<p id="popupText"></p>
+<button class="closeBtn" onclick="closePopup()">Close</button>
+</div>
+
+<script>
+
+function showPopup(title,text){
+document.getElementById("popupTitle").innerHTML=title;
+document.getElementById("popupText").innerHTML=text;
+document.getElementById("popup").style.display="block";
+document.getElementById("overlay").style.display="block";
+}
+
+function closePopup(){
+document.getElementById("popup").style.display="none";
+document.getElementById("overlay").style.display="none";
+}
+
+</script>
+
+</body>
+</html>
