@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nine Organizational Strategies Challenge</title>
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Segoe UI',sans-serif;
+}
+
+body{
+width:100vw;
+height:100vh;
+overflow:hidden;
+background:#f4f5f8;
+display:flex;
+justify-content:center;
+align-items:center;
+}
+
+#game{
+width:1280px;
+height:720px;
+background:#f4f5f8;
+position:relative;
+overflow:hidden;
+}
+
+/* HEADER */
+
+.header{
+position:absolute;
+top:15px;
+left:30px;
+}
+
+.header h1{
+font-size:54px;
+font-weight:800;
+color:#1f1c5a;
+}
+
+/* MISSION */
+
+.mission{
+position:absolute;
+top:95px;
+left:50%;
+transform:translateX(-50%);
+background:#1f1c5a;
+color:white;
+padding:10px 24px;
+border-radius:30px;
+font-size:16px;
+font-weight:600;
+animation:pulse 2s infinite;
+}
+
+@keyframes pulse{
+0%,100%{transform:translateX(-50%) scale(1);}
+50%{transform:translateX(-50%) scale(1.05);}
+}
+
+/* PROGRESS */
+
+.progress{
+position:absolute;
+top:20px;
+right:30px;
+background:white;
+padding:12px 20px;
+border-radius:12px;
+box-shadow:0 5px 15px rgba(0,0,0,.08);
+font-weight:700;
+color:#1f1c5a;
+}
+
+.progress span{
+color:#5b5ee8;
+}
+
+/* FLOATING ICONS */
+
+.float{
+position:absolute;
+font-size:28px;
+opacity:.15;
+animation:float 5s ease-in-out infinite;
+pointer-events:none;
+}
+
+.f1{top:120px;left:15px;}
+.f2{top:280px;right:30px;animation-delay:1s;}
+.f3{bottom:40px;left:600px;animation-delay:2s;}
+.f4{top:500px;left:1150px;animation-delay:3s;}
+
+@keyframes float{
+0%,100%{transform:translateY(0);}
+50%{transform:translateY(-15px);}
+}
+
+/* GRID */
+
+.grid{
+position:absolute;
+top:145px;
+left:25px;
+width:1230px;
+display:grid;
+grid-template-columns:repeat(3,1fr);
+gap:18px;
+}
+
+.card{
+height:175px;
+background:#eceff7;
+border-radius:14px;
+padding:18px;
+display:flex;
+align-items:flex-start;
+gap:16px;
+cursor:pointer;
+transition:.35s;
+}
+
+.card:hover{
+transform:translateY(-5px);
+box-shadow:0 12px 25px rgba(0,0,0,.12);
+}
+
+.card.visited{
+border:3px solid #10b981;
+}
+
+.num{
+width:60px;
+height:60px;
+border-radius:50%;
+display:flex;
+justify-content:center;
+align-items:center;
+font-size:24px;
+font-weight:700;
+color:white;
+flex-shrink:0;
+}
+
+.purple{
+background:linear-gradient(135deg,#6b5cff,#8b5cf6);
+}
+
+.blue{
+background:linear-gradient(135deg,#3b82f6,#60a5fa);
+}
+
+.text{
+font-size:16px;
+line-height:1.45;
+font-weight:600;
+color:#4b5563;
+padding-top:8px;
+}
+
+/* POPUP */
+
+.overlay{
+position:absolute;
+inset:0;
+background:rgba(0,0,0,.55);
+display:none;
+z-index:20;
+}
+
+.popup{
+position:absolute;
+left:50%;
+top:50%;
+transform:translate(-50%,-50%);
+width:720px;
+background:white;
+border-radius:18px;
+padding:25px;
+display:none;
+z-index:30;
+box-shadow:0 20px 40px rgba(0,0,0,.25);
+}
+
+.popup h2{
+font-size:30px;
+color:#1f1c5a;
+margin-bottom:15px;
+}
+
+.scenario{
+background:#eef2ff;
+padding:15px;
+border-radius:10px;
+margin-bottom:15px;
+line-height:1.6;
+font-size:16px;
+}
+
+.solution{
+background:#ecfdf5;
+padding:15px;
+border-radius:10px;
+line-height:1.6;
+font-size:16px;
+}
+
+.popup button{
+margin-top:18px;
+padding:10px 20px;
+background:#5b5ee8;
+color:white;
+border:none;
+border-radius:8px;
+cursor:pointer;
+}
+
+/* ACHIEVEMENT */
+
+.badge{
+position:absolute;
+bottom:20px;
+left:50%;
+transform:translateX(-50%);
+background:#1f1c5a;
+color:white;
+padding:12px 24px;
+border-radius:30px;
+display:none;
+font-size:16px;
+z-index:40;
+}
+
+/* COMPLETE */
+
+.complete{
+position:absolute;
+inset:0;
+background:rgba(18,18,60,.96);
+display:none;
+justify-content:center;
+align-items:center;
+flex-direction:column;
+text-align:center;
+color:white;
+z-index:50;
+}
+
+.complete h2{
+font-size:60px;
+margin-bottom:15px;
+}
+
+.complete p{
+font-size:24px;
+width:800px;
+line-height:1.5;
+margin-bottom:20px;
+}
+
+.complete button{
+padding:12px 25px;
+border:none;
+border-radius:10px;
+background:#5b5ee8;
+color:white;
+font-size:18px;
+cursor:pointer;
+}
+
+</style>
+</head>
+
+<body>
+
+<div id="game">
+
+<div class="float f1">🚀</div>
+<div class="float f2">🧠</div>
+<div class="float f3">⭐</div>
+<div class="float f4">📈</div>
+
+<div class="header">
+<h1>Nine Organizational Strategies</h1>
+</div>
+
+<div class="progress">
+Progress: <span id="score">0</span>/9
+</div>
+
+<div class="mission">
+🎮 Mission: Explore all 9 strategies to build a Learning Agile Organization
+</div>
+
+<div class="grid">
+
+<div class="card" onclick="showScenario(this,1)">
+<div class="num purple">1</div>
+<div class="text">Embed learning agility into hiring criteria and interview processes</div>
+</div>
+
+<div class="card" onclick="showScenario(this,2)">
+<div class="num purple">2</div>
+<div class="text">Use 360-degree assessments to identify high-potential talent</div>
+</div>
+
+<div class="card" onclick="showScenario(this,3)">
+<div class="num blue">3</div>
+<div class="text">Design stretch assignments that push leaders into unfamiliar territory</div>
+</div>
+
+<div class="card" onclick="showScenario(this,4)">
+<div class="num purple">4</div>
+<div class="text">Create structured reflection practices after major projects</div>
+</div>
+
+<div class="card" onclick="showScenario(this,5)">
+<div class="num blue">5</div>
+<div class="text">Build psychological safety so teams can experiment freely</div>
+</div>
+
+<div class="card" onclick="showScenario(this,6)">
+<div class="num purple">6</div>
+<div class="text">Invest in coaching that targets specific learning agility dimensions</div>
+</div>
+
+<div class="card" onclick="showScenario(this,7)">
+<div class="num purple">7</div>
+<div class="text">Track learning agility metrics alongside performance reviews</div>
+</div>
+
+<div class="card" onclick="showScenario(this,8)">
+<div class="num blue">8</div>
+<div class="text">Foster internal mobility and cross-functional team rotations</div>
+</div>
+
+<div class="card" onclick="showScenario(this,9)">
+<div class="num purple">9</div>
+<div class="text">Align succession planning with learning agility profiles</div>
+</div>
+
+</div>
+
+<div class="overlay" id="overlay"></div>
+
+<div class="popup" id="popup">
+
+<h2 id="title"></h2>
+
+<div class="scenario" id="scenario"></div>
+
+<div class="solution" id="solution"></div>
+
+<button onclick="closePopup()">Continue Mission</button>
+
+</div>
+
+<div class="badge" id="badge"></div>
+
+<div class="complete" id="complete">
+
+<h2>🏆 Agility Architect</h2>
+
+<p>
+Congratulations! You explored all nine organizational strategies and successfully designed a Learning Agile Organization.
+</p>
+
+<button onclick="location.reload()">
+Play Again
+</button>
+
+</div>
+
+</div>
+
+<script>
+
+let explored=[];
+
+const data={
+
+1:{
+title:"🎯 Hiring for Learning Agility",
+scenario:"Your organization hires candidates based only on technical expertise.",
+solution:"Add interview questions that assess adaptability, curiosity, resilience, and learning from experience."
+},
+
+2:{
+title:"🔄 360-Degree Assessments",
+scenario:"Leadership potential decisions rely solely on manager opinions.",
+solution:"Gather feedback from peers, direct reports, customers, and managers for a complete picture."
+},
+
+3:{
+title:"🚀 Stretch Assignments",
+scenario:"High performers stay in the same role for years.",
+solution:"Assign challenging projects outside their comfort zone to accelerate growth."
+},
+
+4:{
+title:"📖 Structured Reflection",
+scenario:"Projects end and teams immediately move to the next task.",
+solution:"Conduct after-action reviews to capture lessons learned and improvement opportunities."
+},
+
+5:{
+title:"🛡 Psychological Safety",
+scenario:"Employees avoid sharing ideas because mistakes are criticized.",
+solution:"Create an environment where experimentation and intelligent failure are accepted."
+},
+
+6:{
+title:"🧠 Targeted Coaching",
+scenario:"Leaders receive generic development programs.",
+solution:"Provide coaching focused on specific agility dimensions such as change agility or self-awareness."
+},
+
+7:{
+title:"📊 Agility Metrics",
+scenario:"Performance reviews only measure results.",
+solution:"Track adaptability, experimentation, collaboration, and learning behaviors alongside performance."
+},
+
+8:{
+title:"🔀 Internal Mobility",
+scenario:"Employees rarely work outside their function.",
+solution:"Encourage job rotations and cross-functional assignments to broaden perspectives."
+},
+
+9:{
+title:"👑 Succession Planning",
+scenario:"Future leaders are selected mainly for technical expertise.",
+solution:"Identify and promote individuals who consistently demonstrate learning agility."
+}
+
+};
+
+function showScenario(card,id){
+
+document.getElementById("title").innerHTML=data[id].title;
+
+document.getElementById("scenario").innerHTML=
+"<b>🎬 Scenario:</b><br><br>"+data[id].scenario;
+
+document.getElementById("solution").innerHTML=
+"<b>✅ Best Practice:</b><br><br>"+data[id].solution;
+
+document.getElementById("popup").style.display="block";
+document.getElementById("overlay").style.display="block";
+
+if(!explored.includes(id)){
+
+explored.push(id);
+
+card.classList.add("visited");
+
+document.getElementById("score").innerHTML=explored.length;
+
+let badge=document.getElementById("badge");
+
+if(explored.length===3){
+badge.innerHTML="⭐ Talent Builder Badge Unlocked!";
+badge.style.display="block";
+setTimeout(()=>badge.style.display="none",2500);
+}
+
+if(explored.length===6){
+badge.innerHTML="🚀 Organization Designer Badge!";
+badge.style.display="block";
+setTimeout(()=>badge.style.display="none",2500);
+}
+
+if(explored.length===9){
+
+badge.innerHTML="🏆 Agility Architect Badge!";
+badge.style.display="block";
+
+setTimeout(()=>{
+document.getElementById("complete").style.display="flex";
+},1500);
+
+}
+
+}
+
+}
+
+function closePopup(){
+
+document.getElementById("popup").style.display="none";
+document.getElementById("overlay").style.display="none";
+
+}
+
+</script>
+
+</body>
+</html>
