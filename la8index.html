@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
 
 <title>Learning Agility Strategies</title>
 
@@ -16,169 +16,130 @@ font-family:Segoe UI,sans-serif;
 }
 
 body{
-background:#f4f5f8;
+background:#f5f6fb;
 overflow:hidden;
-}
-
-#slide{
-width:1280px;
-height:720px;
-margin:auto;
-background:#f4f5f8;
-position:relative;
-overflow:hidden;
-}
-
-/* TITLE */
-
-.title{
-text-align:center;
-font-size:42px;
-font-weight:800;
-color:#23235b;
-padding-top:15px;
-}
-
-/* WHEEL */
-
-.wheel{
-position:absolute;
-left:70px;
-top:130px;
-width:420px;
-height:420px;
-}
-
-.center{
-position:absolute;
-width:120px;
-height:120px;
-border-radius:50%;
-background:#23235b;
-color:white;
 display:flex;
 justify-content:center;
 align-items:center;
-text-align:center;
-font-weight:700;
-left:150px;
-top:150px;
+height:100vh;
 }
 
-.node{
-position:absolute;
-width:80px;
-height:80px;
-border-radius:50%;
-background:linear-gradient(135deg,#4f8cff,#7c4dff);
-color:white;
-font-size:30px;
+.slide{
+width:1000px;
+height:520px;
+padding:15px;
+background:#f5f6fb;
+}
+
+/* HEADER */
+
+.header{
+height:60px;
+border-radius:14px;
+background:linear-gradient(90deg,#5c6cff,#7c4dff);
+display:flex;
+align-items:center;
+justify-content:center;
+font-size:28px;
 font-weight:700;
-border:none;
+color:white;
+margin-bottom:12px;
+}
+
+/* GRID */
+
+.grid{
+display:grid;
+grid-template-columns:repeat(3,1fr);
+grid-template-rows:repeat(2,1fr);
+gap:12px;
+height:420px;
+}
+
+.card{
+background:white;
+border-radius:16px;
+padding:15px;
 cursor:pointer;
 transition:.3s;
+border:2px solid transparent;
 }
 
-.node:hover{
-transform:scale(1.1);
+.card:hover{
+transform:translateY(-4px);
+border-color:#6d5cff;
 }
 
-.n1{top:0;left:170px;}
-.n2{top:90px;right:0;}
-.n3{bottom:90px;right:0;}
-.n4{bottom:0;left:170px;}
-.n5{bottom:90px;left:0;}
-.n6{top:90px;left:0;}
-
-/* PANEL */
-
-.panel{
-position:absolute;
-right:40px;
-top:120px;
-width:650px;
-height:500px;
-background:white;
-border-radius:25px;
-padding:30px;
-box-shadow:0 5px 15px rgba(0,0,0,.08);
-}
-
-.badge{
-display:inline-block;
-padding:8px 16px;
-background:#eef2ff;
-border-radius:20px;
+.number{
+width:45px;
+height:45px;
+border-radius:50%;
+display:flex;
+align-items:center;
+justify-content:center;
+background:linear-gradient(135deg,#4f8cff,#7c4dff);
+color:white;
+font-size:22px;
 font-weight:700;
-color:#4f46e5;
-margin-bottom:15px;
-}
-
-#heading{
-font-size:40px;
-font-weight:800;
-color:#23235b;
-margin-bottom:15px;
-}
-
-#desc{
-font-size:24px;
-line-height:1.6;
-color:#4b5563;
-margin-bottom:25px;
-}
-
-.exampleTitle{
-font-size:24px;
-font-weight:700;
-color:#23235b;
 margin-bottom:10px;
 }
 
-.example{
-background:#eef2ff;
-padding:20px;
-border-radius:15px;
-font-size:22px;
-line-height:1.5;
-color:#374151;
-}
-
-.progressWrap{
-margin-top:25px;
-}
-
-.progress{
-height:12px;
-background:#d7dbe8;
-border-radius:20px;
-overflow:hidden;
-}
-
-.fill{
-height:100%;
-width:0%;
-background:linear-gradient(90deg,#4f8cff,#7c4dff);
-transition:.4s;
-}
-
-.progressText{
+.title{
 font-size:18px;
 font-weight:700;
+color:#22245f;
 margin-bottom:8px;
-color:#23235b;
 }
 
-.complete{
+.desc{
+font-size:14px;
+line-height:1.4;
+color:#555;
+}
+
+/* POPUP */
+
+.overlay{
+position:fixed;
+inset:0;
+background:rgba(0,0,0,.45);
 display:none;
-margin-top:20px;
-background:#23235b;
+}
+
+.popup{
+position:fixed;
+top:50%;
+left:50%;
+transform:translate(-50%,-50%);
+width:600px;
+background:white;
+padding:25px;
+border-radius:18px;
+display:none;
+box-shadow:0 10px 30px rgba(0,0,0,.25);
+}
+
+.popup h2{
+color:#23235b;
+margin-bottom:10px;
+font-size:28px;
+}
+
+.popup p{
+font-size:18px;
+line-height:1.6;
+color:#444;
+}
+
+button{
+margin-top:15px;
+padding:10px 20px;
+border:none;
+border-radius:8px;
+background:#5c6cff;
 color:white;
-padding:15px;
-border-radius:15px;
-font-size:22px;
-font-weight:700;
-text-align:center;
+cursor:pointer;
+font-size:16px;
 }
 
 </style>
@@ -186,135 +147,100 @@ text-align:center;
 
 <body>
 
-<div id="slide">
+<div class="slide">
 
-<div class="title">
-Learning Agility Strategies in Practice
+<div class="header">
+Learning Agility Strategies
 </div>
 
-<div class="wheel">
+<div class="grid">
 
-<div class="center">
-Learning<br>Agility
+<div class="card" onclick="show(0)">
+<div class="number">1</div>
+<div class="title">Mindful Awareness</div>
+<div class="desc">Pause before reacting and think deliberately.</div>
 </div>
 
-<button class="node n1" onclick="show(0)">1</button>
-<button class="node n2" onclick="show(1)">2</button>
-<button class="node n3" onclick="show(2)">3</button>
-<button class="node n4" onclick="show(3)">4</button>
-<button class="node n5" onclick="show(4)">5</button>
-<button class="node n6" onclick="show(5)">6</button>
-
+<div class="card" onclick="show(1)">
+<div class="number">2</div>
+<div class="title">Forecasting</div>
+<div class="desc">Prepare for future skill needs.</div>
 </div>
 
-<div class="panel">
-
-<div class="badge">
-Strategy Explorer
+<div class="card" onclick="show(2)">
+<div class="number">3</div>
+<div class="title">Curiosity</div>
+<div class="desc">Ask questions and seek perspectives.</div>
 </div>
 
-<div id="heading">
-Select a Strategy
+<div class="card" onclick="show(3)">
+<div class="number">4</div>
+<div class="title">Feedback Loops</div>
+<div class="desc">Build regular feedback habits.</div>
 </div>
 
-<div id="desc">
-Click a numbered strategy node to explore practical ways to build learning agility.
+<div class="card" onclick="show(4)">
+<div class="number">5</div>
+<div class="title">Reflection</div>
+<div class="desc">Review lessons learned frequently.</div>
 </div>
 
-<div class="exampleTitle">
-Workplace Example
-</div>
-
-<div class="example" id="example">
-Choose any strategy from the wheel.
-</div>
-
-<div class="progressWrap">
-
-<div class="progressText">
-Progress: <span id="count">0</span>/6
-</div>
-
-<div class="progress">
-<div class="fill" id="fill"></div>
+<div class="card" onclick="show(5)">
+<div class="number">6</div>
+<div class="title">Risk-Taking</div>
+<div class="desc">Experiment beyond comfort zones.</div>
 </div>
 
 </div>
 
-<div class="complete" id="complete">
-🏆 Learning Agility Champion Unlocked
 </div>
 
-</div>
+<div class="overlay" id="overlay"></div>
 
+<div class="popup" id="popup">
+<h2 id="ptitle"></h2>
+<p id="ptext"></p>
+<button onclick="closePopup()">Close</button>
 </div>
 
 <script>
 
 const data=[
 
-{
-title:"Mindful Awareness",
-desc:"Shift from reactive thinking to deliberate thinking before acting.",
-example:"Pause and assess emotions before responding to a challenging situation."
-},
+["Mindful Awareness",
+"Shift from reactive thinking to deliberate thinking before acting."],
 
-{
-title:"Forecasting",
-desc:"Anticipate future skills and capability requirements.",
-example:"Encourage team members to attend conferences and cross-train."
-},
+["Forecasting",
+"Anticipate future skill requirements and prepare proactively."],
 
-{
-title:"Curiosity & Openness",
-desc:"Challenge assumptions and seek alternative perspectives.",
-example:"Ask 'What if?' questions during team discussions."
-},
+["Curiosity & Openness",
+"Challenge assumptions and welcome different viewpoints."],
 
-{
-title:"Feedback Loops",
-desc:"Create regular feedback routines and act on insights.",
-example:"Hold monthly feedback sessions with peers and managers."
-},
+["Feedback Loops",
+"Create regular opportunities to receive and act on feedback."],
 
-{
-title:"Structured Reflection",
-desc:"Review successes, failures and lessons learned.",
-example:"Conduct after-action reviews at project completion."
-},
+["Structured Reflection",
+"Pause after experiences to identify lessons learned."],
 
-{
-title:"Calculated Risk-Taking",
-desc:"Encourage experimentation beyond comfort zones.",
-example:"Pilot a new process before rolling it out organization-wide."
-}
+["Calculated Risk-Taking",
+"Experiment, stretch yourself, and learn from intelligent failures."]
 
 ];
 
-let visited=[];
-
 function show(i){
 
-document.getElementById("heading").innerText=data[i].title;
-document.getElementById("desc").innerText=data[i].desc;
-document.getElementById("example").innerText=data[i].example;
+document.getElementById("ptitle").innerText=data[i][0];
+document.getElementById("ptext").innerText=data[i][1];
 
-if(!visited.includes(i)){
-
-visited.push(i);
-
-document.getElementById("count").innerText=visited.length;
-
-document.getElementById("fill").style.width=
-(visited.length/6*100)+"%";
-
-if(visited.length===6){
-
-document.getElementById("complete").style.display="block";
+document.getElementById("overlay").style.display="block";
+document.getElementById("popup").style.display="block";
 
 }
 
-}
+function closePopup(){
+
+document.getElementById("overlay").style.display="none";
+document.getElementById("popup").style.display="none";
 
 }
 
