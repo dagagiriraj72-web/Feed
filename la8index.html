@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>Learning Agility Strategies</title>
 
 <style>
@@ -11,56 +12,147 @@
 margin:0;
 padding:0;
 box-sizing:border-box;
-font-family:"Segoe UI",sans-serif;
+font-family:Segoe UI,sans-serif;
 }
 
 body{
-width:100vw;
-height:100vh;
+background:#f4f5f8;
 overflow:hidden;
-background:#f5f6fa;
-display:flex;
-justify-content:center;
-align-items:center;
 }
 
 #slide{
 width:1280px;
 height:720px;
-background:#f5f6fa;
-padding:18px;
+margin:auto;
+background:#f4f5f8;
+position:relative;
 overflow:hidden;
 }
 
+/* TITLE */
+
 .title{
+text-align:center;
 font-size:42px;
 font-weight:800;
-text-align:center;
 color:#23235b;
-margin-bottom:12px;
+padding-top:15px;
 }
 
-.mission{
-width:620px;
-margin:auto;
+/* WHEEL */
+
+.wheel{
+position:absolute;
+left:70px;
+top:130px;
+width:420px;
+height:420px;
+}
+
+.center{
+position:absolute;
+width:120px;
+height:120px;
+border-radius:50%;
 background:#23235b;
 color:white;
-padding:10px;
-border-radius:30px;
+display:flex;
+justify-content:center;
+align-items:center;
 text-align:center;
-font-size:18px;
 font-weight:700;
+left:150px;
+top:150px;
+}
+
+.node{
+position:absolute;
+width:80px;
+height:80px;
+border-radius:50%;
+background:linear-gradient(135deg,#4f8cff,#7c4dff);
+color:white;
+font-size:30px;
+font-weight:700;
+border:none;
+cursor:pointer;
+transition:.3s;
+}
+
+.node:hover{
+transform:scale(1.1);
+}
+
+.n1{top:0;left:170px;}
+.n2{top:90px;right:0;}
+.n3{bottom:90px;right:0;}
+.n4{bottom:0;left:170px;}
+.n5{bottom:90px;left:0;}
+.n6{top:90px;left:0;}
+
+/* PANEL */
+
+.panel{
+position:absolute;
+right:40px;
+top:120px;
+width:650px;
+height:500px;
+background:white;
+border-radius:25px;
+padding:30px;
+box-shadow:0 5px 15px rgba(0,0,0,.08);
+}
+
+.badge{
+display:inline-block;
+padding:8px 16px;
+background:#eef2ff;
+border-radius:20px;
+font-weight:700;
+color:#4f46e5;
 margin-bottom:15px;
+}
+
+#heading{
+font-size:40px;
+font-weight:800;
+color:#23235b;
+margin-bottom:15px;
+}
+
+#desc{
+font-size:24px;
+line-height:1.6;
+color:#4b5563;
+margin-bottom:25px;
+}
+
+.exampleTitle{
+font-size:24px;
+font-weight:700;
+color:#23235b;
+margin-bottom:10px;
+}
+
+.example{
+background:#eef2ff;
+padding:20px;
+border-radius:15px;
+font-size:22px;
+line-height:1.5;
+color:#374151;
+}
+
+.progressWrap{
+margin-top:25px;
 }
 
 .progress{
-height:10px;
-width:450px;
-background:#d8deeb;
-margin:auto;
+height:12px;
+background:#d7dbe8;
 border-radius:20px;
 overflow:hidden;
-margin-bottom:15px;
 }
 
 .fill{
@@ -70,121 +162,28 @@ background:linear-gradient(90deg,#4f8cff,#7c4dff);
 transition:.4s;
 }
 
-.layout{
-display:flex;
-gap:18px;
-height:560px;
-}
-
-.menu{
-width:330px;
-display:flex;
-flex-direction:column;
-gap:10px;
-}
-
-.btn{
-background:white;
-border:none;
-border-radius:15px;
-padding:15px;
-cursor:pointer;
-display:flex;
-align-items:center;
-gap:12px;
-box-shadow:0 3px 10px rgba(0,0,0,.08);
-transition:.25s;
-}
-
-.btn:hover{
-transform:translateX(4px);
-}
-
-.btn.visited{
-border:3px solid #4ade80;
-}
-
-.num{
-width:48px;
-height:48px;
-border-radius:50%;
-display:flex;
-justify-content:center;
-align-items:center;
-color:white;
-font-size:24px;
+.progressText{
+font-size:18px;
 font-weight:700;
-background:linear-gradient(135deg,#4f8cff,#7c4dff);
-}
-
-.btn span{
-font-size:20px;
-font-weight:700;
+margin-bottom:8px;
 color:#23235b;
-}
-
-.panel{
-flex:1;
-background:white;
-border-radius:25px;
-padding:30px;
-box-shadow:0 5px 15px rgba(0,0,0,.08);
-}
-
-.badge{
-display:inline-block;
-padding:8px 14px;
-border-radius:30px;
-background:#eef2ff;
-color:#4f46e5;
-font-weight:700;
-margin-bottom:18px;
-}
-
-.panel h2{
-font-size:40px;
-color:#23235b;
-margin-bottom:18px;
-}
-
-.panel p{
-font-size:26px;
-line-height:1.6;
-color:#4b5563;
-margin-bottom:25px;
-}
-
-.example{
-background:#eef2ff;
-padding:20px;
-border-radius:15px;
-font-size:24px;
-line-height:1.5;
-color:#374151;
 }
 
 .complete{
-position:fixed;
-inset:0;
-background:rgba(25,25,55,.95);
 display:none;
-justify-content:center;
-align-items:center;
-flex-direction:column;
+margin-top:20px;
+background:#23235b;
 color:white;
-}
-
-.complete h2{
-font-size:60px;
-margin-bottom:10px;
-}
-
-.complete p{
-font-size:26px;
+padding:15px;
+border-radius:15px;
+font-size:22px;
+font-weight:700;
+text-align:center;
 }
 
 </style>
 </head>
+
 <body>
 
 <div id="slide">
@@ -193,77 +192,61 @@ font-size:26px;
 Learning Agility Strategies in Practice
 </div>
 
-<div class="mission">
-🎯 Explore all 6 strategies
+<div class="wheel">
+
+<div class="center">
+Learning<br>Agility
 </div>
 
-<div class="progress">
-<div class="fill" id="fill"></div>
-</div>
-
-<div class="layout">
-
-<div class="menu">
-
-<button class="btn" onclick="show(0,this)">
-<div class="num">1</div>
-<span>Mindful Awareness</span>
-</button>
-
-<button class="btn" onclick="show(1,this)">
-<div class="num">2</div>
-<span>Forecasting</span>
-</button>
-
-<button class="btn" onclick="show(2,this)">
-<div class="num">3</div>
-<span>Curiosity & Openness</span>
-</button>
-
-<button class="btn" onclick="show(3,this)">
-<div class="num">4</div>
-<span>Feedback Loops</span>
-</button>
-
-<button class="btn" onclick="show(4,this)">
-<div class="num">5</div>
-<span>Structured Reflection</span>
-</button>
-
-<button class="btn" onclick="show(5,this)">
-<div class="num">6</div>
-<span>Calculated Risk-Taking</span>
-</button>
+<button class="node n1" onclick="show(0)">1</button>
+<button class="node n2" onclick="show(1)">2</button>
+<button class="node n3" onclick="show(2)">3</button>
+<button class="node n4" onclick="show(3)">4</button>
+<button class="node n5" onclick="show(4)">5</button>
+<button class="node n6" onclick="show(5)">6</button>
 
 </div>
 
 <div class="panel">
 
 <div class="badge">
-Learning Agility Strategy
+Strategy Explorer
 </div>
 
-<h2 id="titleBox">
+<div id="heading">
 Select a Strategy
-</h2>
-
-<p id="descBox">
-Click any strategy from the left panel to learn how it strengthens learning agility.
-</p>
-
-<div class="example" id="exampleBox">
-Example: A leader learns from every experience and continuously adapts to new challenges.
 </div>
 
+<div id="desc">
+Click a numbered strategy node to explore practical ways to build learning agility.
 </div>
 
+<div class="exampleTitle">
+Workplace Example
+</div>
+
+<div class="example" id="example">
+Choose any strategy from the wheel.
+</div>
+
+<div class="progressWrap">
+
+<div class="progressText">
+Progress: <span id="count">0</span>/6
+</div>
+
+<div class="progress">
+<div class="fill" id="fill"></div>
 </div>
 
 </div>
 
 <div class="complete" id="complete">
-<h2>🏆 Strategy Master</h2>
-<p>You explored all 6 Learning Agility Strategies.</p>
+🏆 Learning Agility Champion Unlocked
+</div>
+
+</div>
+
 </div>
 
 <script>
@@ -273,63 +256,61 @@ const data=[
 {
 title:"Mindful Awareness",
 desc:"Shift from reactive thinking to deliberate thinking before acting.",
-example:"Pause before responding to a difficult situation and assess emotions objectively."
+example:"Pause and assess emotions before responding to a challenging situation."
 },
 
 {
 title:"Forecasting",
-desc:"Anticipate future skills your team will need and prepare proactively.",
-example:"Encourage team members to attend conferences, read books and cross-train."
+desc:"Anticipate future skills and capability requirements.",
+example:"Encourage team members to attend conferences and cross-train."
 },
 
 {
 title:"Curiosity & Openness",
-desc:"Challenge assumptions and welcome perspectives different from your own.",
-example:"Ask 'What if?' questions and actively seek diverse viewpoints."
+desc:"Challenge assumptions and seek alternative perspectives.",
+example:"Ask 'What if?' questions during team discussions."
 },
 
 {
 title:"Feedback Loops",
-desc:"Create regular feedback rituals and act on what you hear.",
-example:"Collect feedback after projects and discuss improvements openly."
+desc:"Create regular feedback routines and act on insights.",
+example:"Hold monthly feedback sessions with peers and managers."
 },
 
 {
 title:"Structured Reflection",
-desc:"Pause to analyze successes, failures and lessons learned.",
-example:"Conduct after-action reviews to identify improvements."
+desc:"Review successes, failures and lessons learned.",
+example:"Conduct after-action reviews at project completion."
 },
 
 {
 title:"Calculated Risk-Taking",
-desc:"Encourage experimentation and intelligent failure.",
-example:"Test new ideas through small pilots before scaling them."
+desc:"Encourage experimentation beyond comfort zones.",
+example:"Pilot a new process before rolling it out organization-wide."
 }
 
 ];
 
-let viewed=[];
+let visited=[];
 
-function show(i,el){
+function show(i){
 
-document.getElementById("titleBox").innerText=data[i].title;
-document.getElementById("descBox").innerText=data[i].desc;
-document.getElementById("exampleBox").innerHTML="<b>Example:</b> "+data[i].example;
+document.getElementById("heading").innerText=data[i].title;
+document.getElementById("desc").innerText=data[i].desc;
+document.getElementById("example").innerText=data[i].example;
 
-if(!viewed.includes(i)){
+if(!visited.includes(i)){
 
-viewed.push(i);
+visited.push(i);
 
-el.classList.add("visited");
+document.getElementById("count").innerText=visited.length;
 
 document.getElementById("fill").style.width=
-(viewed.length/6*100)+"%";
+(visited.length/6*100)+"%";
 
-if(viewed.length===6){
+if(visited.length===6){
 
-setTimeout(()=>{
-document.getElementById("complete").style.display="flex";
-},800);
+document.getElementById("complete").style.display="block";
 
 }
 
