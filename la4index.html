@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Leadership Predictor</title>
+
+<style>
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Segoe UI',sans-serif;
+}
+
+body{
+width:100vw;
+height:100vh;
+overflow:hidden;
+background:#f4f4f6;
+display:flex;
+justify-content:center;
+align-items:center;
+}
+
+#slide{
+width:1280px;
+height:720px;
+background:#f4f4f6;
+position:relative;
+overflow:hidden;
+}
+
+/* HEADER */
+
+.header{
+position:absolute;
+top:20px;
+left:40px;
+}
+
+.header h1{
+font-size:62px;
+font-weight:800;
+color:#1f1c5a;
+}
+
+.subtitle{
+margin-top:5px;
+font-size:18px;
+color:#7b7b91;
+}
+
+/* LEFT PANEL */
+
+.left-panel{
+position:absolute;
+left:40px;
+top:120px;
+width:620px;
+height:520px;
+background:#e9e8f2;
+border-radius:16px;
+padding:30px;
+}
+
+.left-panel h2{
+font-size:28px;
+line-height:1.4;
+color:#24205c;
+margin-bottom:25px;
+}
+
+.left-panel p{
+font-size:18px;
+line-height:1.6;
+color:#4b5563;
+margin-bottom:20px;
+}
+
+.points{
+margin-top:10px;
+padding-left:25px;
+}
+
+.points li{
+font-size:18px;
+line-height:1.6;
+margin-bottom:10px;
+color:#4b5563;
+}
+
+/* RIGHT PANEL */
+
+.right-panel{
+position:absolute;
+right:40px;
+top:120px;
+width:540px;
+height:520px;
+}
+
+.right-title{
+font-size:28px;
+font-weight:700;
+color:#24205c;
+margin-bottom:30px;
+}
+
+.factor{
+margin-bottom:45px;
+cursor:pointer;
+}
+
+.factor-name{
+font-size:18px;
+font-weight:600;
+color:#24205c;
+margin-bottom:10px;
+}
+
+.bar-bg{
+width:100%;
+height:40px;
+background:#dfe3ef;
+overflow:hidden;
+border-radius:4px;
+}
+
+.bar-fill{
+height:100%;
+transition:1s;
+}
+
+.learning{
+width:95%;
+background:linear-gradient(90deg,#5f5ce6,#6866f0);
+}
+
+.experience{
+width:55%;
+background:#5a95df;
+}
+
+.iq{
+width:45%;
+background:#9aa1af;
+}
+
+.education{
+width:35%;
+background:#9aa1af;
+}
+
+/* INFO BOX */
+
+.info-box{
+position:absolute;
+bottom:15px;
+left:0;
+width:100%;
+background:white;
+border-radius:12px;
+padding:15px;
+font-size:16px;
+line-height:1.5;
+color:#4b5563;
+box-shadow:0 5px 15px rgba(0,0,0,.08);
+}
+
+.highlight{
+animation:pulse .8s ease;
+}
+
+@keyframes pulse{
+0%{transform:scale(1);}
+50%{transform:scale(1.03);}
+100%{transform:scale(1);}
+}
+
+/* COMPLETION */
+
+.complete{
+position:absolute;
+inset:0;
+background:rgba(25,22,82,.96);
+display:none;
+justify-content:center;
+align-items:center;
+flex-direction:column;
+color:white;
+text-align:center;
+z-index:999;
+}
+
+.complete h2{
+font-size:56px;
+margin-bottom:15px;
+}
+
+.complete p{
+font-size:22px;
+margin-bottom:20px;
+}
+
+.complete button{
+padding:12px 28px;
+font-size:18px;
+border:none;
+border-radius:8px;
+background:#5f5ce6;
+color:white;
+cursor:pointer;
+}
+</style>
+</head>
+
+<body>
+
+<div id="slide">
+
+<div class="header">
+<h1>The Leadership Predictor</h1>
+</div>
+
+<!-- LEFT CONTENT -->
+
+<div class="left-panel">
+
+<h2>
+Learning agility surpasses intelligence and education as the most reliable indicator of executive success.
+</h2>
+
+<p>
+Three decades of research confirm that learning agile leaders:
+</p>
+
+<ul class="points">
+<li>Master new roles faster and more completely</li>
+<li>Derive more meaning from their experiences</li>
+<li>Constantly seek new challenges and feedback</li>
+<li>Consistently outperform their peers in new contexts</li>
+</ul>
+
+</div>
+
+<!-- RIGHT CONTENT -->
+
+<div class="right-panel">
+
+<div class="right-title">
+Predictive Power of Success Factors
+</div>
+
+<div class="factor" onclick="showInfo('learning')">
+<div class="factor-name">Learning Agility</div>
+<div class="bar-bg">
+<div class="bar-fill learning"></div>
+</div>
+</div>
+
+<div class="factor" onclick="showInfo('experience')">
+<div class="factor-name">Past Experience</div>
+<div class="bar-bg">
+<div class="bar-fill experience"></div>
+</div>
+</div>
+
+<div class="factor" onclick="showInfo('iq')">
+<div class="factor-name">IQ / Intelligence</div>
+<div class="bar-bg">
+<div class="bar-fill iq"></div>
+</div>
+</div>
+
+<div class="factor" onclick="showInfo('education')">
+<div class="factor-name">Education Level</div>
+<div class="bar-bg">
+<div class="bar-fill education"></div>
+</div>
+</div>
+
+<div class="info-box" id="infoBox">
+🎯 Click any success factor to compare its impact on leadership success.
+</div>
+
+</div>
+
+<!-- COMPLETION -->
+
+<div class="complete" id="complete">
+
+<h2>🏆 Insight Unlocked</h2>
+
+<p>
+Learning Agility has the strongest predictive power for leadership success.
+</p>
+
+<button onclick="location.reload()">
+Explore Again
+</button>
+
+</div>
+
+</div>
+
+<script>
+
+let viewed=[];
+
+function showInfo(type){
+
+const info=document.getElementById("infoBox");
+
+const messages={
+
+learning:
+"Learning Agility is the strongest predictor of leadership success because agile leaders continuously learn, adapt, and thrive in unfamiliar situations.",
+
+experience:
+"Past experience helps leaders navigate familiar challenges, but it is less predictive when facing new and complex situations.",
+
+iq:
+"Intelligence supports problem-solving, but high IQ alone does not guarantee leadership effectiveness in changing environments.",
+
+education:
+"Education provides knowledge and foundations, but real leadership success depends on applying and adapting that knowledge."
+};
+
+info.innerHTML=messages[type];
+
+info.classList.remove("highlight");
+void info.offsetWidth;
+info.classList.add("highlight");
+
+if(!viewed.includes(type)){
+viewed.push(type);
+}
+
+if(viewed.length===4){
+
+setTimeout(()=>{
+document.getElementById("complete").style.display="flex";
+},800);
+
+}
+
+}
+
+</script>
+
+</body>
+</html>
