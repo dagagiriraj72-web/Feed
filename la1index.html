@@ -30,23 +30,16 @@ height:720px;
 background:#182c5b;
 overflow:hidden;
 position:relative;
-padding:15px 20px;
+padding:20px;
 }
 
-/* HEADER */
+/* TITLE */
 
 .title{
 text-align:center;
-font-size:36px;
+font-size:42px;
 font-weight:700;
 color:white;
-margin-bottom:10px;
-}
-
-.subtitle{
-text-align:center;
-font-size:16px;
-color:#dbe5ff;
 margin-bottom:15px;
 }
 
@@ -54,14 +47,14 @@ margin-bottom:15px;
 
 .progress{
 position:absolute;
-top:18px;
-right:20px;
+top:25px;
+right:25px;
 background:rgba(255,255,255,.12);
-padding:8px 15px;
-border-radius:10px;
+padding:10px 18px;
+border-radius:12px;
 color:white;
 font-weight:600;
-font-size:15px;
+font-size:16px;
 }
 
 /* CARDS */
@@ -70,15 +63,15 @@ font-size:15px;
 display:flex;
 justify-content:space-between;
 align-items:flex-start;
-height:420px;
+height:480px;
 margin-top:10px;
 }
 
 .card{
-width:235px;
-height:390px;
+width:240px;
+height:450px;
 border-radius:18px;
-padding:18px 12px;
+padding:20px 15px;
 display:flex;
 flex-direction:column;
 align-items:center;
@@ -89,7 +82,7 @@ transition:.35s;
 
 .card:hover{
 background:rgba(255,255,255,.08);
-transform:translateY(-5px);
+transform:translateY(-8px);
 }
 
 .card.visited{
@@ -98,30 +91,30 @@ border:2px solid #38ef7d;
 }
 
 .icon{
-width:85px;
-height:85px;
+width:100px;
+height:100px;
 border-radius:50%;
 background:#eb7a46;
 display:flex;
 align-items:center;
 justify-content:center;
-font-size:42px;
+font-size:48px;
 color:white;
-margin-bottom:15px;
+margin-bottom:18px;
 box-shadow:0 5px 15px rgba(0,0,0,.3);
 }
 
 .heading{
-font-size:28px;
+font-size:30px;
 font-weight:700;
 color:white;
-line-height:1.15;
-margin-bottom:12px;
+line-height:1.2;
+margin-bottom:15px;
 }
 
 .desc{
-font-size:17px;
-line-height:1.45;
+font-size:18px;
+line-height:1.5;
 color:#dbe5ff;
 }
 
@@ -129,21 +122,21 @@ color:#dbe5ff;
 
 .infoBox{
 position:absolute;
-bottom:15px;
+bottom:20px;
 left:20px;
 right:20px;
-height:90px;
+height:120px;
 background:rgba(255,255,255,.08);
-border-radius:16px;
+border-radius:18px;
 display:flex;
 align-items:center;
 justify-content:center;
-padding:15px;
+padding:20px;
 }
 
 .infoText{
-font-size:18px;
-line-height:1.4;
+font-size:20px;
+line-height:1.5;
 color:white;
 text-align:center;
 }
@@ -166,7 +159,7 @@ transform:translate(-50%,-50%);
 width:650px;
 background:white;
 border-radius:20px;
-padding:25px;
+padding:30px;
 display:none;
 z-index:101;
 text-align:center;
@@ -174,25 +167,25 @@ box-shadow:0 15px 40px rgba(0,0,0,.35);
 }
 
 .popup h2{
-font-size:32px;
+font-size:34px;
 color:#182c5b;
 margin-bottom:15px;
 }
 
 .popup p{
-font-size:19px;
-line-height:1.6;
+font-size:20px;
+line-height:1.7;
 color:#444;
 }
 
 .closeBtn{
-margin-top:18px;
-padding:12px 25px;
+margin-top:20px;
+padding:12px 28px;
 border:none;
 border-radius:30px;
 background:#eb7a46;
 color:white;
-font-size:17px;
+font-size:18px;
 cursor:pointer;
 }
 
@@ -212,12 +205,12 @@ z-index:200;
 }
 
 .complete h2{
-font-size:50px;
+font-size:54px;
 margin-bottom:15px;
 }
 
 .complete p{
-font-size:22px;
+font-size:24px;
 margin-bottom:20px;
 }
 
@@ -242,10 +235,6 @@ cursor:pointer;
 The 5 Dimensions of Learning Agility
 </div>
 
-<div class="subtitle">
-Explore each dimension to unlock the Learning Agility Expert Badge
-</div>
-
 <div class="progress">
 Explored: <span id="count">0</span>/5
 </div>
@@ -256,42 +245,42 @@ Explored: <span id="count">0</span>/5
 onclick="showPopup(1,'Mental Agility','Ability to think critically, analyze situations quickly, and make fresh connections between ideas. Learners with high mental agility solve problems creatively.')">
 <div class="icon">🧠</div>
 <div class="heading">Mental<br>Agility</div>
-<div class="desc">Critical thinking, problem solving, and fresh connections.</div>
+<div class="desc">Critical thinking & fresh connections</div>
 </div>
 
 <div class="card" id="c2"
 onclick="showPopup(2,'People Agility','Ability to understand others, work effectively with different personalities, and learn through collaboration and diverse perspectives.')">
 <div class="icon">👥</div>
 <div class="heading">People<br>Agility</div>
-<div class="desc">Building relationships and learning through collaboration.</div>
+<div class="desc">Interpersonal skill & diverse perspectives</div>
 </div>
 
 <div class="card" id="c3"
-onclick="showPopup(3,'Change Agility','Willingness to embrace new experiences, adapt to uncertainty, and drive positive change.')">
+onclick="showPopup(3,'Change Agility','Willingness to embrace new experiences, adapt to uncertainty, and drive positive change in dynamic environments.')">
 <div class="icon">🔄</div>
 <div class="heading">Change<br>Agility</div>
-<div class="desc">Thriving in uncertainty and embracing transformation.</div>
+<div class="desc">Embracing & driving change</div>
 </div>
 
 <div class="card" id="c4"
 onclick="showPopup(4,'Results Agility','Capability to perform under new, challenging, and unfamiliar conditions while delivering results.')">
 <div class="icon">🎯</div>
 <div class="heading">Results<br>Agility</div>
-<div class="desc">Delivering strong outcomes in challenging situations.</div>
+<div class="desc">Delivering under new conditions</div>
 </div>
 
 <div class="card" id="c5"
 onclick="showPopup(5,'Self Awareness','Understanding your strengths, weaknesses, impact on others, and continuously learning from feedback.')">
 <div class="icon">👁️</div>
 <div class="heading">Self<br>Awareness</div>
-<div class="desc">Knowing yourself and learning from feedback.</div>
+<div class="desc">Understanding impact on others</div>
 </div>
 
 </div>
 
 <div class="infoBox">
 <div class="infoText">
-💡 Click each dimension to learn more. Complete all five dimensions to unlock the Learning Agility Expert badge.
+💡 Click each dimension to explore it. Complete all five dimensions to unlock the Learning Agility Expert badge.
 </div>
 </div>
 
