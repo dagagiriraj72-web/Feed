@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Developing Learning Agility</title>
+
+<style>
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:"Segoe UI",sans-serif;
+}
+
+body{
+width:100vw;
+height:100vh;
+background:#f4f6fb;
+overflow:hidden;
+}
+
+.slide{
+width:100%;
+height:100%;
+padding:2vh 3vw;
+display:flex;
+flex-direction:column;
+}
+
+.title{
+font-size:3vw;
+font-weight:800;
+color:#1d235e;
+line-height:1;
+margin-bottom:.4vh;
+}
+
+.subtitle{
+font-size:1.2vw;
+font-style:italic;
+color:#4a89dc;
+margin-bottom:2vh;
+}
+
+.timeline{
+flex:1;
+display:flex;
+flex-direction:column;
+justify-content:space-evenly;
+}
+
+.step{
+display:grid;
+grid-template-columns:7% 15% 78%;
+align-items:center;
+gap:1vw;
+padding:.8vh 1vw;
+border-radius:18px;
+background:#ffffff;
+box-shadow:0 4px 12px rgba(0,0,0,.06);
+cursor:pointer;
+transition:.3s;
+min-height:14%;
+}
+
+.step:hover{
+transform:translateX(8px);
+background:#eef4ff;
+}
+
+.circle{
+width:58px;
+height:58px;
+border-radius:50%;
+background:linear-gradient(135deg,#4a89dc,#5c6cff);
+color:#fff;
+display:flex;
+align-items:center;
+justify-content:center;
+font-size:1.8vw;
+font-weight:700;
+margin:auto;
+}
+
+.label{
+font-size:1.8vw;
+font-weight:700;
+color:#1d235e;
+}
+
+.content{
+font-size:1.15vw;
+line-height:1.35;
+color:#4d5665;
+}
+
+.active{
+background:linear-gradient(90deg,#eef4ff,#ffffff);
+border-left:6px solid #5c6cff;
+}
+
+.info-panel{
+position:absolute;
+right:2vw;
+bottom:2vh;
+width:24vw;
+padding:1.2vw;
+background:#1d235e;
+color:white;
+border-radius:16px;
+font-size:1vw;
+line-height:1.5;
+box-shadow:0 8px 20px rgba(0,0,0,.15);
+}
+
+.info-title{
+font-weight:700;
+font-size:1.1vw;
+margin-bottom:.4vh;
+color:#9fc3ff;
+}
+</style>
+</head>
+
+<body>
+
+<div class="slide">
+
+<div class="title">Developing Learning Agility</div>
+<div class="subtitle">Individual Development Pathway</div>
+
+<div class="timeline">
+
+<div class="step active" onclick="showInfo('Assess','Take the Burke LAI assessment to identify strengths and development opportunities across all nine dimensions.')">
+<div class="circle">1</div>
+<div class="label">Assess</div>
+<div class="content">Identify strengths and development areas across the nine dimensions.</div>
+</div>
+
+<div class="step" onclick="showInfo('Understand','Review your profile and compare your self-ratings with feedback from others.')">
+<div class="circle">2</div>
+<div class="label">Understand</div>
+<div class="content">Explore key strengths, gaps and rating differences.</div>
+</div>
+
+<div class="step" onclick="showInfo('Target','Select one or two dimensions for focused development.')">
+<div class="circle">3</div>
+<div class="label">Target</div>
+<div class="content">Choose specific dimensions and behaviors to improve.</div>
+</div>
+
+<div class="step" onclick="showInfo('Practice','Apply development activities and practice behaviors in real work situations.')">
+<div class="circle">4</div>
+<div class="label">Practice</div>
+<div class="content">Use practical exercises and workplace experiences.</div>
+</div>
+
+<div class="step" onclick="showInfo('Reassess','Retake the assessment to measure progress and identify new growth opportunities.')">
+<div class="circle">5</div>
+<div class="label">Reassess</div>
+<div class="content">Track progress and continue your development journey.</div>
+</div>
+
+</div>
+
+<div class="info-panel">
+<div class="info-title" id="infoTitle">Step 1: Assess</div>
+<div id="infoText">
+Take the Burke LAI assessment to identify strengths and development opportunities across all nine dimensions.
+</div>
+</div>
+
+</div>
+
+<script>
+function showInfo(title,text){
+
+document.getElementById("infoTitle").innerHTML="Step: " + title;
+document.getElementById("infoText").innerHTML=text;
+
+document.querySelectorAll('.step').forEach(s=>{
+s.classList.remove('active');
+});
+
+event.currentTarget.classList.add('active');
+}
+</script>
+
+</body>
+</html>
