@@ -3,479 +3,338 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Learning Agility Mission Challenge</title>
+<title>Learning Agility Strategies</title>
 
 <style>
+
 *{
 margin:0;
 padding:0;
 box-sizing:border-box;
-font-family:'Segoe UI',sans-serif;
+font-family:"Segoe UI",sans-serif;
 }
 
 body{
 width:100vw;
 height:100vh;
 overflow:hidden;
-background:#f4f5f8;
+background:#f5f6fa;
 display:flex;
 justify-content:center;
 align-items:center;
 }
 
-#game{
+#slide{
 width:1280px;
 height:720px;
-background:#f4f5f8;
-position:relative;
+background:#f5f6fa;
+padding:18px;
 overflow:hidden;
 }
 
-/* HEADER */
-
-.header{
-position:absolute;
-top:15px;
-left:25px;
-}
-
-.header h1{
-font-size:52px;
+.title{
+font-size:42px;
 font-weight:800;
-color:#1f1c5a;
+text-align:center;
+color:#23235b;
+margin-bottom:12px;
 }
-
-/* MISSION BAR */
 
 .mission{
-position:absolute;
-top:95px;
-left:50%;
-transform:translateX(-50%);
-background:#1f1c5a;
+width:620px;
+margin:auto;
+background:#23235b;
 color:white;
-padding:10px 25px;
+padding:10px;
 border-radius:30px;
-font-size:16px;
-font-weight:600;
-animation:pulse 2s infinite;
+text-align:center;
+font-size:18px;
+font-weight:700;
+margin-bottom:15px;
 }
 
-@keyframes pulse{
-0%,100%{transform:translateX(-50%) scale(1);}
-50%{transform:translateX(-50%) scale(1.05);}
+.progress{
+height:10px;
+width:450px;
+background:#d8deeb;
+margin:auto;
+border-radius:20px;
+overflow:hidden;
+margin-bottom:15px;
 }
 
-/* FLOATING ITEMS */
-
-.float{
-position:absolute;
-font-size:32px;
-opacity:.15;
-pointer-events:none;
-animation:float 6s ease-in-out infinite;
+.fill{
+height:100%;
+width:0%;
+background:linear-gradient(90deg,#4f8cff,#7c4dff);
+transition:.4s;
 }
 
-.f1{top:110px;left:20px;}
-.f2{top:220px;right:40px;animation-delay:1s;}
-.f3{bottom:50px;left:550px;animation-delay:2s;}
-.f4{top:500px;right:250px;animation-delay:3s;}
-
-@keyframes float{
-0%,100%{transform:translateY(0);}
-50%{transform:translateY(-15px);}
-}
-
-/* STRATEGY GRID */
-
-.grid{
-position:absolute;
-top:140px;
-left:25px;
-width:1230px;
-height:520px;
-display:grid;
-grid-template-columns:1fr 1fr;
-grid-template-rows:1fr 1fr 1fr;
+.layout{
+display:flex;
 gap:18px;
+height:560px;
 }
 
-.strategy{
-background:#ececf6;
-border-radius:16px;
-padding:18px;
+.menu{
+width:330px;
+display:flex;
+flex-direction:column;
+gap:10px;
+}
+
+.btn{
+background:white;
+border:none;
+border-radius:15px;
+padding:15px;
 cursor:pointer;
-transition:.35s;
 display:flex;
 align-items:center;
-gap:18px;
+gap:12px;
+box-shadow:0 3px 10px rgba(0,0,0,.08);
+transition:.25s;
 }
 
-.strategy:hover{
-transform:translateY(-5px);
-box-shadow:0 10px 25px rgba(0,0,0,.12);
+.btn:hover{
+transform:translateX(4px);
 }
 
-.strategy.completed{
-border:3px solid #10b981;
+.btn.visited{
+border:3px solid #4ade80;
 }
 
-.number{
-width:60px;
-height:60px;
+.num{
+width:48px;
+height:48px;
 border-radius:50%;
 display:flex;
 justify-content:center;
 align-items:center;
+color:white;
 font-size:24px;
 font-weight:700;
-color:white;
-flex-shrink:0;
+background:linear-gradient(135deg,#4f8cff,#7c4dff);
 }
 
-.blue{
-background:linear-gradient(135deg,#3b82f6,#5b9cff);
-}
-
-.purple{
-background:linear-gradient(135deg,#7c4dff,#9d6eff);
-}
-
-.content h3{
+.btn span{
 font-size:20px;
-color:#1f1c5a;
-margin-bottom:8px;
-}
-
-.content p{
-font-size:15px;
-line-height:1.45;
-color:#4b5563;
-}
-
-/* PROGRESS */
-
-.progress{
-position:absolute;
-top:25px;
-right:30px;
-background:white;
-padding:12px 18px;
-border-radius:12px;
 font-weight:700;
-box-shadow:0 5px 15px rgba(0,0,0,.08);
-color:#1f1c5a;
+color:#23235b;
 }
 
-.progress span{
-color:#5b5ee8;
-}
-
-/* POPUP */
-
-.overlay{
-position:absolute;
-inset:0;
-background:rgba(0,0,0,.55);
-display:none;
-z-index:20;
-}
-
-.popup{
-position:absolute;
-left:50%;
-top:50%;
-transform:translate(-50%,-50%);
-width:700px;
+.panel{
+flex:1;
 background:white;
-border-radius:18px;
-padding:25px;
-display:none;
-z-index:30;
-box-shadow:0 20px 40px rgba(0,0,0,.25);
+border-radius:25px;
+padding:30px;
+box-shadow:0 5px 15px rgba(0,0,0,.08);
 }
-
-.popup h2{
-font-size:30px;
-color:#1f1c5a;
-margin-bottom:15px;
-}
-
-.scenario{
-background:#eef2ff;
-padding:15px;
-border-radius:10px;
-margin-bottom:15px;
-font-size:16px;
-line-height:1.6;
-}
-
-.solution{
-background:#ecfdf5;
-padding:15px;
-border-radius:10px;
-font-size:16px;
-line-height:1.6;
-}
-
-.popup button{
-margin-top:18px;
-padding:10px 20px;
-background:#5b5ee8;
-color:white;
-border:none;
-border-radius:8px;
-cursor:pointer;
-}
-
-/* ACHIEVEMENT */
 
 .badge{
-position:absolute;
-bottom:20px;
-left:50%;
-transform:translateX(-50%);
-background:#1f1c5a;
-color:white;
-padding:12px 25px;
+display:inline-block;
+padding:8px 14px;
 border-radius:30px;
-display:none;
-font-size:16px;
-z-index:50;
+background:#eef2ff;
+color:#4f46e5;
+font-weight:700;
+margin-bottom:18px;
 }
 
-/* COMPLETE */
+.panel h2{
+font-size:40px;
+color:#23235b;
+margin-bottom:18px;
+}
+
+.panel p{
+font-size:26px;
+line-height:1.6;
+color:#4b5563;
+margin-bottom:25px;
+}
+
+.example{
+background:#eef2ff;
+padding:20px;
+border-radius:15px;
+font-size:24px;
+line-height:1.5;
+color:#374151;
+}
 
 .complete{
-position:absolute;
+position:fixed;
 inset:0;
-background:rgba(18,18,60,.96);
+background:rgba(25,25,55,.95);
 display:none;
 justify-content:center;
 align-items:center;
 flex-direction:column;
-text-align:center;
 color:white;
-z-index:60;
 }
 
 .complete h2{
 font-size:60px;
-margin-bottom:15px;
+margin-bottom:10px;
 }
 
 .complete p{
-font-size:24px;
-width:700px;
-line-height:1.5;
-margin-bottom:20px;
+font-size:26px;
 }
 
-.complete button{
-padding:12px 25px;
-background:#5b5ee8;
-border:none;
-border-radius:10px;
-color:white;
-font-size:18px;
-cursor:pointer;
-}
 </style>
 </head>
-
 <body>
 
-<div id="game">
+<div id="slide">
 
-<div class="float f1">🧠</div>
-<div class="float f2">🚀</div>
-<div class="float f3">🎯</div>
-<div class="float f4">⭐</div>
-
-<div class="header">
-<h1>Learning Agility Strategies in Practice</h1>
-</div>
-
-<div class="progress">
-Progress: <span id="score">0</span>/6
+<div class="title">
+Learning Agility Strategies in Practice
 </div>
 
 <div class="mission">
-🎮 Mission: Help your team become more learning agile by exploring all 6 strategies
+🎯 Explore all 6 strategies
 </div>
 
-<div class="grid">
-
-<div class="strategy" onclick="showScenario(this,1)">
-<div class="number blue">1</div>
-<div class="content">
-<h3>Mindful Awareness</h3>
-<p>Shift from reactive thinking to deliberate thinking before acting.</p>
-</div>
+<div class="progress">
+<div class="fill" id="fill"></div>
 </div>
 
-<div class="strategy" onclick="showScenario(this,2)">
-<div class="number purple">2</div>
-<div class="content">
-<h3>Forecasting</h3>
-<p>Anticipate future skill requirements and prepare proactively.</p>
-</div>
-</div>
+<div class="layout">
 
-<div class="strategy" onclick="showScenario(this,3)">
-<div class="number blue">3</div>
-<div class="content">
-<h3>Curiosity & Openness</h3>
-<p>Challenge assumptions and welcome different perspectives.</p>
-</div>
-</div>
+<div class="menu">
 
-<div class="strategy" onclick="showScenario(this,4)">
-<div class="number purple">4</div>
-<div class="content">
-<h3>Feedback Loops</h3>
-<p>Create regular feedback rituals and act on insights.</p>
-</div>
-</div>
+<button class="btn" onclick="show(0,this)">
+<div class="num">1</div>
+<span>Mindful Awareness</span>
+</button>
 
-<div class="strategy" onclick="showScenario(this,5)">
-<div class="number blue">5</div>
-<div class="content">
-<h3>Structured Reflection</h3>
-<p>Pause to analyze successes, failures and lessons learned.</p>
-</div>
-</div>
+<button class="btn" onclick="show(1,this)">
+<div class="num">2</div>
+<span>Forecasting</span>
+</button>
 
-<div class="strategy" onclick="showScenario(this,6)">
-<div class="number purple">6</div>
-<div class="content">
-<h3>Calculated Risk-Taking</h3>
-<p>Encourage experimentation and intelligent failure.</p>
-</div>
-</div>
+<button class="btn" onclick="show(2,this)">
+<div class="num">3</div>
+<span>Curiosity & Openness</span>
+</button>
+
+<button class="btn" onclick="show(3,this)">
+<div class="num">4</div>
+<span>Feedback Loops</span>
+</button>
+
+<button class="btn" onclick="show(4,this)">
+<div class="num">5</div>
+<span>Structured Reflection</span>
+</button>
+
+<button class="btn" onclick="show(5,this)">
+<div class="num">6</div>
+<span>Calculated Risk-Taking</span>
+</button>
 
 </div>
 
-<div class="overlay" id="overlay"></div>
+<div class="panel">
 
-<div class="popup" id="popup">
-<h2 id="title"></h2>
-
-<div class="scenario" id="scenario"></div>
-
-<div class="solution" id="solution"></div>
-
-<button onclick="closePopup()">Continue Mission</button>
+<div class="badge">
+Learning Agility Strategy
 </div>
 
-<div class="badge" id="badge"></div>
+<h2 id="titleBox">
+Select a Strategy
+</h2>
+
+<p id="descBox">
+Click any strategy from the left panel to learn how it strengthens learning agility.
+</p>
+
+<div class="example" id="exampleBox">
+Example: A leader learns from every experience and continuously adapts to new challenges.
+</div>
+
+</div>
+
+</div>
+
+</div>
 
 <div class="complete" id="complete">
-<h2>🏆 Learning Agility Champion</h2>
-<p>
-Excellent! You explored all six strategies and learned practical ways to build learning agility within your team.
-</p>
-<button onclick="location.reload()">Play Again</button>
-</div>
-
+<h2>🏆 Strategy Master</h2>
+<p>You explored all 6 Learning Agility Strategies.</p>
 </div>
 
 <script>
 
-let explored=[];
+const data=[
 
-const data={
-
-1:{
-title:"🧠 Mindful Awareness",
-scenario:"A project manager receives unexpected criticism during a meeting and immediately becomes defensive.",
-solution:"Pause before reacting. Recognize emotions, think deliberately, and respond with curiosity instead of emotion."
+{
+title:"Mindful Awareness",
+desc:"Shift from reactive thinking to deliberate thinking before acting.",
+example:"Pause before responding to a difficult situation and assess emotions objectively."
 },
 
-2:{
-title:"🔮 Forecasting",
-scenario:"Your team relies heavily on one technical skill that may become outdated next year.",
-solution:"Identify future skills early and create learning plans, certifications, and cross-training opportunities."
+{
+title:"Forecasting",
+desc:"Anticipate future skills your team will need and prepare proactively.",
+example:"Encourage team members to attend conferences, read books and cross-train."
 },
 
-3:{
-title:"🚀 Curiosity & Openness",
-scenario:"A new employee suggests a different process than the one your team has always used.",
-solution:"Explore the idea rather than dismissing it. Ask 'What if this works better?'"
+{
+title:"Curiosity & Openness",
+desc:"Challenge assumptions and welcome perspectives different from your own.",
+example:"Ask 'What if?' questions and actively seek diverse viewpoints."
 },
 
-4:{
-title:"🔄 Feedback Loops",
-scenario:"Employees only receive feedback during annual performance reviews.",
-solution:"Create monthly feedback conversations focused on behaviors, learning, and growth."
+{
+title:"Feedback Loops",
+desc:"Create regular feedback rituals and act on what you hear.",
+example:"Collect feedback after projects and discuss improvements openly."
 },
 
-5:{
-title:"📖 Structured Reflection",
-scenario:"A major project finishes successfully, and everyone immediately moves to the next task.",
-solution:"Conduct an after-action review to identify what worked, what failed, and what should change."
+{
+title:"Structured Reflection",
+desc:"Pause to analyze successes, failures and lessons learned.",
+example:"Conduct after-action reviews to identify improvements."
 },
 
-6:{
-title:"🎯 Calculated Risk-Taking",
-scenario:"Team members avoid proposing innovative ideas because failure might be criticized.",
-solution:"Create a safe environment for experimentation and treat intelligent failures as learning opportunities."
+{
+title:"Calculated Risk-Taking",
+desc:"Encourage experimentation and intelligent failure.",
+example:"Test new ideas through small pilots before scaling them."
 }
 
-};
+];
 
-function showScenario(card,id){
+let viewed=[];
 
-document.getElementById('title').innerHTML=data[id].title;
+function show(i,el){
 
-document.getElementById('scenario').innerHTML=
-"<b>🎬 Scenario:</b><br><br>"+data[id].scenario;
+document.getElementById("titleBox").innerText=data[i].title;
+document.getElementById("descBox").innerText=data[i].desc;
+document.getElementById("exampleBox").innerHTML="<b>Example:</b> "+data[i].example;
 
-document.getElementById('solution').innerHTML=
-"<b>✅ Agile Response:</b><br><br>"+data[id].solution;
+if(!viewed.includes(i)){
 
-document.getElementById('popup').style.display='block';
-document.getElementById('overlay').style.display='block';
+viewed.push(i);
 
-if(!explored.includes(id)){
+el.classList.add("visited");
 
-explored.push(id);
+document.getElementById("fill").style.width=
+(viewed.length/6*100)+"%";
 
-card.classList.add('completed');
-
-document.getElementById('score').innerHTML=explored.length;
-
-let badge=document.getElementById('badge');
-
-if(explored.length===3){
-
-badge.innerHTML="⭐ Learning Explorer Badge Unlocked!";
-badge.style.display='block';
+if(viewed.length===6){
 
 setTimeout(()=>{
-badge.style.display='none';
-},2500);
-
-}
-
-if(explored.length===6){
-
-badge.innerHTML="🏆 Agility Champion Badge Unlocked!";
-badge.style.display='block';
-
-setTimeout(()=>{
-document.getElementById('complete').style.display='flex';
-},1500);
+document.getElementById("complete").style.display="flex";
+},800);
 
 }
 
 }
 
-}
-
-function closePopup(){
-document.getElementById('popup').style.display='none';
-document.getElementById('overlay').style.display='none';
 }
 
 </script>
