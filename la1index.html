@@ -11,209 +11,201 @@
 margin:0;
 padding:0;
 box-sizing:border-box;
-font-family:"Segoe UI",sans-serif;
+font-family:Segoe UI,sans-serif;
 }
 
 body{
-width:100vw;
-height:100vh;
-overflow:hidden;
 background:#f3f4f8;
 display:flex;
 justify-content:center;
 align-items:center;
+height:100vh;
+overflow:hidden;
 }
 
 #slide{
 width:1280px;
 height:720px;
+background:#f3f4f8;
 position:relative;
 overflow:hidden;
-background:#f3f4f8;
-padding:15px 25px;
+padding:20px;
 }
 
-/* HEADER */
-
-.title{
-font-size:42px;
-font-weight:800;
+h1{
 text-align:center;
-color:#1f1c5a;
+font-size:40px;
+color:#1d1b5d;
 margin-bottom:5px;
 }
 
 .subtitle{
 text-align:center;
 font-size:18px;
-color:#687089;
+color:#6b7280;
 margin-bottom:15px;
 }
 
-/* GAME STATUS */
-
-.status{
+.progress{
 position:absolute;
 top:20px;
-right:25px;
+right:20px;
 background:white;
-padding:10px 18px;
-border-radius:12px;
-font-size:15px;
+padding:8px 15px;
+border-radius:10px;
 font-weight:600;
-box-shadow:0 4px 12px rgba(0,0,0,.08);
-color:#1f1c5a;
+box-shadow:0 3px 10px rgba(0,0,0,.08);
 }
 
-.status span{
-color:#5d63ff;
-}
-
-/* COMPARISON AREA */
-
-.compareArea{
+.container{
 display:flex;
 justify-content:space-between;
 align-items:flex-start;
 margin-top:10px;
+height:560px;
 }
 
-.side{
-width:520px;
+.column{
+width:560px;
 }
 
-.sideHeader{
-height:70px;
-border-radius:14px;
+.header{
+height:60px;
 display:flex;
-align-items:center;
 justify-content:center;
-font-size:32px;
+align-items:center;
+font-size:28px;
 font-weight:700;
 color:white;
-margin-bottom:15px;
+border-radius:12px;
+margin-bottom:12px;
 }
 
-.traditional{
-background:#98a0af;
+.leftHeader{
+background:#9ca3af;
 }
 
-.agility{
-background:linear-gradient(90deg,#5b5eff,#7a5cff);
+.rightHeader{
+background:linear-gradient(90deg,#5b5eff,#7c5cff);
 }
 
-/* CARDS */
-
-.item{
-height:72px;
+.row{
+height:78px;
 background:white;
 border-radius:12px;
-margin-bottom:10px;
 display:flex;
 align-items:center;
-padding:0 18px;
-font-size:24px;
+padding:0 20px;
+font-size:20px;
 font-weight:600;
+margin-bottom:10px;
+box-shadow:0 3px 8px rgba(0,0,0,.06);
+}
+
+.left{
 cursor:pointer;
 transition:.3s;
-box-shadow:0 3px 8px rgba(0,0,0,.05);
 }
 
-.item:hover{
-transform:translateY(-3px);
+.left:hover{
+transform:translateX(5px);
+background:#e8ebff;
 }
 
-.item.active{
-background:#dfe4ff;
-border-left:6px solid #5b5eff;
-}
-
-/* CENTER */
-
-.center{
-width:140px;
-display:flex;
-justify-content:center;
-align-items:center;
-padding-top:180px;
+.icon{
+font-size:28px;
+margin-right:12px;
 }
 
 .vs{
-width:90px;
-height:90px;
+position:absolute;
+left:50%;
+top:330px;
+transform:translate(-50%,-50%);
+width:80px;
+height:80px;
 border-radius:50%;
-background:linear-gradient(135deg,#5b5eff,#7d5eff);
+background:linear-gradient(135deg,#5b5eff,#7c5cff);
 display:flex;
-align-items:center;
 justify-content:center;
-font-size:34px;
+align-items:center;
+font-size:30px;
 font-weight:700;
 color:white;
 box-shadow:0 8px 20px rgba(91,94,255,.4);
-animation:pulse 2s infinite;
 }
 
-@keyframes pulse{
-0%,100%{transform:scale(1);}
-50%{transform:scale(1.08);}
-}
+/* POPUP */
 
-/* SCENARIO PANEL */
-
-.scenario{
+.overlay{
 position:absolute;
-bottom:15px;
-left:25px;
-right:25px;
-height:120px;
+inset:0;
+background:rgba(0,0,0,.6);
+display:none;
+z-index:100;
+}
+
+.popup{
+position:absolute;
+top:50%;
+left:50%;
+transform:translate(-50%,-50%);
+width:700px;
 background:white;
-border-radius:16px;
-padding:15px 25px;
-box-shadow:0 4px 12px rgba(0,0,0,.08);
-display:flex;
-flex-direction:column;
-justify-content:center;
+border-radius:20px;
+padding:30px;
+display:none;
+z-index:101;
+text-align:center;
 }
 
-.scenarioTitle{
-font-size:24px;
-font-weight:700;
-color:#1f1c5a;
-margin-bottom:8px;
+.popup h2{
+font-size:32px;
+color:#1d1b5d;
+margin-bottom:15px;
 }
 
-.scenarioText{
-font-size:18px;
-line-height:1.5;
-color:#4b5563;
+.popup p{
+font-size:20px;
+line-height:1.6;
+color:#444;
 }
 
-/* COMPLETION */
+.popup button{
+margin-top:20px;
+padding:12px 25px;
+border:none;
+border-radius:30px;
+background:#5b5eff;
+color:white;
+cursor:pointer;
+font-size:16px;
+}
 
 .complete{
 position:absolute;
 inset:0;
-background:rgba(20,20,60,.96);
+background:rgba(15,15,50,.96);
 display:none;
 justify-content:center;
 align-items:center;
 flex-direction:column;
 color:white;
-z-index:100;
+z-index:200;
 }
 
 .complete h2{
-font-size:58px;
+font-size:52px;
 margin-bottom:15px;
 }
 
 .complete p{
-font-size:24px;
+font-size:22px;
 margin-bottom:20px;
 }
 
 .complete button{
-padding:12px 28px;
+padding:12px 25px;
 border:none;
 border-radius:10px;
 background:#5b5eff;
@@ -229,86 +221,71 @@ cursor:pointer;
 
 <div id="slide">
 
-<div class="title">
-Learning Agility vs. Traditional Learning
+<h1>Learning Agility vs Traditional Learning</h1>
+<div class="subtitle">Click each traditional learning point to compare approaches</div>
+
+<div class="progress">
+Viewed: <span id="count">0</span>/5
 </div>
 
-<div class="subtitle">
-Click each comparison point to discover the key difference
-</div>
+<div class="container">
 
-<div class="status">
-Explored: <span id="count">0</span>/5
-</div>
+<div class="column">
 
-<div class="compareArea">
-
-<!-- LEFT -->
-
-<div class="side">
-
-<div class="sideHeader traditional">
+<div class="header leftHeader">
 Traditional Learning
 </div>
 
-<div class="item" id="i1"
-onclick="showScenario(1)">
-📚 Acquiring knowledge & skills
+<div class="row left" onclick="showInfo(1)">
+<span class="icon">📚</span>
+Acquiring knowledge & skills
 </div>
 
-<div class="item" id="i2"
-onclick="showScenario(2)">
-🧠 IQ and book smarts
+<div class="row left" onclick="showInfo(2)">
+<span class="icon">🧠</span>
+IQ and book smarts
 </div>
 
-<div class="item" id="i3"
-onclick="showScenario(3)">
-📝 Measured by test scores
+<div class="row left" onclick="showInfo(3)">
+<span class="icon">📝</span>
+Measured by test scores
 </div>
 
-<div class="item" id="i4"
-onclick="showScenario(4)">
-🔒 Fixed once learned
+<div class="row left" onclick="showInfo(4)">
+<span class="icon">🔒</span>
+Fixed once learned
 </div>
 
-<div class="item" id="i5"
-onclick="showScenario(5)">
-📖 Content-focused
+<div class="row left" onclick="showInfo(5)">
+<span class="icon">📖</span>
+Content-focused
 </div>
 
 </div>
 
-<!-- CENTER -->
+<div class="column">
 
-<div class="center">
-<div class="vs">VS</div>
-</div>
-
-<!-- RIGHT -->
-
-<div class="side">
-
-<div class="sideHeader agility">
+<div class="header rightHeader">
 Learning Agility
 </div>
 
-<div class="item">
+<div class="row">
 🚀 Applying lessons to new situations
 </div>
 
-<div class="item">
+<div class="row">
 🌟 Behavioral & experiential
 </div>
 
-<div class="item">
+<div class="row">
 🔄 Measured by adaptability in action
 </div>
 
-<div class="item">
+<div class="row">
 📈 Continuously evolving
 </div>
 
-<div class="item">
+<div class="row">
 🎯 Context-focused
 </div>
 
@@ -316,93 +293,87 @@ Learning Agility
 
 </div>
 
-<div class="scenario">
+<div class="vs">VS</div>
 
-<div class="scenarioTitle" id="scenarioTitle">
-🎮 Select a comparison point
-</div>
+<div class="overlay" id="overlay"></div>
 
-<div class="scenarioText" id="scenarioText">
-Click any item on the left to reveal a real-world example of how Learning Agility differs from Traditional Learning.
-</div>
-
+<div class="popup" id="popup">
+<h2 id="popupTitle"></h2>
+<p id="popupText"></p>
+<button onclick="closePopup()">Continue</button>
 </div>
 
 <div class="complete" id="complete">
-
-<h2>🏆 Learning Agility Master</h2>
-
-<p>
-You explored all five key differences between Traditional Learning and Learning Agility.
-</p>
-
-<button onclick="location.reload()">
-Explore Again
-</button>
-
+<h2>🏆 Comparison Complete!</h2>
+<p>You explored all key differences between Traditional Learning and Learning Agility.</p>
+<button onclick="location.reload()">Restart</button>
 </div>
 
 </div>
 
 <script>
 
-let visited=[];
+let viewed=[];
 
-const scenarios={
+const data={
 
 1:{
-title:"📚 Knowledge vs Application",
-text:"Traditional learners focus on acquiring knowledge. Agile learners apply lessons from previous experiences when facing new and unfamiliar situations."
+title:"Knowledge vs Application",
+text:"Traditional learning focuses on acquiring knowledge. Learning agility focuses on applying lessons learned to new and unfamiliar situations."
 },
 
 2:{
-title:"🧠 Intelligence vs Experience",
-text:"Traditional learning values IQ and expertise. Learning agility focuses on learning from experiences, feedback, and challenges."
+title:"Intelligence vs Experience",
+text:"Traditional learning emphasizes IQ and expertise. Learning agility values learning from experiences, feedback, and experimentation."
 },
 
 3:{
-title:"📝 Scores vs Adaptability",
-text:"Traditional learning measures success through exams and scores. Learning agility is demonstrated by how effectively a person adapts in real situations."
+title:"Scores vs Adaptability",
+text:"Traditional learning measures success through tests. Learning agility measures success through adaptability and performance in real situations."
 },
 
 4:{
-title:"🔒 Fixed vs Evolving",
-text:"Traditional learning often assumes learning is complete once knowledge is acquired. Learning agility is a continuous process of growth and adaptation."
+title:"Fixed vs Evolving",
+text:"Traditional learning assumes learning ends once knowledge is gained. Learning agility is an ongoing process of growth and adaptation."
 },
 
 5:{
-title:"🎯 Content vs Context",
-text:"Traditional learning focuses on mastering content. Learning agility focuses on applying learning successfully across changing contexts."
+title:"Content vs Context",
+text:"Traditional learning focuses on mastering content. Learning agility focuses on applying knowledge across different contexts."
 }
 
 };
 
-function showScenario(id){
+function showInfo(id){
 
-document.getElementById("scenarioTitle").innerHTML=scenarios[id].title;
-document.getElementById("scenarioText").innerHTML=scenarios[id].text;
+document.getElementById("popupTitle").innerHTML=data[id].title;
+document.getElementById("popupText").innerHTML=data[id].text;
 
-document.querySelectorAll(".item").forEach(el=>{
-el.classList.remove("active");
-});
+document.getElementById("popup").style.display="block";
+document.getElementById("overlay").style.display="block";
 
-document.getElementById("i"+id).classList.add("active");
+if(!viewed.includes(id)){
 
-if(!visited.includes(id)){
+viewed.push(id);
 
-visited.push(id);
+document.getElementById("count").innerHTML=viewed.length;
 
-document.getElementById("count").innerHTML=visited.length;
-
-if(visited.length===5){
+if(viewed.length===5){
 
 setTimeout(()=>{
 document.getElementById("complete").style.display="flex";
-},700);
+},600);
 
 }
 
 }
+
+}
+
+function closePopup(){
+
+document.getElementById("popup").style.display="none";
+document.getElementById("overlay").style.display="none";
 
 }
 
