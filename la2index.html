@@ -3,449 +3,353 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Learning Agility Explorer</title>
+<title>5 Dimensions of Learning Agility</title>
 
 <style>
+
 *{
 margin:0;
 padding:0;
 box-sizing:border-box;
-font-family:Segoe UI,Arial,sans-serif;
+font-family:"Segoe UI",sans-serif;
 }
 
 body{
-width:100vw;
-height:100vh;
+width:100%;
+height:100%;
 overflow:hidden;
-background:linear-gradient(135deg,#18154a,#25205f);
+background:#182c5b;
 display:flex;
 justify-content:center;
 align-items:center;
-color:white;
 }
 
-#game{
+#slide{
 width:1280px;
 height:720px;
+background:#182c5b;
+overflow:hidden;
 position:relative;
-overflow:hidden;
+padding:15px 20px;
 }
 
-.header{
-position:absolute;
-top:20px;
-left:30px;
-}
+/* HEADER */
 
-.header h1{
-font-size:42px;
+.title{
+text-align:center;
+font-size:36px;
 font-weight:700;
+color:white;
+margin-bottom:10px;
 }
 
-.header p{
-font-size:18px;
-color:#8db9ff;
-margin-top:5px;
-}
-
-.progress-area{
-position:absolute;
-top:25px;
-right:30px;
-width:260px;
-}
-
-.progress-text{
+.subtitle{
+text-align:center;
 font-size:16px;
-margin-bottom:8px;
-text-align:right;
+color:#dbe5ff;
+margin-bottom:15px;
 }
 
-.progress-bar{
-width:100%;
-height:14px;
-background:rgba(255,255,255,.2);
-border-radius:20px;
-overflow:hidden;
-}
+/* PROGRESS */
 
-.progress-fill{
-width:0%;
-height:100%;
-background:#53d4ff;
-transition:.5s;
-}
-
-.map{
+.progress{
 position:absolute;
-left:50px;
-top:120px;
-width:520px;
-height:520px;
+top:18px;
+right:20px;
+background:rgba(255,255,255,.12);
+padding:8px 15px;
+border-radius:10px;
+color:white;
+font-weight:600;
+font-size:15px;
 }
 
-.center-core{
-position:absolute;
-width:120px;
-height:120px;
-background:#4f4dff;
-border-radius:50%;
-left:200px;
-top:200px;
+/* CARDS */
+
+.cards{
 display:flex;
-justify-content:center;
-align-items:center;
-text-align:center;
-font-size:18px;
-font-weight:700;
-box-shadow:0 0 30px rgba(111,111,255,.6);
-}
-
-.node{
-position:absolute;
-width:95px;
-height:95px;
-border-radius:50%;
-cursor:pointer;
-display:flex;
-justify-content:center;
-align-items:center;
-font-size:18px;
-font-weight:700;
-text-align:center;
-padding:10px;
-transition:.3s;
-border:3px solid white;
-}
-
-.node:hover{
-transform:scale(1.08);
-}
-
-.node.visited{
-box-shadow:0 0 25px #00ff9d;
-border-color:#00ff9d;
-}
-
-.n1{top:0;left:210px;background:#6b63ff;}
-.n2{top:130px;right:0;background:#8b58ff;}
-.n3{bottom:130px;right:0;background:#4285f4;}
-.n4{bottom:0;left:210px;background:#9c83ff;}
-.n5{top:130px;left:0;background:#5d98eb;}
-
-.line{
-position:absolute;
-background:rgba(255,255,255,.25);
-}
-
-.l1{
-width:3px;
-height:180px;
-left:257px;
-top:90px;
-}
-
-.l2{
-width:180px;
-height:3px;
-top:250px;
-left:255px;
-transform:rotate(-35deg);
-transform-origin:left center;
-}
-
-.l3{
-width:180px;
-height:3px;
-top:270px;
-left:255px;
-transform:rotate(35deg);
-transform-origin:left center;
-}
-
-.l4{
-width:3px;
-height:180px;
-left:257px;
-top:250px;
-}
-
-.l5{
-width:180px;
-height:3px;
-top:270px;
-left:80px;
-transform:rotate(-35deg);
-transform-origin:right center;
+justify-content:space-between;
+align-items:flex-start;
+height:420px;
+margin-top:10px;
 }
 
 .card{
+width:235px;
+height:390px;
+border-radius:18px;
+padding:18px 12px;
+display:flex;
+flex-direction:column;
+align-items:center;
+text-align:center;
+cursor:pointer;
+transition:.35s;
+}
+
+.card:hover{
+background:rgba(255,255,255,.08);
+transform:translateY(-5px);
+}
+
+.card.visited{
+background:rgba(255,255,255,.08);
+border:2px solid #38ef7d;
+}
+
+.icon{
+width:85px;
+height:85px;
+border-radius:50%;
+background:#eb7a46;
+display:flex;
+align-items:center;
+justify-content:center;
+font-size:42px;
+color:white;
+margin-bottom:15px;
+box-shadow:0 5px 15px rgba(0,0,0,.3);
+}
+
+.heading{
+font-size:28px;
+font-weight:700;
+color:white;
+line-height:1.15;
+margin-bottom:12px;
+}
+
+.desc{
+font-size:17px;
+line-height:1.45;
+color:#dbe5ff;
+}
+
+/* INFO BOX */
+
+.infoBox{
 position:absolute;
-right:35px;
-top:120px;
-width:640px;
-height:540px;
+bottom:15px;
+left:20px;
+right:20px;
+height:90px;
+background:rgba(255,255,255,.08);
+border-radius:16px;
+display:flex;
+align-items:center;
+justify-content:center;
+padding:15px;
+}
+
+.infoText{
+font-size:18px;
+line-height:1.4;
+color:white;
+text-align:center;
+}
+
+/* POPUP */
+
+.overlay{
+position:absolute;
+inset:0;
+background:rgba(0,0,0,.55);
+display:none;
+z-index:100;
+}
+
+.popup{
+position:absolute;
+top:50%;
+left:50%;
+transform:translate(-50%,-50%);
+width:650px;
 background:white;
-color:#2f3542;
 border-radius:20px;
 padding:25px;
 display:none;
-animation:fade .4s ease;
-}
-
-.card.active{
-display:block;
-}
-
-@keyframes fade{
-from{
-opacity:0;
-transform:translateY(15px);
-}
-to{
-opacity:1;
-transform:translateY(0);
-}
-}
-
-.card-title{
-font-size:34px;
-font-weight:700;
-margin-bottom:8px;
-color:#1c1a55;
-}
-
-.card-sub{
-font-size:20px;
-font-style:italic;
-color:#9098a8;
-margin-bottom:20px;
-}
-
-ul{
-padding-left:25px;
-}
-
-li{
-margin-bottom:16px;
-font-size:22px;
-line-height:1.35;
-}
-
-.quote{
-position:absolute;
-bottom:20px;
-left:25px;
-right:25px;
-background:#eef0ff;
-padding:18px;
-border-radius:12px;
-font-size:24px;
-font-style:italic;
+z-index:101;
 text-align:center;
+box-shadow:0 15px 40px rgba(0,0,0,.35);
 }
+
+.popup h2{
+font-size:32px;
+color:#182c5b;
+margin-bottom:15px;
+}
+
+.popup p{
+font-size:19px;
+line-height:1.6;
+color:#444;
+}
+
+.closeBtn{
+margin-top:18px;
+padding:12px 25px;
+border:none;
+border-radius:30px;
+background:#eb7a46;
+color:white;
+font-size:17px;
+cursor:pointer;
+}
+
+/* COMPLETION */
 
 .complete{
 position:absolute;
 inset:0;
-background:rgba(18,18,50,.95);
+background:rgba(15,25,55,.96);
 display:none;
 justify-content:center;
 align-items:center;
 flex-direction:column;
-z-index:100;
+color:white;
+text-align:center;
+z-index:200;
 }
 
 .complete h2{
-font-size:54px;
+font-size:50px;
 margin-bottom:15px;
 }
 
 .complete p{
-font-size:26px;
+font-size:22px;
 margin-bottom:20px;
 }
 
-.badge{
-font-size:90px;
-margin-bottom:15px;
-}
-
-.btn{
+.complete button{
 padding:12px 28px;
 border:none;
 border-radius:10px;
-background:#53d4ff;
-font-size:20px;
+background:#eb7a46;
+color:white;
+font-size:18px;
 cursor:pointer;
-font-weight:600;
 }
+
 </style>
 </head>
 
 <body>
 
-<div id="game">
+<div id="slide">
 
-<div class="header">
-<h1>The Five Dimensions of Learning Agility</h1>
-<p>Explore all dimensions to unlock the Learning Agility Badge</p>
+<div class="title">
+The 5 Dimensions of Learning Agility
 </div>
 
-<div class="progress-area">
-<div class="progress-text">Progress: <span id="progressText">0/5</span></div>
-<div class="progress-bar">
-<div class="progress-fill" id="progressFill"></div>
+<div class="subtitle">
+Explore each dimension to unlock the Learning Agility Expert Badge
+</div>
+
+<div class="progress">
+Explored: <span id="count">0</span>/5
+</div>
+
+<div class="cards">
+
+<div class="card" id="c1"
+onclick="showPopup(1,'Mental Agility','Ability to think critically, analyze situations quickly, and make fresh connections between ideas. Learners with high mental agility solve problems creatively.')">
+<div class="icon">🧠</div>
+<div class="heading">Mental<br>Agility</div>
+<div class="desc">Critical thinking, problem solving, and fresh connections.</div>
+</div>
+
+<div class="card" id="c2"
+onclick="showPopup(2,'People Agility','Ability to understand others, work effectively with different personalities, and learn through collaboration and diverse perspectives.')">
+<div class="icon">👥</div>
+<div class="heading">People<br>Agility</div>
+<div class="desc">Building relationships and learning through collaboration.</div>
+</div>
+
+<div class="card" id="c3"
+onclick="showPopup(3,'Change Agility','Willingness to embrace new experiences, adapt to uncertainty, and drive positive change.')">
+<div class="icon">🔄</div>
+<div class="heading">Change<br>Agility</div>
+<div class="desc">Thriving in uncertainty and embracing transformation.</div>
+</div>
+
+<div class="card" id="c4"
+onclick="showPopup(4,'Results Agility','Capability to perform under new, challenging, and unfamiliar conditions while delivering results.')">
+<div class="icon">🎯</div>
+<div class="heading">Results<br>Agility</div>
+<div class="desc">Delivering strong outcomes in challenging situations.</div>
+</div>
+
+<div class="card" id="c5"
+onclick="showPopup(5,'Self Awareness','Understanding your strengths, weaknesses, impact on others, and continuously learning from feedback.')">
+<div class="icon">👁️</div>
+<div class="heading">Self<br>Awareness</div>
+<div class="desc">Knowing yourself and learning from feedback.</div>
+</div>
+
+</div>
+
+<div class="infoBox">
+<div class="infoText">
+💡 Click each dimension to learn more. Complete all five dimensions to unlock the Learning Agility Expert badge.
 </div>
 </div>
 
-<div class="map">
+<div class="overlay" id="overlay"></div>
 
-<div class="line l1"></div>
-<div class="line l2"></div>
-<div class="line l3"></div>
-<div class="line l4"></div>
-<div class="line l5"></div>
-
-<div class="center-core">
-Learning<br>Agility
-</div>
-
-<div class="node n1" onclick="showCard(1)">Mental</div>
-<div class="node n2" onclick="showCard(2)">People</div>
-<div class="node n3" onclick="showCard(3)">Change</div>
-<div class="node n4" onclick="showCard(4)">Results</div>
-<div class="node n5" onclick="showCard(5)">Self</div>
-
-</div>
-
-<!-- CARD -->
-
-<div class="card" id="card">
-
-<h2 class="card-title" id="title"></h2>
-<div class="card-sub" id="subtitle"></div>
-
-<ul id="points"></ul>
-
-<div class="quote" id="quote"></div>
-
+<div class="popup" id="popup">
+<h2 id="popupTitle"></h2>
+<p id="popupText"></p>
+<button class="closeBtn" onclick="closePopup()">Continue</button>
 </div>
 
 <div class="complete" id="complete">
-<div class="badge">🏆</div>
-<h2>Mission Complete!</h2>
-<p>You explored all 5 dimensions of Learning Agility.</p>
-<button class="btn" onclick="location.reload()">Play Again</button>
+<h2>🏆 Learning Agility Expert</h2>
+<p>You successfully explored all five dimensions of Learning Agility.</p>
+<button onclick="location.reload()">Explore Again</button>
 </div>
 
 </div>
 
 <script>
 
-const data = {
+let visited=[];
 
-1:{
-title:"Mental Agility",
-subtitle:"Thinking critically and making fresh connections",
-points:[
-"Curious mindset that constantly seeks new information and perspectives",
-"Approaches problems from multiple angles, finds innovative solutions",
-"Comfortable with complexity and ambiguity in decision-making",
-"Connects seemingly unrelated ideas to generate breakthrough thinking"
-],
-quote:"Mentally agile leaders don't just solve problems — they reframe them."
-},
+function showPopup(id,title,text){
 
-2:{
-title:"People Agility",
-subtitle:"Navigating diverse relationships effectively",
-points:[
-"Builds strong relationships across diverse groups and perspectives",
-"Skilled at navigating conflict and reaching constructive outcomes",
-"Values diversity of thought rather than finding it threatening",
-"Others look to them in a crisis for guidance and problem-solving"
-],
-quote:"People-agile leaders surround themselves with different thinkers, not similar ones."
-},
+document.getElementById("popupTitle").innerHTML=title;
+document.getElementById("popupText").innerHTML=text;
 
-3:{
-title:"Change Agility",
-subtitle:"Embracing and driving transformation",
-points:[
-"Willingly leads transformation efforts and explores new options",
-"Sees challenges as opportunities for growth, not threats",
-"Experiments with new approaches even when outcomes are uncertain",
-"Adapts quickly to shifting priorities and business conditions"
-],
-quote:"Change-agile leaders don't wait for permission to innovate."
-},
-
-4:{
-title:"Results Agility",
-subtitle:"Delivering under pressure and ambiguity",
-points:[
-"Delivers strong results even in tough or first-time situations",
-"Demonstrates resilience and resourcefulness under pressure",
-"Inspires teams to achieve more than they thought possible",
-"Builds confidence through consistent performance in new contexts"
-],
-quote:"Results-agile leaders thrive precisely where playbooks don't exist."
-},
-
-5:{
-title:"Self-Awareness",
-subtitle:"Understanding strengths, blind spots, and impact",
-points:[
-"Reflective about personal strengths, weaknesses, and behavioral patterns",
-"Actively seeks feedback from multiple sources to improve",
-"Understands how their actions and decisions impact others",
-"Uses self-knowledge to adapt leadership style to the situation"
-],
-quote:"Self-aware leaders know what they don't know — and act on it."
-}
-
-};
-
-let visited = [];
-
-function showCard(id){
-
-document.getElementById("card").classList.add("active");
-
-document.getElementById("title").innerText=data[id].title;
-document.getElementById("subtitle").innerText=data[id].subtitle;
-document.getElementById("quote").innerText=data[id].quote;
-
-let html="";
-data[id].points.forEach(item=>{
-html+=`<li>${item}</li>`;
-});
-
-document.getElementById("points").innerHTML=html;
+document.getElementById("popup").style.display="block";
+document.getElementById("overlay").style.display="block";
 
 if(!visited.includes(id)){
 
 visited.push(id);
 
-document.querySelector(".n"+id).classList.add("visited");
+document.getElementById("c"+id).classList.add("visited");
 
-let percent=(visited.length/5)*100;
-
-document.getElementById("progressFill").style.width=percent+"%";
-document.getElementById("progressText").innerText=visited.length+"/5";
+document.getElementById("count").innerHTML=visited.length;
 
 if(visited.length===5){
 
 setTimeout(()=>{
 document.getElementById("complete").style.display="flex";
-},800);
+},700);
 
 }
 
 }
 
 }
+
+function closePopup(){
+
+document.getElementById("popup").style.display="none";
+document.getElementById("overlay").style.display="none";
+
+}
+
 </script>
 
 </body>
