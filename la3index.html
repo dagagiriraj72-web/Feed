@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>Burke Learning Agility Inventory</title>
 
 <style>
@@ -11,70 +12,71 @@
 margin:0;
 padding:0;
 box-sizing:border-box;
-font-family:"Segoe UI",sans-serif;
+font-family:Segoe UI,sans-serif;
 }
 
 body{
-background:#f4f5f8;
+width:100vw;
+height:100vh;
 overflow:hidden;
+background:#f4f5f8;
 display:flex;
 justify-content:center;
 align-items:center;
-height:100vh;
 }
 
-#game{
+#slide{
 width:1280px;
 height:720px;
 background:#f4f5f8;
 overflow:hidden;
 position:relative;
-padding:20px 25px;
+padding:15px;
 }
 
 /* HEADER */
 
-.header{
-height:70px;
-display:flex;
-justify-content:space-between;
-align-items:flex-start;
-}
-
-.header-left h1{
-font-size:42px;
+.title{
+font-size:34px;
 font-weight:800;
-color:#201d5a;
-line-height:1;
+color:#1d1b5d;
+text-align:center;
 }
 
-.header-left p{
-font-size:17px;
+.subtitle{
+font-size:15px;
+text-align:center;
+color:#8b92a6;
 font-style:italic;
-color:#9ca3af;
-margin-top:8px;
+margin-top:4px;
+margin-bottom:12px;
 }
 
-.progress{
-width:220px;
+/* PROGRESS */
+
+.progressBox{
+position:absolute;
+top:15px;
+right:20px;
+width:180px;
 }
 
-.progress-label{
-font-size:16px;
+.progressLabel{
+font-size:14px;
 font-weight:700;
-color:#201d5a;
 text-align:right;
-margin-bottom:8px;
+color:#1d1b5d;
+margin-bottom:5px;
 }
 
-.progress-bar{
-height:12px;
-background:#d9dce8;
+.progressBar{
+height:10px;
+background:#d8dceb;
 border-radius:20px;
 overflow:hidden;
 }
 
-.progress-fill{
+.progressFill{
 height:100%;
 width:0%;
 background:linear-gradient(90deg,#7c4dff,#3b82f6);
@@ -85,66 +87,68 @@ transition:.4s;
 
 .grid{
 margin-top:15px;
-height:330px;
 display:grid;
 grid-template-columns:repeat(3,1fr);
 grid-template-rows:repeat(3,1fr);
-gap:14px;
+gap:15px;
+height:560px;
 }
 
 .card{
-background:#dfe3ef;
+background:#dde3ef;
 border:none;
 border-left:8px solid #7c4dff;
-border-radius:10px;
-padding:16px;
-text-align:left;
+border-radius:12px;
+padding:18px;
 cursor:pointer;
+text-align:left;
 transition:.25s;
 }
 
 .card:hover{
-transform:translateY(-3px);
+transform:translateY(-4px);
 box-shadow:0 8px 18px rgba(0,0,0,.12);
 }
 
 .card.visited{
 border-left-color:#00c853;
-box-shadow:0 0 15px rgba(0,200,83,.25);
 }
 
 .card h3{
-font-size:22px;
+font-size:24px;
 font-weight:800;
-color:#23235b;
-margin-bottom:10px;
+color:#1d1b5d;
+margin-bottom:12px;
 }
 
 .card p{
-font-size:16px;
+font-size:17px;
 line-height:1.4;
 color:#4b5563;
 }
 
-/* DETAIL PANEL */
+/* POPUP */
 
-.detail-panel{
-margin-top:15px;
-height:245px;
+.overlay{
+position:absolute;
+inset:0;
+background:rgba(0,0,0,.65);
+display:none;
+z-index:100;
+}
+
+.popup{
+position:absolute;
+top:50%;
+left:50%;
+transform:translate(-50%,-50%);
+width:700px;
 background:white;
 border-radius:18px;
-box-shadow:0 8px 20px rgba(0,0,0,.08);
-padding:20px 24px;
-display:flex;
-gap:25px;
-}
-
-.left{
-width:40%;
-}
-
-.right{
-width:60%;
+padding:30px;
+display:none;
+z-index:101;
+box-shadow:0 15px 40px rgba(0,0,0,.3);
 }
 
 .badge{
@@ -152,69 +156,62 @@ display:inline-block;
 padding:8px 14px;
 background:#eef2ff;
 border-radius:30px;
-font-size:14px;
-font-weight:700;
 color:#4f46e5;
-margin-bottom:12px;
+font-weight:700;
+margin-bottom:15px;
 }
 
-.title{
-font-size:30px;
+.popupTitle{
+font-size:34px;
 font-weight:800;
-color:#201d5a;
-margin-bottom:8px;
-}
-
-.desc{
-font-size:18px;
-color:#6b7280;
-line-height:1.4;
-}
-
-.section{
-font-size:20px;
-font-weight:800;
-color:#201d5a;
+color:#1d1b5d;
 margin-bottom:10px;
 }
 
-.behaviors{
-padding-left:20px;
+.popupDesc{
+font-size:20px;
+color:#6b7280;
+margin-bottom:20px;
 }
 
-.behaviors li{
-font-size:16px;
+.section{
+font-size:22px;
+font-weight:800;
+color:#1d1b5d;
+margin-bottom:10px;
+}
+
+.popup ul{
+padding-left:25px;
+margin-bottom:20px;
+}
+
+.popup li{
+font-size:18px;
 margin-bottom:8px;
-line-height:1.4;
-color:#374151;
+line-height:1.5;
 }
 
 .example{
-margin-top:10px;
 background:#f5f3ff;
-padding:14px;
+padding:15px;
 border-radius:12px;
-font-size:15px;
+font-size:17px;
 line-height:1.5;
-color:#374151;
 }
 
-/* ACHIEVEMENT */
-
-.achievement{
-position:absolute;
-bottom:20px;
-right:25px;
-background:#201d5a;
-color:white;
-padding:10px 18px;
+.closeBtn{
+margin-top:20px;
+padding:12px 25px;
+border:none;
 border-radius:30px;
-display:none;
-font-size:15px;
-font-weight:700;
+background:#4f46e5;
+color:white;
+cursor:pointer;
+font-size:16px;
 }
 
-/* COMPLETION */
+/* COMPLETE */
 
 .complete{
 position:absolute;
@@ -225,8 +222,7 @@ justify-content:center;
 align-items:center;
 flex-direction:column;
 color:white;
-z-index:100;
-text-align:center;
+z-index:200;
 }
 
 .complete h2{
@@ -235,7 +231,7 @@ margin-bottom:15px;
 }
 
 .complete p{
-font-size:22px;
+font-size:24px;
 margin-bottom:20px;
 }
 
@@ -246,7 +242,6 @@ border-radius:10px;
 background:#3b82f6;
 color:white;
 font-size:18px;
-font-weight:700;
 cursor:pointer;
 }
 
@@ -255,24 +250,19 @@ cursor:pointer;
 
 <body>
 
-<div id="game">
+<div id="slide">
 
-<div class="header">
+<div class="title">Burke Learning Agility Inventory</div>
+<div class="subtitle">Nine behavioral dimensions that can be measured and developed</div>
 
-<div class="header-left">
-<h1>Burke Learning Agility Inventory</h1>
-<p>Nine behavioral dimensions that can be measured and developed</p>
+<div class="progressBox">
+<div class="progressLabel">
+Viewed: <span id="count">0</span>/9
 </div>
 
-<div class="progress">
-<div class="progress-label">
-Progress: <span id="progressText">0/9</span>
+<div class="progressBar">
+<div class="progressFill" id="progressFill"></div>
 </div>
-<div class="progress-bar">
-<div class="progress-fill" id="progressFill"></div>
-</div>
-</div>
-
 </div>
 
 <div class="grid">
@@ -324,58 +314,40 @@ Progress: <span id="progressText">0/9</span>
 
 </div>
 
-<div class="detail-panel">
+<div class="overlay" id="overlay"></div>
 
-<div class="left">
+<div class="popup" id="popup">
 
-<div class="badge">
-Learning Agility Dimension
-</div>
+<div class="badge">Learning Agility Dimension</div>
 
-<div class="title" id="title">
-Select a Dimension
-</div>
+<div class="popupTitle" id="titleText"></div>
 
-<div class="desc" id="desc">
-Click a card above to explore the behavior, key actions, and workplace example.
-</div>
+<div class="popupDesc" id="descText"></div>
 
-</div>
+<div class="section">Key Behaviors</div>
 
-<div class="right">
+<ul id="behaviorList"></ul>
 
-<div class="section">
-Key Behaviors
-</div>
+<div class="section">Workplace Example</div>
 
-<ul class="behaviors" id="behaviors">
-<li>Select any dimension to begin exploring.</li>
-</ul>
+<div class="example" id="exampleText"></div>
 
-<div class="section" style="margin-top:10px;">
-Workplace Example
-</div>
-
-<div class="example" id="example">
-Your learning agility journey starts here.
-</div>
+<button class="closeBtn" onclick="closePopup()">
+Continue
+</button>
 
 </div>
-
-</div>
-
-<div class="achievement" id="achievement"></div>
 
 <div class="complete" id="complete">
 
 <h2>🏆 Learning Agility Master</h2>
 
 <p>
-You explored all 9 dimensions of the Burke Learning Agility Inventory.
+You explored all 9 dimensions.
 </p>
 
 <button onclick="location.reload()">
-Explore Again
+Play Again
 </button>
 
 </div>
@@ -384,163 +356,90 @@ Explore Again
 
 <script>
 
-const dimensions=[
+const data=[
 
-{
-title:"Flexibility",
-desc:"Openness to new ideas and solutions",
-behaviors:[
-"Adapts quickly to changing situations",
-"Considers multiple perspectives",
-"Welcomes alternative approaches"
-],
-example:"A leader changes project direction after discovering a better solution."
-},
+["Flexibility","Openness to new ideas and solutions",
+["Adapts quickly","Considers alternatives","Welcomes change"],
+"A leader changes direction after finding a better solution."],
 
-{
-title:"Speed",
-desc:"Acting quickly to test what works",
-behaviors:[
-"Makes timely decisions",
-"Experiments rapidly",
-"Maintains momentum"
-],
-example:"A team launches a pilot within days instead of waiting months."
-},
+["Speed","Acting quickly to test what works",
+["Makes timely decisions","Acts rapidly","Maintains momentum"],
+"A team launches a pilot within days."],
 
-{
-title:"Experimenting",
-desc:"Trying approaches with unknowns",
-behaviors:[
-"Tests new ideas",
-"Learns through action",
-"Accepts uncertainty"
-],
-example:"A manager pilots a new process before scaling it."
-},
+["Experimenting","Trying approaches with unknowns",
+["Tests ideas","Learns by doing","Accepts uncertainty"],
+"A manager pilots a new process."],
 
-{
-title:"Performance Risk-Taking",
-desc:"Stepping beyond comfort zones",
-behaviors:[
-"Accepts challenging assignments",
-"Pushes personal limits",
-"Builds confidence through action"
-],
-example:"An employee volunteers to lead a project for the first time."
-},
+["Performance Risk-Taking","Stepping beyond comfort zones",
+["Accepts challenges","Pushes limits","Builds confidence"],
+"An employee volunteers to lead a project."],
 
-{
-title:"Interpersonal Risk-Taking",
-desc:"Leaning into tough conversations",
-behaviors:[
-"Gives honest feedback",
-"Addresses conflict constructively",
-"Builds trust through transparency"
-],
-example:"A supervisor discusses performance concerns openly."
-},
+["Interpersonal Risk-Taking","Leaning into tough conversations",
+["Gives feedback","Addresses conflict","Builds trust"],
+"A supervisor discusses performance concerns."],
 
-{
-title:"Collaborating",
-desc:"Seeking ways to work together",
-behaviors:[
-"Builds partnerships",
-"Shares knowledge",
-"Values diverse viewpoints"
-],
-example:"Departments collaborate to solve a customer issue."
-},
+["Collaborating","Seeking ways to work together",
+["Builds partnerships","Shares knowledge","Values viewpoints"],
+"Teams work together on a customer issue."],
 
-{
-title:"Information Gathering",
-desc:"Using diverse sources frequently",
-behaviors:[
-"Seeks multiple perspectives",
-"Researches thoroughly",
-"Questions assumptions"
-],
-example:"A leader gathers employee, customer and market insights."
-},
+["Information Gathering","Using diverse sources frequently",
+["Researches widely","Seeks perspectives","Questions assumptions"],
+"A leader gathers employee and customer insights."],
 
-{
-title:"Feedback Seeking",
-desc:"Asking others for honest input",
-behaviors:[
-"Requests feedback regularly",
-"Listens openly",
-"Uses feedback to improve"
-],
-example:"An employee seeks peer feedback after a presentation."
-},
+["Feedback Seeking","Asking others for honest input",
+["Requests feedback","Listens openly","Improves continuously"],
+"An employee asks peers for suggestions."],
 
-{
-title:"Reflecting",
-desc:"Evaluating one's own actions",
-behaviors:[
-"Reviews successes and failures",
-"Identifies lessons learned",
-"Adjusts future behavior"
-],
-example:"A team conducts a lessons-learned review after a project."
-}
-
+["Reflecting","Evaluating one's own actions",
+["Reviews outcomes","Identifies lessons","Adjusts behavior"],
+"A team conducts a lessons learned review."]
 ];
 
 let visited=[];
 
-function showInfo(index,element){
+function showInfo(i,card){
 
-document.getElementById("title").innerText=dimensions[index].title;
-document.getElementById("desc").innerText=dimensions[index].desc;
-document.getElementById("example").innerText=dimensions[index].example;
+document.getElementById("titleText").innerHTML=data[i][0];
+document.getElementById("descText").innerHTML=data[i][1];
 
-let html="";
-
-dimensions[index].behaviors.forEach(item=>{
-html+=`<li>${item}</li>`;
+let list="";
+data[i][2].forEach(item=>{
+list+=`<li>${item}</li>`;
 });
 
-document.getElementById("behaviors").innerHTML=html;
+document.getElementById("behaviorList").innerHTML=list;
+document.getElementById("exampleText").innerHTML=data[i][3];
 
-if(!visited.includes(index)){
+document.getElementById("popup").style.display="block";
+document.getElementById("overlay").style.display="block";
 
-visited.push(index);
+if(!visited.includes(i)){
 
-element.classList.add("visited");
+visited.push(i);
 
-document.getElementById("progressText").innerText=
-visited.length+"/9";
+card.classList.add("visited");
+
+document.getElementById("count").innerHTML=visited.length;
 
 document.getElementById("progressFill").style.width=
 (visited.length/9*100)+"%";
 
-const achievement=document.getElementById("achievement");
-
-if(visited.length===3){
-achievement.innerText="🏅 Explorer Badge Unlocked!";
-achievement.style.display="block";
-setTimeout(()=>achievement.style.display="none",2500);
-}
-
-if(visited.length===6){
-achievement.innerText="⭐ Advanced Learner!";
-achievement.style.display="block";
-setTimeout(()=>achievement.style.display="none",2500);
-}
-
 if(visited.length===9){
-
-achievement.innerText="🏆 Learning Agility Master!";
-achievement.style.display="block";
 
 setTimeout(()=>{
 document.getElementById("complete").style.display="flex";
-},1000);
+},800);
 
 }
 
 }
+
+}
+
+function closePopup(){
+
+document.getElementById("popup").style.display="none";
+document.getElementById("overlay").style.display="none";
 
 }
 
