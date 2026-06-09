@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Assessing Learning Agility in Your Team</title>
+
+<style>
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Segoe UI',sans-serif;
+}
+
+body{
+width:100vw;
+height:100vh;
+overflow:hidden;
+background:#f4f5f8;
+display:flex;
+justify-content:center;
+align-items:center;
+}
+
+#game{
+width:1280px;
+height:720px;
+position:relative;
+background:#f4f5f8;
+overflow:hidden;
+}
+
+/* HEADER */
+
+.header{
+position:absolute;
+top:15px;
+left:30px;
+width:1200px;
+}
+
+.header h1{
+font-size:56px;
+font-weight:800;
+color:#1f1c5a;
+}
+
+/* MISSION */
+
+.mission{
+position:absolute;
+top:95px;
+left:50%;
+transform:translateX(-50%);
+background:#1f1c5a;
+color:white;
+padding:10px 22px;
+border-radius:30px;
+font-size:16px;
+font-weight:600;
+animation:pulse 2s infinite;
+}
+
+@keyframes pulse{
+0%,100%{transform:translateX(-50%) scale(1);}
+50%{transform:translateX(-50%) scale(1.05);}
+}
+
+/* FLOATING ICONS */
+
+.float{
+position:absolute;
+font-size:28px;
+opacity:.15;
+pointer-events:none;
+animation:float 5s ease-in-out infinite;
+}
+
+.f1{top:120px;left:20px;}
+.f2{top:250px;right:40px;animation-delay:1s;}
+.f3{bottom:30px;left:600px;animation-delay:2s;}
+.f4{top:420px;left:1100px;animation-delay:3s;}
+
+@keyframes float{
+0%,100%{transform:translateY(0);}
+50%{transform:translateY(-15px);}
+}
+
+/* GRID */
+
+.grid{
+position:absolute;
+top:140px;
+left:35px;
+width:1210px;
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:22px;
+}
+
+.card{
+height:235px;
+background:#ececf6;
+border-radius:18px;
+padding:25px;
+cursor:pointer;
+transition:.35s;
+position:relative;
+overflow:hidden;
+}
+
+.card:hover{
+transform:translateY(-6px);
+box-shadow:0 15px 30px rgba(0,0,0,.12);
+}
+
+.card.completed{
+border:3px solid #10b981;
+}
+
+.number{
+width:72px;
+height:72px;
+border-radius:50%;
+display:flex;
+justify-content:center;
+align-items:center;
+font-size:24px;
+font-weight:700;
+color:white;
+margin-bottom:15px;
+}
+
+.purple{
+background:linear-gradient(135deg,#5b5ee8,#8b5cf6);
+}
+
+.blue{
+background:linear-gradient(135deg,#3b82f6,#60a5fa);
+}
+
+.title{
+font-size:22px;
+font-weight:800;
+color:#1f1c5a;
+margin-bottom:15px;
+}
+
+.desc{
+font-size:16px;
+line-height:1.5;
+color:#4b5563;
+}
+
+/* PROGRESS */
+
+.progress{
+position:absolute;
+top:25px;
+right:30px;
+background:white;
+padding:12px 18px;
+border-radius:12px;
+font-weight:700;
+box-shadow:0 5px 15px rgba(0,0,0,.08);
+color:#1f1c5a;
+}
+
+.progress span{
+color:#5b5ee8;
+}
+
+/* POPUP */
+
+.overlay{
+position:absolute;
+inset:0;
+background:rgba(0,0,0,.55);
+display:none;
+z-index:20;
+}
+
+.popup{
+position:absolute;
+left:50%;
+top:50%;
+transform:translate(-50%,-50%);
+width:650px;
+background:white;
+border-radius:18px;
+padding:28px;
+display:none;
+z-index:30;
+box-shadow:0 20px 40px rgba(0,0,0,.25);
+}
+
+.popup h2{
+font-size:32px;
+color:#1f1c5a;
+margin-bottom:15px;
+}
+
+.popup p{
+font-size:17px;
+line-height:1.6;
+color:#4b5563;
+margin-bottom:15px;
+}
+
+.example{
+background:#eef2ff;
+padding:15px;
+border-radius:10px;
+font-size:16px;
+line-height:1.6;
+}
+
+.popup button{
+margin-top:18px;
+padding:10px 20px;
+background:#5b5ee8;
+color:white;
+border:none;
+border-radius:8px;
+cursor:pointer;
+font-size:16px;
+}
+
+/* BADGE */
+
+.badge{
+position:absolute;
+bottom:20px;
+left:50%;
+transform:translateX(-50%);
+background:#1f1c5a;
+color:white;
+padding:12px 24px;
+border-radius:30px;
+display:none;
+font-size:16px;
+z-index:40;
+}
+
+/* COMPLETION */
+
+.complete{
+position:absolute;
+inset:0;
+background:rgba(18,18,60,.96);
+display:none;
+justify-content:center;
+align-items:center;
+flex-direction:column;
+text-align:center;
+color:white;
+z-index:50;
+}
+
+.complete h2{
+font-size:60px;
+margin-bottom:15px;
+}
+
+.complete p{
+font-size:24px;
+width:700px;
+line-height:1.5;
+margin-bottom:20px;
+}
+
+.complete button{
+padding:12px 25px;
+border:none;
+border-radius:10px;
+background:#5b5ee8;
+color:white;
+font-size:18px;
+cursor:pointer;
+}
+</style>
+</head>
+
+<body>
+
+<div id="game">
+
+<div class="float f1">🧠</div>
+<div class="float f2">📊</div>
+<div class="float f3">🚀</div>
+<div class="float f4">⭐</div>
+
+<div class="header">
+<h1>Assessing Learning Agility in Your Team</h1>
+</div>
+
+<div class="progress">
+Progress: <span id="score">0</span>/4
+</div>
+
+<div class="mission">
+🎯 Mission: Explore all 4 assessment methods to unlock the Agility Expert Badge
+</div>
+
+<div class="grid">
+
+<div class="card" onclick="showMethod(this,1)">
+<div class="number purple">1</div>
+<div class="title">Behavioral Interviews</div>
+<div class="desc">
+Explore past experiences, challenges overcome, and examples of rapid adaptation to new situations.
+</div>
+</div>
+
+<div class="card" onclick="showMethod(this,2)">
+<div class="number purple">2</div>
+<div class="title">360-Degree Feedback</div>
+<div class="desc">
+Collate perspectives from managers, peers, reports, and clients to evaluate agility dimensions.
+</div>
+</div>
+
+<div class="card" onclick="showMethod(this,3)">
+<div class="number blue">3</div>
+<div class="title">Psychometric Assessments</div>
+<div class="desc">
+Use validated tools like Burke LAI or Korn Ferry Assess to measure learning dimensions.
+</div>
+</div>
+
+<div class="card" onclick="showMethod(this,4)">
+<div class="number purple">4</div>
+<div class="title">Performance Data</div>
+<div class="desc">
+Track performance in first-time assignments, cross-functional roles, and ambiguous projects.
+</div>
+</div>
+
+</div>
+
+<div class="overlay" id="overlay"></div>
+
+<div class="popup" id="popup">
+<h2 id="popupTitle"></h2>
+<p id="popupText"></p>
+<div class="example" id="popupExample"></div>
+<button onclick="closePopup()">Continue</button>
+</div>
+
+<div class="badge" id="badge"></div>
+
+<div class="complete" id="complete">
+<h2>🏆 Learning Agility Expert!</h2>
+<p>
+Fantastic! You explored all four methods used to assess Learning Agility and discovered how organizations identify agile talent.
+</p>
+<button onclick="location.reload()">Play Again</button>
+</div>
+
+</div>
+
+<script>
+
+let visited=[];
+
+const data={
+
+1:{
+title:"🗣 Behavioral Interviews",
+text:"Behavioral interviews focus on past experiences and behaviors. The idea is that past behavior is often the best predictor of future performance.",
+example:"Example: Ask a leader to describe a time they entered an unfamiliar role and how they adapted successfully."
+},
+
+2:{
+title:"🔄 360-Degree Feedback",
+text:"Collect perspectives from multiple stakeholders to gain a balanced picture of how an individual demonstrates learning agility.",
+example:"Example: Peers may identify adaptability strengths that managers or clients observe differently."
+},
+
+3:{
+title:"📋 Psychometric Assessments",
+text:"Validated assessment tools provide objective measures of agility-related traits and behaviors.",
+example:"Example: Burke Learning Agility Inventory (LAI) and Korn Ferry Assess can identify strengths and development opportunities."
+},
+
+4:{
+title:"📈 Performance Data",
+text:"Real-world performance provides evidence of how individuals respond to ambiguity, new challenges, and complex situations.",
+example:"Example: Review success in first-time assignments, stretch projects, or cross-functional leadership roles."
+}
+
+};
+
+function showMethod(card,id){
+
+document.getElementById('popupTitle').innerHTML=data[id].title;
+document.getElementById('popupText').innerHTML=data[id].text;
+document.getElementById('popupExample').innerHTML='<b>💡 Example:</b> '+data[id].example;
+
+document.getElementById('popup').style.display='block';
+document.getElementById('overlay').style.display='block';
+
+if(!visited.includes(id)){
+
+visited.push(id);
+
+card.classList.add('completed');
+
+document.getElementById('score').innerHTML=visited.length;
+
+let badge=document.getElementById('badge');
+
+if(visited.length===2){
+
+badge.innerHTML='⭐ Talent Scout Badge Unlocked!';
+badge.style.display='block';
+
+setTimeout(()=>{
+badge.style.display='none';
+},2500);
+
+}
+
+if(visited.length===4){
+
+badge.innerHTML='🏆 Agility Expert Badge Unlocked!';
+badge.style.display='block';
+
+setTimeout(()=>{
+document.getElementById('complete').style.display='flex';
+},1500);
+
+}
+
+}
+
+}
+
+function closePopup(){
+
+document.getElementById('popup').style.display='none';
+document.getElementById('overlay').style.display='none';
+
+}
+</script>
+
+</body>
+</html>
