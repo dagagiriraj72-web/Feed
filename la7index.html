@@ -18,174 +18,131 @@ body{
 width:100vw;
 height:100vh;
 overflow:hidden;
-background:#f5f6fa;
+background:#f4f5f8;
 display:flex;
 justify-content:center;
 align-items:center;
 }
 
 #slide{
-width:1280px;
-height:720px;
-background:#f5f6fa;
-padding:20px;
+width:1180px;
+height:620px;
+background:#f4f5f8;
+padding:15px;
 overflow:hidden;
-position:relative;
 }
 
 .title{
-font-size:44px;
+text-align:center;
+font-size:42px;
 font-weight:800;
-text-align:center;
 color:#23235b;
-margin-bottom:10px;
+margin-bottom:15px;
 }
 
-.mission{
-width:650px;
-margin:0 auto 15px;
-background:#23235b;
-color:white;
-padding:12px;
-border-radius:40px;
-text-align:center;
-font-size:18px;
-font-weight:700;
+.grid{
+display:grid;
+grid-template-columns:1fr 1fr;
+grid-template-rows:1fr 1fr;
+gap:18px;
+height:520px;
 }
 
-.progress{
-width:500px;
-height:10px;
-background:#d9deeb;
-margin:0 auto 20px;
-border-radius:20px;
-overflow:hidden;
-}
-
-.progressFill{
-height:100%;
-width:0%;
-background:linear-gradient(90deg,#5b5bf7,#7c4dff);
-transition:.4s;
-}
-
-.layout{
-display:flex;
-gap:20px;
-height:560px;
-}
-
-/* LEFT MENU */
-
-.menu{
-width:340px;
-display:flex;
-flex-direction:column;
-gap:15px;
-}
-
-.method{
-background:white;
+.card{
+background:#eef0fb;
 border-radius:18px;
-padding:18px;
+padding:25px;
 cursor:pointer;
 transition:.3s;
-box-shadow:0 4px 12px rgba(0,0,0,.06);
+display:flex;
+align-items:flex-start;
+gap:20px;
 }
 
-.method:hover{
-transform:translateY(-3px);
-}
-
-.method.visited{
-border:3px solid #4ade80;
+.card:hover{
+transform:translateY(-4px);
+box-shadow:0 8px 20px rgba(0,0,0,.12);
 }
 
 .num{
-width:55px;
-height:55px;
+width:70px;
+height:70px;
+min-width:70px;
 border-radius:50%;
-background:linear-gradient(135deg,#5b5bf7,#7c4dff);
 display:flex;
-align-items:center;
 justify-content:center;
-color:white;
-font-size:24px;
+align-items:center;
+font-size:32px;
 font-weight:700;
+color:white;
+}
+
+.purple{
+background:linear-gradient(135deg,#7c4dff,#5c6cff);
+}
+
+.blue{
+background:linear-gradient(135deg,#4f8cff,#3a7cf5);
+}
+
+.content h3{
+font-size:22px;
+color:#23235b;
 margin-bottom:10px;
 }
 
-.method h3{
-font-size:24px;
-color:#23235b;
-}
-
-/* RIGHT PANEL */
-
-.panel{
-flex:1;
-background:white;
-border-radius:25px;
-padding:30px;
-box-shadow:0 4px 12px rgba(0,0,0,.08);
-}
-
-.badge{
-display:inline-block;
-background:#eef2ff;
-color:#4f46e5;
-padding:8px 15px;
-border-radius:30px;
-font-weight:700;
-margin-bottom:15px;
-}
-
-.panelTitle{
-font-size:38px;
-font-weight:800;
-color:#23235b;
-margin-bottom:15px;
-}
-
-.panelText{
-font-size:24px;
-line-height:1.6;
-color:#4b5563;
-margin-bottom:20px;
-}
-
-.example{
-background:#eef2ff;
-padding:18px;
-border-radius:15px;
-font-size:22px;
+.content p{
+font-size:16px;
 line-height:1.5;
-color:#374151;
+color:#4b5563;
 }
 
-.complete{
-position:absolute;
+.overlay{
+position:fixed;
 inset:0;
-background:rgba(20,20,50,.95);
+background:rgba(0,0,0,.5);
 display:none;
-justify-content:center;
-align-items:center;
-flex-direction:column;
-color:white;
-z-index:100;
 }
 
-.complete h2{
-font-size:60px;
+.popup{
+position:fixed;
+top:50%;
+left:50%;
+transform:translate(-50%,-50%);
+width:700px;
+background:white;
+padding:30px;
+border-radius:20px;
+display:none;
+box-shadow:0 15px 40px rgba(0,0,0,.25);
+}
+
+.popup h2{
+font-size:32px;
+color:#23235b;
 margin-bottom:15px;
 }
 
-.complete p{
-font-size:24px;
+.popup p{
+font-size:20px;
+line-height:1.7;
+color:#444;
+}
+
+.close{
+margin-top:20px;
+padding:12px 24px;
+border:none;
+border-radius:10px;
+background:#5c6cff;
+color:white;
+cursor:pointer;
+font-size:18px;
 }
 
 </style>
 </head>
+
 <body>
 
 <div id="slide">
@@ -194,133 +151,92 @@ font-size:24px;
 Assessing Learning Agility in Your Team
 </div>
 
-<div class="mission">
-🎯 Explore all 4 assessment methods
-</div>
+<div class="grid">
 
-<div class="progress">
-<div class="progressFill" id="progress"></div>
-</div>
-
-<div class="layout">
-
-<div class="menu">
-
-<div class="method" onclick="showMethod(0,this)">
-<div class="num">1</div>
+<div class="card" onclick="openCard(0)">
+<div class="num purple">1</div>
+<div class="content">
 <h3>Behavioral Interviews</h3>
+<p>Explore past experiences, challenges overcome and examples of rapid adaptation.</p>
+</div>
 </div>
 
-<div class="method" onclick="showMethod(1,this)">
-<div class="num">2</div>
-<h3>360° Feedback</h3>
+<div class="card" onclick="openCard(1)">
+<div class="num purple">2</div>
+<div class="content">
+<h3>360-Degree Feedback</h3>
+<p>Gather perspectives from managers, peers and direct reports.</p>
+</div>
 </div>
 
-<div class="method" onclick="showMethod(2,this)">
-<div class="num">3</div>
-<h3>Psychometric Tools</h3>
+<div class="card" onclick="openCard(2)">
+<div class="num blue">3</div>
+<div class="content">
+<h3>Psychometric Assessments</h3>
+<p>Use validated tools such as Burke LAI or Korn Ferry Assess.</p>
+</div>
 </div>
 
-<div class="method" onclick="showMethod(3,this)">
-<div class="num">4</div>
+<div class="card" onclick="openCard(3)">
+<div class="num purple">4</div>
+<div class="content">
 <h3>Performance Data</h3>
+<p>Evaluate success in first-time assignments and ambiguous projects.</p>
 </div>
-
-</div>
-
-<div class="panel">
-
-<div class="badge">
-Learning Agility Assessment
-</div>
-
-<div class="panelTitle" id="title">
-Select a Method
-</div>
-
-<div class="panelText" id="text">
-Click any assessment method on the left to learn how organizations evaluate Learning Agility.
-</div>
-
-<div class="example" id="example">
-Example: A company identifies future leaders by measuring how effectively employees adapt to new challenges.
 </div>
 
 </div>
 
 </div>
 
-<div class="complete" id="complete">
+<div class="overlay" id="overlay"></div>
 
-<h2>🏆 Assessment Expert</h2>
-
-<p>You explored all four assessment methods.</p>
-
-</div>
-
+<div class="popup" id="popup">
+<h2 id="popTitle"></h2>
+<p id="popText"></p>
+<button class="close" onclick="closeCard()">Close</button>
 </div>
 
 <script>
 
-const methods=[
+const data=[
 
 {
 title:"Behavioral Interviews",
-text:"Explore past experiences, challenges overcome, and examples of rapid adaptation to new situations.",
-example:"Example: Ask candidates to describe a time they succeeded in a completely unfamiliar situation."
+text:"Interview questions focus on situations where employees adapted, learned quickly, and succeeded in unfamiliar challenges."
 },
 
 {
 title:"360-Degree Feedback",
-text:"Collect perspectives from managers, peers, direct reports, and clients to evaluate agility dimensions.",
-example:"Example: Team members provide feedback on adaptability, collaboration, and learning behaviors."
+text:"Feedback from multiple stakeholders provides insight into agility, collaboration, adaptability and learning behaviors."
 },
 
 {
 title:"Psychometric Assessments",
-text:"Use validated tools such as Burke LAI or Korn Ferry Assessments to measure learning agility dimensions.",
-example:"Example: Employees complete structured assessments that reveal agility strengths and development areas."
+text:"Validated assessments measure learning agility dimensions and predict future leadership potential."
 },
 
 {
 title:"Performance Data",
-text:"Track performance in first-time assignments, cross-functional roles, and ambiguous projects.",
-example:"Example: Employees who excel in unfamiliar roles often demonstrate strong learning agility."
+text:"Real-world performance in stretch assignments and uncertain situations reveals actual learning agility."
 }
 
 ];
 
-let visited=[];
+function openCard(i){
 
-function showMethod(index,element){
+document.getElementById("popTitle").innerText=data[i].title;
+document.getElementById("popText").innerText=data[i].text;
 
-document.getElementById("title").innerText=
-methods[index].title;
-
-document.getElementById("text").innerText=
-methods[index].text;
-
-document.getElementById("example").innerText=
-methods[index].example;
-
-if(!visited.includes(index)){
-
-visited.push(index);
-
-element.classList.add("visited");
-
-document.getElementById("progress").style.width=
-(visited.length/4*100)+"%";
-
-if(visited.length===4){
-
-setTimeout(()=>{
-document.getElementById("complete").style.display="flex";
-},800);
+document.getElementById("overlay").style.display="block";
+document.getElementById("popup").style.display="block";
 
 }
 
-}
+function closeCard(){
+
+document.getElementById("overlay").style.display="none";
+document.getElementById("popup").style.display="none";
 
 }
 
