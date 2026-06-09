@@ -15,71 +15,65 @@ font-family:"Segoe UI",sans-serif;
 }
 
 body{
-width:100vw;
-height:100vh;
+background:#f4f5f8;
+overflow:hidden;
 display:flex;
 justify-content:center;
 align-items:center;
-background:#f4f5f8;
-overflow:hidden;
+height:100vh;
 }
 
 #slide{
 width:1280px;
 height:720px;
 background:#f4f5f8;
-padding:15px;
+padding:20px 30px;
+position:relative;
 overflow:hidden;
 }
 
-.title{
+h1{
 text-align:center;
-font-size:42px;
-font-weight:800;
+font-size:48px;
 color:#23235b;
-margin-bottom:10px;
+margin-bottom:20px;
+font-weight:800;
 }
 
-.layout{
-display:flex;
-gap:15px;
-height:610px;
+.instructions{
+text-align:center;
+font-size:18px;
+color:#666;
+margin-bottom:20px;
 }
 
-/* LEFT SIDE */
-
-.menu{
-width:360px;
+.grid{
 display:grid;
 grid-template-columns:repeat(3,1fr);
-grid-template-rows:repeat(3,1fr);
-gap:12px;
+grid-template-rows:repeat(3,150px);
+gap:15px;
 }
 
-.strategy{
-background:white;
-border:none;
+.card{
+background:#e9edf7;
 border-radius:18px;
 cursor:pointer;
+padding:18px;
 display:flex;
-flex-direction:column;
-justify-content:center;
 align-items:center;
+gap:15px;
 transition:.3s;
-box-shadow:0 3px 12px rgba(0,0,0,.08);
 }
 
-.strategy:hover{
+.card:hover{
 transform:translateY(-4px);
-}
-
-.strategy.visited{
-border:3px solid #22c55e;
+box-shadow:0 8px 20px rgba(0,0,0,.1);
 }
 
 .num{
-width:58px;
-height:58px;
+width:60px;
+height:60px;
+min-width:60px;
 border-radius:50%;
 display:flex;
 justify-content:center;
@@ -87,290 +81,225 @@ align-items:center;
 font-size:28px;
 font-weight:700;
 color:white;
-background:linear-gradient(135deg,#4f8cff,#7c4dff);
-margin-bottom:8px;
 }
 
-.label{
-font-size:15px;
-font-weight:700;
-text-align:center;
-padding:0 6px;
-color:#23235b;
+.purple{
+background:linear-gradient(135deg,#7c4dff,#5c6cff);
 }
 
-/* RIGHT PANEL */
-
-.panel{
-flex:1;
-background:white;
-border-radius:25px;
-padding:25px;
-box-shadow:0 5px 15px rgba(0,0,0,.08);
-display:flex;
-flex-direction:column;
+.blue{
+background:linear-gradient(135deg,#4f8cff,#3a7cf5);
 }
 
-.badge{
-display:inline-block;
-padding:8px 16px;
-background:#eef2ff;
-border-radius:30px;
-color:#4f46e5;
-font-weight:700;
-margin-bottom:15px;
-width:max-content;
-}
-
-.panel h2{
-font-size:34px;
-color:#23235b;
-margin-bottom:12px;
-}
-
-.desc{
-font-size:22px;
-line-height:1.5;
-color:#4b5563;
-margin-bottom:25px;
-}
-
-.section{
+.text{
 font-size:24px;
 font-weight:700;
+line-height:1.2;
 color:#23235b;
-margin-bottom:12px;
+}
+
+/* POPUP */
+
+.overlay{
+position:absolute;
+inset:0;
+background:rgba(0,0,0,.5);
+display:none;
+z-index:10;
+}
+
+.popup{
+position:absolute;
+top:50%;
+left:50%;
+transform:translate(-50%,-50%);
+width:760px;
+background:white;
+border-radius:25px;
+padding:30px;
+display:none;
+z-index:11;
+box-shadow:0 20px 40px rgba(0,0,0,.2);
+}
+
+.popup h2{
+font-size:38px;
+color:#23235b;
+margin-bottom:15px;
+}
+
+.popup p{
+font-size:24px;
+line-height:1.6;
+color:#4b5563;
 }
 
 .example{
-background:#eef2ff;
+margin-top:20px;
 padding:18px;
+background:#eef2ff;
 border-radius:15px;
 font-size:22px;
-line-height:1.5;
 color:#374151;
 }
 
-.progressWrap{
-margin-top:auto;
-}
-
-.progressText{
-font-size:18px;
-font-weight:700;
-margin-bottom:8px;
-color:#23235b;
-}
-
-.progress{
-height:12px;
-background:#d7dbe8;
-border-radius:30px;
-overflow:hidden;
-}
-
-.fill{
-height:100%;
-width:0%;
-background:linear-gradient(90deg,#4f8cff,#7c4dff);
-transition:.4s;
-}
-
-.complete{
-position:fixed;
-inset:0;
-background:rgba(20,20,50,.95);
-display:none;
-justify-content:center;
-align-items:center;
-flex-direction:column;
+.close{
+margin-top:20px;
+padding:12px 24px;
+border:none;
+border-radius:10px;
+background:#5c6cff;
 color:white;
-z-index:100;
-}
-
-.complete h2{
-font-size:60px;
-margin-bottom:10px;
-}
-
-.complete p{
-font-size:24px;
+font-size:18px;
+cursor:pointer;
 }
 
 </style>
 </head>
+
 <body>
 
 <div id="slide">
 
-<div class="title">
-Nine Organizational Strategies
+<h1>Nine Organizational Strategies</h1>
+
+<div class="instructions">
+Click any strategy to explore it
 </div>
 
-<div class="layout">
+<div class="grid">
 
-<div class="menu">
-
-<button class="strategy" onclick="show(0,this)">
-<div class="num">1</div>
-<div class="label">Hiring Criteria</div>
-</button>
-
-<button class="strategy" onclick="show(1,this)">
-<div class="num">2</div>
-<div class="label">360 Assessments</div>
-</button>
-
-<button class="strategy" onclick="show(2,this)">
-<div class="num">3</div>
-<div class="label">Stretch Assignments</div>
-</button>
-
-<button class="strategy" onclick="show(3,this)">
-<div class="num">4</div>
-<div class="label">Reflection Practices</div>
-</button>
-
-<button class="strategy" onclick="show(4,this)">
-<div class="num">5</div>
-<div class="label">Psychological Safety</div>
-</button>
-
-<button class="strategy" onclick="show(5,this)">
-<div class="num">6</div>
-<div class="label">Targeted Coaching</div>
-</button>
-
-<button class="strategy" onclick="show(6,this)">
-<div class="num">7</div>
-<div class="label">Agility Metrics</div>
-</button>
-
-<button class="strategy" onclick="show(7,this)">
-<div class="num">8</div>
-<div class="label">Internal Mobility</div>
-</button>
-
-<button class="strategy" onclick="show(8,this)">
-<div class="num">9</div>
-<div class="label">Succession Planning</div>
-</button>
-
+<div class="card" onclick="openCard(0)">
+<div class="num purple">1</div>
+<div class="text">Hiring Criteria</div>
 </div>
 
-<div class="panel">
-
-<div class="badge">Learning Agility Strategy</div>
-
-<h2 id="titleBox">
-Select a Strategy
-</h2>
-
-<div class="desc" id="descBox">
-Click any strategy tile to explore how organizations build a learning-agile culture.
+<div class="card" onclick="openCard(1)">
+<div class="num purple">2</div>
+<div class="text">360 Assessments</div>
 </div>
 
-<div class="section">
-Example
+<div class="card" onclick="openCard(2)">
+<div class="num blue">3</div>
+<div class="text">Stretch Assignments</div>
 </div>
 
-<div class="example" id="exampleBox">
-Choose a strategy from the left to begin.
+<div class="card" onclick="openCard(3)">
+<div class="num purple">4</div>
+<div class="text">Reflection Practices</div>
 </div>
 
-<div class="progressWrap">
-
-<div class="progressText">
-Progress: <span id="count">0</span>/9
+<div class="card" onclick="openCard(4)">
+<div class="num blue">5</div>
+<div class="text">Psychological Safety</div>
 </div>
 
-<div class="progress">
-<div class="fill" id="fill"></div>
+<div class="card" onclick="openCard(5)">
+<div class="num purple">6</div>
+<div class="text">Targeted Coaching</div>
+</div>
+
+<div class="card" onclick="openCard(6)">
+<div class="num purple">7</div>
+<div class="text">Agility Metrics</div>
+</div>
+
+<div class="card" onclick="openCard(7)">
+<div class="num blue">8</div>
+<div class="text">Internal Mobility</div>
+</div>
+
+<div class="card" onclick="openCard(8)">
+<div class="num purple">9</div>
+<div class="text">Succession Planning</div>
 </div>
 
 </div>
 
+<div class="overlay" id="overlay"></div>
+
+<div class="popup" id="popup">
+<h2 id="title"></h2>
+<p id="desc"></p>
+<div class="example" id="example"></div>
+<button class="close" onclick="closeCard()">Close</button>
 </div>
 
-</div>
-
-</div>
-
-<div class="complete" id="complete">
-<h2>🏆 Agility Architect</h2>
-<p>You explored all 9 organizational strategies.</p>
 </div>
 
 <script>
 
-const data=[
+const strategies=[
 
-["Embed Learning Agility into Hiring",
-"Include learning agility indicators in hiring criteria and interviews.",
-"Example: Ask candidates how they adapted to unfamiliar situations."],
+{
+title:"Embed Learning Agility into Hiring Criteria",
+desc:"Include learning agility indicators in recruitment and interview processes.",
+example:"Ask candidates to describe how they adapted to a completely unfamiliar challenge."
+},
 
-["360-Degree Assessments",
-"Use multi-rater feedback to identify high-potential talent.",
-"Example: Gather feedback from managers, peers and direct reports."],
+{
+title:"360-Degree Assessments",
+desc:"Use feedback from peers, managers and direct reports to identify high-potential talent.",
+example:"Gather multi-rater feedback before succession planning discussions."
+},
 
-["Stretch Assignments",
-"Push leaders into unfamiliar territory through challenging projects.",
-"Example: Assign a high performer to lead a new business initiative."],
+{
+title:"Stretch Assignments",
+desc:"Provide assignments that push leaders into unfamiliar situations.",
+example:"Assign a finance manager to lead a cross-functional transformation project."
+},
 
-["Structured Reflection",
-"Create formal reflection practices after major projects.",
-"Example: Conduct after-action reviews."],
+{
+title:"Reflection Practices",
+desc:"Build structured reflection into projects and learning experiences.",
+example:"Conduct after-action reviews at project completion."
+},
 
-["Psychological Safety",
-"Build an environment where experimentation is encouraged.",
-"Example: Celebrate learning from mistakes."],
+{
+title:"Psychological Safety",
+desc:"Create an environment where experimentation is encouraged.",
+example:"Celebrate lessons learned from intelligent failures."
+},
 
-["Targeted Coaching",
-"Invest in coaching aligned to agility dimensions.",
-"Example: Coaching focused on feedback-seeking behaviour."],
+{
+title:"Targeted Coaching",
+desc:"Provide coaching focused on specific learning agility dimensions.",
+example:"Coach leaders on feedback-seeking and adaptability behaviours."
+},
 
-["Agility Metrics",
-"Track learning agility indicators alongside performance.",
-"Example: Measure adaptability and experimentation."],
+{
+title:"Agility Metrics",
+desc:"Measure learning agility alongside performance outcomes.",
+example:"Track adaptability and innovation metrics in performance reviews."
+},
 
-["Internal Mobility",
-"Promote cross-functional rotations and role movement.",
-"Example: Rotate managers across departments."],
+{
+title:"Internal Mobility",
+desc:"Encourage role rotations and cross-functional movement.",
+example:"Move leaders across departments to broaden experiences."
+},
 
-["Succession Planning",
-"Align succession decisions with learning agility profiles.",
-"Example: Prioritize adaptable future leaders."]
+{
+title:"Succession Planning",
+desc:"Use learning agility profiles to identify future leaders.",
+example:"Select high-potential employees who consistently learn quickly."
+}
+
 ];
 
-let visited=[];
+function openCard(index){
 
-function show(i,el){
+document.getElementById("title").innerText=strategies[index].title;
+document.getElementById("desc").innerText=strategies[index].desc;
+document.getElementById("example").innerHTML="<strong>Example:</strong> "+strategies[index].example;
 
-document.getElementById("titleBox").innerText=data[i][0];
-document.getElementById("descBox").innerText=data[i][1];
-document.getElementById("exampleBox").innerText=data[i][2];
-
-if(!visited.includes(i)){
-
-visited.push(i);
-
-el.classList.add("visited");
-
-document.getElementById("count").innerText=visited.length;
-
-document.getElementById("fill").style.width=
-(visited.length/9*100)+"%";
-
-if(visited.length===9){
-
-setTimeout(()=>{
-document.getElementById("complete").style.display="flex";
-},700);
-
+document.getElementById("overlay").style.display="block";
+document.getElementById("popup").style.display="block";
 }
 
-}
-
+function closeCard(){
+document.getElementById("overlay").style.display="none";
+document.getElementById("popup").style.display="none";
 }
 
 </script>
