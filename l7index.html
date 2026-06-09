@@ -2,9 +2,9 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
 
-<title>Key Takeaways Challenge</title>
+<title>Assessing Learning Agility</title>
 
 <style>
 
@@ -12,173 +12,172 @@
 margin:0;
 padding:0;
 box-sizing:border-box;
-font-family:'Segoe UI',sans-serif;
+font-family:Segoe UI,sans-serif;
 }
 
 body{
-background:#f4f1ed;
-display:flex;
-justify-content:center;
-align-items:center;
-height:100vh;
+background:#f4f5f8;
 overflow:hidden;
 }
 
-.slide{
-width:1280px;
-height:720px;
-padding:20px 30px;
-background:#f4f1ed;
-overflow:hidden;
+#slide{
+width:1180px;
+height:620px;
+margin:auto;
+padding:15px;
+background:#f4f5f8;
 }
+
+/* TITLE */
 
 .title{
-font-size:52px;
-font-weight:700;
-color:#1f2f5a;
+height:55px;
+font-size:34px;
+font-weight:800;
+color:#23235b;
 text-align:center;
-margin-bottom:15px;
 }
+
+/* MAIN */
 
 .main{
+height:535px;
 display:flex;
-gap:25px;
-height:620px;
-}
-
-/* LEFT PANEL */
-
-.leftPanel{
-width:360px;
-display:flex;
-flex-direction:column;
-gap:20px;
-}
-
-.characterCard{
-background:#fff;
-border-radius:20px;
-padding:20px;
-text-align:center;
-box-shadow:0 6px 15px rgba(0,0,0,.08);
-}
-
-.character{
-font-size:120px;
-line-height:1;
-}
-
-.name{
-font-size:34px;
-font-weight:700;
-color:#1f2f5a;
+gap:15px;
 margin-top:10px;
 }
 
-.storyCard{
+/* LEFT */
+
+.left{
+width:320px;
+display:flex;
+flex-direction:column;
+gap:10px;
+}
+
+.method{
+height:120px;
+background:white;
+border:none;
+border-radius:16px;
+cursor:pointer;
+display:flex;
+align-items:center;
+padding:15px;
+gap:15px;
+box-shadow:0 2px 8px rgba(0,0,0,.08);
+transition:.3s;
+}
+
+.method:hover{
+transform:translateY(-2px);
+}
+
+.num{
+width:55px;
+height:55px;
+border-radius:50%;
+background:linear-gradient(135deg,#4f8cff,#7c4dff);
+color:white;
+font-size:28px;
+font-weight:700;
+display:flex;
+justify-content:center;
+align-items:center;
+flex-shrink:0;
+}
+
+.methodText{
+font-size:22px;
+font-weight:700;
+color:#23235b;
+text-align:left;
+}
+
+/* RIGHT */
+
+.right{
 flex:1;
-background:#fff;
+background:white;
 border-radius:20px;
 padding:25px;
-box-shadow:0 6px 15px rgba(0,0,0,.08);
-display:flex;
-align-items:center;
-justify-content:center;
-text-align:center;
-font-size:28px;
-line-height:1.5;
-color:#444;
+box-shadow:0 2px 8px rgba(0,0,0,.08);
 }
 
-/* RIGHT PANEL */
-
-.rightPanel{
-flex:1;
-display:flex;
-flex-direction:column;
-gap:20px;
-}
-
-.options{
-display:grid;
-grid-template-columns:1fr 1fr;
-gap:15px;
-}
-
-.option{
-background:#fff;
-border-radius:18px;
-padding:18px;
-cursor:pointer;
-box-shadow:0 6px 15px rgba(0,0,0,.08);
-transition:.3s;
-font-size:24px;
-font-weight:600;
-color:#444;
-min-height:90px;
-
-display:flex;
-align-items:center;
-}
-
-.option:hover{
-transform:translateY(-4px);
-background:#fff7f2;
-}
-
-.feedback{
-flex:1;
-background:#fff;
+.badge{
+display:inline-block;
+padding:8px 16px;
+background:#eef2ff;
+color:#4f46e5;
 border-radius:20px;
-padding:30px;
-box-shadow:0 6px 15px rgba(0,0,0,.08);
-
-display:flex;
-flex-direction:column;
-justify-content:center;
-}
-
-.feedbackTitle{
-font-size:34px;
 font-weight:700;
-color:#1f2f5a;
+font-size:15px;
 margin-bottom:15px;
 }
 
-.feedbackText{
-font-size:28px;
-line-height:1.5;
-color:#444;
+#heading{
+font-size:36px;
+font-weight:800;
+color:#23235b;
+margin-bottom:15px;
 }
 
-.progressWrap{
-margin-top:25px;
+#desc{
+font-size:22px;
+line-height:1.6;
+color:#4b5563;
+margin-bottom:25px;
+}
+
+.exampleTitle{
+font-size:24px;
+font-weight:700;
+color:#23235b;
+margin-bottom:10px;
+}
+
+.example{
+background:#eef2ff;
+padding:18px;
+border-radius:15px;
+font-size:20px;
+line-height:1.6;
+color:#374151;
+margin-bottom:25px;
+}
+
+.progressLabel{
+font-size:18px;
+font-weight:700;
+color:#23235b;
+margin-bottom:8px;
 }
 
 .progress{
 height:12px;
-background:#ddd;
+background:#d7dbe8;
 border-radius:20px;
 overflow:hidden;
 }
 
 .fill{
-width:0%;
 height:100%;
-background:#ea7746;
+width:0%;
+background:linear-gradient(90deg,#4f8cff,#7c4dff);
 transition:.4s;
 }
 
 .complete{
-margin-top:20px;
 display:none;
-background:#ea7746;
+margin-top:25px;
+background:#23235b;
 color:white;
 padding:15px;
-border-radius:14px;
-text-align:center;
-font-size:24px;
+border-radius:15px;
+font-size:22px;
 font-weight:700;
+text-align:center;
 }
 
 </style>
@@ -186,87 +185,70 @@ font-weight:700;
 
 <body>
 
-<div class="slide">
+<div id="slide">
 
 <div class="title">
-Key Takeaways Challenge
+Assessing Learning Agility in Your Team
 </div>
 
 <div class="main">
 
-<!-- LEFT -->
+<div class="left">
 
-<div class="leftPanel">
+<button class="method" onclick="showMethod(0)">
+<div class="num">1</div>
+<div class="methodText">Behavioral Interviews</div>
+</button>
 
-<div class="characterCard">
+<button class="method" onclick="showMethod(1)">
+<div class="num">2</div>
+<div class="methodText">360° Feedback</div>
+</button>
 
-<div class="character">
-👩‍💼
-</div>
+<button class="method" onclick="showMethod(2)">
+<div class="num">3</div>
+<div class="methodText">Psychometric Assessments</div>
+</button>
 
-<div class="name">
-Riya
-</div>
-
-</div>
-
-<div class="storyCard">
-
-Riya has been promoted to lead a new team.
-Help her make the right decisions by applying what you've learned about Learning Agility.
-
-</div>
-
-</div>
-
-<!-- RIGHT -->
-
-<div class="rightPanel">
-
-<div class="options">
-
-<div class="option" onclick="showAnswer(1)">
-🧠 How should Riya identify future leaders?
-</div>
-
-<div class="option" onclick="showAnswer(2)">
-🔄 What capability should she focus on developing?
-</div>
-
-<div class="option" onclick="showAnswer(3)">
-🎯 What business impact can she expect?
-</div>
-
-<div class="option" onclick="showAnswer(4)">
-👀 Can learning agility be developed?
-</div>
+<button class="method" onclick="showMethod(3)">
+<div class="num">4</div>
+<div class="methodText">Performance Data</div>
+</button>
 
 </div>
 
-<div class="feedback">
+<div class="right">
 
-<div class="feedbackTitle">
-Click a challenge to begin
+<div class="badge">
+Learning Agility Assessment
 </div>
 
-<div class="feedbackText" id="answer">
-
-Explore each challenge to uncover the key takeaways from this course.
-
+<div id="heading">
+Select a Method
 </div>
 
-<div class="progressWrap">
+<div id="desc">
+Click any assessment method on the left to explore how organizations evaluate Learning Agility.
+</div>
+
+<div class="exampleTitle">
+Example
+</div>
+
+<div class="example" id="example">
+A company identifies future leaders by measuring how effectively employees adapt to new challenges.
+</div>
+
+<div class="progressLabel">
+Progress: <span id="count">0</span>/4
+</div>
 
 <div class="progress">
 <div class="fill" id="fill"></div>
 </div>
 
 <div class="complete" id="complete">
-🎉 Great job! Start developing learning agility in your team today.
-</div>
-
-</div>
-
+🏆 Assessment Expert Unlocked
 </div>
 
 </div>
@@ -277,37 +259,55 @@ Explore each challenge to uncover the key takeaways from this course.
 
 <script>
 
-let completed=[];
+const data=[
 
-const answers={
+{
+title:"Behavioral Interviews",
+desc:"Explore past experiences, challenges overcome, and examples of rapid adaptation to new situations.",
+example:"Ask: 'Tell me about a time you succeeded in a completely unfamiliar situation.'"
+},
 
-1:"Learning Agility is one of the strongest predictors of leadership potential, often outperforming IQ and experience alone.",
+{
+title:"360-Degree Feedback",
+desc:"Gather perspectives from managers, peers, direct reports, and clients to evaluate learning agility behaviours.",
+example:"A leader receives feedback from multiple stakeholders about adaptability and collaboration."
+},
 
-2:"Focus on developing the five dimensions of Learning Agility: Mental, People, Change, Results Agility, and Self-Awareness.",
+{
+title:"Psychometric Assessments",
+desc:"Use validated tools such as Burke LAI or Korn Ferry Assess to measure learning agility dimensions.",
+example:"An organization uses assessment results to identify high-potential talent."
+},
 
-3:"Organizations with learning-agile leaders achieve stronger performance, innovation, and talent retention.",
-
-4:"Yes. Learning Agility is behavioral and can be assessed, developed, and strengthened through deliberate practice."
-
-};
-
-function showAnswer(id){
-
-document.getElementById("answer").innerHTML=
-answers[id];
-
-if(!completed.includes(id)){
-completed.push(id);
+{
+title:"Performance Data",
+desc:"Track performance in first-time assignments, cross-functional roles, and ambiguous projects.",
+example:"Employees who consistently perform well in new situations often demonstrate strong learning agility."
 }
 
-let progress=(completed.length/4)*100;
+];
+
+let visited=[];
+
+function showMethod(i){
+
+document.getElementById("heading").innerText=data[i].title;
+document.getElementById("desc").innerText=data[i].desc;
+document.getElementById("example").innerText=data[i].example;
+
+if(!visited.includes(i)){
+
+visited.push(i);
+
+document.getElementById("count").innerText=visited.length;
 
 document.getElementById("fill").style.width=
-progress+"%";
+(visited.length/4*100)+"%";
 
-if(completed.length===4){
-document.getElementById("complete").style.display=
-"block";
+if(visited.length===4){
+document.getElementById("complete").style.display="block";
+}
+
 }
 
 }
