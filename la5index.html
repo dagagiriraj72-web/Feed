@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Growth Mindset vs Fixed Mindset</title>
+
+<style>
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Segoe UI',sans-serif;
+}
+
+body{
+width:100vw;
+height:100vh;
+overflow:hidden;
+background:#f4f5f8;
+display:flex;
+justify-content:center;
+align-items:center;
+}
+
+#slide{
+width:1280px;
+height:720px;
+background:#f4f5f8;
+position:relative;
+overflow:hidden;
+}
+
+/* HEADER */
+
+.header{
+position:absolute;
+top:15px;
+left:30px;
+width:1220px;
+}
+
+.header h1{
+font-size:56px;
+font-weight:800;
+color:#201d5a;
+}
+
+/* SCORE */
+
+.score-panel{
+position:absolute;
+top:25px;
+right:40px;
+background:white;
+padding:10px 18px;
+border-radius:12px;
+box-shadow:0 5px 15px rgba(0,0,0,.08);
+font-weight:700;
+color:#201d5a;
+}
+
+/* GAME AREA */
+
+.container{
+position:absolute;
+top:110px;
+left:20px;
+width:1240px;
+height:580px;
+display:flex;
+justify-content:space-between;
+}
+
+.card{
+width:600px;
+height:520px;
+border-radius:18px;
+padding:25px;
+cursor:pointer;
+transition:.4s;
+position:relative;
+overflow:hidden;
+}
+
+.card:hover{
+transform:translateY(-6px);
+}
+
+.fixed{
+background:#dfe3ec;
+border-top:8px solid #9ca3af;
+}
+
+.growth{
+background:#ece9f8;
+border-top:8px solid #6366f1;
+}
+
+.card.active{
+transform:scale(1.02);
+box-shadow:0 15px 30px rgba(0,0,0,.15);
+}
+
+.card-title{
+font-size:48px;
+font-weight:800;
+margin-bottom:20px;
+}
+
+.fixed .card-title{
+color:#8d95a3;
+}
+
+.growth .card-title{
+color:#5b5ee8;
+}
+
+.list{
+list-style:none;
+margin-top:10px;
+}
+
+.list li{
+font-size:18px;
+line-height:1.45;
+margin-bottom:18px;
+padding-left:50px;
+position:relative;
+color:#374151;
+}
+
+.growth .list li{
+color:#26285e;
+}
+
+.icon{
+position:absolute;
+left:0;
+top:-2px;
+font-size:24px;
+}
+
+/* POPUP */
+
+.popup{
+position:absolute;
+left:50%;
+top:50%;
+transform:translate(-50%,-50%);
+width:500px;
+background:white;
+border-radius:18px;
+padding:25px;
+display:none;
+box-shadow:0 15px 35px rgba(0,0,0,.25);
+z-index:10;
+}
+
+.popup h2{
+font-size:30px;
+color:#201d5a;
+margin-bottom:10px;
+}
+
+.popup p{
+font-size:18px;
+line-height:1.6;
+color:#4b5563;
+}
+
+.close-btn{
+margin-top:18px;
+padding:10px 18px;
+background:#6366f1;
+color:white;
+border:none;
+border-radius:8px;
+cursor:pointer;
+}
+
+/* BADGES */
+
+.badge{
+position:absolute;
+bottom:18px;
+right:18px;
+font-size:50px;
+opacity:.15;
+}
+
+.message{
+position:absolute;
+bottom:15px;
+left:50%;
+transform:translateX(-50%);
+background:#201d5a;
+color:white;
+padding:12px 22px;
+border-radius:30px;
+display:none;
+font-size:16px;
+}
+
+/* COMPLETION */
+
+.complete{
+position:absolute;
+inset:0;
+background:rgba(18,18,60,.96);
+display:none;
+justify-content:center;
+align-items:center;
+flex-direction:column;
+color:white;
+z-index:99;
+text-align:center;
+}
+
+.complete h2{
+font-size:60px;
+margin-bottom:15px;
+}
+
+.complete p{
+font-size:24px;
+margin-bottom:20px;
+}
+
+.complete button{
+padding:12px 25px;
+border:none;
+border-radius:10px;
+font-size:18px;
+background:#6366f1;
+color:white;
+cursor:pointer;
+}
+</style>
+</head>
+
+<body>
+
+<div id="slide">
+
+<div class="header">
+<h1>Growth Mindset & Learning Agility 🚀</h1>
+</div>
+
+<div class="score-panel">
+⭐ Insights Unlocked: <span id="score">0</span>/2
+</div>
+
+<div class="container">
+
+<!-- FIXED -->
+
+<div class="card fixed" onclick="showInsight('fixed',this)">
+
+<div class="card-title">
+😟 Fixed Mindset
+</div>
+
+<ul class="list">
+
+<li><span class="icon">🚫</span>Abilities are static and unchangeable</li>
+
+<li><span class="icon">🛡️</span>Avoids challenges to protect self-image</li>
+
+<li><span class="icon">😐</span>Sees effort as pointless if talent is lacking</li>
+
+<li><span class="icon">🙉</span>Ignores constructive feedback</li>
+
+<li><span class="icon">😰</span>Feels threatened by others' success</li>
+
+</ul>
+
+<div class="badge">🔒</div>
+
+</div>
+
+<!-- GROWTH -->
+
+<div class="card growth" onclick="showInsight('growth',this)">
+
+<div class="card-title">
+🌱 Growth Mindset
+</div>
+
+<ul class="list">
+
+<li><span class="icon">💪</span>Abilities can be developed through effort</li>
+
+<li><span class="icon">🚀</span>Embraces challenges as growth opportunities</li>
+
+<li><span class="icon">🏆</span>Views effort as the path to mastery</li>
+
+<li><span class="icon">🎯</span>Learns from criticism and feedback</li>
+
+<li><span class="icon">👏</span>Finds inspiration in others' success</li>
+
+</ul>
+
+<div class="badge">🌟</div>
+
+</div>
+
+</div>
+
+<!-- POPUP -->
+
+<div class="popup" id="popup">
+<h2 id="popupTitle"></h2>
+<p id="popupText"></p>
+<button class="close-btn" onclick="closePopup()">Continue</button>
+</div>
+
+<div class="message" id="message"></div>
+
+<div class="complete" id="complete">
+
+<h2>🏆 Growth Mindset Master!</h2>
+
+<p>
+You discovered how Growth Mindset fuels Learning Agility and continuous success.
+</p>
+
+<button onclick="location.reload()">
+Explore Again
+</button>
+
+</div>
+
+</div>
+
+<script>
+
+let explored=[];
+
+function showInsight(type,card){
+
+const title=document.getElementById("popupTitle");
+const text=document.getElementById("popupText");
+const popup=document.getElementById("popup");
+
+card.classList.add("active");
+
+if(type==="fixed"){
+
+title.innerHTML="😟 Fixed Mindset";
+
+text.innerHTML=
+"People with a Fixed Mindset believe abilities are predetermined. They often avoid challenges, resist feedback, and may miss valuable learning opportunities.";
+
+}
+
+if(type==="growth"){
+
+title.innerHTML="🌱 Growth Mindset";
+
+text.innerHTML=
+"People with a Growth Mindset believe abilities can be developed through effort and learning. This mindset strongly supports Learning Agility because it encourages experimentation, resilience, and continuous improvement.";
+
+}
+
+popup.style.display="block";
+
+if(!explored.includes(type)){
+
+explored.push(type);
+
+document.getElementById("score").innerHTML=explored.length;
+
+const message=document.getElementById("message");
+
+if(explored.length===1){
+
+message.innerHTML="✨ Great! Explore the other mindset.";
+
+message.style.display="block";
+
+setTimeout(()=>{
+message.style.display="none";
+},2500);
+
+}
+
+if(explored.length===2){
+
+message.innerHTML="🎉 Both mindsets explored!";
+
+message.style.display="block";
+
+setTimeout(()=>{
+message.style.display="none";
+document.getElementById("complete").style.display="flex";
+},2000);
+
+}
+
+}
+
+}
+
+function closePopup(){
+document.getElementById("popup").style.display="none";
+}
+
+</script>
+
+</body>
+</html>
