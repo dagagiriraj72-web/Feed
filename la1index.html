@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Learning Agility Explorer</title>
+<title>5 Dimensions of Learning Agility</title>
 
 <style>
 
@@ -15,10 +15,10 @@ font-family:"Segoe UI",sans-serif;
 }
 
 body{
-width:100vw;
-height:100vh;
+width:100%;
+height:100%;
 overflow:hidden;
-background:linear-gradient(135deg,#172b59,#223b73);
+background:#182c5b;
 display:flex;
 justify-content:center;
 align-items:center;
@@ -27,179 +27,125 @@ align-items:center;
 #slide{
 width:1280px;
 height:720px;
-position:relative;
+background:#182c5b;
 overflow:hidden;
-color:white;
+position:relative;
+padding:15px 20px;
 }
 
 /* HEADER */
 
-.header{
+.title{
 text-align:center;
-padding-top:15px;
-}
-
-.header h1{
-font-size:42px;
+font-size:36px;
 font-weight:700;
-margin-bottom:6px;
+color:white;
+margin-bottom:10px;
 }
 
-.header p{
-font-size:18px;
-color:#bcd5ff;
+.subtitle{
+text-align:center;
+font-size:16px;
+color:#dbe5ff;
+margin-bottom:15px;
 }
 
 /* PROGRESS */
 
 .progress{
 position:absolute;
-top:20px;
-right:25px;
+top:18px;
+right:20px;
 background:rgba(255,255,255,.12);
-padding:10px 18px;
-border-radius:12px;
-font-size:15px;
+padding:8px 15px;
+border-radius:10px;
+color:white;
 font-weight:600;
+font-size:15px;
 }
 
-.progress span{
-color:#6ef3a5;
-}
+/* CARDS */
 
-/* GAME AREA */
-
-.game-area{
-position:absolute;
-top:110px;
-left:0;
-width:100%;
-height:470px;
+.cards{
 display:flex;
-justify-content:center;
-align-items:center;
+justify-content:space-between;
+align-items:flex-start;
+height:420px;
+margin-top:10px;
 }
 
-/* CENTER HUB */
-
-.hub{
-width:180px;
-height:180px;
-border-radius:50%;
-background:linear-gradient(135deg,#5a5eff,#8f62ff);
-display:flex;
-justify-content:center;
-align-items:center;
-text-align:center;
-font-size:28px;
-font-weight:700;
-box-shadow:0 0 35px rgba(120,120,255,.8);
-position:absolute;
-z-index:5;
-}
-
-/* DIMENSIONS */
-
-.dimension{
-position:absolute;
-width:170px;
-height:90px;
+.card{
+width:235px;
+height:390px;
 border-radius:18px;
+padding:18px 12px;
 display:flex;
-justify-content:center;
+flex-direction:column;
 align-items:center;
 text-align:center;
-font-size:22px;
-font-weight:700;
 cursor:pointer;
 transition:.35s;
-border:2px solid rgba(255,255,255,.25);
+}
+
+.card:hover{
 background:rgba(255,255,255,.08);
-backdrop-filter:blur(6px);
+transform:translateY(-5px);
 }
 
-.dimension:hover{
-transform:scale(1.05);
-background:rgba(255,255,255,.15);
-}
-
-.dimension.visited{
-border:3px solid #59ff9f;
-box-shadow:0 0 18px rgba(89,255,159,.8);
-}
-
-/* POSITIONING */
-
-.d1{top:0;left:555px;}
-.d2{top:150px;right:120px;}
-.d3{bottom:30px;right:180px;}
-.d4{bottom:0;left:555px;}
-.d5{top:150px;left:120px;}
-
-/* LINES */
-
-.line{
-position:absolute;
-background:rgba(255,255,255,.25);
-transform-origin:center;
-}
-
-.l1{
-width:4px;
-height:95px;
-left:638px;
-top:90px;
-}
-
-.l2{
-width:150px;
-height:4px;
-left:705px;
-top:225px;
-transform:rotate(-35deg);
-}
-
-.l3{
-width:150px;
-height:4px;
-left:705px;
-top:310px;
-transform:rotate(35deg);
-}
-
-.l4{
-width:4px;
-height:95px;
-left:638px;
-top:365px;
-}
-
-.l5{
-width:150px;
-height:4px;
-left:425px;
-top:310px;
-transform:rotate(-35deg);
-}
-
-/* INFO PANEL */
-
-.panel{
-position:absolute;
-bottom:20px;
-left:50%;
-transform:translateX(-50%);
-width:1180px;
-height:110px;
+.card.visited{
 background:rgba(255,255,255,.08);
-border-radius:20px;
+border:2px solid #38ef7d;
+}
+
+.icon{
+width:85px;
+height:85px;
+border-radius:50%;
+background:#eb7a46;
 display:flex;
-justify-content:center;
 align-items:center;
-padding:20px;
+justify-content:center;
+font-size:42px;
+color:white;
+margin-bottom:15px;
+box-shadow:0 5px 15px rgba(0,0,0,.3);
+}
+
+.heading{
+font-size:28px;
+font-weight:700;
+color:white;
+line-height:1.15;
+margin-bottom:12px;
+}
+
+.desc{
+font-size:17px;
+line-height:1.45;
+color:#dbe5ff;
+}
+
+/* INFO BOX */
+
+.infoBox{
+position:absolute;
+bottom:15px;
+left:20px;
+right:20px;
+height:90px;
+background:rgba(255,255,255,.08);
+border-radius:16px;
+display:flex;
+align-items:center;
+justify-content:center;
+padding:15px;
+}
+
+.infoText{
+font-size:18px;
+line-height:1.4;
+color:white;
 text-align:center;
-font-size:22px;
-line-height:1.5;
 }
 
 /* POPUP */
@@ -207,69 +153,71 @@ line-height:1.5;
 .overlay{
 position:absolute;
 inset:0;
-background:rgba(0,0,0,.6);
+background:rgba(0,0,0,.55);
 display:none;
 z-index:100;
 }
 
 .popup{
 position:absolute;
-left:50%;
 top:50%;
+left:50%;
 transform:translate(-50%,-50%);
-width:700px;
+width:650px;
 background:white;
 border-radius:20px;
-padding:30px;
+padding:25px;
 display:none;
 z-index:101;
-color:#333;
 text-align:center;
+box-shadow:0 15px 40px rgba(0,0,0,.35);
 }
 
 .popup h2{
-font-size:34px;
-color:#1f2b63;
+font-size:32px;
+color:#182c5b;
 margin-bottom:15px;
 }
 
 .popup p{
-font-size:20px;
-line-height:1.7;
+font-size:19px;
+line-height:1.6;
+color:#444;
 }
 
-.popup button{
-margin-top:20px;
-padding:12px 28px;
+.closeBtn{
+margin-top:18px;
+padding:12px 25px;
 border:none;
 border-radius:30px;
-background:#5a5eff;
+background:#eb7a46;
 color:white;
-font-size:18px;
+font-size:17px;
 cursor:pointer;
 }
 
-/* COMPLETE */
+/* COMPLETION */
 
 .complete{
 position:absolute;
 inset:0;
-background:rgba(14,18,45,.96);
+background:rgba(15,25,55,.96);
 display:none;
 justify-content:center;
 align-items:center;
 flex-direction:column;
+color:white;
 text-align:center;
 z-index:200;
 }
 
 .complete h2{
-font-size:60px;
+font-size:50px;
 margin-bottom:15px;
 }
 
 .complete p{
-font-size:24px;
+font-size:22px;
 margin-bottom:20px;
 }
 
@@ -277,7 +225,7 @@ margin-bottom:20px;
 padding:12px 28px;
 border:none;
 border-radius:10px;
-background:#5a5eff;
+background:#eb7a46;
 color:white;
 font-size:18px;
 cursor:pointer;
@@ -290,70 +238,75 @@ cursor:pointer;
 
 <div id="slide">
 
-<div class="header">
-<h1>The Five Dimensions of Learning Agility</h1>
-<p>Explore all dimensions to unlock the Learning Agility Expert Badge</p>
+<div class="title">
+The 5 Dimensions of Learning Agility
+</div>
+
+<div class="subtitle">
+Explore each dimension to unlock the Learning Agility Expert Badge
 </div>
 
 <div class="progress">
-Progress: <span id="progress">0</span>/5
+Explored: <span id="count">0</span>/5
 </div>
 
-<div class="game-area">
+<div class="cards">
 
-<div class="line l1"></div>
-<div class="line l2"></div>
-<div class="line l3"></div>
-<div class="line l4"></div>
-<div class="line l5"></div>
-
-<div class="hub">
-Learning<br>Agility
+<div class="card" id="c1"
+onclick="showPopup(1,'Mental Agility','Ability to think critically, analyze situations quickly, and make fresh connections between ideas. Learners with high mental agility solve problems creatively.')">
+<div class="icon">🧠</div>
+<div class="heading">Mental<br>Agility</div>
+<div class="desc">Critical thinking, problem solving, and fresh connections.</div>
 </div>
 
-<div class="dimension d1" id="c1"
-onclick="showInfo(1,'Mental Agility','Ability to think critically, analyze situations quickly, and make fresh connections between ideas. Learners with high mental agility solve problems creatively.')">
-🧠 Mental Agility
+<div class="card" id="c2"
+onclick="showPopup(2,'People Agility','Ability to understand others, work effectively with different personalities, and learn through collaboration and diverse perspectives.')">
+<div class="icon">👥</div>
+<div class="heading">People<br>Agility</div>
+<div class="desc">Building relationships and learning through collaboration.</div>
 </div>
 
-<div class="dimension d2" id="c2"
-onclick="showInfo(2,'People Agility','Ability to understand others, work effectively with different personalities, and learn through collaboration and diverse perspectives.')">
-👥 People Agility
+<div class="card" id="c3"
+onclick="showPopup(3,'Change Agility','Willingness to embrace new experiences, adapt to uncertainty, and drive positive change.')">
+<div class="icon">🔄</div>
+<div class="heading">Change<br>Agility</div>
+<div class="desc">Thriving in uncertainty and embracing transformation.</div>
 </div>
 
-<div class="dimension d3" id="c3"
-onclick="showInfo(3,'Change Agility','Willingness to embrace new experiences, adapt to uncertainty, and drive positive change in dynamic environments.')">
-🔄 Change Agility
+<div class="card" id="c4"
+onclick="showPopup(4,'Results Agility','Capability to perform under new, challenging, and unfamiliar conditions while delivering results.')">
+<div class="icon">🎯</div>
+<div class="heading">Results<br>Agility</div>
+<div class="desc">Delivering strong outcomes in challenging situations.</div>
 </div>
 
-<div class="dimension d4" id="c4"
-onclick="showInfo(4,'Results Agility','Capability to perform under new, challenging, and unfamiliar conditions while delivering results.')">
-🎯 Results Agility
-</div>
-
-<div class="dimension d5" id="c5"
-onclick="showInfo(5,'Self Awareness','Understanding your strengths, weaknesses, impact on others, and continuously learning from feedback.')">
-👁️ Self Awareness
+<div class="card" id="c5"
+onclick="showPopup(5,'Self Awareness','Understanding your strengths, weaknesses, impact on others, and continuously learning from feedback.')">
+<div class="icon">👁️</div>
+<div class="heading">Self<br>Awareness</div>
+<div class="desc">Knowing yourself and learning from feedback.</div>
 </div>
 
 </div>
 
-<div class="panel">
-💡 Click each dimension around the Learning Agility hub to discover its role in leadership success.
+<div class="infoBox">
+<div class="infoText">
+💡 Click each dimension to learn more. Complete all five dimensions to unlock the Learning Agility Expert badge.
+</div>
 </div>
 
 <div class="overlay" id="overlay"></div>
 
 <div class="popup" id="popup">
-<h2 id="title"></h2>
-<p id="text"></p>
-<button onclick="closePopup()">Continue</button>
+<h2 id="popupTitle"></h2>
+<p id="popupText"></p>
+<button class="closeBtn" onclick="closePopup()">Continue</button>
 </div>
 
 <div class="complete" id="complete">
-<h2>🏆 Mission Complete!</h2>
-<p>You explored all five dimensions of Learning Agility.</p>
-<button onclick="location.reload()">Play Again</button>
+<h2>🏆 Learning Agility Expert</h2>
+<p>You successfully explored all five dimensions of Learning Agility.</p>
+<button onclick="location.reload()">Explore Again</button>
 </div>
 
 </div>
@@ -362,10 +315,10 @@ onclick="showInfo(5,'Self Awareness','Understanding your strengths, weaknesses, 
 
 let visited=[];
 
-function showInfo(id,title,text){
+function showPopup(id,title,text){
 
-document.getElementById("title").innerHTML=title;
-document.getElementById("text").innerHTML=text;
+document.getElementById("popupTitle").innerHTML=title;
+document.getElementById("popupText").innerHTML=text;
 
 document.getElementById("popup").style.display="block";
 document.getElementById("overlay").style.display="block";
@@ -376,7 +329,7 @@ visited.push(id);
 
 document.getElementById("c"+id).classList.add("visited");
 
-document.getElementById("progress").innerHTML=visited.length;
+document.getElementById("count").innerHTML=visited.length;
 
 if(visited.length===5){
 
