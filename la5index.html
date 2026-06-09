@@ -3,14 +3,15 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Growth Mindset vs Fixed Mindset</title>
+<title>Growth Mindset vs Learning Agility</title>
 
 <style>
+
 *{
 margin:0;
 padding:0;
 box-sizing:border-box;
-font-family:'Segoe UI',sans-serif;
+font-family:"Segoe UI",sans-serif;
 }
 
 body{
@@ -27,179 +28,167 @@ align-items:center;
 width:1280px;
 height:720px;
 background:#f4f5f8;
-position:relative;
 overflow:hidden;
+position:relative;
+padding:20px 30px;
 }
 
 /* HEADER */
 
-.header{
-position:absolute;
-top:15px;
-left:30px;
-width:1220px;
-}
-
-.header h1{
-font-size:56px;
-font-weight:800;
-color:#201d5a;
-}
-
-/* SCORE */
-
-.score-panel{
-position:absolute;
-top:25px;
-right:40px;
-background:white;
-padding:10px 18px;
-border-radius:12px;
-box-shadow:0 5px 15px rgba(0,0,0,.08);
-font-weight:700;
-color:#201d5a;
-}
-
-/* GAME AREA */
-
-.container{
-position:absolute;
-top:110px;
-left:20px;
-width:1240px;
-height:580px;
-display:flex;
-justify-content:space-between;
-}
-
-.card{
-width:600px;
-height:520px;
-border-radius:18px;
-padding:25px;
-cursor:pointer;
-transition:.4s;
-position:relative;
-overflow:hidden;
-}
-
-.card:hover{
-transform:translateY(-6px);
-}
-
-.fixed{
-background:#dfe3ec;
-border-top:8px solid #9ca3af;
-}
-
-.growth{
-background:#ece9f8;
-border-top:8px solid #6366f1;
-}
-
-.card.active{
-transform:scale(1.02);
-box-shadow:0 15px 30px rgba(0,0,0,.15);
-}
-
-.card-title{
+.title{
+text-align:center;
 font-size:48px;
 font-weight:800;
+color:#23235b;
+margin-bottom:8px;
+}
+
+.subtitle{
+text-align:center;
+font-size:18px;
+color:#7b8194;
 margin-bottom:20px;
 }
 
-.fixed .card-title{
-color:#8d95a3;
+/* TOP BUTTONS */
+
+.selector{
+display:flex;
+justify-content:center;
+gap:25px;
+margin-bottom:20px;
 }
 
-.growth .card-title{
-color:#5b5ee8;
+.tab{
+width:260px;
+height:70px;
+border:none;
+border-radius:18px;
+cursor:pointer;
+font-size:30px;
+font-weight:700;
+transition:.3s;
+}
+
+.fixed{
+background:#d6dae5;
+color:#7c8596;
+}
+
+.growth{
+background:linear-gradient(135deg,#5b5bf7,#7c4dff);
+color:white;
+}
+
+.tab:hover{
+transform:translateY(-4px);
+}
+
+/* PROGRESS */
+
+.progress-wrap{
+width:500px;
+margin:auto;
+margin-bottom:20px;
+}
+
+.progress-bar{
+height:12px;
+background:#d8dcea;
+border-radius:20px;
+overflow:hidden;
+}
+
+.progress-fill{
+width:0%;
+height:100%;
+background:linear-gradient(90deg,#5b5bf7,#7c4dff);
+transition:.5s;
+}
+
+/* CONTENT */
+
+.content{
+height:480px;
+display:flex;
+justify-content:center;
+align-items:center;
+}
+
+.card{
+width:980px;
+height:450px;
+background:white;
+border-radius:24px;
+box-shadow:0 10px 30px rgba(0,0,0,.08);
+padding:30px 40px;
+animation:fade .4s ease;
+}
+
+@keyframes fade{
+from{
+opacity:0;
+transform:translateY(15px);
+}
+to{
+opacity:1;
+transform:translateY(0);
+}
+}
+
+.card-header{
+display:flex;
+align-items:center;
+gap:15px;
+margin-bottom:20px;
+}
+
+.emoji{
+font-size:55px;
+}
+
+.heading{
+font-size:42px;
+font-weight:800;
+}
+
+.fixedColor{
+color:#7c8596;
+}
+
+.growthColor{
+color:#5b5bf7;
 }
 
 .list{
 list-style:none;
-margin-top:10px;
+margin-top:15px;
 }
 
 .list li{
-font-size:18px;
-line-height:1.45;
-margin-bottom:18px;
-padding-left:50px;
-position:relative;
-color:#374151;
-}
-
-.growth .list li{
-color:#26285e;
+font-size:28px;
+margin-bottom:20px;
+display:flex;
+align-items:flex-start;
+gap:15px;
+line-height:1.35;
+color:#30384b;
 }
 
 .icon{
-position:absolute;
-left:0;
-top:-2px;
-font-size:24px;
-}
-
-/* POPUP */
-
-.popup{
-position:absolute;
-left:50%;
-top:50%;
-transform:translate(-50%,-50%);
-width:500px;
-background:white;
-border-radius:18px;
-padding:25px;
-display:none;
-box-shadow:0 15px 35px rgba(0,0,0,.25);
-z-index:10;
-}
-
-.popup h2{
 font-size:30px;
-color:#201d5a;
-margin-bottom:10px;
+min-width:40px;
 }
 
-.popup p{
-font-size:18px;
-line-height:1.6;
-color:#4b5563;
-}
-
-.close-btn{
-margin-top:18px;
-padding:10px 18px;
-background:#6366f1;
-color:white;
-border:none;
-border-radius:8px;
-cursor:pointer;
-}
-
-/* BADGES */
-
-.badge{
-position:absolute;
-bottom:18px;
-right:18px;
-font-size:50px;
-opacity:.15;
-}
-
-.message{
-position:absolute;
-bottom:15px;
-left:50%;
-transform:translateX(-50%);
-background:#201d5a;
-color:white;
-padding:12px 22px;
-border-radius:30px;
-display:none;
-font-size:16px;
+.quote{
+margin-top:20px;
+background:#eef2ff;
+padding:18px;
+border-radius:15px;
+font-size:22px;
+text-align:center;
+color:#23235b;
+font-style:italic;
 }
 
 /* COMPLETION */
@@ -207,14 +196,13 @@ font-size:16px;
 .complete{
 position:absolute;
 inset:0;
-background:rgba(18,18,60,.96);
+background:rgba(24,44,91,.95);
 display:none;
 justify-content:center;
 align-items:center;
 flex-direction:column;
 color:white;
-z-index:99;
-text-align:center;
+z-index:100;
 }
 
 .complete h2{
@@ -228,14 +216,15 @@ margin-bottom:20px;
 }
 
 .complete button{
-padding:12px 25px;
+padding:12px 30px;
 border:none;
-border-radius:10px;
-font-size:18px;
-background:#6366f1;
+border-radius:12px;
+background:#7c4dff;
 color:white;
+font-size:18px;
 cursor:pointer;
 }
+
 </style>
 </head>
 
@@ -243,86 +232,84 @@ cursor:pointer;
 
 <div id="slide">
 
-<div class="header">
-<h1>Growth Mindset & Learning Agility 🚀</h1>
+<div class="title">
+Growth Mindset & Learning Agility
 </div>
 
-<div class="score-panel">
-⭐ Insights Unlocked: <span id="score">0</span>/2
+<div class="subtitle">
+Click both mindsets to compare the approaches
 </div>
 
-<div class="container">
+<div class="selector">
 
-<!-- FIXED -->
-
-<div class="card fixed" onclick="showInsight('fixed',this)">
-
-<div class="card-title">
+<button class="tab fixed" onclick="showFixed()">
 😟 Fixed Mindset
-</div>
+</button>
 
-<ul class="list">
-
-<li><span class="icon">🚫</span>Abilities are static and unchangeable</li>
-
-<li><span class="icon">🛡️</span>Avoids challenges to protect self-image</li>
-
-<li><span class="icon">😐</span>Sees effort as pointless if talent is lacking</li>
-
-<li><span class="icon">🙉</span>Ignores constructive feedback</li>
-
-<li><span class="icon">😰</span>Feels threatened by others' success</li>
-
-</ul>
-
-<div class="badge">🔒</div>
-
-</div>
-
-<!-- GROWTH -->
-
-<div class="card growth" onclick="showInsight('growth',this)">
-
-<div class="card-title">
+<button class="tab growth" onclick="showGrowth()">
 🌱 Growth Mindset
+</button>
+
+</div>
+
+<div class="progress-wrap">
+<div class="progress-bar">
+<div class="progress-fill" id="progress"></div>
+</div>
+</div>
+
+<div class="content">
+
+<div class="card" id="contentArea">
+
+<div class="card-header">
+<div class="emoji">🌱</div>
+<div class="heading growthColor">Growth Mindset</div>
 </div>
 
 <ul class="list">
 
-<li><span class="icon">💪</span>Abilities can be developed through effort</li>
+<li>
+<span class="icon">💪</span>
+Abilities can be developed through effort
+</li>
 
-<li><span class="icon">🚀</span>Embraces challenges as growth opportunities</li>
+<li>
+<span class="icon">🚀</span>
+Embraces challenges as growth opportunities
+</li>
 
-<li><span class="icon">🏆</span>Views effort as the path to mastery</li>
+<li>
+<span class="icon">🏆</span>
+Views effort as the path to mastery
+</li>
 
-<li><span class="icon">🎯</span>Learns from criticism and feedback</li>
+<li>
+<span class="icon">🎯</span>
+Learns from criticism and feedback
+</li>
 
-<li><span class="icon">👏</span>Finds inspiration in others' success</li>
+<li>
+<span class="icon">👏</span>
+Finds inspiration in others' success
+</li>
 
 </ul>
 
-<div class="badge">🌟</div>
-
+<div class="quote">
+Learning agility grows when people believe they can learn, adapt, and improve.
 </div>
 
 </div>
 
-<!-- POPUP -->
-
-<div class="popup" id="popup">
-<h2 id="popupTitle"></h2>
-<p id="popupText"></p>
-<button class="close-btn" onclick="closePopup()">Continue</button>
 </div>
-
-<div class="message" id="message"></div>
 
 <div class="complete" id="complete">
 
-<h2>🏆 Growth Mindset Master!</h2>
+<h2>🏆 Comparison Complete</h2>
 
 <p>
-You discovered how Growth Mindset fuels Learning Agility and continuous success.
+You explored both mindsets successfully.
 </p>
 
 <button onclick="location.reload()">
@@ -335,75 +322,128 @@ Explore Again
 
 <script>
 
-let explored=[];
+let viewed=[];
 
-function showInsight(type,card){
+function updateProgress(){
 
-const title=document.getElementById("popupTitle");
-const text=document.getElementById("popupText");
-const popup=document.getElementById("popup");
+let percent=(viewed.length/2)*100;
 
-card.classList.add("active");
+document.getElementById("progress").style.width=
+percent+"%";
 
-if(type==="fixed"){
-
-title.innerHTML="😟 Fixed Mindset";
-
-text.innerHTML=
-"People with a Fixed Mindset believe abilities are predetermined. They often avoid challenges, resist feedback, and may miss valuable learning opportunities.";
-
-}
-
-if(type==="growth"){
-
-title.innerHTML="🌱 Growth Mindset";
-
-text.innerHTML=
-"People with a Growth Mindset believe abilities can be developed through effort and learning. This mindset strongly supports Learning Agility because it encourages experimentation, resilience, and continuous improvement.";
-
-}
-
-popup.style.display="block";
-
-if(!explored.includes(type)){
-
-explored.push(type);
-
-document.getElementById("score").innerHTML=explored.length;
-
-const message=document.getElementById("message");
-
-if(explored.length===1){
-
-message.innerHTML="✨ Great! Explore the other mindset.";
-
-message.style.display="block";
+if(viewed.length===2){
 
 setTimeout(()=>{
-message.style.display="none";
-},2500);
-
-}
-
-if(explored.length===2){
-
-message.innerHTML="🎉 Both mindsets explored!";
-
-message.style.display="block";
-
-setTimeout(()=>{
-message.style.display="none";
 document.getElementById("complete").style.display="flex";
-},2000);
+},800);
 
 }
 
 }
 
+function markViewed(name){
+
+if(!viewed.includes(name)){
+viewed.push(name);
+updateProgress();
 }
 
-function closePopup(){
-document.getElementById("popup").style.display="none";
+}
+
+function showFixed(){
+
+markViewed("fixed");
+
+document.getElementById("contentArea").innerHTML=`
+
+<div class="card-header">
+<div class="emoji">😟</div>
+<div class="heading fixedColor">Fixed Mindset</div>
+</div>
+
+<ul class="list">
+
+<li>
+<span class="icon">🚫</span>
+Abilities are static and unchangeable
+</li>
+
+<li>
+<span class="icon">🛡️</span>
+Avoids challenges to protect self-image
+</li>
+
+<li>
+<span class="icon">😕</span>
+Sees effort as pointless if talent is lacking
+</li>
+
+<li>
+<span class="icon">🙈</span>
+Ignores constructive feedback
+</li>
+
+<li>
+<span class="icon">😰</span>
+Feels threatened by others' success
+</li>
+
+</ul>
+
+<div class="quote">
+People with a fixed mindset often avoid situations that could expose weaknesses.
+</div>
+
+`;
+
+}
+
+function showGrowth(){
+
+markViewed("growth");
+
+document.getElementById("contentArea").innerHTML=`
+
+<div class="card-header">
+<div class="emoji">🌱</div>
+<div class="heading growthColor">Growth Mindset</div>
+</div>
+
+<ul class="list">
+
+<li>
+<span class="icon">💪</span>
+Abilities can be developed through effort
+</li>
+
+<li>
+<span class="icon">🚀</span>
+Embraces challenges as growth opportunities
+</li>
+
+<li>
+<span class="icon">🏆</span>
+Views effort as the path to mastery
+</li>
+
+<li>
+<span class="icon">🎯</span>
+Learns from criticism and feedback
+</li>
+
+<li>
+<span class="icon">👏</span>
+Finds inspiration in others' success
+</li>
+
+</ul>
+
+<div class="quote">
+Learning agility grows when people believe they can learn, adapt, and improve.
+</div>
+
+`;
+
 }
 
 </script>
