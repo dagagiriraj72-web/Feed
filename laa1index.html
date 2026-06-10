@@ -1,169 +1,197 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="utf-8">
+<meta charset="UTF-8">
 <title>Learning Agility vs Learning Ability</title>
 
 <style>
+
 *{
 margin:0;
 padding:0;
 box-sizing:border-box;
-font-family:Segoe UI, Arial, sans-serif;
+font-family:Segoe UI,Arial,sans-serif;
 }
 
-body{
+html,body{
 width:1280px;
 height:720px;
 overflow:hidden;
-background:#f5f7fb;
+background:#f4f6fb;
 }
 
-.container{
+.slide{
 width:1280px;
 height:720px;
-padding:25px 35px;
+padding:20px 30px;
 }
 
 .header{
+height:90px;
 text-align:center;
-margin-bottom:20px;
 }
 
 .header h1{
-font-size:52px;
+font-size:42px;
+color:#1d2a72;
 font-weight:800;
-color:#1c2459;
 line-height:1.1;
 }
 
 .header p{
-font-size:22px;
-color:#667085;
+font-size:20px;
+color:#64748b;
 margin-top:8px;
 }
 
 .main{
-display:flex;
-justify-content:space-between;
-gap:25px;
 height:560px;
+display:flex;
+gap:20px;
 }
 
 .panel{
-width:590px;
-height:560px;
+flex:1;
 border-radius:20px;
-padding:24px;
-box-shadow:0 4px 12px rgba(0,0,0,.08);
+padding:20px;
 position:relative;
+overflow:hidden;
 }
 
 .ability{
-background:#ffffff;
-border-top:8px solid #cfd6e8;
+background:white;
+border:3px solid #dbe4f5;
 }
 
 .agility{
-background:linear-gradient(180deg,#4e8ee6,#3c7bd4);
+background:linear-gradient(135deg,#4f8edb,#3b6fc9);
 color:white;
 }
 
-.panel h2{
-font-size:42px;
-margin-bottom:25px;
-font-weight:800;
+.title{
+font-size:34px;
+font-weight:700;
+margin-bottom:18px;
 }
 
 .list{
 display:flex;
 flex-direction:column;
-gap:16px;
+gap:12px;
 }
 
 .item{
-padding:16px;
-border-radius:14px;
-font-size:28px;
+height:68px;
+display:flex;
+align-items:center;
+padding:0 18px;
+border-radius:12px;
+font-size:22px;
 font-weight:600;
-line-height:1.25;
+cursor:pointer;
+transition:.25s;
 }
 
 .ability .item{
-background:#eef2f9;
-color:#1f2937;
+background:#eef3fb;
+color:#18245f;
 }
 
 .agility .item{
 background:rgba(255,255,255,.15);
-color:white;
+}
+
+.item:hover{
+transform:translateX(6px);
 }
 
 .footer{
-position:absolute;
-bottom:20px;
-left:24px;
-right:24px;
-padding:14px;
-border-radius:12px;
-font-size:18px;
-text-align:center;
+height:50px;
+margin-top:10px;
+background:white;
+border-radius:16px;
+display:flex;
+align-items:center;
+justify-content:center;
+font-size:22px;
 font-weight:600;
+color:#334155;
+padding:0 20px;
+text-align:center;
 }
 
-.ability .footer{
-background:#dde4f2;
-color:#1c2459;
+.highlight{
+color:#4f46e5;
 }
 
-.agility .footer{
-background:rgba(255,255,255,.18);
-color:white;
-}
 </style>
 </head>
 
 <body>
 
-<div class="container">
+<div class="slide">
 
 <div class="header">
-<h1>Learning Agility vs Learning Ability</h1>
+<h1>Learning Ability vs Learning Agility</h1>
 <p>A critical distinction for talent management</p>
 </div>
 
 <div class="main">
 
 <div class="panel ability">
-<h2>Learning Ability</h2>
+
+<div class="title">Learning Ability</div>
 
 <div class="list">
-<div class="item">🧠 Cognitive Intelligence (IQ)</div>
-<div class="item">⚡ Absorbs Information Quickly</div>
-<div class="item">📚 Academic & Analytical Capacity</div>
-<div class="item">🔒 Relatively Fixed Trait</div>
-<div class="item">✔ Necessary but Not Sufficient</div>
+
+<div class="item" onclick="showText('Ability focuses on intelligence and acquiring knowledge.')">
+🧠 Cognitive Intelligence (IQ)
 </div>
 
-<div class="footer">
-Focuses on what you know and how quickly you learn.
+<div class="item" onclick="showText('Ability reflects how quickly information is absorbed.')">
+⚡ Absorbs Information Quickly
+</div>
+
+<div class="item" onclick="showText('Ability includes academic and analytical strengths.')">
+📚 Academic & Analytical Capacity
+</div>
+
+<div class="item" onclick="showText('Ability is generally considered more stable over time.')">
+🔒 Relatively Fixed Trait
+</div>
+
+<div class="item" onclick="showText('Ability alone does not guarantee success in new situations.')">
+✔ Necessary but Not Sufficient
+</div>
+
 </div>
 
 </div>
 
 <div class="panel agility">
-<h2>Learning Agility</h2>
+
+<div class="title">Learning Agility</div>
 
 <div class="list">
-<div class="item">🚀 Behavioral Flexibility</div>
-<div class="item">🌍 Applies Learning in Novel Situations</div>
-<div class="item">🔄 Adaptive Capabilities</div>
-<div class="item">📈 Can Be Developed Over Time</div>
-<div class="item">⭐ Predicts Leadership Potential</div>
+
+<div class="item" onclick="showText('Agility is the flexibility to adapt behaviour when situations change.')">
+🚀 Behavioral Flexibility
 </div>
 
-<div class="footer">
-Focuses on how you apply learning when facing new challenges.
+<div class="item" onclick="showText('Agile learners apply lessons in unfamiliar situations.')">
+🌍 Applies Learning in Novel Situations
+</div>
+
+<div class="item" onclick="showText('Agility involves a broad range of adaptive capabilities.')">
+🔄 Adaptive Capabilities
+</div>
+
+<div class="item" onclick="showText('Learning agility can be developed and strengthened.')">
+📈 Can Be Developed
+</div>
+
+<div class="item" onclick="showText('Learning agility strongly predicts leadership potential.')">
+⭐ Leadership Potential
 </div>
 
 </div>
@@ -171,6 +199,23 @@ Focuses on how you apply learning when facing new challenges.
 </div>
 
 </div>
+
+<div class="footer" id="info">
+Click any point above to explore the difference between
+<span class="highlight">&nbsp;Learning Ability&nbsp;</span>
+and
+<span class="highlight">&nbsp;Learning Agility</span>.
+</div>
+
+</div>
+
+<script>
+
+function showText(text){
+document.getElementById("info").innerHTML=text;
+}
+
+</script>
 
 </body>
 </html>
