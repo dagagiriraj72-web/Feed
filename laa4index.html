@@ -1,278 +1,240 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>Research Journey</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Research Journey Timeline</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
 
-<style>
-*{
-margin:0;
-padding:0;
-box-sizing:border-box;
-font-family:"Segoe UI",sans-serif;
-}
+        body {
+            background-color: #f0f4f8;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100vw;
+            height: 100vh;
+            overflow: hidden;
+        }
 
-body{
-width:100vw;
-height:100vh;
-overflow:hidden;
-background:#f3f4f8;
-display:flex;
-justify-content:center;
-align-items:center;
-}
+        /* Fixed 16:9 Aspect Ratio Containment Canvas */
+        .slide-wrapper {
+            width: 100%;
+            height: 100%;
+            max-width: 1280px;
+            max-height: 720px;
+            aspect-ratio: 16 / 9;
+            padding: 3rem 3.5rem;
+            background-color: #ffffff;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            position: relative;
+        }
 
-#slide{
-width:1280px;
-height:720px;
-background:#f3f4f8;
-padding:25px;
-overflow:hidden;
-}
+        /* Header Section */
+        .header-section {
+            margin-bottom: 2rem;
+            flex-shrink: 0;
+        }
 
-h1{
-font-size:42px;
-font-weight:800;
-color:#1f235d;
-text-align:center;
-margin-bottom:20px;
-}
+        .main-title {
+            font-size: 2.8rem;
+            color: #2c3e50;
+            font-weight: 800;
+            line-height: 1.2;
+        }
 
-.wrapper{
-display:flex;
-gap:20px;
-height:620px;
-}
+        /* Interactive Timeline Container */
+        .timeline-container {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            flex-grow: 1;
+            position: relative;
+            min-height: 0; /* Dynamic inner height safety block */
+            padding-bottom: 1rem;
+        }
 
-/* LEFT TIMELINE */
+        /* Centralized Timeline Vertical Connector Line */
+        .timeline-container::before {
+            content: '';
+            position: absolute;
+            left: 45px;
+            top: 10px;
+            bottom: 10px;
+            width: 2px;
+            background-color: #cbd5e1;
+            z-index: 1;
+        }
 
-.timeline{
-width:320px;
-display:flex;
-flex-direction:column;
-justify-content:space-between;
-}
+        /* Interactive Row Item Box Layout */
+        .timeline-row {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+            position: relative;
+            z-index: 2;
+            cursor: pointer;
+            transition: transform 0.2s ease;
+            padding: 0.4rem 0;
+        }
 
-.year-btn{
-height:95px;
-border:none;
-cursor:pointer;
-border-radius:14px;
-background:white;
-display:flex;
-align-items:center;
-padding:15px;
-transition:.3s;
-box-shadow:0 3px 10px rgba(0,0,0,.08);
-}
+        .timeline-row:hover {
+            transform: translateX(6px);
+        }
 
-.year-btn:hover{
-transform:translateX(6px);
-}
+        /* Year Block Nodes Style */
+        .year-block {
+            width: 92px;
+            height: 52px;
+            background-color: #4a90e2;
+            color: #ffffff;
+            font-weight: 700;
+            font-size: 1.3rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 6px;
+            flex-shrink: 0;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 6px rgba(74, 144, 226, 0.15);
+        }
 
-.year{
-width:70px;
-height:70px;
-border-radius:50%;
-background:#4d8fe3;
-color:white;
-display:flex;
-align-items:center;
-justify-content:center;
-font-size:24px;
-font-weight:700;
-margin-right:18px;
-}
+        .timeline-row:hover .year-block {
+            background-color: #357abd;
+            box-shadow: 0 6px 12px rgba(53, 122, 189, 0.3);
+        }
 
-.year-label{
-font-size:20px;
-font-weight:700;
-color:#1f235d;
-}
+        /* Content Text Area Framework */
+        .content-card {
+            background-color: transparent;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            transition: all 0.3s ease;
+            flex-grow: 1;
+        }
 
-.active{
-background:#4d8fe3;
-}
+        .timeline-row:hover .content-card {
+            background-color: #f8fafc;
+        }
 
-.active .year{
-background:white;
-color:#4d8fe3;
-}
+        .content-text {
+            font-size: 1.15rem;
+            color: #334155;
+            line-height: 1.5;
+            transition: color 0.3s ease;
+        }
 
-.active .year-label{
-color:white;
-}
+        .timeline-row:hover .content-text {
+            color: #0f172a;
+        }
 
-/* RIGHT PANEL */
+        /* Interactive Active Focus State Styles */
+        .timeline-row.active .year-block {
+            background-color: #1e3a8a;
+            box-shadow: 0 0 0 3px #93c5fd;
+            transform: scale(1.05);
+        }
 
-.content{
-flex:1;
-background:white;
-border-radius:20px;
-padding:35px;
-box-shadow:0 5px 15px rgba(0,0,0,.08);
-display:flex;
-flex-direction:column;
-}
+        .timeline-row.active .content-card {
+            background-color: #f1f5f9;
+            border-left: 4px solid #1e3a8a;
+            padding-left: 1.2rem;
+        }
 
-.badge{
-display:inline-block;
-background:#e9efff;
-color:#4d5cff;
-font-weight:700;
-padding:10px 18px;
-border-radius:30px;
-margin-bottom:20px;
-font-size:18px;
-width:max-content;
-}
+        /* Bottom Footer Bar Layout */
+        .footer-bar {
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            flex-shrink: 0;
+            margin-top: 1rem;
+        }
 
-#yearTitle{
-font-size:54px;
-font-weight:800;
-color:#1f235d;
-margin-bottom:15px;
-}
-
-#yearDesc{
-font-size:28px;
-line-height:1.5;
-color:#475569;
-}
-
-.progress{
-margin-top:auto;
-}
-
-.progress-label{
-font-size:18px;
-font-weight:600;
-color:#1f235d;
-margin-bottom:10px;
-}
-
-.bar{
-height:14px;
-background:#e5e7eb;
-border-radius:20px;
-overflow:hidden;
-}
-
-.fill{
-height:100%;
-width:20%;
-background:linear-gradient(90deg,#4d8fe3,#6f5cff);
-transition:.4s;
-}
-</style>
+        .instruction-tag {
+            font-size: 0.85rem;
+            color: #a0aec0;
+            font-style: italic;
+        }
+    </style>
 </head>
-
 <body>
 
-<div id="slide">
+    <div class="slide-wrapper">
+        <div class="header-section">
+            <h1 class="main-title">The Research Journey</h1>
+        </div>
 
-<h1>The Research Journey</h1>
+        <div class="timeline-container">
+            
+            <div class="timeline-row" onclick="selectMilestone(this)">
+                <div class="year-block">2012</div>
+                <div class="content-card">
+                    <p class="content-text">DeRue, Ashford & Myers at University of Michigan identify Speed and Flexibility as two core dimensions of learning agility</p>
+                </div>
+            </div>
 
-<div class="wrapper">
+            <div class="timeline-row" onclick="selectMilestone(this)">
+                <div class="year-block">2015</div>
+                <div class="content-card">
+                    <p class="content-text">Burke and doctoral students at Columbia identify seven additional dimensions, creating the nine-cluster model</p>
+                </div>
+            </div>
 
-<div class="timeline">
+            <div class="timeline-row" onclick="selectMilestone(this)">
+                <div class="year-block">2015</div>
+                <div class="content-card">
+                    <p class="content-text">Burke Learning Agility Inventory (Burke LAI) launched as a validated 360-degree assessment instrument</p>
+                </div>
+            </div>
 
-<button class="year-btn active" onclick="showData(0,this)">
-<div class="year">2012</div>
-<div class="year-label">Foundation</div>
-</button>
+            <div class="timeline-row" onclick="selectMilestone(this)">
+                <div class="year-block">2017</div>
+                <div class="content-card">
+                    <p class="content-text">Publication of <em>Learning Agility: The Key to Leader Potential</em> — the definitive guide to the framework</p>
+                </div>
+            </div>
 
-<button class="year-btn" onclick="showData(1,this)">
-<div class="year">2015</div>
-<div class="year-label">Expansion</div>
-</button>
+            <div class="timeline-row" onclick="selectMilestone(this)">
+                <div class="year-block">2022</div>
+                <div class="content-card">
+                    <p class="content-text">Publication of <em>Developing Learning Agility</em> — practical activities for developing the 38 behaviors in work settings</p>
+                </div>
+            </div>
 
-<button class="year-btn" onclick="showData(2,this)">
-<div class="year">2015</div>
-<div class="year-label">Launch</div>
-</button>
+        </div>
 
-<button class="year-btn" onclick="showData(3,this)">
-<div class="year">2017</div>
-<div class="year-label">Publication</div>
-</button>
+        <div class="footer-bar">
+            <div class="instruction-tag">Click on a milestone row to highlight historical event</div>
+        </div>
+    </div>
 
-<button class="year-btn" onclick="showData(4,this)">
-<div class="year">2022</div>
-<div class="year-label">Development</div>
-</button>
-
-</div>
-
-<div class="content">
-
-<div class="badge">Learning Agility Research</div>
-
-<div id="yearTitle">2012</div>
-
-<div id="yearDesc">
-DeRue, Ashford and Myers identified Speed and Flexibility as two foundational dimensions of Learning Agility.
-</div>
-
-<div class="progress">
-<div class="progress-label">Research Timeline Progress</div>
-<div class="bar">
-<div class="fill" id="fill"></div>
-</div>
-</div>
-
-</div>
-
-</div>
-</div>
-
-<script>
-
-const data=[
-
-{
-year:"2012",
-text:"DeRue, Ashford and Myers identified Speed and Flexibility as two foundational dimensions of Learning Agility."
-},
-
-{
-year:"2015",
-text:"Burke and doctoral students at Columbia identified seven additional dimensions, creating the nine-dimension model."
-},
-
-{
-year:"2015",
-text:"The Burke Learning Agility Inventory (Burke LAI) was launched as a validated 360-degree assessment."
-},
-
-{
-year:"2017",
-text:"Learning Agility: The Key to Leader Potential was published, providing a comprehensive framework."
-},
-
-{
-year:"2022",
-text:"Developing Learning Agility was published, offering practical methods for developing the 38 behaviors."
-}
-
-];
-
-function showData(index,btn){
-
-document.getElementById("yearTitle").innerText=data[index].year;
-document.getElementById("yearDesc").innerText=data[index].text;
-
-document.querySelectorAll(".year-btn").forEach(x=>{
-x.classList.remove("active");
-});
-
-btn.classList.add("active");
-
-document.getElementById("fill").style.width=((index+1)/5)*100+"%";
-}
-
-</script>
-
+    <script>
+        function selectMilestone(selectedRow) {
+            const allRows = document.querySelectorAll('.timeline-row');
+            
+            // Toggle focus state mechanics cleanly
+            if (selectedRow.classList.contains('active')) {
+                selectedRow.classList.remove('active');
+                allRows.forEach(row => row.style.opacity = '1');
+            } else {
+                allRows.forEach(row => {
+                    if (row === selectedRow) {
+                        row.classList.add('active');
+                        row.style.opacity = '1';
+                    } else {
+                        row.classList.remove('active');
+                        row.style.opacity = '0.4';
+                    }
+                });
+            }
+        }
+    </script>
 </body>
 </html>
