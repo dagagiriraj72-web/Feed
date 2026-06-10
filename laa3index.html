@@ -1,9 +1,8 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Nine Dimensions at a Glance</title>
+<title>Nine Dimensions</title>
 
 <style>
 
@@ -11,177 +10,93 @@
 margin:0;
 padding:0;
 box-sizing:border-box;
-font-family:"Segoe UI",sans-serif;
+font-family:Segoe UI,sans-serif;
 }
 
 body{
-width:100vw;
+width:100%;
 height:100vh;
+overflow:hidden;
+background:#f5f7fb;
+}
+
+.wrapper{
+width:100%;
+height:100%;
+padding:15px;
 display:flex;
-justify-content:center;
-align-items:center;
-background:#f4f5f8;
-overflow:hidden;
+flex-direction:column;
 }
 
-#slide{
-width:1280px;
-height:720px;
-background:#f4f5f8;
-padding:20px 30px;
-overflow:hidden;
-}
-
-.title{
-font-size:42px;
-font-weight:800;
-color:#1f2566;
+h1{
 text-align:center;
-margin-bottom:15px;
+font-size:34px;
+color:#1d2a72;
+margin-bottom:8px;
 }
 
 .subtitle{
 text-align:center;
-font-size:18px;
-color:#6b7280;
-margin-bottom:15px;
+font-size:16px;
+color:#667085;
+margin-bottom:12px;
 }
-
-.layout{
-display:flex;
-gap:20px;
-height:580px;
-}
-
-/* LEFT GRID */
 
 .grid{
-width:760px;
 display:grid;
 grid-template-columns:repeat(3,1fr);
-grid-template-rows:repeat(3,1fr);
 gap:12px;
+height:55%;
 }
 
 .card{
 background:white;
-border-radius:14px;
+border-radius:12px;
 padding:15px;
 cursor:pointer;
-transition:.3s;
-box-shadow:0 3px 8px rgba(0,0,0,.08);
 display:flex;
 flex-direction:column;
 justify-content:center;
+align-items:center;
+text-align:center;
+box-shadow:0 2px 6px rgba(0,0,0,.1);
+transition:.2s;
 }
 
 .card:hover{
 transform:translateY(-4px);
-}
-
-.card.active{
-background:#4d8dd6;
+background:#4f8edb;
 color:white;
 }
 
 .card h3{
-font-size:24px;
-margin-bottom:8px;
-font-weight:800;
+font-size:22px;
+margin-bottom:6px;
 }
 
 .card p{
-font-size:16px;
-line-height:1.3;
+font-size:15px;
 }
 
-/* RIGHT PANEL */
-
-.panel{
-flex:1;
+.details{
+margin-top:12px;
 background:white;
-border-radius:18px;
-padding:25px;
-box-shadow:0 3px 10px rgba(0,0,0,.08);
-display:flex;
-flex-direction:column;
+border-radius:15px;
+padding:20px;
+height:30%;
+box-shadow:0 2px 6px rgba(0,0,0,.1);
 }
 
-.badge{
-display:inline-block;
-padding:8px 16px;
-background:#eef4ff;
-color:#4d8dd6;
-font-weight:700;
-border-radius:20px;
-margin-bottom:15px;
-width:max-content;
-}
-
-.dimension{
-font-size:34px;
-font-weight:800;
-color:#1f2566;
-margin-bottom:12px;
-}
-
-.description{
-font-size:19px;
-line-height:1.6;
-color:#4b5563;
-margin-bottom:20px;
-}
-
-.section{
-font-size:22px;
-font-weight:800;
-color:#1f2566;
-margin-bottom:10px;
-}
-
-.example{
-background:#f4f7ff;
-padding:16px;
-border-radius:12px;
-font-size:18px;
-line-height:1.5;
-color:#374151;
-margin-bottom:15px;
-}
-
-.progress{
-margin-top:auto;
-}
-
-.progress-text{
-font-weight:700;
-color:#1f2566;
+.details h2{
+font-size:28px;
+color:#1d2a72;
 margin-bottom:8px;
 }
 
-.bar{
-height:10px;
-background:#dbe2f0;
-border-radius:10px;
-overflow:hidden;
-}
-
-.fill{
-height:100%;
-width:0%;
-background:#4d8dd6;
-transition:.5s;
-}
-
-.complete{
-display:none;
-margin-top:12px;
-padding:12px;
-background:#d1fae5;
-color:#065f46;
-font-weight:700;
-text-align:center;
-border-radius:10px;
+.details p{
+font-size:20px;
+line-height:1.4;
+color:#334155;
 }
 
 </style>
@@ -189,104 +104,70 @@ border-radius:10px;
 
 <body>
 
-<div id="slide">
+<div class="wrapper">
 
-<div class="title">The Nine Dimensions at a Glance</div>
+<h1>The Nine Dimensions at a Glance</h1>
 
 <div class="subtitle">
-Click each dimension to explore its meaning and workplace application
+Click a dimension to explore its meaning
 </div>
-
-<div class="layout">
-
-<!-- GRID -->
 
 <div class="grid">
 
-<div class="card" onclick="showDim(0,this)">
+<div class="card" onclick="showInfo('Flexibility','Open to new ideas and solutions.')">
 <h3>Flexibility</h3>
 <p>Open to new ideas</p>
 </div>
 
-<div class="card" onclick="showDim(1,this)">
+<div class="card" onclick="showInfo('Speed','Acts quickly to test and learn.')">
 <h3>Speed</h3>
-<p>Act quickly on ideas</p>
+<p>Act quickly</p>
 </div>
 
-<div class="card" onclick="showDim(2,this)">
+<div class="card" onclick="showInfo('Experimenting','Tries new approaches and learns from results.')">
 <h3>Experimenting</h3>
 <p>Try new approaches</p>
 </div>
 
-<div class="card" onclick="showDim(3,this)">
+<div class="card" onclick="showInfo('Performance Risk-Taking','Steps beyond comfort zones.')">
 <h3>Performance Risk</h3>
-<p>Take on challenges</p>
+<p>Take challenges</p>
 </div>
 
-<div class="card" onclick="showDim(4,this)">
+<div class="card" onclick="showInfo('Interpersonal Risk-Taking','Leans into difficult conversations.')">
 <h3>Interpersonal Risk</h3>
 <p>Lean into difficulty</p>
 </div>
 
-<div class="card" onclick="showDim(5,this)">
+<div class="card" onclick="showInfo('Collaborating','Works effectively with diverse people.')">
 <h3>Collaborating</h3>
 <p>Work with others</p>
 </div>
 
-<div class="card" onclick="showDim(6,this)">
+<div class="card" onclick="showInfo('Information Gathering','Seeks knowledge from many sources.')">
 <h3>Info Gathering</h3>
 <p>Seek knowledge</p>
 </div>
 
-<div class="card" onclick="showDim(7,this)">
+<div class="card" onclick="showInfo('Feedback Seeking','Actively asks others for input.')">
 <h3>Feedback Seeking</h3>
 <p>Ask for input</p>
 </div>
 
-<div class="card" onclick="showDim(8,this)">
+<div class="card" onclick="showInfo('Reflecting','Evaluates experiences and extracts lessons.')">
 <h3>Reflecting</h3>
 <p>Evaluate & learn</p>
 </div>
 
 </div>
 
-<!-- INFO PANEL -->
+<div class="details">
 
-<div class="panel">
+<h2 id="title">Select a Dimension</h2>
 
-<div class="badge">Learning Agility Dimension</div>
-
-<div class="dimension" id="titleBox">
-Select a Dimension
-</div>
-
-<div class="description" id="descBox">
-Click any dimension tile to learn how it contributes to learning agility.
-</div>
-
-<div class="section">Workplace Example</div>
-
-<div class="example" id="exampleBox">
-Explore the dimensions to begin.
-</div>
-
-<div class="progress">
-
-<div class="progress-text">
-Explored: <span id="count">0</span>/9
-</div>
-
-<div class="bar">
-<div class="fill" id="fill"></div>
-</div>
-
-<div class="complete" id="complete">
-🏆 All Nine Dimensions Explored!
-</div>
-
-</div>
-
-</div>
+<p id="text">
+Choose any dimension above to learn how it contributes to Learning Agility.
+</p>
 
 </div>
 
@@ -294,92 +175,10 @@ Explored: <span id="count">0</span>/9
 
 <script>
 
-const data = [
+function showInfo(title,text){
 
-{
-title:"Flexibility",
-desc:"Openness to new ideas, viewpoints, and alternative solutions.",
-example:"A manager changes approach after hearing a better idea from the team."
-},
-
-{
-title:"Speed",
-desc:"Taking action quickly to test and learn from new ideas.",
-example:"A team launches a pilot project instead of waiting months."
-},
-
-{
-title:"Experimenting",
-desc:"Trying new approaches even when outcomes are uncertain.",
-example:"An employee tests a new workflow to improve productivity."
-},
-
-{
-title:"Performance Risk-Taking",
-desc:"Stepping beyond comfort zones to take on challenging work.",
-example:"A team member volunteers to lead a high-visibility project."
-},
-
-{
-title:"Interpersonal Risk-Taking",
-desc:"Engaging in difficult conversations and giving honest feedback.",
-example:"A supervisor openly discusses performance concerns."
-},
-
-{
-title:"Collaborating",
-desc:"Working effectively with diverse people and perspectives.",
-example:"Departments partner together to solve a customer issue."
-},
-
-{
-title:"Information Gathering",
-desc:"Seeking information from multiple sources before acting.",
-example:"A leader gathers customer, employee, and market insights."
-},
-
-{
-title:"Feedback Seeking",
-desc:"Actively asking for feedback to improve performance.",
-example:"An employee requests feedback after every presentation."
-},
-
-{
-title:"Reflecting",
-desc:"Thinking about experiences to identify lessons learned.",
-example:"A team conducts a lessons-learned review after a project."
-}
-
-];
-
-let visited=[];
-
-function showDim(index,el){
-
-document.getElementById("titleBox").innerHTML=data[index].title;
-document.getElementById("descBox").innerHTML=data[index].desc;
-document.getElementById("exampleBox").innerHTML=data[index].example;
-
-document.querySelectorAll(".card").forEach(card=>{
-card.classList.remove("active");
-});
-
-el.classList.add("active");
-
-if(!visited.includes(index)){
-
-visited.push(index);
-
-document.getElementById("count").innerHTML=visited.length;
-
-document.getElementById("fill").style.width=
-(visited.length/9*100)+"%";
-
-if(visited.length===9){
-document.getElementById("complete").style.display="block";
-}
-
-}
+document.getElementById("title").innerHTML=title;
+document.getElementById("text").innerHTML=text;
 
 }
 
