@@ -2,8 +2,9 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Learning Agility Explorer</title>
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+
+<title>Learning Agility Components</title>
 
 <style>
 
@@ -15,7 +16,7 @@ font-family:Segoe UI,sans-serif;
 }
 
 body{
-background:#f2f4f8;
+background:#f3f4f8;
 display:flex;
 justify-content:center;
 align-items:center;
@@ -26,172 +27,133 @@ overflow:hidden;
 #slide{
 width:1280px;
 height:720px;
-background:#f2f4f8;
 padding:20px;
+background:#f3f4f8;
 position:relative;
 overflow:hidden;
 }
 
-/* HEADER */
+/* NAVIGATION */
 
-.header{
-height:80px;
-}
-
-.header h1{
-font-size:48px;
-font-weight:800;
-color:#1d2a7d;
-}
-
-.header p{
-font-size:18px;
-color:#666;
-margin-top:5px;
-}
-
-/* LAYOUT */
-
-.main{
+.nav{
 display:flex;
-height:600px;
-gap:20px;
-}
-
-/* LEFT NAV */
-
-.sidebar{
-width:260px;
-display:flex;
-flex-direction:column;
 gap:15px;
-}
-
-.navCard{
-flex:1;
-background:white;
-border-radius:20px;
-cursor:pointer;
-display:flex;
-flex-direction:column;
-justify-content:center;
-align-items:center;
-transition:.3s;
-box-shadow:0 4px 15px rgba(0,0,0,.08);
-}
-
-.navCard.active{
-background:#4c89d9;
-color:white;
-}
-
-.num{
-width:60px;
-height:60px;
-border-radius:50%;
-background:white;
-color:#4c89d9;
-font-size:28px;
-font-weight:700;
-display:flex;
-justify-content:center;
-align-items:center;
 margin-bottom:15px;
 }
 
-.navCard h2{
-font-size:42px;
+.navBtn{
+width:220px;
+height:70px;
+border:none;
+border-radius:15px;
+font-size:24px;
+font-weight:700;
+cursor:pointer;
+transition:.3s;
 }
 
-/* CENTER */
+.active{
+background:#4d89d8;
+color:white;
+}
 
-.center{
-width:500px;
+.inactive{
 background:white;
-border-radius:25px;
-padding:25px;
-box-shadow:0 4px 15px rgba(0,0,0,.08);
+color:#222;
 }
 
-.center h2{
-font-size:46px;
-color:#1d2a7d;
-margin-bottom:20px;
+/* TITLE */
+
+.title{
+font-size:52px;
+font-weight:800;
+color:#2f2f2f;
+margin-bottom:15px;
+}
+
+/* MAIN */
+
+.main{
+display:flex;
+justify-content:space-between;
+height:520px;
+}
+
+/* LEFT PANEL */
+
+.definition{
+width:600px;
+background:#eef0f5;
+border-radius:16px;
+padding:40px;
 }
 
 .quote{
 font-size:34px;
 font-weight:700;
-line-height:1.25;
-color:#4c89d9;
-margin-bottom:25px;
+font-style:italic;
+line-height:1.3;
+color:#4d89d8;
+margin-bottom:35px;
 }
 
 .desc{
-font-size:22px;
+font-size:20px;
 line-height:1.7;
-color:#374151;
+color:#333;
 }
 
-/* RIGHT ORBIT */
+/* RIGHT */
 
-.orbit{
-flex:1;
-position:relative;
+.skills{
+width:560px;
 display:flex;
-justify-content:center;
-align-items:center;
+flex-direction:column;
+justify-content:space-around;
 }
 
-.core{
-width:180px;
-height:180px;
-border-radius:50%;
-background:linear-gradient(135deg,#4c89d9,#6a5cff);
+.skill{
 display:flex;
-justify-content:center;
-align-items:center;
-text-align:center;
-color:white;
-font-size:30px;
-font-weight:700;
-}
-
-.node{
-position:absolute;
-width:140px;
-height:140px;
-border-radius:50%;
-background:white;
-display:flex;
-justify-content:center;
-align-items:center;
-text-align:center;
-padding:10px;
+align-items:flex-start;
 cursor:pointer;
-font-weight:700;
-color:#1d2a7d;
-box-shadow:0 5px 15px rgba(0,0,0,.12);
+padding:10px;
+border-radius:12px;
 transition:.3s;
 }
 
-.node:hover{
-transform:scale(1.08);
+.skill:hover{
+background:white;
 }
 
-.n1{top:40px;left:50%;transform:translateX(-50%);}
-.n2{right:40px;top:50%;transform:translateY(-50%);}
-.n3{bottom:40px;left:50%;transform:translateX(-50%);}
-.n4{left:40px;top:50%;transform:translateY(-50%);}
+.dot{
+width:52px;
+height:52px;
+border-radius:50%;
+background:#4d89d8;
+flex-shrink:0;
+margin-right:18px;
+}
+
+.skillTitle{
+font-size:22px;
+font-weight:700;
+color:#333;
+margin-bottom:5px;
+}
+
+.skillDesc{
+font-size:16px;
+color:#777;
+}
 
 /* PROGRESS */
 
 .progress{
 position:absolute;
 top:25px;
-right:25px;
+right:20px;
 background:white;
-padding:10px 18px;
+padding:10px 15px;
 border-radius:10px;
 font-weight:700;
 box-shadow:0 3px 10px rgba(0,0,0,.08);
@@ -202,9 +164,9 @@ box-shadow:0 3px 10px rgba(0,0,0,.08);
 .overlay{
 position:absolute;
 inset:0;
-background:rgba(0,0,0,.65);
+background:rgba(0,0,0,.55);
 display:none;
-z-index:10;
+z-index:100;
 }
 
 .popup{
@@ -215,29 +177,30 @@ transform:translate(-50%,-50%);
 width:700px;
 background:white;
 border-radius:20px;
-padding:35px;
+padding:30px;
 display:none;
-z-index:11;
+z-index:101;
 }
 
-.popup h3{
-font-size:36px;
+.popup h2{
+font-size:34px;
 color:#1d2a7d;
 margin-bottom:15px;
 }
 
 .popup p{
-font-size:22px;
-line-height:1.7;
+font-size:20px;
+line-height:1.6;
+color:#444;
 }
 
 .popup button{
 margin-top:20px;
 padding:12px 25px;
 border:none;
-background:#4c89d9;
+border-radius:30px;
+background:#4d89d8;
 color:white;
-border-radius:10px;
 cursor:pointer;
 }
 
@@ -246,99 +209,104 @@ cursor:pointer;
 .complete{
 position:absolute;
 inset:0;
-background:#121633;
+background:#131938;
 display:none;
 justify-content:center;
 align-items:center;
 flex-direction:column;
 color:white;
-z-index:20;
+z-index:200;
 }
 
 .complete h2{
-font-size:60px;
+font-size:58px;
+margin-bottom:15px;
+}
+
+.complete p{
+font-size:22px;
 margin-bottom:20px;
 }
 
 .complete button{
-padding:12px 30px;
-font-size:20px;
+padding:12px 25px;
 border:none;
 border-radius:10px;
+background:#4d89d8;
+color:white;
+font-size:18px;
 cursor:pointer;
 }
 
 </style>
 </head>
+
 <body>
 
 <div id="slide">
 
-<div class="header">
-<h1>Learning Agility Components</h1>
+<div class="progress">
+Explored: <span id="count">0</span>/8
 </div>
 
-<div class="progress">
-Viewed: <span id="count">0</span>/4
+<div class="nav">
+
+<button class="navBtn active"
+onclick="loadSection('skill',this)">
+1 Skill
+</button>
+
+<button class="navBtn inactive"
+onclick="loadSection('motivation',this)">
+2 Motivation
+</button>
+
+</div>
+
+<div class="title" id="title">
+Component 1: Skill
 </div>
 
 <div class="main">
 
-<div class="sidebar">
-
-<div class="navCard active" onclick="loadSection('skill',this)">
-<div class="num">1</div>
-<h2>Skill</h2>
-</div>
-
-<div class="navCard" onclick="loadSection('motivation',this)">
-<div class="num">2</div>
-<h2>Motivation</h2>
-</div>
-
-</div>
-
-<div class="center">
-
-<h2 id="title">Component 1: Skill</h2>
+<div class="definition">
 
 <div class="quote" id="quote">
 "What you do when you don't know what to do"
 </div>
 
-<div class="desc" id="desc">
+<div class="desc" id="description">
 Applying knowledge and learning to unfamiliar situations while navigating ambiguity and extracting lessons from experience.
 </div>
 
 </div>
 
-<div class="orbit">
-
-<div class="core" id="coreText">
-Skill
-</div>
-
-<div class="node n1" onclick="showInfo(0)" id="c1"></div>
-<div class="node n2" onclick="showInfo(1)" id="c2"></div>
-<div class="node n3" onclick="showInfo(2)" id="c3"></div>
-<div class="node n4" onclick="showInfo(3)" id="c4"></div>
-
-</div>
+<div class="skills" id="skills"></div>
 
 </div>
 
 <div class="overlay" id="overlay"></div>
 
 <div class="popup" id="popup">
-<h3 id="popupTitle"></h3>
+
+<h2 id="popupTitle"></h2>
+
 <p id="popupText"></p>
+
 <button onclick="closePopup()">Continue</button>
+
 </div>
 
 <div class="complete" id="complete">
-<h2>🏆 Excellent!</h2>
-<p>All competencies explored.</p>
-<button onclick="location.reload()">Restart</button>
+
+<h2>🏆 Learning Agility Expert</h2>
+
+<p>You explored all competencies.</p>
+
+<button onclick="location.reload()">
+Restart
+</button>
+
 </div>
 
 </div>
@@ -351,80 +319,123 @@ const data={
 
 skill:{
 title:"Component 1: Skill",
-core:"Skill",
 quote:"What you do when you don't know what to do",
-desc:"Applying knowledge and learning to unfamiliar situations while navigating ambiguity and extracting lessons from experience.",
-cards:[
-["Pattern Recognition","Recognizing similarities and applying lessons from previous experiences."],
-["Problem Solving","Structuring effective solutions in unfamiliar situations."],
-["Knowledge Transfer","Applying learning from one situation to another."],
-["Adaptive Thinking","Adjusting strategies when conditions change."]
+description:"Applying knowledge and learning to unfamiliar situations while navigating ambiguity and extracting lessons from experience.",
+
+items:[
+["Pattern Recognition","Connecting past experiences to new situations",
+"Recognizing patterns helps people apply previous lessons to unfamiliar challenges."],
+
+["Problem Solving","Structuring solutions in unfamiliar territory",
+"Breaking problems into manageable parts and identifying solutions."],
+
+["Knowledge Transfer","Applying lessons across different contexts",
+"Using learning from one situation in another context."],
+
+["Adaptive Thinking","Adjusting approaches when first attempts fail",
+"Changing strategy quickly when circumstances change."]
 ]
 },
 
 motivation:{
 title:"Component 2: Motivation",
-core:"Motivation",
 quote:"The willingness to take risk in novel situations",
-desc:"The drive to explore, experiment, and learn from uncertainty.",
-cards:[
-["Curiosity","Seeking new experiences and opportunities to learn."],
-["Courage","Taking action despite uncertainty and risk."],
-["Initiative","Actively pursuing challenges and growth opportunities."],
-["Resilience","Recovering quickly from setbacks and failures."]
+description:"Motivation drives people to step into uncertainty rather than remain comfortable.",
+
+items:[
+["Curiosity","An intrinsic drive to explore and understand",
+"Curious people actively seek opportunities to learn."],
+
+["Courage","Willingness to fail and learn from mistakes",
+"Taking action despite uncertainty and setbacks."],
+
+["Initiative","Proactively seeking challenges",
+"Acting before being told and pursuing opportunities."],
+
+["Resilience","Bouncing back from setbacks",
+"Recovering quickly and continuing forward."]
 ]
 }
 
 };
 
-let current="skill";
+let current='skill';
 
-function loadSection(type,el){
+function loadSection(type,btn){
 
 current=type;
 
-document.querySelectorAll('.navCard').forEach(c=>c.classList.remove('active'));
-el.classList.add('active');
+document.querySelectorAll('.navBtn')
+.forEach(b=>{
+b.classList.remove('active');
+b.classList.add('inactive');
+});
 
-document.getElementById("title").innerHTML=data[type].title;
-document.getElementById("quote").innerHTML='"'+data[type].quote+'"';
-document.getElementById("desc").innerHTML=data[type].desc;
-document.getElementById("coreText").innerHTML=data[type].core;
+btn.classList.remove('inactive');
+btn.classList.add('active');
 
-for(let i=0;i<4;i++){
-document.getElementById("c"+(i+1)).innerHTML=data[type].cards[i][0];
+document.getElementById('title').innerHTML=data[type].title;
+document.getElementById('quote').innerHTML='"'+data[type].quote+'"';
+document.getElementById('description').innerHTML=data[type].description;
+
+let html='';
+
+data[type].items.forEach((item,index)=>{
+
+html+=`
+<div class="skill"
+onclick="showPopup('${item[0]}','${item[2]}','${type}-${index}')">
+
+<div class="dot"></div>
+
+<div>
+<div class="skillTitle">${item[0]}</div>
+<div class="skillDesc">${item[1]}</div>
+</div>
+
+</div>
+`;
+
+});
+
+document.getElementById('skills').innerHTML=html;
+
 }
 
-viewed=[];
-document.getElementById("count").innerHTML=0;
-}
+function showPopup(title,text,id){
 
-function showInfo(i){
+document.getElementById('popupTitle').innerHTML=title;
+document.getElementById('popupText').innerHTML=text;
 
-document.getElementById("popupTitle").innerHTML=data[current].cards[i][0];
-document.getElementById("popupText").innerHTML=data[current].cards[i][1];
+document.getElementById('overlay').style.display='block';
+document.getElementById('popup').style.display='block';
 
-document.getElementById("overlay").style.display="block";
-document.getElementById("popup").style.display="block";
+if(!viewed.includes(id)){
 
-if(!viewed.includes(i)){
-viewed.push(i);
-document.getElementById("count").innerHTML=viewed.length;
+viewed.push(id);
 
-if(viewed.length===4){
+document.getElementById('count').innerHTML=viewed.length;
+
+if(viewed.length===8){
+
 setTimeout(()=>{
-document.getElementById("complete").style.display="flex";
+document.getElementById('complete').style.display='flex';
 },500);
+
 }
+
 }
+
 }
 
 function closePopup(){
-document.getElementById("overlay").style.display="none";
-document.getElementById("popup").style.display="none";
+
+document.getElementById('overlay').style.display='none';
+document.getElementById('popup').style.display='none';
+
 }
 
-loadSection('skill',document.querySelector('.navCard'));
+loadSection('skill',document.querySelector('.navBtn'));
 
 </script>
 
