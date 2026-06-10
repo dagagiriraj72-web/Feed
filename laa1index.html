@@ -2,7 +2,8 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+
 <title>Learning Ability vs Learning Agility</title>
 
 <style>
@@ -11,21 +12,21 @@
 margin:0;
 padding:0;
 box-sizing:border-box;
-font-family:"Segoe UI",sans-serif;
+font-family:Segoe UI,sans-serif;
 }
 
-body{
-width:100vw;
-height:100vh;
+html,body{
+width:100%;
+height:100%;
 overflow:hidden;
 background:#f4f6fb;
 }
 
-#slide{
+.container{
 width:1280px;
 height:720px;
 margin:auto;
-padding:15px;
+padding:12px;
 display:flex;
 flex-direction:column;
 }
@@ -33,322 +34,250 @@ flex-direction:column;
 /* HEADER */
 
 .header{
-height:70px;
 text-align:center;
-}
-
-.header h1{
-font-size:34px;
-font-weight:800;
-color:#1e3a8a;
-}
-
-.header p{
-font-size:16px;
-color:#667085;
-margin-top:4px;
-}
-
-/* MAIN */
-
-.main{
-flex:1;
-display:flex;
-gap:15px;
-overflow:hidden;
-}
-
-/* LEFT NAV */
-
-.nav{
-width:220px;
-display:flex;
-flex-direction:column;
-gap:12px;
-}
-
-.nav-card{
-flex:1;
-border-radius:18px;
-cursor:pointer;
-display:flex;
-flex-direction:column;
-justify-content:center;
-align-items:center;
-transition:.3s;
-font-weight:700;
-font-size:28px;
-}
-
-.nav-card span{
-font-size:50px;
 margin-bottom:10px;
 }
 
-.nav-card.active{
+.header h1{
+font-size:28px;
+font-weight:800;
+color:#173b8c;
+}
+
+.header p{
+font-size:13px;
+color:#666;
+}
+
+/* TABS */
+
+.tabs{
+display:flex;
+justify-content:center;
+gap:10px;
+margin-bottom:10px;
+}
+
+.tab{
+padding:10px 25px;
+border-radius:30px;
+background:white;
+border:2px solid #dbe4f3;
+cursor:pointer;
+font-weight:700;
+font-size:16px;
+transition:.3s;
+}
+
+.tab.active{
 background:#4f88da;
 color:white;
-box-shadow:0 10px 25px rgba(79,136,218,.35);
 }
 
-.nav-card:not(.active){
-background:white;
-border:2px solid #dbe4f3;
-color:#1e3a8a;
-}
-
-/* CONTENT */
-
-.content{
-flex:1;
-background:white;
-border-radius:20px;
-padding:20px;
-border:2px solid #dbe4f3;
-display:flex;
-flex-direction:column;
-overflow:hidden;
-}
-
-.panel{
-display:none;
-height:100%;
-}
-
-.panel.active{
-display:flex;
-flex-direction:column;
-}
-
-.panel-title{
-font-size:30px;
-font-weight:800;
-color:#1e3a8a;
-margin-bottom:15px;
-}
-
-.top{
-display:flex;
-gap:15px;
-height:170px;
-margin-bottom:15px;
-}
+/* QUOTE */
 
 .quote{
-flex:1;
-background:#eef3fb;
-border-radius:18px;
-padding:20px;
+height:70px;
+background:white;
+border-radius:12px;
 display:flex;
 align-items:center;
 justify-content:center;
-text-align:center;
-font-size:32px;
+font-size:22px;
 font-weight:700;
 color:#4f88da;
+margin-bottom:10px;
+border:2px solid #dbe4f3;
 }
 
-.desc{
-width:360px;
-background:#f8faff;
-border-radius:18px;
-padding:20px;
-display:flex;
-align-items:center;
-font-size:18px;
-line-height:1.6;
-color:#334155;
-}
+/* CARDS */
 
-.points{
-flex:1;
+.cards{
 display:grid;
 grid-template-columns:1fr 1fr;
-gap:12px;
+gap:10px;
+margin-bottom:10px;
 }
 
-.point{
-background:#f4f7fc;
-border-left:6px solid #4f88da;
-border-radius:14px;
-padding:15px;
+.card{
+height:85px;
+background:white;
+border-radius:12px;
+padding:12px;
+cursor:pointer;
+border-left:5px solid #4f88da;
+transition:.3s;
 }
 
-.point h3{
+.card:hover{
+transform:translateY(-3px);
+}
+
+.card h3{
+font-size:16px;
+color:#173b8c;
+margin-bottom:4px;
+}
+
+.card p{
+font-size:12px;
+color:#666;
+}
+
+/* DETAIL PANEL */
+
+.detail{
+flex:1;
+background:white;
+border-radius:12px;
+padding:18px;
+border:2px solid #dbe4f3;
+overflow:hidden;
+}
+
+.detail h2{
 font-size:20px;
-color:#1e3a8a;
-margin-bottom:6px;
+color:#173b8c;
+margin-bottom:8px;
 }
 
-.point p{
+.detail p{
 font-size:15px;
-line-height:1.4;
-color:#475569;
-}
-
-.fade{
-animation:fade .4s ease;
-}
-
-@keyframes fade{
-from{
-opacity:0;
-transform:translateY(15px);
-}
-to{
-opacity:1;
-transform:translateY(0);
-}
+line-height:1.6;
+color:#444;
 }
 
 </style>
 </head>
-
 <body>
 
-<div id="slide">
+<div class="container">
 
 <div class="header">
 <h1>Learning Ability vs Learning Agility</h1>
-<p>Click each component to explore</p>
+<p>Click a category and explore the concepts</p>
 </div>
 
-<div class="main">
-
-<!-- LEFT -->
-
-<div class="nav">
-
-<div class="nav-card active" onclick="showPanel('ability',this)">
-<span>🧠</span>
-Ability
+<div class="tabs">
+<div class="tab active" onclick="loadContent('ability',this)">🧠 Ability</div>
+<div class="tab" onclick="loadContent('agility',this)">🚀 Agility</div>
 </div>
 
-<div class="nav-card" onclick="showPanel('agility',this)">
-<span>🚀</span>
-Agility
-</div>
-
-</div>
-
-<!-- RIGHT -->
-
-<div class="content">
-
-<!-- ABILITY -->
-
-<div class="panel active fade" id="ability">
-
-<div class="panel-title">
-Learning Ability
-</div>
-
-<div class="top">
-
-<div class="quote">
+<div class="quote" id="quote">
 "How quickly you learn"
 </div>
 
-<div class="desc">
-Learning Ability reflects a person's capacity to absorb information, understand concepts, and perform analytical tasks efficiently.
-</div>
+<div class="cards" id="cards"></div>
 
-</div>
-
-<div class="points">
-
-<div class="point">
-<h3>Cognitive Intelligence</h3>
-<p>IQ and mental processing capability.</p>
-</div>
-
-<div class="point">
-<h3>Fast Learning</h3>
-<p>Quickly understands new information.</p>
-</div>
-
-<div class="point">
-<h3>Academic Strength</h3>
-<p>Analytical and theoretical capability.</p>
-</div>
-
-<div class="point">
-<h3>Relatively Stable</h3>
-<p>Tends to remain consistent over time.</p>
-</div>
-
-</div>
-
-</div>
-
-<!-- AGILITY -->
-
-<div class="panel fade" id="agility">
-
-<div class="panel-title">
-Learning Agility
-</div>
-
-<div class="top">
-
-<div class="quote">
-"What you do when you don't know what to do"
-</div>
-
-<div class="desc">
-Learning Agility is the ability to adapt, experiment, and apply learning successfully in unfamiliar situations.
-</div>
-
-</div>
-
-<div class="points">
-
-<div class="point">
-<h3>Behavioral Flexibility</h3>
-<p>Adjusts actions based on changing conditions.</p>
-</div>
-
-<div class="point">
-<h3>Adaptability</h3>
-<p>Thrives in new and uncertain environments.</p>
-</div>
-
-<div class="point">
-<h3>Knowledge Transfer</h3>
-<p>Applies lessons from past experiences.</p>
-</div>
-
-<div class="point">
-<h3>Growth Potential</h3>
-<p>Can be developed through practice.</p>
-</div>
-
-</div>
-
-</div>
-
-</div>
-
+<div class="detail">
+<h2 id="detailTitle">Select a card</h2>
+<p id="detailText">
+Click any card above to view details.
+</p>
 </div>
 
 </div>
 
 <script>
 
-function showPanel(id,element){
+const data={
 
-document.querySelectorAll('.panel').forEach(panel=>{
-panel.classList.remove('active');
+ability:{
+quote:'"How quickly you learn"',
+cards:[
+{
+title:"Cognitive Intelligence",
+short:"IQ and mental capability",
+detail:"Reflects an individual's ability to reason, analyze information and solve problems efficiently."
+},
+{
+title:"Fast Learning",
+short:"Absorbing information quickly",
+detail:"The speed at which a person can understand and retain new information."
+},
+{
+title:"Academic Capacity",
+short:"Knowledge acquisition",
+detail:"Ability to perform well in structured learning environments and formal education."
+},
+{
+title:"Analytical Thinking",
+short:"Breaking down problems",
+detail:"Using logic and evidence to evaluate situations and make decisions."
+}
+]
+},
+
+agility:{
+quote:'"What you do when you don’t know what to do"',
+cards:[
+{
+title:"Pattern Recognition",
+short:"Connecting experiences",
+detail:"Recognizing similarities between situations and applying lessons from the past."
+},
+{
+title:"Problem Solving",
+short:"Handling uncertainty",
+detail:"Developing practical solutions in unfamiliar and changing environments."
+},
+{
+title:"Knowledge Transfer",
+short:"Applying learning",
+detail:"Using knowledge gained in one context successfully in another."
+},
+{
+title:"Adaptive Thinking",
+short:"Changing approach",
+detail:"Adjusting strategies and behaviors when conditions evolve."
+}
+]
+}
+
+};
+
+function loadContent(type,element){
+
+document.querySelectorAll(".tab").forEach(t=>{
+t.classList.remove("active");
 });
 
-document.querySelectorAll('.nav-card').forEach(card=>{
-card.classList.remove('active');
+element.classList.add("active");
+
+document.getElementById("quote").innerHTML=data[type].quote;
+
+let html="";
+
+data[type].cards.forEach(card=>{
+
+html+=`
+<div class="card"
+onclick="showDetail(
+'${card.title}',
+'${card.detail}'
+)">
+<h3>${card.title}</h3>
+<p>${card.short}</p>
+</div>
+`;
+
 });
 
-document.getElementById(id).classList.add('active');
-element.classList.add('active');
+document.getElementById("cards").innerHTML=html;
+
+document.getElementById("detailTitle").innerHTML="Select a card";
+document.getElementById("detailText").innerHTML="Click any card above to view details.";
 
 }
+
+function showDetail(title,text){
+
+document.getElementById("detailTitle").innerHTML=title;
+document.getElementById("detailText").innerHTML=text;
+
+}
+
+loadContent('ability');
 
 </script>
 
