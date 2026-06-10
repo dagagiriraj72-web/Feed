@@ -1,352 +1,43 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Learning Agility Components</title>
-
-<style>
-
-*{
-margin:0;
-padding:0;
-box-sizing:border-box;
-font-family:Segoe UI,sans-serif;
-}
-
-body{
-width:100vw;
-height:100vh;
-overflow:hidden;
-background:#f4f6fb;
-}
-
-#slide{
-width:1280px;
-height:720px;
-margin:auto;
-padding:15px;
-display:flex;
-flex-direction:column;
-}
-
-/* HEADER */
-
-.header{
-text-align:center;
-margin-bottom:10px;
-}
-
-.header h1{
-font-size:30px;
-font-weight:800;
-color:#1e3a8a;
-}
-
-.header p{
-font-size:14px;
-color:#64748b;
-}
-
-/* TABS */
-
-.tabs{
-display:flex;
-justify-content:center;
-gap:15px;
-margin-bottom:12px;
-}
-
-.tab{
-width:180px;
-height:70px;
-border-radius:16px;
-display:flex;
-align-items:center;
-justify-content:center;
-font-size:22px;
-font-weight:700;
-cursor:pointer;
-transition:.3s;
-}
-
-.tab.active{
-background:#4f88da;
-color:white;
-}
-
-.tab:not(.active){
-background:white;
-border:2px solid #dbe4f3;
-color:#1e3a8a;
-}
-
-/* MAIN */
-
-.content{
-flex:1;
-display:flex;
-gap:15px;
-}
-
-/* LEFT PANEL */
-
-.left{
-width:420px;
-background:white;
-border-radius:18px;
-padding:20px;
-border:2px solid #dbe4f3;
-}
-
-.quote{
-font-size:28px;
-font-weight:800;
-color:#4f88da;
-line-height:1.2;
-margin-bottom:20px;
-}
-
-.desc{
-font-size:16px;
-line-height:1.7;
-color:#334155;
-}
-
-/* RIGHT PANEL */
-
-.right{
-flex:1;
-display:grid;
-grid-template-columns:1fr 1fr;
-gap:12px;
-}
-
-.card{
-background:white;
-border-radius:16px;
-padding:18px;
-cursor:pointer;
-border:2px solid #dbe4f3;
-transition:.3s;
-}
-
-.card:hover{
-transform:translateY(-4px);
-}
-
-.card h3{
-font-size:18px;
-color:#1e3a8a;
-margin-bottom:8px;
-}
-
-.card p{
-font-size:14px;
-color:#64748b;
-}
-
-/* POPUP */
-
-.popup{
-position:fixed;
-inset:0;
-background:rgba(0,0,0,.45);
-display:none;
-align-items:center;
-justify-content:center;
-}
-
-.popup-content{
-width:500px;
-background:white;
-border-radius:20px;
-padding:25px;
-}
-
-.popup-content h2{
-color:#1e3a8a;
-margin-bottom:10px;
-}
-
-.popup-content p{
-font-size:16px;
-line-height:1.6;
-color:#475569;
-}
-
-.close{
-margin-top:15px;
-background:#4f88da;
-color:white;
-border:none;
-padding:10px 20px;
-border-radius:10px;
-cursor:pointer;
-}
-
-</style>
-</head>
-
-<body>
-
 <div id="slide">
 
-<div class="header">
-<h1>Learning Agility Components</h1>
-<p>Click a component and explore the competencies</p>
+<div class="sidebar">
+
+<div class="nav-card active" onclick="showSection('skill',this)">
+<div class="number">1</div>
+<h2>Skill</h2>
 </div>
 
-<div class="tabs">
-<div class="tab active" onclick="showData('skill',this)">1️⃣ Skill</div>
-<div class="tab" onclick="showData('motivation',this)">2️⃣ Motivation</div>
+<div class="nav-card" onclick="showSection('motivation',this)">
+<div class="number">2</div>
+<h2>Motivation</h2>
+</div>
+
 </div>
 
 <div class="content">
 
-<div class="left">
+<h1 id="title">Component 1: Skill</h1>
+
+<div class="main-area">
+
+<div class="definition">
 
 <div class="quote" id="quote">
 "What you do when you don't know what to do"
 </div>
 
-<div class="desc" id="description">
+<div class="description" id="description">
 Applying knowledge and learning to unfamiliar situations while navigating ambiguity and extracting lessons from experience.
 </div>
 
 </div>
 
-<div class="right" id="cards"></div>
+<div class="cards" id="cards">
 
 </div>
 
 </div>
 
-<div class="popup" id="popup">
-<div class="popup-content">
-<h2 id="popupTitle"></h2>
-<p id="popupText"></p>
-<button class="close" onclick="closePopup()">Close</button>
-</div>
 </div>
 
-<script>
-
-const data = {
-
-skill:{
-quote:"What you do when you don't know what to do",
-desc:"Applying knowledge and learning to unfamiliar situations while navigating ambiguity and extracting lessons from experience.",
-cards:[
-{
-title:"Pattern Recognition",
-short:"Connecting experiences",
-detail:"Recognizing similarities between past and present situations to make better decisions."
-},
-{
-title:"Problem Solving",
-short:"Structuring solutions",
-detail:"Breaking down unfamiliar challenges into manageable parts and creating solutions."
-},
-{
-title:"Knowledge Transfer",
-short:"Applying lessons",
-detail:"Using previous learning effectively in new and different situations."
-},
-{
-title:"Adaptive Thinking",
-short:"Adjusting approaches",
-detail:"Changing strategies when circumstances shift or initial plans fail."
-}
-]
-},
-
-motivation:{
-quote:"The willingness to take risk in novel situations",
-desc:"Motivation drives people to step into uncertainty, learn through experience and pursue growth opportunities.",
-cards:[
-{
-title:"Curiosity",
-short:"Exploring new ideas",
-detail:"Seeking knowledge and exploring opportunities to learn."
-},
-{
-title:"Courage",
-short:"Learning from mistakes",
-detail:"Taking action despite uncertainty and learning from setbacks."
-},
-{
-title:"Initiative",
-short:"Seeking challenges",
-detail:"Proactively pursuing opportunities without waiting for direction."
-},
-{
-title:"Resilience",
-short:"Bouncing back",
-detail:"Recovering quickly from obstacles and continuing forward."
-}
-]
-}
-
-};
-
-function render(type){
-
-document.getElementById("quote").innerHTML =
-'"' + data[type].quote + '"';
-
-document.getElementById("description").innerHTML =
-data[type].desc;
-
-let html='';
-
-data[type].cards.forEach(card=>{
-
-html += `
-<div class="card"
-onclick="openPopup('${card.title}','${card.detail}')">
-
-<h3>${card.title}</h3>
-<p>${card.short}</p>
-
 </div>
-`;
-
-});
-
-document.getElementById("cards").innerHTML = html;
-
-}
-
-function showData(type,el){
-
-document.querySelectorAll('.tab')
-.forEach(t=>t.classList.remove('active'));
-
-el.classList.add('active');
-
-render(type);
-
-}
-
-function openPopup(title,text){
-
-document.getElementById("popupTitle").innerHTML = title;
-document.getElementById("popupText").innerHTML = text;
-
-document.getElementById("popup").style.display="flex";
-
-}
-
-function closePopup(){
-
-document.getElementById("popup").style.display="none";
-
-}
-
-render('skill');
-
-</script>
-
-</body>
-</html>
