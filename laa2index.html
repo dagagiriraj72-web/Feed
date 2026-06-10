@@ -1,43 +1,433 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Learning Agility Explorer</title>
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Segoe UI,sans-serif;
+}
+
+body{
+background:#f2f4f8;
+display:flex;
+justify-content:center;
+align-items:center;
+height:100vh;
+overflow:hidden;
+}
+
+#slide{
+width:1280px;
+height:720px;
+background:#f2f4f8;
+padding:20px;
+position:relative;
+overflow:hidden;
+}
+
+/* HEADER */
+
+.header{
+height:80px;
+}
+
+.header h1{
+font-size:48px;
+font-weight:800;
+color:#1d2a7d;
+}
+
+.header p{
+font-size:18px;
+color:#666;
+margin-top:5px;
+}
+
+/* LAYOUT */
+
+.main{
+display:flex;
+height:600px;
+gap:20px;
+}
+
+/* LEFT NAV */
+
+.sidebar{
+width:260px;
+display:flex;
+flex-direction:column;
+gap:15px;
+}
+
+.navCard{
+flex:1;
+background:white;
+border-radius:20px;
+cursor:pointer;
+display:flex;
+flex-direction:column;
+justify-content:center;
+align-items:center;
+transition:.3s;
+box-shadow:0 4px 15px rgba(0,0,0,.08);
+}
+
+.navCard.active{
+background:#4c89d9;
+color:white;
+}
+
+.num{
+width:60px;
+height:60px;
+border-radius:50%;
+background:white;
+color:#4c89d9;
+font-size:28px;
+font-weight:700;
+display:flex;
+justify-content:center;
+align-items:center;
+margin-bottom:15px;
+}
+
+.navCard h2{
+font-size:42px;
+}
+
+/* CENTER */
+
+.center{
+width:500px;
+background:white;
+border-radius:25px;
+padding:25px;
+box-shadow:0 4px 15px rgba(0,0,0,.08);
+}
+
+.center h2{
+font-size:46px;
+color:#1d2a7d;
+margin-bottom:20px;
+}
+
+.quote{
+font-size:34px;
+font-weight:700;
+line-height:1.25;
+color:#4c89d9;
+margin-bottom:25px;
+}
+
+.desc{
+font-size:22px;
+line-height:1.7;
+color:#374151;
+}
+
+/* RIGHT ORBIT */
+
+.orbit{
+flex:1;
+position:relative;
+display:flex;
+justify-content:center;
+align-items:center;
+}
+
+.core{
+width:180px;
+height:180px;
+border-radius:50%;
+background:linear-gradient(135deg,#4c89d9,#6a5cff);
+display:flex;
+justify-content:center;
+align-items:center;
+text-align:center;
+color:white;
+font-size:30px;
+font-weight:700;
+}
+
+.node{
+position:absolute;
+width:140px;
+height:140px;
+border-radius:50%;
+background:white;
+display:flex;
+justify-content:center;
+align-items:center;
+text-align:center;
+padding:10px;
+cursor:pointer;
+font-weight:700;
+color:#1d2a7d;
+box-shadow:0 5px 15px rgba(0,0,0,.12);
+transition:.3s;
+}
+
+.node:hover{
+transform:scale(1.08);
+}
+
+.n1{top:40px;left:50%;transform:translateX(-50%);}
+.n2{right:40px;top:50%;transform:translateY(-50%);}
+.n3{bottom:40px;left:50%;transform:translateX(-50%);}
+.n4{left:40px;top:50%;transform:translateY(-50%);}
+
+/* PROGRESS */
+
+.progress{
+position:absolute;
+top:25px;
+right:25px;
+background:white;
+padding:10px 18px;
+border-radius:10px;
+font-weight:700;
+box-shadow:0 3px 10px rgba(0,0,0,.08);
+}
+
+/* POPUP */
+
+.overlay{
+position:absolute;
+inset:0;
+background:rgba(0,0,0,.65);
+display:none;
+z-index:10;
+}
+
+.popup{
+position:absolute;
+top:50%;
+left:50%;
+transform:translate(-50%,-50%);
+width:700px;
+background:white;
+border-radius:20px;
+padding:35px;
+display:none;
+z-index:11;
+}
+
+.popup h3{
+font-size:36px;
+color:#1d2a7d;
+margin-bottom:15px;
+}
+
+.popup p{
+font-size:22px;
+line-height:1.7;
+}
+
+.popup button{
+margin-top:20px;
+padding:12px 25px;
+border:none;
+background:#4c89d9;
+color:white;
+border-radius:10px;
+cursor:pointer;
+}
+
+/* COMPLETE */
+
+.complete{
+position:absolute;
+inset:0;
+background:#121633;
+display:none;
+justify-content:center;
+align-items:center;
+flex-direction:column;
+color:white;
+z-index:20;
+}
+
+.complete h2{
+font-size:60px;
+margin-bottom:20px;
+}
+
+.complete button{
+padding:12px 30px;
+font-size:20px;
+border:none;
+border-radius:10px;
+cursor:pointer;
+}
+
+</style>
+</head>
+<body>
+
 <div id="slide">
+
+<div class="header">
+<h1>Learning Agility Components</h1>
+<p>Explore each competency to continue</p>
+</div>
+
+<div class="progress">
+Viewed: <span id="count">0</span>/4
+</div>
+
+<div class="main">
 
 <div class="sidebar">
 
-<div class="nav-card active" onclick="showSection('skill',this)">
-<div class="number">1</div>
+<div class="navCard active" onclick="loadSection('skill',this)">
+<div class="num">1</div>
 <h2>Skill</h2>
 </div>
 
-<div class="nav-card" onclick="showSection('motivation',this)">
-<div class="number">2</div>
+<div class="navCard" onclick="loadSection('motivation',this)">
+<div class="num">2</div>
 <h2>Motivation</h2>
 </div>
 
 </div>
 
-<div class="content">
+<div class="center">
 
-<h1 id="title">Component 1: Skill</h1>
-
-<div class="main-area">
-
-<div class="definition">
+<h2 id="title">Component 1: Skill</h2>
 
 <div class="quote" id="quote">
 "What you do when you don't know what to do"
 </div>
 
-<div class="description" id="description">
+<div class="desc" id="desc">
 Applying knowledge and learning to unfamiliar situations while navigating ambiguity and extracting lessons from experience.
 </div>
 
 </div>
 
-<div class="cards" id="cards">
+<div class="orbit">
+
+<div class="core" id="coreText">
+Skill
+</div>
+
+<div class="node n1" onclick="showInfo(0)" id="c1"></div>
+<div class="node n2" onclick="showInfo(1)" id="c2"></div>
+<div class="node n3" onclick="showInfo(2)" id="c3"></div>
+<div class="node n4" onclick="showInfo(3)" id="c4"></div>
 
 </div>
 
 </div>
 
+<div class="overlay" id="overlay"></div>
+
+<div class="popup" id="popup">
+<h3 id="popupTitle"></h3>
+<p id="popupText"></p>
+<button onclick="closePopup()">Continue</button>
+</div>
+
+<div class="complete" id="complete">
+<h2>🏆 Excellent!</h2>
+<p>All competencies explored.</p>
+<button onclick="location.reload()">Restart</button>
 </div>
 
 </div>
+
+<script>
+
+let viewed=[];
+
+const data={
+
+skill:{
+title:"Component 1: Skill",
+core:"Skill",
+quote:"What you do when you don't know what to do",
+desc:"Applying knowledge and learning to unfamiliar situations while navigating ambiguity and extracting lessons from experience.",
+cards:[
+["Pattern Recognition","Recognizing similarities and applying lessons from previous experiences."],
+["Problem Solving","Structuring effective solutions in unfamiliar situations."],
+["Knowledge Transfer","Applying learning from one situation to another."],
+["Adaptive Thinking","Adjusting strategies when conditions change."]
+]
+},
+
+motivation:{
+title:"Component 2: Motivation",
+core:"Motivation",
+quote:"The willingness to take risk in novel situations",
+desc:"The drive to explore, experiment, and learn from uncertainty.",
+cards:[
+["Curiosity","Seeking new experiences and opportunities to learn."],
+["Courage","Taking action despite uncertainty and risk."],
+["Initiative","Actively pursuing challenges and growth opportunities."],
+["Resilience","Recovering quickly from setbacks and failures."]
+]
+}
+
+};
+
+let current="skill";
+
+function loadSection(type,el){
+
+current=type;
+
+document.querySelectorAll('.navCard').forEach(c=>c.classList.remove('active'));
+el.classList.add('active');
+
+document.getElementById("title").innerHTML=data[type].title;
+document.getElementById("quote").innerHTML='"'+data[type].quote+'"';
+document.getElementById("desc").innerHTML=data[type].desc;
+document.getElementById("coreText").innerHTML=data[type].core;
+
+for(let i=0;i<4;i++){
+document.getElementById("c"+(i+1)).innerHTML=data[type].cards[i][0];
+}
+
+viewed=[];
+document.getElementById("count").innerHTML=0;
+}
+
+function showInfo(i){
+
+document.getElementById("popupTitle").innerHTML=data[current].cards[i][0];
+document.getElementById("popupText").innerHTML=data[current].cards[i][1];
+
+document.getElementById("overlay").style.display="block";
+document.getElementById("popup").style.display="block";
+
+if(!viewed.includes(i)){
+viewed.push(i);
+document.getElementById("count").innerHTML=viewed.length;
+
+if(viewed.length===4){
+setTimeout(()=>{
+document.getElementById("complete").style.display="flex";
+},500);
+}
+}
+}
+
+function closePopup(){
+document.getElementById("overlay").style.display="none";
+document.getElementById("popup").style.display="none";
+}
+
+loadSection('skill',document.querySelector('.navCard'));
+
+</script>
+
+</body>
+</html>
