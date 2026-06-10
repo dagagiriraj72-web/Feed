@@ -1,419 +1,248 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Learning Agility vs Learning Ability</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Learning Agility vs. Learning Ability</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
 
-<style>
+        body {
+            background-color: #f0f4f8;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100vw;
+            height: 100vh;
+            overflow: hidden;
+        }
 
-*{
-margin:0;
-padding:0;
-box-sizing:border-box;
-font-family:"Segoe UI",sans-serif;
-}
+        /* 16:9 Slide Container */
+        .slide-container {
+            width: 100%;
+            max-width: 1280px;
+            height: 100%;
+            max-height: 720px;
+            aspect-ratio: 16 / 9;
+            background-color: #ffffff;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            padding: 3.5rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            position: relative;
+        }
 
-body{
-background:#f3f4f8;
-display:flex;
-justify-content:center;
-align-items:center;
-height:100vh;
-overflow:hidden;
-}
+        /* Header Styles */
+        .header-section {
+            margin-bottom: 2rem;
+        }
 
-#slide{
-width:1280px;
-height:720px;
-background:#f3f4f8;
-position:relative;
-padding:25px 35px;
-overflow:hidden;
-}
+        .main-title {
+            font-size: 2.8rem;
+            color: #2c3e50;
+            font-weight: 800;
+            line-height: 1.2;
+            margin-bottom: 0.4rem;
+        }
 
-/* HEADER */
+        .subtitle {
+            font-size: 1.2rem;
+            color: #7f8c8d;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
 
-h1{
-font-size:64px;
-font-weight:800;
-line-height:1;
-color:#2f2f2f;
-margin-bottom:10px;
-}
+        /* Interactive Grid Layout */
+        .comparison-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2.5rem;
+            flex-grow: 1;
+            align-items: stretch;
+        }
 
-.subtitle{
-font-size:18px;
-color:#777;
-margin-bottom:20px;
-}
+        /* Card Mechanics */
+        .card {
+            border-radius: 12px;
+            padding: 2.5rem;
+            transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+            cursor: pointer;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            border: 2px solid transparent;
+        }
 
-/* PROGRESS */
+        .ability-card {
+            background-color: #f8f9fa;
+            color: #2c3e50;
+            border-color: #e9ecef;
+        }
 
-.progress{
-position:absolute;
-top:25px;
-right:30px;
-background:white;
-padding:10px 18px;
-border-radius:10px;
-font-size:16px;
-font-weight:700;
-box-shadow:0 3px 10px rgba(0,0,0,.08);
-}
+        .agility-card {
+            background-color: #4a90e2;
+            color: #ffffff;
+        }
 
-/* PANELS */
+        /* Hover & Active States */
+        .card:hover {
+            transform: translateY(-5px);
+        }
 
-.container{
-display:flex;
-justify-content:space-between;
-height:470px;
-margin-top:10px;
-}
+        .ability-card:hover {
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.05);
+            border-color: #ced4da;
+        }
 
-.panel{
-width:560px;
-height:100%;
-padding:35px 40px;
-border-radius:6px;
-}
+        .agility-card:hover {
+            box-shadow: 0 15px 30px rgba(74, 144, 226, 0.3);
+            background-color: #357abd;
+        }
 
-.left{
-background:#eef0f5;
-}
+        .card.active {
+            transform: scale(1.02);
+            ring: 4px solid #2c3e50;
+        }
 
-.right{
-background:#4e8bd6;
-color:white;
-}
+        /* Card Content */
+        .card-title {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
 
-.panel h2{
-font-size:34px;
-margin-bottom:30px;
-}
+        .card-title::after {
+            content: '➔';
+            font-size: 1.2rem;
+            opacity: 0.5;
+            transition: transform 0.3s;
+        }
 
-/* LISTS */
+        .card:hover .card-title::after {
+            transform: translateX(5px);
+        }
 
-ul{
-list-style:none;
-}
+        /* Interactive List Items */
+        .points-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
 
-li{
-font-size:20px;
-line-height:1.4;
-margin-bottom:26px;
-display:flex;
-align-items:flex-start;
-}
+        .points-list li {
+            font-size: 1.1rem;
+            line-height: 1.5;
+            position: relative;
+            padding-left: 1.8rem;
+            opacity: 0.85;
+            transform: translateX(0);
+            transition: all 0.3s ease;
+        }
 
-li span{
-margin-right:18px;
-font-size:26px;
-margin-top:-2px;
-}
+        .ability-card .points-list li::before {
+            content: '•';
+            color: #4a90e2;
+            font-weight: bold;
+            font-size: 1.5rem;
+            position: absolute;
+            left: 0;
+            top: -2px;
+        }
 
-/* INTERACTIVE ITEMS */
+        .agility-card .points-list li::before {
+            content: '•';
+            color: #ffffff;
+            font-weight: bold;
+            font-size: 1.5rem;
+            position: absolute;
+            left: 0;
+            top: -2px;
+        }
 
-.clickable{
-cursor:pointer;
-padding:6px 10px;
-border-radius:8px;
-transition:.25s;
-}
-
-.clickable:hover{
-background:#dce6ff;
-transform:translateX(6px);
-}
-
-.visited{
-background:#cde9d3 !important;
-}
-
-/* INFO BAR */
-
-.infoBar{
-position:absolute;
-left:35px;
-right:35px;
-bottom:25px;
-height:90px;
-background:white;
-border-radius:12px;
-display:flex;
-align-items:center;
-justify-content:center;
-padding:15px;
-box-shadow:0 3px 10px rgba(0,0,0,.08);
-}
-
-.infoBar p{
-font-size:18px;
-color:#555;
-text-align:center;
-}
-
-/* POPUP */
-
-.overlay{
-position:absolute;
-inset:0;
-background:rgba(0,0,0,.55);
-display:none;
-z-index:100;
-}
-
-.popup{
-position:absolute;
-top:50%;
-left:50%;
-transform:translate(-50%,-50%);
-width:720px;
-background:white;
-border-radius:20px;
-padding:30px;
-display:none;
-z-index:101;
-}
-
-.popup h3{
-font-size:34px;
-color:#1d2a7d;
-margin-bottom:15px;
-}
-
-.popup p{
-font-size:20px;
-line-height:1.6;
-color:#444;
-}
-
-.popup button{
-margin-top:20px;
-padding:12px 28px;
-border:none;
-border-radius:30px;
-background:#4e8bd6;
-color:white;
-font-size:16px;
-cursor:pointer;
-}
-
-/* COMPLETE */
-
-.complete{
-position:absolute;
-inset:0;
-background:#131938;
-display:none;
-justify-content:center;
-align-items:center;
-flex-direction:column;
-color:white;
-z-index:200;
-}
-
-.complete h2{
-font-size:56px;
-margin-bottom:15px;
-}
-
-.complete p{
-font-size:22px;
-margin-bottom:25px;
-}
-
-.complete button{
-padding:14px 28px;
-border:none;
-border-radius:10px;
-background:#4e8bd6;
-color:white;
-font-size:18px;
-cursor:pointer;
-}
-
-</style>
+        /* Interactive feedback when card clicked */
+        .card:active {
+            transform: scale(0.98);
+        }
+        
+        .instruction-tag {
+            position: absolute;
+            bottom: 1rem;
+            right: 3.5rem;
+            font-size: 0.85rem;
+            color: #a0aec0;
+            font-style: italic;
+        }
+    </style>
 </head>
-
 <body>
 
-<div id="slide">
-
-<h1>Learning Agility vs. Learning Ability</h1>
-
-<div class="subtitle">
-A critical distinction for talent management
-</div>
-
-<div class="progress">
-Explored: <span id="count">0</span>/5
-</div>
-
-<div class="container">
-
-<div class="panel left">
-
-<h2>Learning Ability</h2>
-
-<ul>
-
-<li class="clickable" id="item1" onclick="showInfo(1)">
-<span>•</span>
-Cognitive intelligence (IQ)
-</li>
-
-<li class="clickable" id="item2" onclick="showInfo(2)">
-<span>•</span>
-How quickly you absorb information
-</li>
-
-<li class="clickable" id="item3" onclick="showInfo(3)">
-<span>•</span>
-Academic and analytical capacity
-</li>
-
-<li class="clickable" id="item4" onclick="showInfo(4)">
-<span>•</span>
-Relatively fixed trait
-</li>
-
-<li class="clickable" id="item5" onclick="showInfo(5)">
-<span>•</span>
-Necessary but not sufficient
-</li>
-
-</ul>
-
-</div>
-
-<div class="panel right">
-
-<h2>Learning Agility</h2>
-
-<ul>
-
-<li><span>•</span>Behavioral flexibility</li>
-
-<li><span>•</span>How you apply learning in novel situations</li>
-
-<li><span>•</span>Range of adaptive capabilities</li>
-
-<li><span>•</span>Can be developed over time</li>
-
-<li><span>•</span>The differentiator for leadership potential</li>
-
-</ul>
-
-</div>
-
-</div>
-
-<div class="infoBar">
-<p>
-💡 Click each Learning Ability concept to discover how Learning Agility expands beyond it.
-</p>
-</div>
-
-<div class="overlay" id="overlay"></div>
-
-<div class="popup" id="popup">
-
-<h3 id="popupTitle"></h3>
-
-<p id="popupText"></p>
-
-<button onclick="closePopup()">
-Continue
-</button>
-
-</div>
-
-<div class="complete" id="complete">
-
-<h2>🏆 Comparison Complete!</h2>
-
-<p>
-You explored all key differences between Learning Ability and Learning Agility.
-</p>
-
-<button onclick="location.reload()">
-Explore Again
-</button>
-
-</div>
-
-</div>
-
-<script>
-
-let viewed=[];
-
-const data={
-
-1:{
-title:"IQ vs Behavioral Flexibility",
-text:"Learning Ability focuses on cognitive intelligence and reasoning capability. Learning Agility focuses on behavioral flexibility and adapting effectively in changing situations."
-},
-
-2:{
-title:"Absorbing vs Applying",
-text:"Learning Ability measures how quickly information is absorbed. Learning Agility measures how effectively learning is applied in unfamiliar and novel situations."
-},
-
-3:{
-title:"Analysis vs Adaptability",
-text:"Learning Ability emphasizes academic and analytical strength. Learning Agility emphasizes adaptability and learning through experience."
-},
-
-4:{
-title:"Fixed vs Developable",
-text:"Learning Ability is often viewed as relatively stable over time. Learning Agility can be strengthened through reflection, practice, and experience."
-},
-
-5:{
-title:"Foundation vs Differentiator",
-text:"Learning Ability is important, but Learning Agility is often what differentiates future leaders and high performers."
-}
-
-};
-
-function showInfo(id){
-
-document.getElementById("popupTitle").innerHTML=data[id].title;
-document.getElementById("popupText").innerHTML=data[id].text;
-
-document.getElementById("overlay").style.display="block";
-document.getElementById("popup").style.display="block";
-
-if(!viewed.includes(id)){
-
-viewed.push(id);
-
-document.getElementById("item"+id).classList.add("visited");
-
-document.getElementById("count").innerHTML=viewed.length;
-
-if(viewed.length===5){
-
-setTimeout(()=>{
-document.getElementById("complete").style.display="flex";
-},600);
-
-}
-
-}
-
-}
-
-function closePopup(){
-
-document.getElementById("overlay").style.display="none";
-document.getElementById("popup").style.display="none";
-
-}
-
-</script>
-
+    <div class="slide-container">
+        <div class="header-section">
+            <h1 class="main-title">Learning Agility vs. Learning Ability</h1>
+            <p class="subtitle">A critical distinction for talent management</p>
+        </div>
+
+        <div class="comparison-grid">
+            
+            <div class="card ability-card" onclick="toggleCard(this)" role="button" aria-expanded="false">
+                <h2 class="card-title">Learning Ability</h2>
+                <ul class="points-list">
+                    <li>Cognitive intelligence (IQ)</li>
+                    <li>How quickly you absorb information</li>
+                    <li>Academic and analytical capacity</li>
+                    <li>Relatively fixed trait</li>
+                    <li>Necessary but not sufficient</li>
+                </ul>
+            </div>
+
+            <div class="card agility-card" onclick="toggleCard(this)" role="button" aria-expanded="false">
+                <h2 class="card-title">Learning Agility</h2>
+                <ul class="points-list">
+                    <li>Behavioral flexibility</li>
+                    <li>How you apply learning in novel situations</li>
+                    <li>Range of adaptive capabilities</li>
+                    <li>Can be developed over time</li>
+                    <li>The differentiator for leadership potential</li>
+                </ul>
+            </div>
+            
+        </div>
+
+        <div class="instruction-tag">Click on a panel to emphasize view</div>
+    </div>
+
+    <script>
+        function toggleCard(selectedCard) {
+            // Remove active status from all cards
+            document.querySelectorAll('.card').forEach(card => {
+                if (card !== selectedCard) {
+                    card.classList.remove('active');
+                    card.style.opacity = '0.6';
+                }
+            });
+
+            // Toggle selected card
+            if (selectedCard.classList.contains('active')) {
+                selectedCard.classList.remove('active');
+                document.querySelectorAll('.card').forEach(card => card.style.opacity = '1');
+                selectedCard.setAttribute('aria-expanded', 'false');
+            } else {
+                selectedCard.classList.add('active');
+                selectedCard.style.opacity = '1';
+                selectedCard.setAttribute('aria-expanded', 'true');
+            }
+        }
+    </script>
 </body>
 </html>
