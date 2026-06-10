@@ -2,8 +2,6 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
-
 <title>Learning Ability vs Learning Agility</title>
 
 <style>
@@ -15,18 +13,16 @@ box-sizing:border-box;
 font-family:Segoe UI,sans-serif;
 }
 
-html,body{
-width:100%;
-height:100%;
+body{
+background:#eef2f7;
 overflow:hidden;
-background:#f4f6fb;
 }
 
-.container{
+#slide{
 width:1280px;
 height:720px;
 margin:auto;
-padding:12px;
+padding:15px;
 display:flex;
 flex-direction:column;
 }
@@ -34,148 +30,211 @@ flex-direction:column;
 /* HEADER */
 
 .header{
+height:70px;
 text-align:center;
-margin-bottom:10px;
 }
 
 .header h1{
-font-size:28px;
+font-size:34px;
 font-weight:800;
-color:#173b8c;
+color:#183a8f;
 }
 
 .header p{
-font-size:13px;
+font-size:14px;
 color:#666;
 }
 
-/* TABS */
+/* TOP NAV */
 
 .tabs{
+height:60px;
 display:flex;
 justify-content:center;
-gap:10px;
-margin-bottom:10px;
+gap:15px;
+align-items:center;
 }
 
 .tab{
-padding:10px 25px;
-border-radius:30px;
-background:white;
-border:2px solid #dbe4f3;
+width:180px;
+height:48px;
+border-radius:50px;
+border:none;
 cursor:pointer;
+font-size:18px;
 font-weight:700;
-font-size:16px;
 transition:.3s;
 }
 
-.tab.active{
-background:#4f88da;
+.active-tab{
+background:#4c84da;
 color:white;
 }
 
-/* QUOTE */
+.inactive-tab{
+background:white;
+border:2px solid #d9e3f3;
+}
+
+/* MAIN */
+
+.main{
+flex:1;
+display:flex;
+gap:15px;
+margin-top:10px;
+}
+
+/* LEFT */
+
+.left{
+width:320px;
+background:white;
+border-radius:20px;
+padding:20px;
+box-shadow:0 5px 15px rgba(0,0,0,.08);
+}
 
 .quote{
-height:70px;
-background:white;
-border-radius:12px;
-display:flex;
-align-items:center;
-justify-content:center;
-font-size:22px;
-font-weight:700;
-color:#4f88da;
-margin-bottom:10px;
-border:2px solid #dbe4f3;
+font-size:28px;
+font-weight:800;
+color:#4c84da;
+line-height:1.2;
+margin-bottom:20px;
 }
 
-/* CARDS */
-
-.cards{
-display:grid;
-grid-template-columns:1fr 1fr;
-gap:10px;
-margin-bottom:10px;
-}
-
-.card{
-height:85px;
-background:white;
-border-radius:12px;
-padding:12px;
-cursor:pointer;
-border-left:5px solid #4f88da;
-transition:.3s;
-}
-
-.card:hover{
-transform:translateY(-3px);
-}
-
-.card h3{
-font-size:16px;
-color:#173b8c;
-margin-bottom:4px;
-}
-
-.card p{
-font-size:12px;
-color:#666;
-}
-
-/* DETAIL PANEL */
-
-.detail{
-flex:1;
-background:white;
-border-radius:12px;
-padding:18px;
-border:2px solid #dbe4f3;
-overflow:hidden;
-}
-
-.detail h2{
-font-size:20px;
-color:#173b8c;
-margin-bottom:8px;
-}
-
-.detail p{
+.desc{
 font-size:15px;
 line-height:1.6;
 color:#444;
+}
+
+/* RIGHT */
+
+.right{
+flex:1;
+display:grid;
+grid-template-columns:1fr 1fr;
+grid-template-rows:1fr 1fr;
+gap:15px;
+}
+
+/* CARD */
+
+.card{
+background:white;
+border-radius:18px;
+padding:18px;
+cursor:pointer;
+border-left:6px solid #4c84da;
+transition:.25s;
+box-shadow:0 3px 10px rgba(0,0,0,.05);
+}
+
+.card:hover{
+transform:translateY(-5px);
+}
+
+.card h3{
+font-size:20px;
+color:#183a8f;
+margin-bottom:8px;
+}
+
+.card p{
+font-size:14px;
+color:#666;
+}
+
+/* POPUP */
+
+.overlay{
+position:fixed;
+inset:0;
+background:rgba(0,0,0,.45);
+display:none;
+justify-content:center;
+align-items:center;
+}
+
+.popup{
+width:600px;
+background:white;
+border-radius:20px;
+padding:30px;
+}
+
+.popup h2{
+color:#183a8f;
+margin-bottom:10px;
+}
+
+.popup p{
+line-height:1.8;
+font-size:17px;
+color:#444;
+}
+
+.close{
+margin-top:20px;
+padding:10px 25px;
+background:#4c84da;
+border:none;
+color:white;
+border-radius:10px;
+cursor:pointer;
 }
 
 </style>
 </head>
 <body>
 
-<div class="container">
+<div id="slide">
 
 <div class="header">
 <h1>Learning Ability vs Learning Agility</h1>
-<p>Click a category and explore the concepts</p>
+<p>Explore the differences</p>
 </div>
 
 <div class="tabs">
-<div class="tab active" onclick="loadContent('ability',this)">🧠 Ability</div>
-<div class="tab" onclick="loadContent('agility',this)">🚀 Agility</div>
+<button id="abilityBtn" class="tab active-tab">🧠 Ability</button>
+<button id="agilityBtn" class="tab inactive-tab">🚀 Agility</button>
 </div>
+
+<div class="main">
+
+<div class="left">
 
 <div class="quote" id="quote">
 "How quickly you learn"
 </div>
 
-<div class="cards" id="cards"></div>
-
-<div class="detail">
-<h2 id="detailTitle">Select a card</h2>
-<p id="detailText">
-Click any card above to view details.
-</p>
+<div class="desc" id="description">
+Learning Ability reflects how efficiently a person absorbs, understands and processes information.
 </div>
 
+</div>
+
+<div class="right" id="cardArea">
+
+</div>
+
+</div>
+
+</div>
+
+<div class="overlay" id="overlay">
+<div class="popup">
+
+<h2 id="popupTitle"></h2>
+
+<p id="popupText"></p>
+
+<button class="close" onclick="closePopup()">
+Close
+</button>
+
+</div>
 </div>
 
 <script>
@@ -184,100 +243,115 @@ const data={
 
 ability:{
 quote:'"How quickly you learn"',
+desc:'Learning Ability reflects how efficiently a person absorbs, understands and processes information.',
 cards:[
 {
-title:"Cognitive Intelligence",
-short:"IQ and mental capability",
-detail:"Reflects an individual's ability to reason, analyze information and solve problems efficiently."
+title:'Cognitive Intelligence',
+sub:'IQ and reasoning ability',
+detail:'Represents intellectual capability used to analyze, understand and solve problems.'
 },
 {
-title:"Fast Learning",
-short:"Absorbing information quickly",
-detail:"The speed at which a person can understand and retain new information."
+title:'Fast Learning',
+sub:'Quick information absorption',
+detail:'The speed at which a learner understands and retains new information.'
 },
 {
-title:"Academic Capacity",
-short:"Knowledge acquisition",
-detail:"Ability to perform well in structured learning environments and formal education."
+title:'Academic Capacity',
+sub:'Knowledge acquisition',
+detail:'Ability to perform in structured learning environments.'
 },
 {
-title:"Analytical Thinking",
-short:"Breaking down problems",
-detail:"Using logic and evidence to evaluate situations and make decisions."
+title:'Analytical Thinking',
+sub:'Breaking down problems',
+detail:'Using logic and evidence to reach conclusions.'
 }
 ]
 },
 
 agility:{
-quote:'"What you do when you don’t know what to do"',
+quote:'"What you do when you do not know what to do"',
+desc:'Learning Agility is the ability to adapt and succeed in unfamiliar situations.',
 cards:[
 {
-title:"Pattern Recognition",
-short:"Connecting experiences",
-detail:"Recognizing similarities between situations and applying lessons from the past."
+title:'Pattern Recognition',
+sub:'Connecting experiences',
+detail:'Recognizing useful similarities between situations.'
 },
 {
-title:"Problem Solving",
-short:"Handling uncertainty",
-detail:"Developing practical solutions in unfamiliar and changing environments."
+title:'Problem Solving',
+sub:'Handling uncertainty',
+detail:'Developing solutions in unfamiliar conditions.'
 },
 {
-title:"Knowledge Transfer",
-short:"Applying learning",
-detail:"Using knowledge gained in one context successfully in another."
+title:'Knowledge Transfer',
+sub:'Applying lessons',
+detail:'Using previous learning in new contexts.'
 },
 {
-title:"Adaptive Thinking",
-short:"Changing approach",
-detail:"Adjusting strategies and behaviors when conditions evolve."
+title:'Adaptive Thinking',
+sub:'Changing approaches',
+detail:'Adjusting behavior and strategy when needed.'
 }
 ]
 }
 
 };
 
-function loadContent(type,element){
+function load(type){
 
-document.querySelectorAll(".tab").forEach(t=>{
-t.classList.remove("active");
-});
+document.getElementById('quote').innerHTML=data[type].quote;
+document.getElementById('description').innerHTML=data[type].desc;
 
-element.classList.add("active");
-
-document.getElementById("quote").innerHTML=data[type].quote;
-
-let html="";
+let html='';
 
 data[type].cards.forEach(card=>{
 
 html+=`
 <div class="card"
-onclick="showDetail(
+onclick="showPopup(
 '${card.title}',
 '${card.detail}'
 )">
 <h3>${card.title}</h3>
-<p>${card.short}</p>
+<p>${card.sub}</p>
 </div>
 `;
 
 });
 
-document.getElementById("cards").innerHTML=html;
+document.getElementById('cardArea').innerHTML=html;
+}
 
-document.getElementById("detailTitle").innerHTML="Select a card";
-document.getElementById("detailText").innerHTML="Click any card above to view details.";
+function showPopup(title,text){
+
+document.getElementById('popupTitle').innerHTML=title;
+document.getElementById('popupText').innerHTML=text;
+
+document.getElementById('overlay').style.display='flex';
 
 }
 
-function showDetail(title,text){
-
-document.getElementById("detailTitle").innerHTML=title;
-document.getElementById("detailText").innerHTML=text;
-
+function closePopup(){
+document.getElementById('overlay').style.display='none';
 }
 
-loadContent('ability');
+document.getElementById('abilityBtn').onclick=function(){
+
+this.className='tab active-tab';
+document.getElementById('agilityBtn').className='tab inactive-tab';
+
+load('ability');
+}
+
+document.getElementById('agilityBtn').onclick=function(){
+
+this.className='tab active-tab';
+document.getElementById('abilityBtn').className='tab inactive-tab';
+
+load('agility');
+}
+
+load('ability');
 
 </script>
 
