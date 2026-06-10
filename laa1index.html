@@ -11,7 +11,7 @@
 margin:0;
 padding:0;
 box-sizing:border-box;
-font-family:Segoe UI,sans-serif;
+font-family:"Segoe UI",sans-serif;
 }
 
 body{
@@ -32,48 +32,43 @@ position:relative;
 overflow:hidden;
 }
 
-/* HEADER */
-
 h1{
-font-size:48px;
+font-size:52px;
 font-weight:800;
 color:#2d2d2d;
-line-height:1.1;
-margin-bottom:8px;
+line-height:1.05;
 }
 
 .subtitle{
 font-size:18px;
 color:#777;
+margin-top:6px;
 margin-bottom:18px;
 }
 
-/* PROGRESS */
-
 .progress{
 position:absolute;
-top:25px;
-right:25px;
+top:20px;
+right:20px;
 background:white;
 padding:10px 18px;
 border-radius:10px;
-font-weight:600;
+font-weight:700;
 box-shadow:0 3px 10px rgba(0,0,0,.08);
 }
-
-/* MAIN */
 
 .container{
 display:flex;
 justify-content:space-between;
 height:520px;
+margin-top:10px;
 }
 
 .panel{
 width:580px;
 height:100%;
 border-radius:12px;
-padding:35px 40px;
+padding:25px;
 }
 
 .left{
@@ -81,48 +76,49 @@ background:#eef0f5;
 }
 
 .right{
-background:#4e8bd6;
+background:#4d89d8;
 color:white;
 }
 
 .panel h2{
 font-size:34px;
-margin-bottom:35px;
+margin-bottom:20px;
 }
 
-.panel ul{
-list-style:none;
-}
-
-.panel li{
-font-size:20px;
-margin-bottom:28px;
+.item{
+height:70px;
 display:flex;
-align-items:flex-start;
-line-height:1.4;
-}
-
-.panel li::before{
-content:"•";
-font-size:32px;
-margin-right:18px;
-margin-top:-6px;
-}
-
-.clickable{
+align-items:center;
+padding:0 18px;
+margin-bottom:12px;
+border-radius:10px;
 cursor:pointer;
+font-size:20px;
+font-weight:600;
 transition:.3s;
-padding:4px 6px;
-border-radius:8px;
 }
 
-.clickable:hover{
-background:#dfe6ff;
+.left .item{
+background:white;
+color:#333;
+}
+
+.right .item{
+background:rgba(255,255,255,.15);
+}
+
+.item:hover{
 transform:translateX(5px);
 }
 
-.right .static:hover{
-transform:none;
+.selected{
+outline:4px solid #ffb800;
+}
+
+.matched{
+background:#38c172 !important;
+color:white !important;
+pointer-events:none;
 }
 
 /* POPUP */
@@ -130,7 +126,7 @@ transform:none;
 .overlay{
 position:absolute;
 inset:0;
-background:rgba(0,0,0,.65);
+background:rgba(0,0,0,.55);
 display:none;
 z-index:100;
 }
@@ -140,34 +136,33 @@ position:absolute;
 top:50%;
 left:50%;
 transform:translate(-50%,-50%);
-width:760px;
+width:650px;
 background:white;
+padding:30px;
 border-radius:20px;
-padding:35px;
 display:none;
 z-index:101;
+text-align:center;
 }
 
 .popup h3{
 font-size:34px;
-color:#1d1b5d;
-margin-bottom:15px;
+color:#1d2a7d;
+margin-bottom:12px;
 }
 
 .popup p{
-font-size:21px;
+font-size:20px;
 line-height:1.6;
-color:#444;
 }
 
 .popup button{
-margin-top:25px;
-padding:12px 28px;
+margin-top:20px;
+padding:12px 25px;
 border:none;
 border-radius:30px;
-background:#4e8bd6;
+background:#4d89d8;
 color:white;
-font-size:16px;
 cursor:pointer;
 }
 
@@ -176,7 +171,7 @@ cursor:pointer;
 .complete{
 position:absolute;
 inset:0;
-background:#15193f;
+background:#121633;
 display:none;
 justify-content:center;
 align-items:center;
@@ -186,23 +181,23 @@ z-index:200;
 }
 
 .complete h2{
-font-size:54px;
+font-size:56px;
 margin-bottom:15px;
 }
 
 .complete p{
 font-size:22px;
-margin-bottom:25px;
+margin-bottom:20px;
 }
 
 .complete button{
-padding:14px 28px;
+padding:12px 28px;
 border:none;
 border-radius:10px;
+background:#4d89d8;
+color:white;
 font-size:18px;
 cursor:pointer;
-background:#4e8bd6;
-color:white;
 }
 
 </style>
@@ -214,11 +209,11 @@ color:white;
 <h1>Learning Agility vs. Learning Ability</h1>
 
 <div class="subtitle">
-A critical distinction for talent management
+Match each Learning Ability concept with its Learning Agility equivalent
 </div>
 
 <div class="progress">
-Viewed: <span id="count">0</span>/5
+Matched: <span id="score">0</span>/5
 </div>
 
 <div class="container">
@@ -227,29 +222,11 @@ Viewed: <span id="count">0</span>/5
 
 <h2>Learning Ability</h2>
 
-<ul>
-
-<li class="clickable" onclick="showInfo(1)">
-Cognitive intelligence (IQ)
-</li>
-
-<li class="clickable" onclick="showInfo(2)">
-How quickly you absorb information
-</li>
-
-<li class="clickable" onclick="showInfo(3)">
-Academic and analytical capacity
-</li>
-
-<li class="clickable" onclick="showInfo(4)">
-Relatively fixed trait
-</li>
-
-<li class="clickable" onclick="showInfo(5)">
-Necessary but not sufficient
-</li>
-
-</ul>
+<div class="item" data-match="1">Cognitive Intelligence (IQ)</div>
+<div class="item" data-match="2">How quickly you absorb information</div>
+<div class="item" data-match="3">Academic and analytical capacity</div>
+<div class="item" data-match="4">Relatively fixed trait</div>
+<div class="item" data-match="5">Necessary but not sufficient</div>
 
 </div>
 
@@ -257,19 +234,11 @@ Necessary but not sufficient
 
 <h2>Learning Agility</h2>
 
-<ul>
-
-<li class="static">Behavioral flexibility</li>
-
-<li class="static">How you apply learning in novel situations</li>
-
-<li class="static">Range of adaptive capabilities</li>
-
-<li class="static">Can be developed over time</li>
-
-<li class="static">The differentiator for leadership potential</li>
-
-</ul>
+<div class="item" data-match="1">Behavioral flexibility</div>
+<div class="item" data-match="2">Apply learning in novel situations</div>
+<div class="item" data-match="3">Range of adaptive capabilities</div>
+<div class="item" data-match="4">Can be developed over time</div>
+<div class="item" data-match="5">Leadership potential differentiator</div>
 
 </div>
 
@@ -278,89 +247,98 @@ Necessary but not sufficient
 <div class="overlay" id="overlay"></div>
 
 <div class="popup" id="popup">
-
-<h3 id="title"></h3>
-
-<p id="text"></p>
-
-<button onclick="closePopup()">
-Continue
-</button>
-
+<h3 id="popupTitle"></h3>
+<p id="popupText"></p>
+<button onclick="closePopup()">Continue</button>
 </div>
 
 <div class="complete" id="complete">
-
-<h2>🎉 Well Done!</h2>
-
-<p>
-You explored all key differences between Learning Ability and Learning Agility.
-</p>
-
-<button onclick="location.reload()">
-Restart
-</button>
-
+<h2>🏆 Excellent!</h2>
+<p>You successfully matched all concepts.</p>
+<button onclick="location.reload()">Play Again</button>
 </div>
 
 </div>
 
 <script>
 
-let viewed=[];
+let first=null;
+let score=0;
 
-const data={
+const leftItems=document.querySelectorAll('.left .item');
+const rightItems=document.querySelectorAll('.right .item');
 
-1:{
-title:"IQ vs Flexibility",
-text:"Learning Ability focuses on cognitive intelligence and intellectual capacity. Learning Agility focuses on behavioral flexibility and adapting to changing situations."
-},
-
-2:{
-title:"Absorbing vs Applying",
-text:"Learning Ability measures how quickly information is absorbed. Learning Agility measures how effectively learning is applied in unfamiliar situations."
-},
-
-3:{
-title:"Knowledge vs Adaptability",
-text:"Learning Ability emphasizes academic and analytical strength. Learning Agility emphasizes adaptability and learning through experience."
-},
-
-4:{
-title:"Fixed vs Developable",
-text:"Learning Ability is often viewed as relatively stable. Learning Agility can be continuously developed through practice and reflection."
-},
-
-5:{
-title:"Foundation vs Differentiator",
-text:"Learning Ability is important, but Learning Agility is often what differentiates future leaders and high performers."
+function clearSelection(){
+document.querySelectorAll('.item').forEach(i=>{
+i.classList.remove('selected');
+});
 }
+
+leftItems.forEach(item=>{
+
+item.onclick=function(){
+
+if(this.classList.contains('matched')) return;
+
+clearSelection();
+this.classList.add('selected');
+first=this;
 
 };
 
-function showInfo(id){
+});
 
-document.getElementById("title").innerHTML=data[id].title;
-document.getElementById("text").innerHTML=data[id].text;
+rightItems.forEach(item=>{
 
-document.getElementById("overlay").style.display="block";
-document.getElementById("popup").style.display="block";
+item.onclick=function(){
 
-if(!viewed.includes(id)){
+if(!first) return;
+if(this.classList.contains('matched')) return;
 
-viewed.push(id);
+if(first.dataset.match===this.dataset.match){
 
-document.getElementById("count").innerHTML=viewed.length;
+first.classList.add('matched');
+this.classList.add('matched');
 
-if(viewed.length===5){
+score++;
+document.getElementById("score").innerHTML=score;
+
+showPopup(
+"Correct Match!",
+"Great job. These concepts are connected and highlight how Learning Agility extends beyond Learning Ability."
+);
+
+if(score===5){
 
 setTimeout(()=>{
 document.getElementById("complete").style.display="flex";
-},500);
+},700);
 
 }
 
+}else{
+
+showPopup(
+"Try Again",
+"These two concepts are not the best match. Look for the Learning Agility concept that most closely extends the Learning Ability idea."
+);
+
 }
+
+first=null;
+clearSelection();
+
+};
+
+});
+
+function showPopup(title,text){
+
+document.getElementById("popupTitle").innerHTML=title;
+document.getElementById("popupText").innerHTML=text;
+
+document.getElementById("overlay").style.display="block";
+document.getElementById("popup").style.display="block";
 
 }
 
