@@ -22,81 +22,86 @@
             overflow: hidden;
         }
 
-        /* Fixed 16:9 Aspect Ratio Containment Canvas */
+        /* STORYLINE CROP FIX:
+           Uses standard flex layout inside a rigid 16:9 box container.
+           Ensures text content dynamically balances without pushing the 
+           bottom element past the 720px safe viewport constraint.
+        */
         .slide-wrapper {
             width: 100%;
             height: 100%;
             max-width: 1280px;
             max-height: 720px;
             aspect-ratio: 16 / 9;
-            padding: 3rem 3.5rem;
+            padding: 2rem 3rem;
             background-color: #ffffff;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
-            position: relative;
+            box-sizing: border-box;
         }
 
         /* Header Section */
         .header-section {
-            margin-bottom: 2rem;
+            margin-bottom: 1rem;
             flex-shrink: 0;
         }
 
         .main-title {
-            font-size: 2.8rem;
+            font-size: 2.6rem;
             color: #2c3e50;
             font-weight: 800;
             line-height: 1.2;
         }
 
-        /* Interactive Timeline Container */
+        /* Timeline Container with Strict Containment */
         .timeline-container {
             display: flex;
             flex-direction: column;
             justify-content: space-between;
             flex-grow: 1;
             position: relative;
-            min-height: 0; /* Dynamic inner height safety block */
-            padding-bottom: 1rem;
+            min-height: 0; /* Prevents container from stretching past flex bounds */
+            margin: 0.5rem 0;
         }
 
-        /* Centralized Timeline Vertical Connector Line */
+        /* Centralized Timeline Line */
         .timeline-container::before {
             content: '';
             position: absolute;
             left: 45px;
-            top: 10px;
-            bottom: 10px;
+            top: 15px;
+            bottom: 15px;
             width: 2px;
             background-color: #cbd5e1;
             z-index: 1;
         }
 
-        /* Interactive Row Item Box Layout */
+        /* Row Layout */
         .timeline-row {
             display: flex;
             align-items: center;
-            gap: 2rem;
+            gap: 1.8rem;
             position: relative;
             z-index: 2;
             cursor: pointer;
             transition: transform 0.2s ease;
-            padding: 0.4rem 0;
+            padding: 0.2rem 0;
+            min-height: 0;
         }
 
         .timeline-row:hover {
             transform: translateX(6px);
         }
 
-        /* Year Block Nodes Style */
+        /* Year Block Nodes */
         .year-block {
-            width: 92px;
-            height: 52px;
+            width: 90px;
+            height: 48px;
             background-color: #4a90e2;
             color: #ffffff;
             font-weight: 700;
-            font-size: 1.3rem;
+            font-size: 1.25rem;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -111,13 +116,14 @@
             box-shadow: 0 6px 12px rgba(53, 122, 189, 0.3);
         }
 
-        /* Content Text Area Framework */
+        /* Content Text Wrapper */
         .content-card {
             background-color: transparent;
-            padding: 0.5rem 1rem;
+            padding: 0.4rem 1rem;
             border-radius: 6px;
             transition: all 0.3s ease;
             flex-grow: 1;
+            min-width: 0;
         }
 
         .timeline-row:hover .content-card {
@@ -125,21 +131,22 @@
         }
 
         .content-text {
-            font-size: 1.15rem;
+            font-size: 1.05rem;
             color: #334155;
-            line-height: 1.5;
+            line-height: 1.45;
             transition: color 0.3s ease;
+            word-wrap: break-word;
         }
 
         .timeline-row:hover .content-text {
             color: #0f172a;
         }
 
-        /* Interactive Active Focus State Styles */
+        /* Interactive Focus States */
         .timeline-row.active .year-block {
             background-color: #1e3a8a;
             box-shadow: 0 0 0 3px #93c5fd;
-            transform: scale(1.05);
+            transform: scale(1.03);
         }
 
         .timeline-row.active .content-card {
@@ -148,13 +155,13 @@
             padding-left: 1.2rem;
         }
 
-        /* Bottom Footer Bar Layout */
+        /* Bottom Footer Utilities */
         .footer-bar {
             display: flex;
             justify-content: flex-end;
             align-items: center;
             flex-shrink: 0;
-            margin-top: 1rem;
+            margin-top: 0.5rem;
         }
 
         .instruction-tag {
@@ -219,7 +226,6 @@
         function selectMilestone(selectedRow) {
             const allRows = document.querySelectorAll('.timeline-row');
             
-            // Toggle focus state mechanics cleanly
             if (selectedRow.classList.contains('active')) {
                 selectedRow.classList.remove('active');
                 allRows.forEach(row => row.style.opacity = '1');
