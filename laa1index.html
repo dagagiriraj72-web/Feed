@@ -1,129 +1,153 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Learning Agility vs Learning Ability</title>
 
 <style>
-
 *{
 margin:0;
 padding:0;
 box-sizing:border-box;
-font-family:Segoe UI,Arial,sans-serif;
 }
 
 html,body{
-width:1280px;
-height:720px;
+width:100%;
+height:100%;
 overflow:hidden;
+font-family:Segoe UI, Arial, sans-serif;
 background:#f4f6fb;
 }
 
 .slide{
-width:1280px;
-height:720px;
-padding:20px 30px;
+width:100vw;
+height:100vh;
+padding:18px 24px;
+display:flex;
+flex-direction:column;
 }
 
+/* Header */
 .header{
-height:90px;
 text-align:center;
+margin-bottom:14px;
+flex:0 0 auto;
 }
 
 .header h1{
-font-size:42px;
-color:#1d2a72;
+font-size:2.3vw;
 font-weight:800;
+color:#1f3b8f;
 line-height:1.1;
 }
 
 .header p{
-font-size:20px;
-color:#64748b;
-margin-top:8px;
+font-size:1vw;
+color:#667085;
+margin-top:4px;
 }
 
-.main{
-height:560px;
-display:flex;
-gap:20px;
-}
-
-.panel{
+/* Content Area */
+.content{
 flex:1;
-border-radius:20px;
-padding:20px;
-position:relative;
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:22px;
+min-height:0;
+}
+
+/* Cards */
+.card{
+border-radius:18px;
+padding:18px;
+display:flex;
+flex-direction:column;
 overflow:hidden;
 }
 
-.ability{
-background:white;
-border:3px solid #dbe4f5;
+.left{
+background:#ffffff;
+border:2px solid #d8e0f0;
 }
 
-.agility{
-background:linear-gradient(135deg,#4f8edb,#3b6fc9);
+.right{
+background:linear-gradient(180deg,#5d95df,#4a82d2);
 color:white;
 }
 
-.title{
-font-size:34px;
-font-weight:700;
-margin-bottom:18px;
+.card-title{
+font-size:2vw;
+font-weight:800;
+margin-bottom:14px;
 }
 
+.left .card-title{
+color:#000;
+}
+
+.right .card-title{
+color:white;
+}
+
+/* List */
 .list{
 display:flex;
 flex-direction:column;
-gap:12px;
+gap:10px;
+flex:1;
 }
 
 .item{
-height:68px;
 display:flex;
 align-items:center;
-padding:0 18px;
+gap:12px;
+padding:12px 16px;
 border-radius:12px;
-font-size:22px;
+font-size:1.25vw;
 font-weight:600;
-cursor:pointer;
-transition:.25s;
+line-height:1.25;
 }
 
-.ability .item{
-background:#eef3fb;
-color:#18245f;
+.left .item{
+background:#eef2f8;
+color:#17337b;
 }
 
-.agility .item{
-background:rgba(255,255,255,.15);
+.right .item{
+background:rgba(255,255,255,.14);
+color:white;
 }
 
-.item:hover{
-transform:translateX(6px);
+.icon{
+font-size:1.4vw;
+flex-shrink:0;
 }
 
-.footer{
-height:50px;
-margin-top:10px;
-background:white;
-border-radius:16px;
-display:flex;
-align-items:center;
-justify-content:center;
-font-size:22px;
-font-weight:600;
-color:#334155;
-padding:0 20px;
-text-align:center;
+/* Safety for Storyline scaling */
+@media (max-height:700px){
+
+.header h1{
+font-size:30px;
 }
 
-.highlight{
-color:#4f46e5;
+.header p{
+font-size:14px;
 }
 
+.card-title{
+font-size:28px;
+}
+
+.item{
+font-size:18px;
+padding:10px 14px;
+}
+
+.icon{
+font-size:20px;
+}
+}
 </style>
 </head>
 
@@ -136,86 +160,85 @@ color:#4f46e5;
 <p>A critical distinction for talent management</p>
 </div>
 
-<div class="main">
+<div class="content">
 
-<div class="panel ability">
+<div class="card left">
 
-<div class="title">Learning Ability</div>
+<div class="card-title">
+Learning Ability
+</div>
 
 <div class="list">
 
-<div class="item" onclick="showText('Ability focuses on intelligence and acquiring knowledge.')">
-🧠 Cognitive Intelligence (IQ)
+<div class="item">
+<span class="icon">🧠</span>
+<span>Cognitive Intelligence (IQ)</span>
 </div>
 
-<div class="item" onclick="showText('Ability reflects how quickly information is absorbed.')">
-⚡ Absorbs Information Quickly
+<div class="item">
+<span class="icon">⚡</span>
+<span>Absorbs Information Quickly</span>
 </div>
 
-<div class="item" onclick="showText('Ability includes academic and analytical strengths.')">
-📚 Academic & Analytical Capacity
+<div class="item">
+<span class="icon">📚</span>
+<span>Academic & Analytical Capacity</span>
 </div>
 
-<div class="item" onclick="showText('Ability is generally considered more stable over time.')">
-🔒 Relatively Fixed Trait
+<div class="item">
+<span class="icon">🔒</span>
+<span>Relatively Fixed Trait</span>
 </div>
 
-<div class="item" onclick="showText('Ability alone does not guarantee success in new situations.')">
-✔ Necessary but Not Sufficient
+<div class="item">
+<span class="icon">✔️</span>
+<span>Necessary but Not Sufficient</span>
 </div>
 
 </div>
 
 </div>
 
-<div class="panel agility">
+<div class="card right">
 
-<div class="title">Learning Agility</div>
+<div class="card-title">
+Learning Agility
+</div>
 
 <div class="list">
 
-<div class="item" onclick="showText('Agility is the flexibility to adapt behaviour when situations change.')">
-🚀 Behavioral Flexibility
+<div class="item">
+<span class="icon">🚀</span>
+<span>Behavioral Flexibility</span>
 </div>
 
-<div class="item" onclick="showText('Agile learners apply lessons in unfamiliar situations.')">
-🌍 Applies Learning in Novel Situations
+<div class="item">
+<span class="icon">🌍</span>
+<span>Applies Learning in Novel Situations</span>
 </div>
 
-<div class="item" onclick="showText('Agility involves a broad range of adaptive capabilities.')">
-🔄 Adaptive Capabilities
+<div class="item">
+<span class="icon">🔄</span>
+<span>Adaptive Capabilities</span>
 </div>
 
-<div class="item" onclick="showText('Learning agility can be developed and strengthened.')">
-📈 Can Be Developed
+<div class="item">
+<span class="icon">📈</span>
+<span>Can Be Developed Over Time</span>
 </div>
 
-<div class="item" onclick="showText('Learning agility strongly predicts leadership potential.')">
-⭐ Leadership Potential
-</div>
-
-</div>
-
-</div>
-
-</div>
-
-<div class="footer" id="info">
-Click any point above to explore the difference between
-<span class="highlight">&nbsp;Learning Ability&nbsp;</span>
-and
-<span class="highlight">&nbsp;Learning Agility</span>.
+<div class="item">
+<span class="icon">⭐</span>
+<span>Leadership Potential Differentiator</span>
 </div>
 
 </div>
 
-<script>
+</div>
 
-function showText(text){
-document.getElementById("info").innerHTML=text;
-}
+</div>
 
-</script>
+</div>
 
 </body>
 </html>
