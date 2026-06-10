@@ -1,8 +1,7 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="utf-8">
 <title>Learning Agility vs Learning Ability</title>
 
 <style>
@@ -10,276 +9,168 @@
 margin:0;
 padding:0;
 box-sizing:border-box;
-font-family:"Segoe UI",sans-serif;
+font-family:Segoe UI, Arial, sans-serif;
 }
 
 body{
-width:100vw;
-height:100vh;
-overflow:hidden;
-background:#f5f6fa;
-display:flex;
-justify-content:center;
-align-items:center;
-}
-
-#slide{
 width:1280px;
 height:720px;
-background:#f5f6fa;
-padding:20px 30px;
 overflow:hidden;
+background:#f5f7fb;
 }
 
-/* Header */
-
-.title{
-text-align:center;
-font-size:42px;
-font-weight:800;
-color:#1f2566;
-margin-bottom:5px;
+.container{
+width:1280px;
+height:720px;
+padding:25px 35px;
 }
 
-.subtitle{
+.header{
 text-align:center;
-font-size:18px;
-color:#6b7280;
 margin-bottom:20px;
 }
 
-/* Comparison Area */
+.header h1{
+font-size:52px;
+font-weight:800;
+color:#1c2459;
+line-height:1.1;
+}
 
-.compare-wrap{
+.header p{
+font-size:22px;
+color:#667085;
+margin-top:8px;
+}
+
+.main{
 display:flex;
 justify-content:space-between;
-gap:20px;
+gap:25px;
 height:560px;
 }
 
 .panel{
-flex:1;
-background:white;
-border-radius:18px;
-padding:25px;
+width:590px;
+height:560px;
+border-radius:20px;
+padding:24px;
 box-shadow:0 4px 12px rgba(0,0,0,.08);
 position:relative;
 }
 
-.left{
-border-top:8px solid #bfc5d6;
+.ability{
+background:#ffffff;
+border-top:8px solid #cfd6e8;
 }
 
-.right{
-border-top:8px solid #4d8dd6;
+.agility{
+background:linear-gradient(180deg,#4e8ee6,#3c7bd4);
+color:white;
 }
 
-.panel-title{
-font-size:34px;
+.panel h2{
+font-size:42px;
+margin-bottom:25px;
 font-weight:800;
-margin-bottom:20px;
 }
 
-.left .panel-title{
-color:#2d2d2d;
-}
-
-.right .panel-title{
-color:#4d8dd6;
-}
-
-.point{
-padding:14px 18px;
-margin-bottom:12px;
-border-radius:12px;
-cursor:pointer;
-font-size:22px;
-font-weight:600;
-transition:.3s;
+.list{
 display:flex;
-align-items:center;
-gap:12px;
+flex-direction:column;
+gap:16px;
 }
 
-.left .point{
-background:#f3f4f8;
-color:#333;
-}
-
-.right .point{
-background:#eef5ff;
-color:#1f2566;
-}
-
-.point:hover{
-transform:translateX(8px);
-}
-
-.point.active{
-background:#5f5cf1 !important;
-color:white !important;
-}
-
-.bullet{
-font-size:26px;
-}
-
-/* Info Box */
-
-.info{
-position:absolute;
-left:20px;
-right:20px;
-bottom:20px;
-height:120px;
-background:#f7f8fc;
+.item{
+padding:16px;
 border-radius:14px;
-padding:15px;
-display:flex;
-align-items:center;
-justify-content:center;
+font-size:28px;
+font-weight:600;
+line-height:1.25;
+}
+
+.ability .item{
+background:#eef2f9;
+color:#1f2937;
+}
+
+.agility .item{
+background:rgba(255,255,255,.15);
+color:white;
+}
+
+.footer{
+position:absolute;
+bottom:20px;
+left:24px;
+right:24px;
+padding:14px;
+border-radius:12px;
+font-size:18px;
 text-align:center;
-font-size:20px;
-line-height:1.5;
-color:#374151;
 font-weight:600;
 }
 
-.highlight{
-color:#5f5cf1;
+.ability .footer{
+background:#dde4f2;
+color:#1c2459;
 }
 
-/* Progress */
-
-.progress{
-position:absolute;
-top:20px;
-right:20px;
-background:#eef2ff;
-padding:8px 16px;
-border-radius:20px;
-font-weight:700;
-color:#5f5cf1;
+.agility .footer{
+background:rgba(255,255,255,.18);
+color:white;
 }
 </style>
 </head>
 
 <body>
 
-<div id="slide">
+<div class="container">
 
-<div class="title">
-Learning Agility vs Learning Ability
+<div class="header">
+<h1>Learning Agility vs Learning Ability</h1>
+<p>A critical distinction for talent management</p>
 </div>
 
-<div class="subtitle">
-Click any point to understand the distinction
+<div class="main">
+
+<div class="panel ability">
+<h2>Learning Ability</h2>
+
+<div class="list">
+<div class="item">🧠 Cognitive Intelligence (IQ)</div>
+<div class="item">⚡ Absorbs Information Quickly</div>
+<div class="item">📚 Academic & Analytical Capacity</div>
+<div class="item">🔒 Relatively Fixed Trait</div>
+<div class="item">✔ Necessary but Not Sufficient</div>
 </div>
 
-<div class="compare-wrap">
-
-<div class="panel left">
-
-<div class="progress">
-Explored: <span id="count">0</span>/10
-</div>
-
-<div class="panel-title">
-Learning Ability
-</div>
-
-<div class="point" onclick="showInfo(this,'Learning Ability focuses on cognitive intelligence and how quickly a person absorbs information.')">
-<span class="bullet">•</span>
-Cognitive Intelligence (IQ)
-</div>
-
-<div class="point" onclick="showInfo(this,'Learning ability includes the speed at which people absorb and process new information.')">
-<span class="bullet">•</span>
-Absorbs Information Quickly
-</div>
-
-<div class="point" onclick="showInfo(this,'Academic performance and analytical thinking are common indicators of learning ability.')">
-<span class="bullet">•</span>
-Academic & Analytical Capacity
-</div>
-
-<div class="point" onclick="showInfo(this,'Learning ability is generally considered more stable over time.')">
-<span class="bullet">•</span>
-Relatively Fixed Trait
-</div>
-
-<div class="point" onclick="showInfo(this,'Learning ability is important, but by itself does not guarantee success in unfamiliar situations.')">
-<span class="bullet">•</span>
-Necessary but Not Sufficient
+<div class="footer">
+Focuses on what you know and how quickly you learn.
 </div>
 
 </div>
 
-<div class="panel right">
+<div class="panel agility">
+<h2>Learning Agility</h2>
 
-<div class="panel-title">
-Learning Agility
+<div class="list">
+<div class="item">🚀 Behavioral Flexibility</div>
+<div class="item">🌍 Applies Learning in Novel Situations</div>
+<div class="item">🔄 Adaptive Capabilities</div>
+<div class="item">📈 Can Be Developed Over Time</div>
+<div class="item">⭐ Predicts Leadership Potential</div>
 </div>
 
-<div class="point" onclick="showInfo(this,'Learning agility reflects behavioral flexibility and openness to new experiences.')">
-<span class="bullet">•</span>
-Behavioral Flexibility
-</div>
-
-<div class="point" onclick="showInfo(this,'Learning agility is about applying lessons learned to new and unfamiliar situations.')">
-<span class="bullet">•</span>
-Applies Learning in Novel Situations
-</div>
-
-<div class="point" onclick="showInfo(this,'It includes a wide range of adaptive capabilities that support growth and change.')">
-<span class="bullet">•</span>
-Adaptive Capabilities
-</div>
-
-<div class="point" onclick="showInfo(this,'Unlike learning ability, learning agility can be strengthened and developed over time.')">
-<span class="bullet">•</span>
-Developed Over Time
-</div>
-
-<div class="point" onclick="showInfo(this,'Research shows learning agility is a strong predictor of leadership potential.')">
-<span class="bullet">•</span>
-Leadership Differentiator
+<div class="footer">
+Focuses on how you apply learning when facing new challenges.
 </div>
 
 </div>
 
 </div>
 
-<div class="info" id="infoBox">
-Click any point above to explore the difference between
-<span class="highlight">&nbsp;Learning Ability&nbsp;</span>
-and
-<span class="highlight">&nbsp;Learning Agility.</span>
 </div>
-
-</div>
-
-<script>
-
-let explored = 0;
-
-function showInfo(element,text){
-
-document.getElementById("infoBox").innerHTML=text;
-
-if(!element.classList.contains("visited")){
-
-element.classList.add("visited");
-element.classList.add("active");
-
-explored++;
-
-document.getElementById("count").innerText=explored;
-
-}
-
-}
-</script>
 
 </body>
 </html>
