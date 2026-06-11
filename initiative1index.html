@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Self-Awareness: Scenario Simulation</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #fcf8f2;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100vw;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        /* Strict 16:9 Aspect Ratio Container for Storyline safe framing */
+        .slide-wrapper {
+            width: 100%;
+            height: 100%;
+            max-width: 1280px;
+            max-height: 720px;
+            aspect-ratio: 16 / 9;
+            padding: 2.5rem 3.5rem;
+            background-color: #fdfaf6;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            box-sizing: border-box;
+        }
+
+        /* Top Header Configuration */
+        .header-section {
+            margin-bottom: 1rem;
+            flex-shrink: 0;
+        }
+
+        .main-title {
+            font-size: 2.8rem;
+            color: #3d2314;
+            font-weight: 800;
+            line-height: 1.1;
+            position: relative;
+            padding-bottom: 0.5rem;
+        }
+
+        .main-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 120px;
+            height: 4px;
+            background-color: #e07a5f;
+            border-radius: 2px;
+        }
+
+        .subtitle {
+            margin-top: 0.6rem;
+            font-size: 1.1rem;
+            color: #6e5d53;
+            line-height: 1.4;
+        }
+
+        /* 3-Column Interactive Layout Container */
+        .game-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 1.5rem;
+            flex-grow: 1;
+            min-height: 0;
+            margin: 1rem 0;
+        }
+
+        /* Main Dynamic Core Pillar Cards */
+        .pillar-card {
+            background-color: #ffffff;
+            border-radius: 12px;
+            padding: 1.5rem;
+            border: 1px solid rgba(61, 35, 20, 0.06);
+            box-shadow: 0 4px 15px rgba(61, 35, 20, 0.03);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            position: relative;
+            transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+        }
+
+        /* Circle Icon Styling Base */
+        .icon-circle {
+            width: 64px;
+            height: 64px;
+            border-radius: 50%;
+            background-color: #fdf0ec;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 1rem;
+            flex-shrink: 0;
+            transition: background-color 0.3s ease;
+        }
+
+        .icon-svg {
+            width: 32px;
+            height: 32px;
+            fill: #e07a5f;
+            transition: fill 0.3s ease;
+        }
+
+        .pillar-title {
+            font-size: 1.35rem;
+            font-weight: 700;
+            color: #3d2314;
+            margin-bottom: 0.8rem;
+            flex-shrink: 0;
+        }
+
+        /* Static original text description */
+        .pillar-desc {
+            font-size: 0.95rem;
+            color: #6e5d53;
+            line-height: 1.5;
+            margin-bottom: 1rem;
+        }
+
+        /* Scenario/Quiz Panel Mechanics Box overlaying inside the card */
+        .scenario-box {
+            background-color: #fffdfa;
+            border: 1px dashed #e07a5f;
+            border-radius: 8px;
+            padding: 0.8rem;
+            margin-top: auto;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            min-height: 110px;
+            justify-content: center;
+        }
+
+        .scenario-prompt {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: #7d4f36;
+            line-height: 1.3;
+        }
+
+        /* L3 Option Buttons styling inside simulation modules */
+        .option-btn {
+            background-color: #ffffff;
+            border: 1px solid #cbd5e1;
+            padding: 0.5rem;
+            border-radius: 6px;
+            font-size: 0.8rem;
+            font-weight: 500;
+            color: #475569;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-align: left;
+        }
+
+        .option-btn:hover {
+            background-color: #fdf0ec;
+            border-color: #e07a5f;
+            color: #e07a5f;
+        }
+
+        /* Dynamic Feedback Success State Classes */
+        .pillar-card.completed {
+            border-color: #2a9d8f;
+            background-color: #f4faf9;
+            box-shadow: 0 6px 20px rgba(42, 157, 143, 0.1);
+        }
+
+        .pillar-card.completed .icon-circle {
+            background-color: #e7f6f4;
+        }
+
+        .pillar-card.completed .icon-svg {
+            fill: #2a9d8f;
+        }
+
+        .pillar-card.completed .scenario-box {
+            border-color: #2a9d8f;
+            background-color: #e7f6f4;
+        }
+
+        .feedback-text {
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: #2a9d8f;
+        }
+
+        /* Bottom Status Tracker Bar */
+        .footer-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-shrink: 0;
+            border-top: 1px solid rgba(61, 35, 20, 0.08);
+            padding-top: 1rem;
+        }
+
+        .score-tracker {
+            font-size: 1rem;
+            font-weight: 700;
+            color: #3d2314;
+            background-color: #fff8eb;
+            padding: 0.4rem 1rem;
+            border-radius: 20px;
+            border: 1px solid #f4a261;
+        }
+
+        .instruction-tag {
+            font-size: 0.9rem;
+            color: #a39389;
+            font-style: italic;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="slide-wrapper">
+        <div class="header-section">
+            <h1 class="main-title">Self-Awareness: The Starting Point</h1>
+            <p class="subtitle">Understanding your strengths, weaknesses, values, and triggers is the first step toward taking meaningful initiative.</p>
+        </div>
+
+        <div class="game-grid">
+            
+            <div id="card-1" class="pillar-card">
+                <div class="icon-circle">
+                    <svg class="icon-svg" viewBox="0 0 24 24"><path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/></svg>
+                </div>
+                <h2 class="pillar-title">Know Your Strengths</h2>
+                <p class="pillar-desc">Identify where you naturally excel and where your energy flows. Leverage these areas to make your biggest impact.</p>
+                
+                <div class="scenario-box" id="scen-1">
+                    <p class="scenario-prompt">Scenario: A crisis hits your team's project. How do you deploy your core strength safely?</p>
+                    <button class="option-btn" onclick="submitAnswer(1, true)">Assess where my skill fills the gap & offer help</button>
+                    <button class="option-btn" onclick="submitAnswer(1, false)">Wait for tasks to be designated by leadership</button>
+                </div>
+            </div>
+
+            <div id="card-2" class="pillar-card">
+                <div class="icon-circle">
+                    <svg class="icon-svg" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12c0 3.54 1.85 6.65 4.64 8.43.19.12.42.12.61-.01l1.57-1.05c.2-.13.28-.38.19-.6-.43-1.03-.67-2.15-.67-3.32.01-4.11 3.39-7.46 7.51-7.45 4.13.01 7.47 3.38 7.45 7.51-.01 2.3-.95 4.38-2.47 5.88-.16.16-.19.41-.07.6l1.24 1.9c.15.23.46.28.67.1C19.98 19.38 22 15.93 22 12c0-5.52-4.48-10-10-10z"/></svg>
+                </div>
+                <h2 class="pillar-title">Recognize Patterns</h2>
+                <p class="pillar-desc">Notice your habits, reactions, and tendencies. Awareness of these patterns lets you choose your responses intentionally.</p>
+                
+                <div class="scenario-box" id="scen-2">
+                    <p class="scenario-prompt">Scenario: A colleague aggressively critiques your proposal in public. Your native reactive pattern flares up.</p>
+                    <button class="option-btn" onclick="submitAnswer(2, false)">Defend rapidly to maintain standing instantly</button>
+                    <button class="option-btn" onclick="submitAnswer(2, true)">Pause, identify trigger, reply with objective metrics</button>
+                </div>
+            </div>
+
+            <div id="card-3" class="pillar-card">
+                <div class="icon-circle">
+                    <svg class="icon-svg" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 14.19L10.81 12 12 7.81 15.19 12 13 16.19z"/></svg>
+                </div>
+                <h2 class="pillar-title">Clarify Your Values</h2>
+                <p class="pillar-desc">Define what matters most to you. When your actions align with your values, initiative becomes natural, not forced.</p>
+                
+                <div class="scenario-box" id="scen-3">
+                    <p class="scenario-prompt">Scenario: You are assigned an initiative that conflicts with metrics transparency standards.</p>
+                    <button class="option-btn" onclick="submitAnswer(3, true)">Propose a revised format that protects transparency</button>
+                    <button class="option-btn" onclick="submitAnswer(3, false)">Execute quietly to prevent friction inside the department</button>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="footer-bar">
+            <div class="score-tracker">Pillars Mastered: <span id="progress-val">0</span> / 3</div>
+            <div class="instruction-tag">Choose the highly self-aware options in all modules to complete the simulation layout</div>
+        </div>
+    </div>
+
+    <script>
+        let completedPillars = { 1: false, 2: false, 3: false };
+
+        function submitAnswer(pillarId, isCorrect) {
+            if (isCorrect) {
+                if (!completedPillars[pillarId]) {
+                    completedPillars[pillarId] = true;
+                    
+                    // Modify visual container state seamlessly
+                    const targetCard = document.getElementById(`card-${pillarId}`);
+                    const targetBox = document.getElementById(`scen-${pillarId}`);
+                    
+                    targetCard.classList.add('completed');
+                    targetBox.innerHTML = `<p class="feedback-text">✔ Strategic Alignment Mastered!</p>`;
+                    
+                    updateProgress();
+                }
+            } else {
+                // Flash alert layout subtly for incorrect simulation choices
+                const targetBox = document.getElementById(`scen-${pillarId}`);
+                const initialBorderColor = targetBox.style.borderColor;
+                targetBox.style.borderColor = "#e63946";
+                targetBox.style.backgroundColor = "#ffebee";
+                
+                setTimeout(() => {
+                    targetBox.style.borderColor = initialBorderColor;
+                    targetBox.style.backgroundColor = "#fffdfa";
+                }, 600);
+            }
+        }
+
+        function updateProgress() {
+            const count = Object.values(completedPillars).filter(Boolean).length;
+            document.getElementById('progress-val').innerText = count;
+        }
+    </script>
+</body>
+</html>
