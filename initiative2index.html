@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The SMART Framework Challenge</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #2b1d16;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100vw;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        /* Strict 16:9 Slide Canvas Container */
+        .slide-wrapper {
+            width: 100%;
+            height: 100%;
+            max-width: 1280px;
+            max-height: 720px;
+            aspect-ratio: 16 / 9;
+            padding: 2.5rem 3.5rem;
+            background-color: #362217;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            box-sizing: border-box;
+            position: relative;
+        }
+
+        /* Top Header Layout */
+        .header-section {
+            margin-bottom: 1rem;
+            flex-shrink: 0;
+        }
+
+        .main-title {
+            font-size: 3rem;
+            color: #ffffff;
+            font-weight: 800;
+            line-height: 1.1;
+            position: relative;
+            padding-bottom: 0.5rem;
+        }
+
+        .main-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 160px;
+            height: 4px;
+            background-color: #f4a261;
+            border-radius: 2px;
+        }
+
+        /* Interactive Gameplay Screen Layout Split */
+        .game-layout {
+            display: grid;
+            grid-template-columns: 1fr 1.2fr;
+            gap: 2rem;
+            flex-grow: 1;
+            min-height: 0;
+            margin: 1rem 0;
+        }
+
+        /* Left Side: Framework Static/State Components */
+        .framework-column {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            gap: 0.5rem;
+        }
+
+        .smart-row {
+            display: flex;
+            align-items: center;
+            gap: 1.2rem;
+            background-color: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            padding: 0.6rem 1rem;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .badge {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background-color: #e26d5c;
+            color: #ffffff;
+            font-weight: 800;
+            font-size: 1.4rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-shrink: 0;
+            transition: all 0.3s ease;
+        }
+
+        .row-text {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .row-title {
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: #f4a261;
+        }
+
+        .row-desc {
+            font-size: 0.85rem;
+            color: #dddddd;
+            line-height: 1.3;
+        }
+
+        /* Active highlight status configurations */
+        .smart-row.active-pillar {
+            background-color: rgba(244, 162, 97, 0.1);
+            border-color: #f4a261;
+            transform: translateX(5px);
+        }
+
+        .smart-row.completed-pillar {
+            background-color: rgba(42, 157, 143, 0.15);
+            border-color: #2a9d8f;
+        }
+
+        .smart-row.completed-pillar .badge {
+            background-color: #2a9d8f;
+        }
+
+        /* Right Side: Scenario Simulator Presentation Box */
+        .scenario-container {
+            background-color: #ffffff;
+            border-radius: 12px;
+            padding: 2rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            position: relative;
+        }
+
+        .scenario-header {
+            font-size: 0.9rem;
+            font-weight: 700;
+            color: #e26d5c;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 0.5rem;
+        }
+
+        .scenario-main-goal {
+            font-size: 1.05rem;
+            font-weight: 500;
+            color: #6c757d;
+            background-color: #f8f9fa;
+            padding: 0.6rem 1rem;
+            border-left: 3px solid #6c757d;
+            border-radius: 4px;
+            margin-bottom: 1rem;
+        }
+
+        .scenario-question {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: #2b1d16;
+            line-height: 1.4;
+            margin-bottom: 1.2rem;
+        }
+
+        .options-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .option-card {
+            background-color: #fdfbf7;
+            border: 1px solid #e1dbd6;
+            border-radius: 8px;
+            padding: 0.9rem 1.2rem;
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: #495057;
+            cursor: pointer;
+            text-align: left;
+            transition: all 0.2s ease;
+        }
+
+        .option-card:hover {
+            background-color: #fdf0ec;
+            border-color: #e26d5c;
+            color: #e26d5c;
+            transform: translateY(-1px);
+        }
+
+        /* End Screen Mechanics View */
+        .success-view {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            height: 100%;
+            gap: 1.5rem;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .success-title {
+            font-size: 2rem;
+            color: #2a9d8f;
+            font-weight: 800;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; } to { opacity: 1; }
+        }
+
+        /* Footer Infrastructure */
+        .footer-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-shrink: 0;
+            margin-top: 0.5rem;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            padding-top: 0.8rem;
+        }
+
+        .pro-tip {
+            font-size: 0.9rem;
+            color: #f4a261;
+            font-style: italic;
+        }
+
+        .game-status {
+            font-size: 0.9rem;
+            font-weight: 700;
+            color: #ffffff;
+            background-color: rgba(255,255,255,0.1);
+            padding: 0.3rem 0.8rem;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="slide-wrapper">
+        <div class="header-section">
+            <h1 class="main-title">The SMART Framework Challenge</h1>
+        </div>
+
+        <div class="game-layout">
+            
+            <div class="framework-column" id="framework-list">
+                <div class="smart-row active-pillar" id="row-0">
+                    <div class="badge">S</div>
+                    <div class="row-text">
+                        <span class="row-title">Specific</span>
+                        <span class="row-desc">Define exactly what you want to achieve with clarity and precision</span>
+                    </div>
+                </div>
+                <div class="smart-row" id="row-1">
+                    <div class="badge">M</div>
+                    <div class="row-text">
+                        <span class="row-title">Measurable</span>
+                        <span class="row-desc">Establish concrete criteria for tracking your progress</span>
+                    </div>
+                </div>
+                <div class="smart-row" id="row-2">
+                    <div class="badge">A</div>
+                    <div class="row-text">
+                        <span class="row-title">Achievable</span>
+                        <span class="row-desc">Set goals that stretch you but remain within reach</span>
+                    </div>
+                </div>
+                <div class="smart-row" id="row-3">
+                    <div class="badge">R</div>
+                    <div class="row-text">
+                        <span class="row-title">Relevant</span>
+                        <span class="row-desc">Align goals with your broader vision and values</span>
+                    </div>
+                </div>
+                <div class="smart-row" id="row-4">
+                    <div class="badge">T</div>
+                    <div class="row-text">
+                        <span class="row-title">Time-bound</span>
+                        <span class="row-desc">Set deadlines that create healthy urgency and focus</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="scenario-container" id="interaction-box">
+                <div id="quiz-view" style="display: flex; flex-direction: column; justify-content: space-between; height: 100%;">
+                    <div>
+                        <div class="scenario-header" id="stage-indicator">Stage 1 of 5: Specificity Module</div>
+                        <div class="scenario-main-goal">Vague Objective: "I want our team to improve client relations."</div>
+                        <div class="scenario-question" id="question-text">Which option applies specific operational precision parameters?</div>
+                    </div>
+                    
+                    <div class="options-list" id="options-box">
+                        </div>
+                </div>
+
+                <div class="success-view" id="victory-view">
+                    <div class="success-title">✔ SMART Framework Strategy Completed!</div>
+                    <p style="color: #495057; font-size: 1.1rem; line-height: 1.5;">
+                        You have translated a baseline objective into an actionable, optimized strategy using metrics criteria correctly.
+                    </p>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="footer-bar">
+            <div class="pro-tip">Pro tip: Write your goals down. People who write goals are 42% more likely to achieve them.</div>
+            <div class="game-status" id="score-val">Progress: 0%</div>
+        </div>
+    </div>
+
+    <script>
+        // Scenario stage data matrix structures
+        const stagesData = [
+            {
+                label: "Stage 1 of 5: Specificity Module",
+                question: "Which option provides specific precision parameters to anchor the vague goal?",
+                options: [
+                    { text: "Launch a dedicated 'Client Success Strategy Plan' targeting tier-1 accounts directly.", correct: true },
+                    { text: "Encourage team members to communicate more thoughtfully with external accounts.", correct: false }
+                ]
+            },
+            {
+                label: "Stage 2 of 5: Measurable Module",
+                question: "How do we quantify progress tracking for our client success plan?",
+                options: [
+                    { text: "Review regular feedback loops and check accounts periodically.", correct: false },
+                    { text: "Increase our accounts' net retention rate (NRR) by exactly 15%.", correct: true }
+                ]
+            },
+            {
+                label: "Stage 3 of 5: Achievable Module",
+                question: "How can we ensure a 15% increase is highly realistic yet ambitiously attainable?",
+                options: [
+                    { text: "Hire 2 new account managers and reallocate automation workflow platforms to secure capacity.", correct: true },
+                    { text: "Mandate overtime hours across the entire operational division to force the change.", correct: false }
+                ]
+            },
+            {
+                label: "Stage 4 of 5: Relevance Module",
+                question: "How do we align this retention goal with our broader long-term core values?",
+                options: [
+                    { text: "Ensure the plan focuses heavily on short-term sales upsells instead of relational alignment.", correct: false },
+                    { text: "Focus execution on maximizing strategic customer retention to drive enterprise-wide market stability.", correct: true }
+                ]
+            },
+            {
+                label: "Stage 5 of 5: Time-Bound Module",
+                question: "What deadline parameters create healthy focus and urgency?",
+                options: [
+                    { text: "Target full target realization securely by the end of Q4 this fiscal year.", correct: true },
+                    { text: "Execute the initiative indefinitely until the desired metrics level shifts.", correct: false }
+                ]
+            }
+        ];
+
+        let currentStage = 0;
+
+        function loadStage() {
+            if (currentStage >= stagesData.length) {
+                showVictory();
+                return;
+            }
+
+            const data = stagesData[currentStage];
+            document.getElementById("stage-indicator").innerText = data.label;
+            document.getElementById("question-text").innerText = data.question;
+
+            // Update framework column items highlights layout
+            for (let i = 0; i < 5; i++) {
+                const row = document.getElementById(`row-${i}`);
+                row.classList.remove('active-pillar');
+                if (i < currentStage) {
+                    row.classList.add('completed-pillar');
+                } else if (i === currentStage) {
+                    row.classList.add('active-pillar');
+                }
+            }
+
+            // Fill question choices buttons
+            const optionsBox = document.getElementById("options-box");
+            optionsBox.innerHTML = "";
+            
+            data.options.forEach(opt => {
+                const btn = document.createElement("button");
+                btn.className = "option-card";
+                btn.innerText = opt.text;
+                btn.onclick = () => evaluateChoice(opt.correct);
+                optionsBox.appendChild(btn);
+            });
+
+            document.getElementById("score-val").innerText = `Progress: ${Math.round((currentStage / 5) * 100)}%`;
+        }
+
+        function evaluateChoice(isCorrect) {
+            if (isCorrect) {
+                currentStage++;
+                loadStage();
+            } else {
+                // Flash interaction box container to indicate an error state seamlessly
+                const interactionBox = document.getElementById("interaction-box");
+                const initialBg = interactionBox.style.backgroundColor;
+                interactionBox.style.backgroundColor = "#fceade";
+                setTimeout(() => {
+                    interactionBox.style.backgroundColor = "#ffffff";
+                }, 400);
+            }
+        }
+
+        function showVictory() {
+            document.getElementById("quiz-view").style.display = "none";
+            document.getElementById("victory-view").style.display = "flex";
+            document.getElementById("score-val").innerText = "Progress: 100%";
+            
+            // Mark last list entry completed
+            const lastRow = document.getElementById(`row-4`);
+            lastRow.classList.remove('active-pillar');
+            lastRow.classList.add('completed-pillar');
+        }
+
+        // Boot configuration
+        loadStage();
+    </script>
+</body>
+</html>
