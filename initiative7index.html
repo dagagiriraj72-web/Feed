@@ -22,38 +22,33 @@
             overflow: hidden;
         }
 
-        /* STORYLINE 16:9 ACCORDANCE LAYOUT CANVAS
-           Strictly limits layout to a 1280x720 footprint, removing text overlap 
-           and clipping bugs within Articulate Storyline slide containers.
-        */
+        /* 16:9 SLIDE CONTAINER - Prevents cropping and fits perfectly */
         .slide-wrapper {
             width: 100%;
             height: 100%;
             max-width: 1280px;
             max-height: 720px;
             aspect-ratio: 16 / 9;
-            padding: 1.8rem 3rem 1.2rem 3rem;
+            padding: 1.5rem 2.5rem 1rem 2.5rem;
             background-color: #fdfaf6;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
             box-sizing: border-box;
-            position: relative;
         }
 
-        /* Header Layout Components */
         .header-section {
-            margin-bottom: 0.8rem;
+            margin-bottom: 0.5rem;
             flex-shrink: 0;
         }
 
         .main-title {
-            font-size: 2.6rem;
+            font-size: 2.5rem;
             color: #3d2314;
             font-weight: 800;
             line-height: 1.1;
             position: relative;
-            padding-bottom: 0.4rem;
+            padding-bottom: 0.3rem;
         }
 
         .main-title::after {
@@ -69,23 +64,23 @@
 
         .subtitle {
             margin-top: 0.4rem;
-            font-size: 1.05rem;
+            font-size: 1rem;
             color: #6e5d53;
-            line-height: 1.4;
+            line-height: 1.35;
         }
 
-        /* Twin Column Split Layout Area */
+        /* Workspace Configuration */
         .workspace-grid {
             display: grid;
-            grid-template-columns: 0.851fr 1.15fr;
-            gap: 2rem;
+            grid-template-columns: 0.85fr 1.15fr;
+            gap: 1.5rem;
             flex-grow: 1;
-            min-height: 0; /* Important vertical guardrail lock boundary */
-            margin: 0.8rem 0;
+            min-height: 0; 
+            margin: 0.5rem 0;
             align-items: center;
         }
 
-        /* Left Side Column: Controller Options & Metric Outputs */
+        /* Left Control Panel */
         .control-panel {
             display: flex;
             flex-direction: column;
@@ -152,14 +147,9 @@
             height: 18px;
             border-radius: 50%;
             background: #e07a5f;
-            transition: transform 0.1s ease;
         }
 
-        .html-range-input::-webkit-slider-thumb:hover {
-            transform: scale(1.2);
-        }
-
-        /* Numeric Metric Summary Display Grid */
+        /* Results Display Cards */
         .metrics-row {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -190,17 +180,15 @@
             font-weight: 700;
             color: #6e5d53;
             text-transform: uppercase;
-            letter-spacing: 0.5px;
         }
 
         .metric-value {
             font-size: 1.6rem;
             font-weight: 900;
             color: #3d2314;
-            font-variant-numeric: tabular-nums;
         }
 
-        /* Right Side Column: SVG Graphic Plot Area Container */
+        /* Right Side Chart Display Panel */
         .visualization-panel {
             background-color: #ffffff;
             border: 1px solid rgba(61, 35, 20, 0.06);
@@ -227,7 +215,6 @@
             display: block;
         }
 
-        /* Chart Elements Internal Styling */
         .axis-line {
             stroke: #cbd5e1;
             stroke-width: 1.5px;
@@ -244,12 +231,10 @@
             font-weight: 600;
         }
 
-        /* Path Curves Configuration */
         .curve-path {
             fill: none;
             stroke-width: 3.5px;
             stroke-linecap: round;
-            transition: stroke-dasharray 0.1s ease;
         }
 
         .curve-active {
@@ -260,12 +245,6 @@
             stroke: #6e5d53;
         }
 
-        /* Live tracking nodes */
-        .tracker-dot {
-            transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        }
-
-        /* Chart Legends Strip */
         .chart-legends-row {
             display: flex;
             justify-content: center;
@@ -290,7 +269,6 @@
             border-radius: 3px;
         }
 
-        /* Footer Utilities Bar */
         .footer-bar {
             display: flex;
             justify-content: flex-end;
@@ -316,7 +294,6 @@
         </div>
 
         <div class="workspace-grid">
-            
             <div class="control-panel">
                 <h3 class="panel-heading">Timeline Simulator</h3>
                 
@@ -325,7 +302,7 @@
                         <span class="slider-title">Adjust Tracking Interval</span>
                         <span class="current-marker-output" id="slider-label">Month 1</span>
                     </div>
-                    <input type="range" min="0" max="6" value="0" class="html-range-input" id="time-slider" oninput="updateSimulation(this.value)" aria-label="Adjust tracking timeline interval">
+                    <input type="range" min="0" max="6" value="0" class="html-range-input" id="time-slider" oninput="updateSimulation(this.value)">
                 </div>
 
                 <div class="metrics-row">
@@ -333,7 +310,7 @@
                         <span class="metric-label">With Initiative</span>
                         <span class="metric-value" id="val-active">5</span>
                     </div>
-                    <div class="metric-card without-inactive-card">
+                    <div class="metric-card without-initiative-card">
                         <span class="metric-label">No Initiative</span>
                         <span class="metric-value" id="val-inactive">5</span>
                     </div>
@@ -351,10 +328,10 @@
                         <line x1="50" y1="72.5" x2="520" y2="72.5" class="grid-line" />
                         <line x1="50" y1="20" x2="520" y2="20" class="grid-line" />
 
-                        <text x="50" y="248" class="axis-text" text-anchor="middle">M1</text>
-                        <text x="128.3" y="248" class="axis-text" text-anchor="middle">M3</text>
-                        <text x="206.6" y="248" class="axis-text" text-anchor="middle">M6</text>
-                        <text x="285" y="248" class="axis-text" text-anchor="middle">M9</text>
+                        <text x="50" y="248" class="axis-text" text-anchor="middle">Month 1</text>
+                        <text x="128.3" y="248" class="axis-text" text-anchor="middle">Month 3</text>
+                        <text x="206.6" y="248" class="axis-text" text-anchor="middle">Month 6</text>
+                        <text x="285" y="248" class="axis-text" text-anchor="middle">Month 9</text>
                         <text x="363.3" y="248" class="axis-text" text-anchor="middle">Year 1</text>
                         <text x="441.6" y="248" class="axis-text" text-anchor="middle">Year 2</text>
                         <text x="520" y="248" class="axis-text" text-anchor="middle">Year 3</text>
@@ -363,3 +340,85 @@
                         <text x="42" y="181.5" class="axis-text" text-anchor="end">100</text>
                         <text x="42" y="129" class="axis-text" text-anchor="end">200</text>
                         <text x="42" y="76.5" class="axis-text" text-anchor="end">300</text>
+                        <text x="42" y="24" class="axis-text" text-anchor="end">400</text>
+
+                        <path d="" class="curve-path curve-active" id="path-active" />
+                        <path d="" class="curve-path curve-inactive" id="path-inactive" />
+
+                        <circle cx="50" cy="227.3" r="6" fill="#e07a5f" stroke="#ffffff" stroke-width="2" id="dot-active" style="display:none;" />
+                        <circle cx="50" cy="227.3" r="6" fill="#6e5d53" stroke="#ffffff" stroke-width="2" id="dot-inactive" style="display:none;" />
+                    </svg>
+                </div>
+
+                <div class="chart-legends-row">
+                    <div class="legend-item">
+                        <div class="legend-indicator" style="background-color: #e07a5f;"></div>
+                        <span>With Consistent Initiative</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-indicator" style="background-color: #6e5d53;"></div>
+                        <span>Without Initiative</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer-bar">
+            <div class="instruction-tag">Drag or use the slider track to dynamically compare growth curves</div>
+        </div>
+    </div>
+
+    <script>
+        // Solid Coordinate Maps to completely bypass native engine stroke clipping bugs
+        const simulationSteps = [
+            { label: "Month 1", activeVal: 5, inactiveVal: 5, cx: 50, cyActive: 227.3, cyInactive: 227.3 },
+            { label: "Month 3", activeVal: 15, inactiveVal: 10, cx: 128.3, cyActive: 222.1, cyInactive: 224.7 },
+            { label: "Month 6", activeVal: 33, inactiveVal: 15, cx: 206.6, cyActive: 212.6, cyInactive: 222.1 },
+            { label: "Month 9", activeVal: 55, inactiveVal: 18, cx: 285, cyActive: 201.1, cyInactive: 220.5 },
+            { label: "Year 1", activeVal: 90, inactiveVal: 23, cx: 363.3, cyActive: 182.7, cyInactive: 217.9 },
+            { label: "Year 2", activeVal: 180, inactiveVal: 30, cx: 441.6, cyActive: 135.5, cyInactive: 214.2 },
+            { label: "Year 3", activeVal: 350, inactiveVal: 36, cx: 520, cyActive: 46.2, cyInactive: 211.1 }
+        ];
+
+        function updateSimulation(stepIndex) {
+            const idx = parseInt(stepIndex);
+            
+            // Build text values fields fields inside metrics cards blocks
+            document.getElementById("slider-label").innerText = simulationSteps[idx].label;
+            document.getElementById("val-active").innerText = simulationSteps[idx].activeVal;
+            document.getElementById("val-inactive").innerText = simulationSteps[idx].inactiveVal;
+
+            // Generate clean drawing strings sequentially
+            let activePathPoints = "";
+            let inactivePathPoints = "";
+            
+            for (let i = 0; i <= idx; i++) {
+                const step = simulationSteps[i];
+                const prefix = (i === 0) ? "M" : "L";
+                activePathPoints += `${prefix} ${step.cx},${step.cyActive} `;
+                inactivePathPoints += `${prefix} ${step.cx},${step.cyInactive} `;
+            }
+
+            // Set dynamic attributes
+            document.getElementById("path-active").setAttribute("d", activePathPoints);
+            document.getElementById("path-inactive").setAttribute("d", inactivePathPoints);
+
+            // Relocate tracker pointer circles positions instantly
+            const dotActive = document.getElementById("dot-active");
+            const dotInactive = document.getElementById("dot-inactive");
+            const currentStep = simulationSteps[idx];
+
+            dotActive.style.display = "block";
+            dotActive.setAttribute("cx", currentStep.cx);
+            dotActive.setAttribute("cy", currentStep.cyActive);
+
+            dotInactive.style.display = "block";
+            dotInactive.setAttribute("cx", currentStep.cx);
+            dotInactive.setAttribute("cy", currentStep.cyInactive);
+        }
+
+        // Initialize state view cleanly on build
+        updateSimulation(0);
+    </script>
+</body>
+</html>
