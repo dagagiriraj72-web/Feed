@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Communication & Influence Simulator</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #fcf8f2;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100vw;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        /* STORYLINE 16:9 VIEWPORT CONTAINMENT MATRIX
+           Locks layout bounds at 1280x720, completely neutralizing vertical overflow,
+           overlapping blocks, or cutting behaviors inside standard web object containers.
+        */
+        .slide-wrapper {
+            width: 100%;
+            height: 100%;
+            max-width: 1280px;
+            max-height: 720px;
+            aspect-ratio: 16 / 9;
+            padding: 1.5rem 2.5rem 1rem 2.5rem;
+            background-color: #fdfaf6;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            box-sizing: border-box;
+            position: relative;
+        }
+
+        /* Header Layout Section */
+        .header-section {
+            margin-bottom: 0.5rem;
+            flex-shrink: 0;
+        }
+
+        .main-title {
+            font-size: 2.5rem;
+            color: #3d2314;
+            font-weight: 800;
+            line-height: 1.1;
+            position: relative;
+            padding-bottom: 0.3rem;
+        }
+
+        .main-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 120px;
+            height: 4px;
+            background-color: #e07a5f;
+            border-radius: 2px;
+        }
+
+        .subtitle {
+            margin-top: 0.4rem;
+            font-size: 1.05rem;
+            color: #6e5d53;
+            line-height: 1.35;
+            font-style: italic;
+        }
+
+        /* 4-Column Split Interaction Grid Layout */
+        .game-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1rem;
+            flex-grow: 1;
+            min-height: 0; /* Important vertical guardrail boundary */
+            margin: 0.6rem 0;
+        }
+
+        /* Interactive Influence Pillar Cards */
+        .pillar-card {
+            background-color: #ffffff;
+            border-radius: 10px;
+            padding: 1rem;
+            border: 1px solid rgba(61, 35, 20, 0.06);
+            box-shadow: 0 4px 12px rgba(61, 35, 20, 0.02);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            min-height: 0;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        /* Card Header Graphic Block Area */
+        .card-static-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 0.5rem;
+            flex-shrink: 0;
+        }
+
+        .icon-circle {
+            width: 46px;
+            height: 46px;
+            border-radius: 50%;
+            background-color: #fdf0ec;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 0.4rem;
+            font-size: 1.4rem;
+            line-height: 1;
+        }
+
+        .pillar-title {
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: #3d2314;
+            margin-bottom: 0.3rem;
+        }
+
+        .pillar-desc {
+            font-size: 0.8rem;
+            color: #6e5d53;
+            line-height: 1.35;
+        }
+
+        /* Isolated L3 Dynamic Gaming Simulator Action Sandbox Box */
+        .scenario-box {
+            background-color: #fffdfa;
+            border: 1px dashed #e07a5f;
+            border-radius: 8px;
+            padding: 0.5rem;
+            margin-top: auto; 
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            gap: 0.4rem;
+            min-height: 140px; /* Locked target size allocation */
+            justify-content: space-between;
+            box-sizing: border-box;
+            flex-shrink: 0;
+        }
+
+        .scenario-prompt {
+            font-size: 0.75rem;
+            font-weight: 700;
+            color: #7d4f36;
+            line-height: 1.25;
+            text-align: left;
+            border-bottom: 1px dashed rgba(224, 122, 95, 0.2);
+            padding-bottom: 0.2rem;
+        }
+
+        /* Operational Game Choice Options Buttons */
+        .option-btn {
+            background-color: #ffffff;
+            border: 1px solid #cbd5e1;
+            padding: 0.4rem;
+            border-radius: 5px;
+            font-size: 0.72rem;
+            font-weight: 600;
+            color: #475569;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-align: left;
+            line-height: 1.2;
+            width: 100%;
+        }
+
+        .option-btn:hover {
+            background-color: #fdf0ec;
+            border-color: #e07a5f;
+            color: #e07a5f;
+        }
+
+        /* Success Mastered Layout State Configuration modifications */
+        .pillar-card.completed {
+            border-color: #2a9d8f;
+            background-color: #f4faf9;
+            box-shadow: 0 6px 15px rgba(42, 157, 143, 0.06);
+        }
+
+        .pillar-card.completed .icon-circle {
+            background-color: #e7f6f4;
+        }
+
+        .pillar-card.completed .scenario-box {
+            border-color: #2a9d8f;
+            background-color: #e7f6f4;
+            min-height: 140px;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .feedback-text {
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: #2a9d8f;
+        }
+
+        /* Bottom Status Tracker Utilities Footer Bar */
+        .footer-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-shrink: 0;
+            border-top: 1px solid rgba(61, 35, 20, 0.08);
+            padding-top: 0.5rem;
+            margin-top: 0.2rem;
+        }
+
+        .score-tracker {
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: #3d2314;
+            background-color: #fff8eb;
+            padding: 0.25rem 0.8rem;
+            border-radius: 20px;
+            border: 1px solid #f4a261;
+        }
+
+        .instruction-tag {
+            font-size: 0.85rem;
+            color: #a39389;
+            font-style: italic;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="slide-wrapper">
+        <div class="header-section">
+            <h1 class="main-title">Communication & Influence</h1>
+            <p class="subtitle">Initiative without communication is invisible. Learn to advocate for your ideas effectively.</p>
+        </div>
+
+        <div class="game-grid">
+            
+            <div id="card-1" class="pillar-card">
+                <div class="card-static-content">
+                    <div class="icon-circle">👁️</div>
+                    <h2 class="pillar-title">Listen First</h2>
+                    <p class="pillar-desc">Understand the landscape before proposing architectural changes.</p>
+                </div>
+                <div class="scenario-box" id="scen-1">
+                    <p class="scenario-prompt">Sim Case: You want to completely overhaul a legacy team pipeline process.</p>
+                    <button class="option-btn" onclick="submitAnswer(1, true)">Interview colleagues to map current process pain-points</button>
+                    <button class="option-btn" onclick="submitAnswer(1, false)">Pitch the new structural tool immediately at assembly</button>
+                </div>
+            </div>
+
+            <div id="card-2" class="pillar-card">
+                <div class="card-static-content">
+                    <div class="icon-circle">💡</div>
+                    <h2 class="pillar-title">Frame the Value</h2>
+                    <p class="pillar-desc">Present ideas in terms of team benefit, not individual self-interest.</p>
+                </div>
+                <div class="scenario-box" id="scen-2">
+                    <p class="scenario-prompt">Sim Case: Requesting funding loops for an AI documentation assistant software.</p>
+                    <button class="option-btn" onclick="submitAnswer(2, false)">Explain how it saves you personal reporting time</button>
+                    <button class="option-btn" onclick="submitAnswer(2, true)">Demonstrate how it reduces collective QA bottleneck cycles</button>
+                </div>
+            </div>
+
+            <div id="card-3" class="pillar-card">
+                <div class="card-static-content">
+                    <div class="icon-circle">🤝</div>
+                    <h2 class="pillar-title">Build Allies</h2>
+                    <p class="pillar-desc">Gain core support from stakeholders before making big strategic moves.</p>
+                </div>
+                <div class="scenario-box" id="scen-3">
+                    <p class="scenario-prompt">Sim Case: Preparing to launch an optional cross-departmental initiative.</p>
+                    <button class="option-btn" onclick="submitAnswer(3, true)">Sync 1-on-1 with key branch leads to secure input first</button>
+                    <button class="option-btn" onclick="submitAnswer(3, false)">Send a surprise mass invite link to everyone out of the blue</button>
+                </div>
+            </div>
+
+            <div id="card-4" class="pillar-card">
+                <div class="card-static-content">
+                    <div class="icon-circle">🏁</div>
+                    <h2 class="pillar-title">Follow Through</h2>
+                    <p class="pillar-desc">Deliver on promises reliably to build trust and systemic credibility.</p>
+                </div>
+                <div class="scenario-box" id="scen-4">
+                    <p class="scenario-prompt">Sim Case: Your approved pilot experiment hits unforeseen data blockers.</p>
+                    <button class="option-btn" onclick="submitAnswer(4, false)">Shelve it quietly and transition back to core work</button>
+                    <button class="option-btn" onclick="submitAnswer(4, true)">Publish a status pivot brief containing alternative paths</button>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="footer-bar">
+            <div class="score-tracker">Influence Score: <span id="progress-val">0</span> / 4</div>
+            <div class="instruction-tag">Choose the optimal influence approach across all game modules to simulate launch alignment</div>
+        </div>
+    </div>
+
+    <script>
+        let completedPillars = { 1: false, 2: false, 3: false, 4: false };
+
+        function submitAnswer(pillarId, isCorrect) {
+            if (isCorrect) {
+                if (!completedPillars[pillarId]) {
+                    completedPillars[pillarId] = true;
+                    
+                    const targetCard = document.getElementById(`card-${pillarId}`);
+                    const targetBox = document.getElementById(`scen-${pillarId}`);
+                    
+                    targetCard.classList.add('completed');
+                    targetBox.innerHTML = `<p class="feedback-text">✨ Strategy Aligned!</p>`;
+                    
+                    updateProgress();
+                }
+            } else {
+                // Interactive micro-flash indicating an invalid strategic simulation path choice
+                const targetBox = document.getElementById(`scen-${pillarId}`);
+                targetBox.style.borderColor = "#e63946";
+                targetBox.style.backgroundColor = "#ffebee";
+                
+                setTimeout(() => {
+                    targetBox.style.borderColor = "#e07a5f";
+                    targetBox.style.backgroundColor = "#fffdfa";
+                }, 400);
+            }
+        }
+
+        function updateProgress() {
+            const count = Object.values(completedPillars).filter(Boolean).length;
+            document.getElementById('progress-val').innerText = count;
+        }
+    </script>
+</body>
+</html>
