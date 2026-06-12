@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sustainability Strategy Execution - Simulation Game</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #fcf8f2;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100vw;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        /* 16:9 STORYLINE PRESENTATION CANVAS 
+           Enforces a strict frame footprint to prevent text collisions,
+           overlapping modules, or lower-boundary layout bleeding.
+        */
+        .slide-wrapper {
+            width: 100%;
+            height: 100%;
+            max-width: 1280px;
+            max-height: 720px;
+            aspect-ratio: 16 / 9;
+            padding: 1.5rem 2.5rem 1rem 2.5rem;
+            background-color: #fdfaf6;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            box-sizing: border-box;
+            position: relative;
+        }
+
+        /* Top Header Component Layout */
+        .header-section {
+            margin-bottom: 0.5rem;
+            flex-shrink: 0;
+        }
+
+        .main-title {
+            font-size: 2.6rem;
+            color: #3d2314;
+            font-weight: 800;
+            line-height: 1.1;
+            position: relative;
+            padding-bottom: 0.3rem;
+        }
+
+        .main-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 140px;
+            height: 4px;
+            background-color: #7b9583;
+            border-radius: 2px;
+        }
+
+        /* 2-Column Split Workspace Interaction Split */
+        .workspace-layout {
+            display: grid;
+            grid-template-columns: 0.95fr 1.05fr;
+            gap: 2rem;
+            flex-grow: 1;
+            min-height: 0; /* Guardrail boundary locking content bounds */
+            margin: 0.6rem 0;
+        }
+
+        /* Left Side: Strategic Menu List Matrix */
+        .menu-matrix-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            grid-template-rows: repeat(4, 1fr);
+            gap: 0.6rem;
+            height: 100%;
+            min-height: 0;
+        }
+
+        .menu-selection-node {
+            background-color: #ffffff;
+            border: 1px solid rgba(61, 35, 20, 0.06);
+            border-left: 5px solid #7b9583;
+            border-radius: 6px;
+            padding: 0.5rem 1.2rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            cursor: pointer;
+            transition: all 0.25s cubic-bezier(0.165, 0.84, 0.44, 1);
+        }
+
+        .menu-selection-node:hover {
+            transform: translateX(4px);
+            background-color: #fffdfb;
+        }
+
+        .node-heading-text {
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: #3d2314;
+        }
+
+        .node-status-tag {
+            font-size: 0.75rem;
+            font-weight: 700;
+            color: #7a6b61;
+            background-color: #f1ede9;
+            padding: 0.15rem 0.5rem;
+            border-radius: 4px;
+        }
+
+        /* Active Spotlight and Cleared Mastery Modifiers */
+        .menu-selection-node.active-node {
+            background-color: rgba(123, 149, 131, 0.05);
+            border-color: #7b9583;
+            box-shadow: 0 4px 10px rgba(123, 149, 131, 0.08);
+        }
+
+        .menu-selection-node.active-node .node-heading-text {
+            color: #5c7564;
+        }
+
+        .menu-selection-node.mastered-node {
+            border-left-color: #2a9d8f;
+            border-color: #2a9d8f;
+            background-color: rgba(42, 157, 143, 0.03);
+        }
+
+        .menu-selection-node.mastered-node .node-heading-text {
+            color: #2a9d8f;
+            text-decoration: line-through;
+            opacity: 0.6;
+        }
+
+        .menu-selection-node.mastered-node .node-status-tag {
+            background-color: #e7f6f4;
+            color: #2a9d8f;
+        }
+
+        /* Right Side: Interactive L3 Simulator Arena Box */
+        .simulation-arena-card {
+            background-color: #ffffff;
+            border-radius: 12px;
+            border: 1px solid rgba(61, 35, 20, 0.08);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.03);
+            padding: 1.8rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            height: 100%;
+            min-height: 0;
+        }
+
+        .arena-header-tag {
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: #7b9583;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 0.2rem;
+            flex-shrink: 0;
+        }
+
+        .arena-original-brief {
+            font-size: 0.95rem;
+            color: #6e5d53;
+            line-height: 1.45;
+            background-color: #fdfbf9;
+            padding: 0.6rem 1rem;
+            border-left: 3px solid #7b9583;
+            border-radius: 4px;
+            margin-bottom: 0.8rem;
+            flex-shrink: 0;
+        }
+
+        .arena-question {
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: #3d2314;
+            line-height: 1.4;
+            margin-bottom: 1rem;
+            flex-shrink: 0;
+        }
+
+        .options-pipeline {
+            display: flex;
+            flex-direction: column;
+            gap: 0.6rem;
+            flex-grow: 1;
+            min-height: 0;
+            justify-content: center;
+        }
+
+        /* Choice Click Option Cards */
+        .choice-option-card {
+            background-color: #ffffff;
+            border: 1px solid #cbd5e1;
+            padding: 0.75rem 1.1rem;
+            border-radius: 6px;
+            font-size: 0.88rem;
+            font-weight: 600;
+            color: #475569;
+            cursor: pointer;
+            text-align: left;
+            line-height: 1.35;
+            transition: all 0.2s ease;
+        }
+
+        .choice-option-card:hover {
+            background-color: #f5f7f6;
+            border-color: #7b9583;
+            color: #7b9583;
+        }
+
+        /* Success Stage Mastered Display Overlay */
+        .victory-stage-overlay {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            height: 100%;
+            gap: 0.8rem;
+        }
+
+        .victory-heading-text {
+            font-size: 1.4rem;
+            font-weight: 800;
+            color: #2a9d8f;
+        }
+
+        /* Bottom Status Metrics Utilities Footer Row */
+        .footer-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-shrink: 0;
+            border-top: 1px solid rgba(61, 35, 20, 0.08);
+            padding-top: 0.6rem;
+            margin-top: 0.2rem;
+        }
+
+        .score-tracker {
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: #3d2314;
+            background-color: #fff8eb;
+            padding: 0.25rem 0.8rem;
+            border-radius: 20px;
+            border: 1px solid #f4a261;
+            font-variant-numeric: tabular-nums;
+        }
+
+        .instruction-tag {
+            font-size: 0.85rem;
+            color: #a39389;
+            font-style: italic;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="slide-wrapper">
+        <!-- Main Header Banner Titles (Verbatim from image_a35887.png) -->
+        <div class="header-section">
+            <h1 class="main-title">Sustainability Strategy Execution</h1>
+        </div>
+
+        <!-- Prevented Overflow Workspace Interactivity System Container -->
+        <div class="workspace-layout">
+            
+            <!-- Left Side Matrix Tracker Menu -->
+            <div class="menu-matrix-grid" id="menu-container">
+                <div class="menu-selection-node active-node" id="node-0" onclick="shiftActiveModule(0)">
+                    <span class="node-heading-text">Board-Level Governance</span>
+                    <span class="node-status-tag" id="badge-0">Active</span>
+                </div>
+                <div class="menu-selection-node" id="node-1" onclick="shiftActiveModule(1)">
+                    <span class="node-heading-text">AI-Enabled ESG Reporting</span>
+                    <span class="node-status-tag" id="badge-1">Pending</span>
+                </div>
+                <div class="menu-selection-node" id="node-2" onclick="shiftActiveModule(2)">
+                    <span class="node-heading-text">Nature & Biodiversity</span>
+                    <span class="node-status-tag" id="badge-2">Pending</span>
+                </div>
+                <div class="menu-selection-node" id="node-3" onclick="shiftActiveModule(3)">
+                    <span class="node-heading-text">Climate Adaptation</span>
+                    <span class="node-status-tag" id="badge-3">Pending</span>
+                </div>
+            </div>
+
+            <!-- Right Side Interactive Game Simulation Sandbox Box Area -->
+            <div class="simulation-arena-card" id="sandbox-card">
+                <div id="quiz-view-panel" style="display: flex; flex-direction: column; justify-content: space-between; height: 100%; min-height: 0;">
+                    <div>
+                        <div class="arena-header-tag" id="arena-stage-title">Strategy Module 1 of 4</div>
+                        <div class="arena-original-brief" id="arena-brief-text">62% of companies now report board-level sustainability responsibility. Governance structures are becoming essential for accountability.</div>
+                        <h2 class="arena-question" id="arena-question-text">Scenario Challenge: The board demands a structured roadmap for ESG metrics verification. What governance action do you implement?</h2>
+                    </div>
+
+                    <!-- Options list wrapper handling buttons inside constraint boxes -->
+                    <div class="options-pipeline" id="options-box-container">
+                        <!-- Populated programmatically via Script loops -->
+                    </div>
+                </div>
+
+                <!-- Simulation Success Area Overlay Component -->
+                <div class="victory-stage-overlay" id="victory-panel">
+                    <span style="font-size: 2.5rem;">🌿</span>
+                    <p class="victory-heading-text">Strategic Vector Aligned!</p>
+                    <p style="color: #6e5d53; font-size: 0.9rem;">Select an uncompleted strategy module from the list menu grid to continue your execution audit roadmap.</p>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Metrics Tracker Score Footer Elements Row -->
+        <div class="footer-bar">
+            <div class="score-tracker">Frameworks Aligned: <span id="progress-val">0</span> / 4</div>
+            <div class="instruction-tag">Resolve all sustainability execution vectors to master enterprise ESG benchmarks.</div>
+        </div>
+    </div>
+
+    <script>
+        // High fidelity scenario content matrix derived exactly from image_a35887.png text variables
+        const modulesSimulationMatrix = [
+            {
+                brief: "62% of companies now report board-level sustainability responsibility. Governance structures are becoming essential for accountability.",
+                question: "Scenario Challenge: The board demands absolute clarity and clear tracking lines for long-term sustainability goals. How do you implement this?",
+                choices: [
+                    { text: "Appoint an explicit board sub-committee dedicated to oversight and structural accountability loops.", correct: true },
+                    { text: "Incorporate minor green talking points into regular quarterly investor reports.", correct: false }
+                ]
+            },
+            {
+                brief: "AI automates supplier risk screening, energy optimization, and data extraction from diverse systems, improving auditability.",
+                question: "Scenario Challenge: Pulling unstructured data across legacy global suppliers creates major audit bottlenecks. How do you resolve this?",
+                choices: [
+                    { text: "Hire an offshore consulting firm to manually request, screen, and audit supplier balance sheets.", correct: false },
+                    { text: "Embed automated AI models to extract source text data, run risk screenings, and optimize energy telemetry.", correct: true }
+                ]
+            },
+            {
+                brief: "Biodiversity loss is now a material risk. Sectors like agriculture and construction lead nature-positive strategies.",
+                question: "Scenario Challenge: Your new manufacturing or logistical facility infrastructure layout sits on raw ecosystem lands. What strategy do you prioritize?",
+                choices: [
+                    { text: "Deploy active scenario-modeled nature-positive frameworks to mitigate biodiversity loss material risk.", correct: true },
+                    { text: "Build standard structures and promise future off-site financial carbon offsets.", correct: false }
+                ]
+            },
+            {
+                brief: "Beyond net-zero, companies need scenario modeling, location-based risk assessments, and adaptation plans.",
+                question: "Scenario Challenge: Increasing regional weather anomalies threaten supply chain nodes. How do you ensure long-term operations resilience?",
+                choices: [
+                    { text: "Maintain existing physical facilities and rely on emergency crisis insurance response lines.", correct: false },
+                    { text: "Leverage advanced geographic scenario modeling to implement location-based adaptation plans.", correct: true }
+                ]
+            }
+        ];
+
+        let activeModuleIdx = 0;
+        let masteredStateMap = { 0: false, 1: false, 2: false, 3: false };
+
+        function loadSimulationStage() {
+            const data = modulesSimulationMatrix[activeModuleIdx];
+            
+            // Check if active target selection vector has already been verified completed
+            if (masteredStateMap[activeModuleIdx]) {
+                document.getElementById("quiz-view-panel").style.display = "none";
+                document.getElementById("victory-panel").style.display = "flex";
+                return;
+            }
+
+            document.getElementById("quiz-view-panel").style.display = "flex";
+            document.getElementById("victory-panel").style.display = "none";
+
+            document.getElementById("arena-stage-title").innerText = `Strategy Module ${activeModuleIdx + 1} of 4`;
+            document.getElementById("arena-brief-text").innerText = data.brief;
+            document.getElementById("arena-question-text").innerText = data.question;
+
+            // Generate clean, height-constrained selection choice buttons programmatically
+            const boxContainer = document.getElementById("options-box-container");
+            boxContainer.innerHTML = "";
+
+            data.choices.forEach(choice => {
+                const button = document.createElement("button");
+                button.className = "choice-option-card";
+                button.innerText = choice.text;
+                button.onclick = () => evaluatePlayerChoice(choice.correct);
+                boxContainer.appendChild(button);
+            });
+        }
+
+        function shiftActiveModule(targetIndex) {
+            // Unset current indicator highlights fields cleanly
+            document.getElementById(`node-${activeModuleIdx}`).classList.remove("active-node");
+            
+            activeModuleIdx = targetIndex;
+            document.getElementById(`node-${activeModuleIdx}`).classList.add("active-node");
+            
+            loadSimulationStage();
+        }
+
+        function evaluatePlayerChoice(isCorrectChoice) {
+            if (isCorrectChoice) {
+                masteredStateMap[activeModuleIdx] = true;
+                
+                // Toggle target selector layout classes states seamlessly
+                const targetNode = document.getElementById(`node-${activeModuleIdx}`);
+                targetNode.classList.add("mastered-node");
+                document.getElementById(`badge-${activeModuleIdx}`).innerText = "Aligned";
+
+                recalculateScoreMetrics();
+                loadSimulationStage(); // Trigger layout update to show the success view overlay card panel
+            } else {
+                // Subtle interface background flash tracking incorrect simulation routes path inputs
+                const sandboxCard = document.getElementById("sandbox-card");
+                sandboxCard.style.backgroundColor = "#fceade";
+                setTimeout(() => {
+                    sandboxCard.style.backgroundColor = "#ffffff";
+                }, 350);
+            }
+        }
+
+        function recalculateScoreMetrics() {
+            const currentTotalScore = Object.values(masteredStateMap).filter(Boolean).length;
+            document.getElementById("progress-val").innerText = currentTotalScore;
+            
+            if (currentTotalScore === 4) {
+                document.getElementById("progress-val").parentElement.style.color = "#2a9d8f";
+                document.getElementById("progress-val").parentElement.style.borderColor = "#2a9d8f";
+            }
+        }
+
+        // Boot system execution sequence paths
+        loadSimulationStage();
+    </script>
+</body>
+</html>
