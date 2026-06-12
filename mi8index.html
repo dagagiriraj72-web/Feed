@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>KPIs That Drive Results - Simulation Game</title>
+    <title>Five Pillars of Digital Transformation - Accordion Arena</title>
     <style>
         * {
             box-sizing: border-box;
@@ -23,8 +23,8 @@
         }
 
         /* 16:9 STORYLINE PRESENTATION CANVAS 
-           Strictly hard-locks layout boundaries to eliminate vertical cutting, 
-           overlapping text blocks, or lower-edge content bleed.
+           Strictly locks maximum boundaries to 1280x720, forcing all inner components 
+           to scale cleanly without bleeding off the lower edges of standard web objects.
         */
         .slide-wrapper {
             width: 100%;
@@ -32,23 +32,22 @@
             max-width: 1280px;
             max-height: 720px;
             aspect-ratio: 16 / 9;
-            padding: 1.5rem 2.5rem 1rem 2.5rem;
+            padding: 1.5rem 3rem 1rem 3rem;
             background-color: #fdfaf6;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
             box-sizing: border-box;
-            position: relative;
         }
 
-        /* Top Header Component Layout */
+        /* Top Header Segment */
         .header-section {
             margin-bottom: 0.5rem;
             flex-shrink: 0;
         }
 
         .main-title {
-            font-size: 2.6rem;
+            font-size: 2.5rem;
             color: #3d2314;
             font-weight: 800;
             line-height: 1.1;
@@ -63,90 +62,70 @@
             left: 0;
             width: 140px;
             height: 4px;
-            background-color: #e07a5f;
+            background-color: #cd674c;
             border-radius: 2px;
         }
 
-        .subtitle {
-            margin-top: 0.4rem;
-            font-size: 1.05rem;
-            color: #6e5d53;
-            line-height: 1.35;
-            font-style: italic;
-        }
-
-        /* 2-Column Split Workspace Interaction Split */
-        .workspace-layout {
-            display: grid;
-            grid-template-columns: 0.95fr 1.05fr;
-            gap: 2rem;
+        /* EXPANDED LATERAL GRID AREA 
+           Arranges the 5 pillars as wide horizontal cards stacked cleanly down the slide workspace.
+        */
+        .accordion-stack-container {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
             flex-grow: 1;
-            min-height: 0; /* Guardrail boundary locking content bounds */
-            margin: 0.6rem 0;
+            min-height: 0; /* Vital overflow preventative line */
+            margin: 0.5rem 0;
         }
 
-        /* Left Side: 4 Pillar Selector Menu Column */
-        .menu-matrix-grid {
-            display: grid;
-            grid-template-columns: 1fr;
-            grid-template-rows: repeat(4, 1fr);
-            gap: 0.6rem;
-            height: 100%;
-            min-height: 0;
-        }
-
-        .menu-selection-node {
+        /* Base Pillar Card Module */
+        .accordion-row-card {
             background-color: #ffffff;
             border: 1px solid rgba(61, 35, 20, 0.06);
+            border-left: 6px solid #cbd5e1;
             border-radius: 6px;
-            padding: 0.5rem 1.2rem;
+            padding: 0.6rem 1.2rem;
             display: flex;
-            align-items: center;
-            justify-content: space-between;
+            flex-direction: column;
+            justify-content: center;
             cursor: pointer;
-            transition: all 0.25s cubic-bezier(0.165, 0.84, 0.44, 1);
+            overflow: hidden;
+            flex-grow: 1;
+            transition: all 0.35s cubic-bezier(0.25, 1, 0.5, 1);
         }
 
-        /* Color accentuation styling mapped dynamically matching image_a3465d.png visual indices */
-        .menu-selection-node[data-id="1"] { border-left: 5px solid #c2592a; }
-        .menu-selection-node[data-id="2"] { border-left: 5px solid #7c9684; }
-        .menu-selection-node[data-id="3"] { border-left: 5px solid #333333; }
-        .menu-selection-node[data-id="4"] { border-left: 5px solid #a3a3a3; }
+        /* Source color-accents mapping strictly to card index metrics */
+        .accordion-row-card[data-id="1"], .accordion-row-card[data-id="3"], .accordion-row-card[data-id="5"] { border-left-color: #cd674c; }
+        .accordion-row-card[data-id="2"], .accordion-row-card[data-id="4"] { border-left-color: #7b9583; }
 
-        .menu-selection-node:hover {
-            transform: translateX(4px);
-            background-color: #fffdfb;
+        /* Compact Header Bar visible on all rows */
+        .card-summary-strip {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            flex-shrink: 0;
         }
 
-        .node-left-wrapper {
+        .title-left-block {
             display: flex;
             align-items: center;
             gap: 1.2rem;
         }
 
-        .node-num-badge {
-            width: 32px;
-            height: 32px;
-            border-radius: 50%;
-            color: #ffffff;
+        .pillar-index-num {
             font-size: 1.1rem;
             font-weight: 800;
-            display: flex;
-            justify-content: center;
-            align-items: center;
+            color: #a39389;
         }
-        .menu-selection-node[data-id="1"] .node-num-badge { background-color: #c2592a; }
-        .menu-selection-node[data-id="2"] .node-num-badge { background-color: #7c9684; }
-        .menu-selection-node[data-id="3"] .node-num-badge { background-color: #333333; }
-        .menu-selection-node[data-id="4"] .node-num-badge { background-color: #a3a3a3; }
 
-        .node-title-text {
+        .pillar-core-title {
             font-size: 1.2rem;
             font-weight: 700;
             color: #3d2314;
         }
 
-        .node-status-tag {
+        .completion-status-badge {
             font-size: 0.75rem;
             font-weight: 700;
             color: #7a6b61;
@@ -155,98 +134,77 @@
             border-radius: 4px;
         }
 
-        /* Active Spotlight and Cleared Mastery Modifiers */
-        .menu-selection-node.active-node {
-            background-color: rgba(224, 122, 95, 0.04);
-            box-shadow: 0 4px 10px rgba(61, 35, 20, 0.06);
-        }
-        .menu-selection-node[data-id="1"].active-node { border-color: #c2592a; }
-        .menu-selection-node[data-id="2"].active-node { border-color: #7c9684; }
-        .menu-selection-node[data-id="3"].active-node { border-color: #333333; }
-        .menu-selection-node[data-id="4"].active-node { border-color: #a3a3a3; }
-
-        .menu-selection-node.mastered-node {
-            border-left-color: #2a9d8f !important;
-            border-color: #2a9d8f !important;
-            background-color: rgba(42, 157, 143, 0.03);
-        }
-
-        .menu-selection-node.mastered-node .node-title-text {
-            color: #2a9d8f;
-            text-decoration: line-through;
-            opacity: 0.6;
-        }
-
-        .menu-selection-node.mastered-node .node-num-badge {
-            background-color: #2a9d8f !important;
-        }
-
-        .menu-selection-node.mastered-node .node-status-tag {
-            background-color: #e7f6f4;
-            color: #2a9d8f;
-        }
-
-        /* Right Side: Interactive L3 Simulator Arena Box */
-        .simulation-arena-card {
-            background-color: #ffffff;
-            border-radius: 12px;
-            border: 1px solid rgba(61, 35, 20, 0.08);
-            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.03);
-            padding: 1.8rem;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            height: 100%;
+        /* DYNAMIC EXPANSION DRAWER 
+           Perfectly isolated from the header text to prevent overlaps during selection shifts.
+        */
+        .expansion-drawer-content {
+            display: none;
+            opacity: 0;
+            margin-top: 0.8rem;
+            padding-top: 0.6rem;
+            border-top: 1px dashed rgba(61, 35, 20, 0.08);
             min-height: 0;
         }
 
-        .arena-header-tag {
-            font-size: 0.85rem;
-            font-weight: 700;
+        /* Active Maximize State Configuration rules */
+        .accordion-row-card.expanded-state {
+            flex-grow: 4; /* claims bulk of available vertical real estate */
+            background-color: rgba(255, 253, 250, 1);
+            box-shadow: 0 4px 15px rgba(61, 35, 20, 0.04);
+            cursor: default;
+        }
+
+        .accordion-row-card.expanded-state .expansion-drawer-content {
+            display: grid;
+            grid-template-columns: 0.95fr 1.05fr;
+            gap: 1.5rem;
+            opacity: 1;
+        }
+
+        .accordion-row-card.expanded-state .pillar-core-title {
             color: #cd674c;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            margin-bottom: 0.2rem;
-            flex-shrink: 0;
         }
 
-        .arena-original-brief {
-            font-size: 0.95rem;
-            color: #6e5d53;
-            line-height: 1.45;
-            background-color: #fdfbf9;
-            padding: 0.6rem 1rem;
-            border-left: 3px solid #cd674c;
-            border-radius: 4px;
-            margin-bottom: 0.8rem;
-            flex-shrink: 0;
-        }
-
-        .arena-question {
-            font-size: 1.15rem;
-            font-weight: 700;
-            color: #3d2314;
-            line-height: 1.4;
-            margin-bottom: 1rem;
-            flex-shrink: 0;
-        }
-
-        .options-pipeline {
+        /* Content Breakout Quadrants */
+        .brief-quadrant {
             display: flex;
             flex-direction: column;
-            gap: 0.6rem;
-            flex-grow: 1;
-            min-height: 0;
             justify-content: center;
         }
 
-        /* Choice Click Option Cards */
-        .choice-option-card {
+        .metric-callout-text {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: #5c4b3f;
+            background-color: #fdfbf9;
+            padding: 0.5rem 0.8rem;
+            border-left: 3px solid #cd674c;
+            border-radius: 4px;
+            margin-bottom: 0.5rem;
+            line-height: 1.35;
+        }
+
+        .challenge-statement-text {
+            font-size: 1.02rem;
+            font-weight: 700;
+            color: #3d2314;
+            line-height: 1.4;
+        }
+
+        .options-quadrant {
+            display: flex;
+            flex-direction: column;
+            gap: 0.4rem;
+            justify-content: center;
+        }
+
+        /* Clickable Simulation Decision Cards */
+        .decision-click-btn {
             background-color: #ffffff;
             border: 1px solid #cbd5e1;
-            padding: 0.75rem 1.1rem;
+            padding: 0.65rem 1rem;
             border-radius: 6px;
-            font-size: 0.88rem;
+            font-size: 0.84rem;
             font-weight: 600;
             color: #475569;
             cursor: pointer;
@@ -255,41 +213,54 @@
             transition: all 0.2s ease;
         }
 
-        .choice-option-card:hover {
-            background-color: #f5f7f6;
+        .decision-click-btn:hover {
+            background-color: #fbf9f6;
             border-color: #cd674c;
             color: #cd674c;
         }
 
-        /* Success Stage Mastered Display Overlay */
-        .victory-stage-overlay {
+        /* Success State Overlay configuration within rows */
+        .row-success-overlay {
+            grid-column: 1 / span 2;
             display: none;
-            flex-direction: column;
             align-items: center;
             justify-content: center;
-            text-align: center;
-            height: 100%;
-            gap: 0.8rem;
+            gap: 0.6rem;
+            padding: 0.5rem 0;
         }
 
-        .victory-heading-text {
-            font-size: 1.4rem;
-            font-weight: 800;
+        .row-success-overlay span { font-size: 1.5rem; }
+        .row-success-overlay p { font-size: 1.1rem; font-weight: 700; color: #2a9d8f; }
+
+        /* Mastered Node Modifications */
+        .accordion-row-card.mastered-state {
+            border-left-color: #2a9d8f !important;
+            border-color: #2a9d8f;
+            background-color: rgba(42, 157, 143, 0.02);
+        }
+
+        .accordion-row-card.mastered-state .pillar-core-title {
+            color: #2a9d8f;
+            text-decoration: line-through;
+            opacity: 0.6;
+        }
+
+        .accordion-row-card.mastered-state .completion-status-badge {
+            background-color: #e7f6f4;
             color: #2a9d8f;
         }
 
-        /* Bottom Status Metrics Utilities Footer Row */
+        /* Global Status Footer Strip */
         .footer-bar {
             display: flex;
             justify-content: space-between;
             align-items: center;
             flex-shrink: 0;
             border-top: 1px solid rgba(61, 35, 20, 0.08);
-            padding-top: 0.6rem;
-            margin-top: 0.2rem;
+            padding-top: 0.5rem;
         }
 
-        .score-tracker {
+        .score-tracker-badge {
             font-size: 0.85rem;
             font-weight: 700;
             color: #3d2314;
@@ -310,192 +281,191 @@
 <body>
 
     <div class="slide-wrapper">
-        <!-- Main Header Banner Titles (Verbatim from image_a3465d.png) -->
+        <!-- Slide Header -->
         <div class="header-section">
-            <h1 class="main-title">KPIs That Drive Results</h1>
-            <p class="subtitle">Organizations with fewer than 10 company-wide KPIs are 1.5x more likely to outperform competitors.</p>
+            <h1 class="main-title">Five Pillars of Digital Transformation</h1>
         </div>
 
-        <!-- Prevented Overflow Workspace Interactivity System Container -->
-        <div class="workspace-layout">
+        <!-- Horizontal Drawer Stack Workspace Layout -->
+        <div class="accordion-stack-container" id="accordion-container">
             
-            <!-- Left Side Matrix Tracker Menu (Built cleanly from image_a3465d.png records) -->
-            <div class="menu-matrix-grid" id="menu-container">
-                <div class="menu-selection-node active-node" data-id="1" id="node-0" onclick="shiftActiveModule(0)">
-                    <div class="node-left-wrapper">
-                        <span class="node-num-badge">1</span>
-                        <span class="node-title-text">Scope</span>
+            <!-- Row 1: Cloud & Infrastructure -->
+            <div class="accordion-row-card expanded-state" data-id="1" id="row-0" onclick="expandRow(0)">
+                <div class="card-summary-strip">
+                    <div class="title-left-block">
+                        <span class="pillar-index-num">Pillar 1</span>
+                        <h2 class="pillar-core-title">Cloud & Infrastructure</h2>
                     </div>
-                    <span class="node-status-tag" id="badge-0">Active</span>
+                    <span class="completion-status-badge" id="badge-0">Active</span>
                 </div>
-                <div class="menu-selection-node" data-id="2" id="node-1" onclick="shiftActiveModule(1)">
-                    <div class="node-left-wrapper">
-                        <span class="node-num-badge">2</span>
-                        <span class="node-title-text">Timeline</span>
+                <div class="expansion-drawer-content" id="drawer-0">
+                    <div class="brief-quadrant" id="brief-box-0">
+                        <div class="metric-callout-text">Market Metric: 85% of enterprises adopt cloud-first by 2026</div>
+                        <p class="challenge-statement-text">Scenario Challenge: Your organization needs to deploy an expansion stack across multiple geographic nodes. What architecture approach do you choose?</p>
                     </div>
-                    <span class="node-status-tag" id="badge-1">Pending</span>
-                </div>
-                <div class="menu-selection-node" data-id="3" id="node-2" onclick="shiftActiveModule(2)">
-                    <div class="node-left-wrapper">
-                        <span class="node-num-badge">3</span>
-                        <span class="node-title-text">Budget</span>
+                    <div class="options-quadrant" id="options-box-0">
+                        <button class="decision-click-btn" onclick="checkAnswer(0, true, event)">Adopt a distributed cloud-first container model with elastic autoscaling algorithms.</button>
+                        <button class="decision-click-btn" onclick="checkAnswer(0, false, event)">Expand existing legacy on-premise physical servers to maintain localized control parameters.</button>
                     </div>
-                    <span class="node-status-tag" id="badge-2">Pending</span>
-                </div>
-                <div class="menu-selection-node" data-id="4" id="node-3" onclick="shiftActiveModule(3)">
-                    <div class="node-left-wrapper">
-                        <span class="node-num-badge">4</span>
-                        <span class="node-title-text">Experience</span>
+                    <div class="row-success-overlay" id="success-0">
+                        <span>🛡️</span> <p>Strategic Vector Aligned! Select another pillar row above or below to continue audit.</p>
                     </div>
-                    <span class="node-status-tag" id="badge-3">Pending</span>
                 </div>
             </div>
 
-            <!-- Right Side Interactive Game Simulation Sandbox Box Area -->
-            <div class="simulation-arena-card" id="sandbox-card">
-                <div id="quiz-view-panel" style="display: flex; flex-direction: column; justify-content: space-between; height: 100%; min-height: 0;">
-                    <div>
-                        <div class="arena-header-tag" id="arena-stage-title">Metric Domain 1 of 4</div>
-                        <div class="arena-original-brief" id="arena-brief-text">Tracking Focus: Backlog growth, change requests, MVP clarity</div>
-                        <h2 class="arena-question" id="arena-question-text">Scenario Challenge: Your product roadmap is ballooning with feature additions, creating data noise. How do you maintain crisp execution boundaries?</h2>
+            <!-- Row 2: Data & AI -->
+            <div class="accordion-row-card" data-id="2" id="row-1" onclick="expandRow(1)">
+                <div class="card-summary-strip">
+                    <div class="title-left-block">
+                        <span class="pillar-index-num">Pillar 2</span>
+                        <h2 class="pillar-core-title">Data & AI</h2>
                     </div>
-
-                    <!-- Options list wrapper handling buttons inside constraint boxes -->
-                    <div class="options-pipeline" id="options-box-container">
-                        <!-- Populated programmatically via Script loops -->
+                    <span class="completion-status-badge" id="badge-1">Pending</span>
+                </div>
+                <div class="expansion-drawer-content" id="drawer-1">
+                    <div class="brief-quadrant" id="brief-box-1">
+                        <div class="metric-callout-text">Market Metric: $632B global AI spending by 2028</div>
+                        <p class="challenge-statement-text">Scenario Challenge: Your production systems accumulate vast volumes of data, but business teams lack insight loops. How do you deploy infrastructure?</p>
+                    </div>
+                    <div class="options-quadrant" id="options-box-1">
+                        <button class="decision-click-btn" onclick="checkAnswer(1, false, event)">Isolate information in static cold-storage silos until batch archiving procedures run.</button>
+                        <button class="decision-click-btn" onclick="checkAnswer(1, true, event)">Build automated live semantic data pipelines feeding responsive predictive AI models.</button>
+                    </div>
+                    <div class="row-success-overlay" id="success-1">
+                        <span>🛡️</span> <p>Strategic Vector Aligned! Select another pillar row above or below to continue audit.</p>
                     </div>
                 </div>
+            </div>
 
-                <!-- Simulation Success Area Overlay Component -->
-                <div class="victory-stage-overlay" id="victory-panel">
-                    <span style="font-size: 2.5rem;">🎯</span>
-                    <p class="victory-heading-text">Strategic Vector Aligned!</p>
-                    <p style="color: #6e5d53; font-size: 0.9rem;">Select an uncompleted metric category from the menu list grid to continue auditing performance indicators.</p>
+            <!-- Row 3: Process Automation -->
+            <div class="accordion-row-card" data-id="3" id="row-2" onclick="expandRow(2)">
+                <div class="card-summary-strip">
+                    <div class="title-left-block">
+                        <span class="pillar-index-num">Pillar 3</span>
+                        <h2 class="pillar-core-title">Process Automation</h2>
+                    </div>
+                    <span class="completion-status-badge" id="badge-2">Pending</span>
+                </div>
+                <div class="expansion-drawer-content" id="drawer-2">
+                    <div class="brief-quadrant" id="brief-box-2">
+                        <div class="metric-callout-text">Market Metric: $270B hyperautomation market by 2034</div>
+                        <p class="challenge-statement-text">Scenario Challenge: Processing repetitive enterprise procurement invoices takes up massive manual operations time. How do you optimize?</p>
+                    </div>
+                    <div class="options-quadrant" id="options-box-2">
+                        <button class="decision-click-btn" onclick="checkAnswer(2, true, event)">Deploy a specialized hyperautomation pipeline integrating continuous process workflows.</button>
+                        <button class="decision-click-btn" onclick="checkAnswer(2, false, event)">Hire part-time administrative contractors to process queues manually.</button>
+                    </div>
+                    <div class="row-success-overlay" id="success-2">
+                        <span>🛡️</span> <p>Strategic Vector Aligned! Select another pillar row above or below to continue audit.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Row 4: Customer Experience -->
+            <div class="accordion-row-card" data-id="4" id="row-3" onclick="expandRow(3)">
+                <div class="card-summary-strip">
+                    <div class="title-left-block">
+                        <span class="pillar-index-num">Pillar 4</span>
+                        <h2 class="pillar-core-title">Customer Experience</h2>
+                    </div>
+                    <span class="completion-status-badge" id="badge-3">Pending</span>
+                </div>
+                <div class="expansion-drawer-content" id="drawer-3">
+                    <div class="brief-quadrant" id="brief-box-3">
+                        <div class="metric-callout-text">Market Metric: $68B CX management market by 2032</div>
+                        <p class="challenge-statement-text">Scenario Challenge: User retention markers dip following a new platform feature release update. What is your responsive move?</p>
+                    </div>
+                    <div class="options-quadrant" id="options-box-3">
+                        <button class="decision-click-btn" onclick="checkAnswer(3, true, event)">Deploy continuous telemetry tracking tools to isolate user drop-offs and iterate loops instantly.</button>
+                        <button class="decision-click-btn" onclick="checkAnswer(3, false, event)">Roll back all software changes completely to match previous feature benchmarks.</button>
+                    </div>
+                    <div class="row-success-overlay" id="success-3">
+                        <span>🛡️</span> <p>Strategic Vector Aligned! Select another pillar row above or below to continue audit.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Row 5: Cybersecurity -->
+            <div class="accordion-row-card" data-id="5" id="row-4" onclick="expandRow(4)">
+                <div class="card-summary-strip">
+                    <div class="title-left-block">
+                        <span class="pillar-index-num">Pillar 5</span>
+                        <h2 class="pillar-core-title">Cybersecurity</h2>
+                    </div>
+                    <span class="completion-status-badge" id="badge-4">Pending</span>
+                </div>
+                <div class="expansion-drawer-content" id="drawer-4">
+                    <div class="brief-quadrant" id="brief-box-4">
+                        <div class="metric-callout-text">Market Metric: 81% plan zero-trust frameworks by 2026</div>
+                        <p class="challenge-statement-text">Scenario Challenge: Your network expands with multi-cloud endpoints and hybrid employee nodes. What protective protocol do you enforce?</p>
+                    </div>
+                    <div class="options-quadrant" id="options-box-4">
+                        <button class="decision-click-btn" onclick="checkAnswer(4, false, event)">Enforce network-perimeter firewalls assuming full implicit trust for inside accounts.</button>
+                        <button class="decision-click-btn" onclick="checkAnswer(4, true, event)">Embed an absolute Zero-Trust framework requiring continuous adaptive identity validation.</button>
+                    </div>
+                    <div class="row-success-overlay" id="success-4">
+                        <span>🛡️</span> <p>Strategic Vector Aligned! Select another pillar row above or below to continue audit.</p>
+                    </div>
                 </div>
             </div>
 
         </div>
 
-        <!-- Metrics Tracker Score Footer Elements Row -->
+        <!-- Footer Utilities Tracker Bar Layout -->
         <div class="footer-bar">
-            <div class="score-tracker">Framework Integrity: <span id="progress-val">0</span> / 4</div>
-            <div class="instruction-tag">Resolve all operational diagnostic domains while mitigating noise variables to clear the panel.</div>
+            <div class="score-tracker-badge">Pillars Optimized: <span id="progress-val">0</span> / 5</div>
+            <div class="instruction-tag">Expand the corporate pillar rows sequentially and choose correct strategy responses to complete the matrix.</div>
         </div>
     </div>
 
     <script>
-        // High fidelity scenario content matrix derived exactly from image_a3465d.png text variables
-        const modulesSimulationMatrix = [
-            {
-                brief: "Tracking Focus: Backlog growth, change requests, MVP clarity",
-                question: "Scenario Challenge: Your project roadmap is experiencing rapid scope creep and ballooning feature requirements. What parameter do you track to maintain crisp boundaries?",
-                choices: [
-                    { text: "Enforce explicit tracking metrics measuring MVP clarity bounds alongside backlog growth stabilization trends.", correct: true },
-                    { text: "Log absolute cumulative developer lines of code written to benchmark total operational feature volume output.", correct: false }
-                ]
-            },
-            {
-                brief: "Tracking Focus: Percent completion vs. plan, milestone health, critical path",
-                question: "Scenario Challenge: A cross-functional delivery stream reports variable sprint velocities, threatening launch timelines. How do you anchor diagnostic overview visibility?",
-                choices: [
-                    { text: "Audit baseline individual task checkbox logs across all engineering team members daily.", correct: false },
-                    { text: "Isolate specific metric visibility tracking milestone health against the project's foundational critical path.", correct: true }
-                ]
-            },
-            {
-                brief: "Tracking Focus: Burn rate, forecast accuracy, variance analysis",
-                question: "Scenario Challenge: Quarter-end analysis reveals variable expenditure loops deviating from budget limits. What framework fixes tracking clarity?",
-                choices: [
-                    { text: "Deploy precise variance analysis systems paired with continuous burn rate forecasting tracking.", correct: true },
-                    { text: "Cap immediate software asset usage parameters globally across all technical segments arbitrarily.", correct: false }
-                ]
-            },
-            {
-                brief: "Tracking Focus: User adoption, satisfaction scores, behavioral change",
-                question: "Scenario Challenge: The engineering team successfully ships a product, but analytics show low recurring activity. How do you measure value capture metrics?",
-                choices: [
-                    { text: "Track generalized internal system availability uptimes to verify functional baseline performance parameters.", correct: false },
-                    { text: "Benchmark targeted user adoption telemetry, satisfaction scores, and underlying behavioral change variables.", correct: true }
-                ]
-            }
-        ];
+        let currentlyExpandedIdx = 0;
+        let masteredStateMap = { 0: false, 1: false, 2: false, 3: false, 4: false };
 
-        let activeModuleIdx = 0;
-        let masteredStateMap = { 0: false, 1: false, 2: false, 3: false };
+        function expandRow(targetIdx) {
+            if (targetIdx === currentlyExpandedIdx) return;
 
-        function loadSimulationStage() {
-            const data = modulesSimulationMatrix[activeModuleIdx];
+            // Remove expanded state tags from previous active container
+            document.getElementById(`row-${currentlyExpandedIdx}`).classList.remove("expanded-state");
             
-            // Check if active target selection vector has already been verified completed
-            if (masteredStateMap[activeModuleIdx]) {
-                document.getElementById("quiz-view-panel").style.display = "none";
-                document.getElementById("victory-panel").style.display = "flex";
-                return;
-            }
-
-            document.getElementById("quiz-view-panel").style.display = "flex";
-            document.getElementById("victory-panel").style.display = "none";
-
-            document.getElementById("arena-stage-title").innerText = `Metric Domain ${activeModuleIdx + 1} of 4`;
-            document.getElementById("arena-brief-text").innerText = data.brief;
-            document.getElementById("arena-question-text").innerText = data.question;
-
-            // Generate clean, height-constrained selection choice buttons programmatically
-            const boxContainer = document.getElementById("options-box-container");
-            boxContainer.innerHTML = "";
-
-            data.choices.forEach(choice => {
-                const button = document.createElement("button");
-                button.className = "choice-option-card";
-                button.innerText = choice.text;
-                button.onclick = () => evaluatePlayerChoice(choice.correct);
-                boxContainer.appendChild(button);
-            });
+            // Set new selection indices targets
+            currentlyExpandedIdx = targetIdx;
+            document.getElementById(`row-${currentlyExpandedIdx}`).classList.add("expanded-state");
         }
 
-        function shiftActiveModule(targetIndex) {
-            // Unset current indicator highlights fields cleanly
-            document.getElementById(`node-${activeModuleIdx}`).classList.remove("active-node");
-            
-            activeModuleIdx = targetIndex;
-            document.getElementById(`node-${activeModuleIdx}`).classList.add("active-node");
-            
-            loadSimulationStage();
-        }
+        function checkAnswer(rowIdx, isCorrectChoice, eventClick) {
+            // Block clicking elements inside from misfiring target selectors line shifts
+            eventClick.stopPropagation();
 
-        function evaluatePlayerChoice(isCorrectChoice) {
             if (isCorrectChoice) {
-                masteredStateMap[activeModuleIdx] = true;
-                
-                // Toggle target selector layout classes states seamlessly
-                const targetNode = document.getElementById(`node-${activeModuleIdx}`);
-                targetNode.classList.add("mastered-node");
-                document.getElementById(`badge-${activeModuleIdx}`).innerText = "Mastered";
+                masteredStateMap[rowIdx] = true;
 
-                recalculateScoreMetrics();
-                loadSimulationStage(); // Trigger layout update to show the success view overlay card panel
+                // Sync element visual rules
+                const targetRow = document.getElementById(`row-${rowIdx}`);
+                targetRow.classList.add("mastered-state");
+                document.getElementById(`badge-${rowIdx}`).innerText = "Optimized";
+
+                // Swap out scenario text questions inside the expansion view for complete confirmation
+                document.getElementById(`brief-box-${rowIdx}`).style.display = "none";
+                document.getElementById(`options-box-${rowIdx}`).style.display = "none";
+                document.getElementById(`success-${rowIdx}`).style.display = "flex";
+
+                updateGlobalBadgeScore();
             } else {
-                // Subtle interface background flash tracking incorrect simulation routes path inputs
-                const sandboxCard = document.getElementById("sandbox-card");
-                sandboxCard.style.backgroundColor = "#fceade";
+                // Flash red micro-warning highlight onto selection block on misaligned input choice paths
+                const targetRow = document.getElementById(`row-${rowIdx}`);
+                const originalColor = targetRow.style.backgroundColor;
+                targetRow.style.backgroundColor = "#ffebee";
                 setTimeout(() => {
-                    sandboxCard.style.backgroundColor = "#ffffff";
+                    targetRow.style.backgroundColor = originalColor;
                 }, 350);
             }
         }
 
-        function recalculateScoreMetrics() {
-            const currentTotalScore = Object.values(masteredStateMap).filter(Boolean).length;
-            document.getElementById("progress-val").innerText = currentTotalScore;
-            
-            if (currentTotalScore === 4) {
-                document.getElementById("progress-val").parentElement.style.color = "#2a9d8f";
-                document.getElementById("progress-val").parentElement.style.borderColor = "#2a9d8f";
-            }
+        function updateGlobalBadgeScore() {
+            const sumOptimized = Object.values(masteredStateMap).filter(Boolean).length;
+            document.getElementById("progress-val").innerText = sumOptimized;
         }
-
-        // Boot system execution sequence paths
-        loadSimulationStage();
     </script>
 </body>
 </html>
