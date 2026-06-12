@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Strategic Planning Frameworks</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #fcf8f2;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100vw;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        /* STORYLINE 16:9 VIEWPORT MATRIX BOUNDARY 
+           Enforces structural layout maximums at 1280x720. 
+           Bypasses typical canvas bottom-cropping errors.
+        */
+        .slide-wrapper {
+            width: 100%;
+            height: 100%;
+            max-width: 1280px;
+            max-height: 720px;
+            aspect-ratio: 16 / 9;
+            padding: 1.8rem 2.5rem 1.2rem 2.5rem;
+            background-color: #fdfaf6;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            box-sizing: border-box;
+            position: relative;
+        }
+
+        /* Header Layout Section */
+        .header-section {
+            margin-bottom: 0.5rem;
+            flex-shrink: 0;
+        }
+
+        .main-title {
+            font-size: 2.6rem;
+            color: #3d2314;
+            font-weight: 800;
+            line-height: 1.1;
+            position: relative;
+            padding-bottom: 0.3rem;
+        }
+
+        .main-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 140px;
+            height: 4px;
+            background-color: #cd674c;
+            border-radius: 2px;
+        }
+
+        .subtitle {
+            margin-top: 0.4rem;
+            font-size: 1.05rem;
+            color: #6e5d53;
+            line-height: 1.35;
+            font-style: italic;
+        }
+
+        /* Master Grid Split Workspace Configuration */
+        .workspace-layout {
+            display: grid;
+            grid-template-columns: 1.1fr 0.9fr;
+            gap: 1.8rem;
+            flex-grow: 1;
+            min-height: 0; /* Strict boundary blocking inner content overflow */
+            margin: 0.6rem 0;
+        }
+
+        /* Left Column: Non-overlapping 2x3 Matrix Framework */
+        .frameworks-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            grid-template-rows: repeat(3, 1fr);
+            gap: 0.8rem;
+            height: 100%;
+            min-height: 0;
+        }
+
+        /* Clean Selector Interactive Cards */
+        .matrix-card {
+            background-color: #ffffff;
+            border-radius: 8px;
+            padding: 0.8rem 1.2rem;
+            border: 1px solid rgba(61, 35, 20, 0.06);
+            border-top: 4px solid #cd674c;
+            box-shadow: 0 3px 10px rgba(61, 35, 20, 0.02);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.25s cubic-bezier(0.165, 0.84, 0.44, 1);
+            position: relative;
+        }
+
+        .matrix-card:hover {
+            transform: translateX(3px);
+            background-color: #fffdfb;
+            border-top-color: #b0533a;
+        }
+
+        .card-heading-text {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: #3d2314;
+        }
+
+        /* Spotlight Active Item Layout Modifiers */
+        .matrix-card.active-card {
+            background-color: rgba(205, 103, 76, 0.04);
+            border-color: #cd674c;
+            box-shadow: 0 4px 12px rgba(205, 103, 76, 0.08);
+        }
+
+        .matrix-card.active-card .card-heading-text {
+            color: #cd674c;
+        }
+
+        /* Right Side Column: Strategic Analytical Dashboard Display Board */
+        .dashboard-panel {
+            background-color: #ffffff;
+            border-radius: 12px;
+            border: 1px solid rgba(61, 35, 20, 0.08);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.02);
+            padding: 1.8rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            height: 100%;
+            min-height: 0;
+        }
+
+        .dashboard-header-tag {
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: #cd674c;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 0.4rem;
+            flex-shrink: 0;
+        }
+
+        .dashboard-title {
+            font-size: 1.6rem;
+            font-weight: 800;
+            color: #3d2314;
+            margin-bottom: 1rem;
+            flex-shrink: 0;
+        }
+
+        .dashboard-desc {
+            font-size: 1.15rem;
+            color: #554337;
+            line-height: 1.5s;
+            margin-bottom: 1rem;
+            flex-grow: 1;
+            overflow-y: auto;
+        }
+
+        /* Live Tracking Stats Badge Area inside Dashboard */
+        .insight-sandbox {
+            background-color: #fffdfa;
+            border: 1px dashed #cd674c;
+            border-radius: 8px;
+            padding: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            flex-shrink: 0;
+        }
+
+        .insight-emoji {
+            font-size: 2rem;
+            line-height: 1;
+        }
+
+        .insight-statement {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: #7d4f36;
+            line-height: 1.3;
+        }
+
+        /* Bottom Status Metrics Footer Bar Layout */
+        .footer-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-shrink: 0;
+            border-top: 1px solid rgba(61, 35, 20, 0.08);
+            padding-top: 0.6rem;
+            margin-top: 0.2rem;
+        }
+
+        .capability-badge {
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: #3d2314;
+            background-color: #fff8eb;
+            padding: 0.25rem 0.8rem;
+            border-radius: 20px;
+            border: 1px solid #f4a261;
+        }
+
+        .instruction-tag {
+            font-size: 0.85rem;
+            color: #a39389;
+            font-style: italic;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="slide-wrapper">
+        <!-- Top Title Section -->
+        <div class="header-section">
+            <h1 class="main-title">Strategic Planning Frameworks</h1>
+            <p class="subtitle">Organizations with advanced strategic planning capabilities are 3.7x more likely to achieve objectives.</p>
+        </div>
+
+        <!-- Master Split Grid System Workspace Layout -->
+        <div class="workspace-layout">
+            
+            <!-- Left Side Interactive 2x3 Grid Matrix (Built cleanly to reference image_a4977e.png structure) -->
+            <div class="frameworks-grid" id="matrix-container">
+                <div class="matrix-card active-card" id="card-0" onclick="toggleFramework(0)">
+                    <h2 class="card-heading-text">SWOT Analysis</h2>
+                </div>
+                <div class="matrix-card" id="card-1" onclick="toggleFramework(1)">
+                    <h2 class="card-heading-text">Balanced Scorecard</h2>
+                </div>
+                <div class="matrix-card" id="card-2" onclick="toggleFramework(2)">
+                    <h2 class="card-heading-text">OKR Framework</h2>
+                </div>
+                <div class="matrix-card" id="card-3" onclick="toggleFramework(3)">
+                    <h2 class="card-heading-text">McKinsey 7-S</h2>
+                </div>
+                <div class="matrix-card" id="card-4" onclick="toggleFramework(4)">
+                    <h2 class="card-heading-text">Hoshin Kanri</h2>
+                </div>
+                <div class="matrix-card" id="card-5" onclick="toggleFramework(5)">
+                    <h2 class="card-heading-text">Blue Ocean Strategy</h2>
+                </div>
+            </div>
+
+            <!-- Right Side Dynamic Analytics Data Board -->
+            <div class="dashboard-panel" id="display-board">
+                <div>
+                    <div class="dashboard-header-tag" id="dash-tag">Capability Matrix 1 of 6</div>
+                    <h2 class="dashboard-title" id="dash-title">SWOT Analysis</h2>
+                    <p class="dashboard-desc" id="dash-desc">Assess strengths, weaknesses, opportunities, and threats for clear situational awareness.</p>
+                </div>
+
+                <!-- Sandbox Insight Indicator Footer block inside card -->
+                <div class="insight-sandbox">
+                    <span class="insight-emoji" id="dash-emoji">📊</span>
+                    <span class="insight-statement" id="dash-statement">Deploy to benchmark structural positioning assets before mapping cross-departmental operations.</span>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- System Analytics Footer Bar -->
+        <div class="footer-bar">
+            <div class="capability-badge">Execution Multiplier: 3.7x 🎯</div>
+            <div class="instruction-tag">Select any architectural model from the matrix grid to isolate implementation objectives</div>
+        </div>
+    </div>
+
+    <script>
+        // High fidelity decoupled data array mapping data verbatim from image_a4977e.png
+        const frameworksData = [
+            {
+                title: "SWOT Analysis",
+                desc: "Assess strengths, weaknesses, opportunities, and threats for clear situational awareness.",
+                emoji: "📊",
+                statement: "Deploy to benchmark structural positioning assets before mapping cross-departmental operations."
+            },
+            {
+                title: "Balanced Scorecard",
+                desc: "Align activities with vision and strategy using financial, customer, process, and learning perspectives.",
+                emoji: "📈",
+                statement: "Integrates foundational corporate vision loops directly into quantifiable milestone tracks."
+            },
+            {
+                title: "OKR Framework",
+                desc: "Set ambitious objectives with measurable key results to drive focus and alignment.",
+                emoji: "🎯",
+                statement: "Establishes transparent tactical cadence systems to eliminate departmental execution siloing."
+            },
+            {
+                title: "McKinsey 7-S",
+                desc: "Ensure all seven organizational elements are aligned to support strategy execution.",
+                emoji: "🕸️",
+                statement: "Audits interconnection integrity between soft and hard organizational design sectors."
+            },
+            {
+                title: "Hoshin Kanri",
+                desc: "Deploy strategic goals from top to bottom with built-in feedback loops.",
+                emoji: "🧭",
+                statement: "Synchronizes top-tier long-term priorities with frontline operational task realities cleanly."
+            },
+            {
+                title: "Blue Ocean Strategy",
+                desc: "Create uncontested market space by making competition irrelevant.",
+                emoji: "🌊",
+                statement: "Reallocates core innovative vectors toward unreached demand curves to bypass value copycats."
+            }
+        ];
+
+        let activeCardIndex = 0;
+
+        function toggleFramework(targetIndex) {
+            if (targetIndex === activeCardIndex) return;
+
+            // Remove previous active state styles cleanly
+            document.getElementById(`card-${activeCardIndex}`).classList.remove("active-card");
+            
+            // Set new active card reference indicators
+            activeCardIndex = targetIndex;
+            document.getElementById(`card-${activeCardIndex}`).add("active-card");
+
+            // Extract targeted dictionary item datasets
+            const data = frameworksData[activeCardIndex];
+
+            // Re-render interface labels values systematically safely
+            document.getElementById("dash-tag").innerText = `Capability Matrix ${activeCardIndex + 1} of 6`;
+            document.getElementById("dash-title").innerText = data.title;
+            document.getElementById("dash-desc").innerText = data.desc;
+            document.getElementById("dash-emoji").innerText = data.emoji;
+            document.getElementById("dash-statement").innerText = data.statement;
+
+            // Micro-interaction flash feedback effect to confirm selection change securely
+            const displayBoard = document.getElementById("display-board");
+            displayBoard.style.transform = "scale(1.005)";
+            setTimeout(() => {
+                displayBoard.style.transform = "scale(1)";
+            }, 150);
+        }
+    </script>
+</body>
+</html>
