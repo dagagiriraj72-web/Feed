@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stakeholder Power-Interest Matrix</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #fcf8f2;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100vw;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        /* STORYLINE 16:9 VIEWPORT CONTAINMENT BOX
+           Locks dimensions securely at 1280x720, neutralizing layout 
+           bleeding or overlapping bugs within Web Object containers.
+        */
+        .slide-wrapper {
+            width: 100%;
+            height: 100%;
+            max-width: 1280px;
+            max-height: 720px;
+            aspect-ratio: 16 / 9;
+            padding: 1.8rem 3rem 1.2rem 3rem;
+            background-color: #fdfaf6;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            box-sizing: border-box;
+            position: relative;
+        }
+
+        /* Header Layout Section */
+        .header-section {
+            margin-bottom: 0.5rem;
+            flex-shrink: 0;
+        }
+
+        .main-title {
+            font-size: 2.6rem;
+            color: #3d2314;
+            font-weight: 800;
+            line-height: 1.1;
+            position: relative;
+            padding-bottom: 0.3rem;
+        }
+
+        .main-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 140px;
+            height: 4px;
+            background-color: #cd674c;
+            border-radius: 2px;
+        }
+
+        /* Master Grid Split Workspace */
+        .workspace-layout {
+            display: grid;
+            grid-template-columns: 1.05fr 0.95fr;
+            gap: 2.2rem;
+            flex-grow: 1;
+            min-height: 0; /* Critical containment barrier preventing text leak */
+            margin: 0.6rem 0;
+            align-items: center;
+        }
+
+        /* Left Side Column: Interactive Matrix Wrapper with Label Axes */
+        .matrix-axis-container {
+            display: grid;
+            grid-template-columns: auto 1fr;
+            grid-template-rows: 1fr auto;
+            height: 100%;
+            width: 100%;
+        }
+
+        .y-axis-label {
+            writing-mode: vertical-lr;
+            transform: rotate(180deg);
+            text-align: center;
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: #a39389;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            padding-right: 0.6rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .x-axis-label {
+            grid-column: 2;
+            text-align: center;
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: #a39389;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            padding-top: 0.6rem;
+        }
+
+        /* Core 2x2 Quadrant Grid */
+        .matrix-quadrant-grid {
+            grid-column: 2;
+            grid-row: 1;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            grid-template-rows: 1fr 1fr;
+            gap: 4px;
+            background-color: #e2dbd5; /* Serves as subtle axis divider border lines */
+            border-radius: 6px;
+            overflow: hidden;
+            height: 100%;
+        }
+
+        /* Quadrant Base Styling */
+        .quadrant-box {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 1.5rem;
+            cursor: pointer;
+            position: relative;
+            transition: all 0.25s cubic-bezier(0.165, 0.84, 0.44, 1);
+        }
+
+        /* Custom Source Palette Mapping Verbatim */
+        .quad-keep-satisfied { background-color: #a3b89e; color: #2d3c26; }
+        .quad-manage-closely { background-color: #cd674c; color: #ffffff; }
+        .quad-monitor         { background-color: #f1ede9; color: #3d2314; }
+        .quad-keep-informed   { background-color: #cbc5bf; color: #2b1d16; }
+
+        .quad-title {
+            font-size: 1.35rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .quad-caption {
+            font-size: 0.9rem;
+            line-height: 1.35;
+            opacity: 0.85;
+        }
+
+        /* Micro-interactions & Focus States */
+        .quadrant-box:hover {
+            transform: scale(0.985);
+            opacity: 0.95;
+        }
+
+        .quadrant-box.active-quad {
+            box-shadow: inset 0 0 0 4px #3d2314;
+            transform: scale(0.975);
+            z-index: 5;
+        }
+
+        .quad-manage-closely.active-quad {
+            box-shadow: inset 0 0 0 4px #ffffff;
+        }
+
+        /* Right Side Column: Strategic Insights Action Dashboard */
+        .dashboard-panel {
+            background-color: #ffffff;
+            border-radius: 12px;
+            border: 1px solid rgba(61, 35, 20, 0.08);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.02);
+            padding: 1.5rem 1.8rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            height: 100%;
+            min-height: 0;
+        }
+
+        .section-header-tag {
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: #cd674c;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 0.2rem;
+            flex-shrink: 0;
+        }
+
+        .dynamic-view-container {
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+            min-height: 0;
+        }
+
+        .segment-title {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: #3d2314;
+            margin-bottom: 0.4rem;
+            flex-shrink: 0;
+        }
+
+        .segment-desc {
+            font-size: 1rem;
+            color: #554337;
+            line-height: 1.45;
+            margin-bottom: 1rem;
+            flex-shrink: 0;
+        }
+
+        /* Strategy Action Playbook Items */
+        .playbook-sandbox {
+            background-color: #fffdfa;
+            border: 1px dashed #cd674c;
+            border-radius: 8px;
+            padding: 0.8rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.45rem;
+            flex-grow: 1;
+            min-height: 0;
+            overflow-y: auto;
+        }
+
+        .playbook-prompt {
+            font-size: 0.82rem;
+            font-weight: 700;
+            color: #7d4f36;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            border-bottom: 1px dashed rgba(205, 103, 76, 0.2);
+            padding-bottom: 0.2rem;
+        }
+
+        .best-practice-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 0.4rem;
+        }
+
+        .practice-item {
+            font-size: 0.88rem;
+            color: #4a382c;
+            font-weight: 500;
+            line-height: 1.35;
+            position: relative;
+            padding-left: 1.2rem;
+        }
+
+        .practice-item::before {
+            content: "•";
+            color: #cd674c;
+            font-weight: bold;
+            font-size: 1.2rem;
+            position: absolute;
+            left: 2px;
+            top: -2px;
+        }
+
+        /* Fixed Footer Metric Insight Box */
+        .insight-banner-bar {
+            background-color: #fff8eb;
+            border: 1px solid #f4a261;
+            border-left: 4px solid #f4a261;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            font-size: 0.88rem;
+            color: #3d2314;
+            line-height: 1.4;
+            margin-top: 0.8rem;
+            flex-shrink: 0;
+        }
+
+        /* Global Footer Utilities Row */
+        .footer-bar {
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            flex-shrink: 0;
+            margin-top: 0.2rem;
+        }
+
+        .instruction-tag {
+            font-size: 0.85rem;
+            color: #a39389;
+            font-style: italic;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="slide-wrapper">
+        <!-- Slide Banner Header -->
+        <div class="header-section">
+            <h1 class="main-title">Stakeholder Power-Interest Matrix</h1>
+        </div>
+
+        <!-- Balanced Grid System Workspace Configuration -->
+        <div class="workspace-layout">
+            
+            <!-- Left Side: Label Axis and Matrix Grid Array Mapping Verbatim Content -->
+            <div class="matrix-axis-container">
+                <div class="y-axis-label">Power</div>
+                <div class="x-axis-label">Interest</div>
+                
+                <div class="matrix-quadrant-grid">
+                    <!-- Top Left: Keep Satisfied -->
+                    <div class="quadrant-box quad-keep-satisfied active-quad" id="quad-0" onclick="focusQuadrant(0)">
+                        <h2 class="quad-title">Keep Satisfied</h2>
+                        <p class="quad-caption">Monitor closely, address concerns</p>
+                    </div>
+
+                    <!-- Top Right: Manage Closely -->
+                    <div class="quadrant-box quad-manage-closely" id="quad-1" onclick="focusQuadrant(1)">
+                        <h2 class="quad-title">Manage Closely</h2>
+                        <p class="quad-caption">Key players; active engagement</p>
+                    </div>
+
+                    <!-- Bottom Left: Monitor -->
+                    <div class="quadrant-box quad-monitor" id="quad-2" onclick="focusQuadrant(2)">
+                        <h2 class="quad-title">Monitor</h2>
+                        <p class="quad-caption">Minimal effort; keep informed</p>
+                    </div>
+
+                    <!-- Bottom Right: Keep Informed -->
+                    <div class="quadrant-box quad-keep-informed" id="quad-3" onclick="focusQuadrant(3)">
+                        <h2 class="quad-title">Keep Informed</h2>
+                        <p class="quad-caption">Regular updates; show consideration</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Side: Dynamic Engagement Strategy Dashboard Panel -->
+            <div class="dashboard-panel" id="dashboard-display">
+                <div class="dynamic-view-container">
+                    <div class="section-header-tag" id="dash-tag">Engagement Strategy 1 of 4</div>
+                    <h2 class="segment-title" id="dash-title">Keep Satisfied</h2>
+                    <p class="segment-desc" id="dash-desc">High-power, low-interest stakeholders require strategic alignment. Focus parameters on resolving targeted issues to preserve institutional buy-in loops without overwhelming their time metrics.</p>
+                    
+                    <!-- Strategy Best Practices Checklist Container Block -->
+                    <div class="playbook-sandbox">
+                        <div class="playbook-prompt">Segment Best Practices</div>
+                        <ul class="best-practice-list" id="dash-list">
+                            <!-- Filled dynamically via JavaScript -->
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Fixed Segment: Key Structural Statistical Insight Box -->
+                <div class="insight-banner-bar">
+                    🎯 <strong>Key Insight:</strong> 63% of project managers cite stakeholder resistance as a top risk. Structured analysis and engagement planning reduces this significantly.
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Lower Interactivity Guidance Strip -->
+        <div class="footer-bar">
+            <div class="instruction-tag">Select any matrix quadrant box to generate targeted stakeholder deployment checklists</div>
+        </div>
+    </div>
+
+    <script>
+        // Decoupled clean dictionary matrix cleanly dividing chart data from script logic components
+        const quadrantStrategyData = [
+            {
+                title: "Keep Satisfied",
+                desc: "High-power, low-interest stakeholders require strategic balance. Focus parameters on addressing direct structural concerns to preserve institutional alignment without over-saturating their schedules.",
+                practices: [
+                    "Segment by influence and proximity to change parameters",
+                    "Capture what each stakeholder cohort values verbatim",
+                    "Score by power and interest to isolate priorities"
+                ]
+            },
+            {
+                title: "Manage Closely",
+                desc: "High-power, high-interest cohorts act as your project's main key players. Deploy comprehensive, interactive management planning cycles and maintain active engagement protocols to guide execution paths.",
+                practices: [
+                    "Establish weekly direct communication feedback loops",
+                    "Co-create risk counters with main business champions",
+                    "Use predictive analytics maps for active engagement tracking"
+                ]
+            },
+            {
+                title: "Monitor",
+                desc: "Low-power, low-interest stakeholders represent peripheral groups. Apply resource-efficient minimum effort guidelines, using automated informational standard reporting blocks to keep them informed.",
+                practices: [
+                    "Rely on centralized generic newsletter distribution streams",
+                    "Track macro behavior markers for surprise interest shifts",
+                    "Maintain standard access keys to open project wiki boards"
+                ]
+            },
+            {
+                title: "Keep Informed",
+                desc: "Low-power, high-interest cohorts frequently suffer from change anxiety. Distribute regular tactical updates and proactively show appreciation to keep their supportive momentum secure.",
+                practices: [
+                    "Segment by proximity to operational change milestones",
+                    "Host regular townhall open question-and-answer events",
+                    "Distribute customized process briefs to demonstrate consideration"
+                ]
+            }
+        ];
+
+        let activeQuadIndex = 0;
+
+        function focusQuadrant(targetIdx) {
+            if (targetIdx === activeQuadIndex) return;
+
+            // Clear styling boundaries on preceding selection node cleanly
+            document.getElementById(`quad-${activeQuadIndex}`).classList.remove("active-quad");
+            
+            // Set new indicator assignments
+            activeQuadIndex = targetIdx;
+            document.getElementById(`quad-${activeQuadIndex}`).classList.add("active-quad");
+
+            const data = quadrantStrategyData[targetIdx];
+
+            // Re-render display labels fields
+            document.getElementById("dash-tag").innerText = `Engagement Strategy ${targetIdx + 1} of 4`;
+            document.getElementById("dash-title").innerText = data.title;
+            document.getElementById("dash-desc").innerText = data.desc;
+
+            // Rebuild best practices bullet elements with strict height containment safety rules
+            const listWrapper = document.getElementById("dash-list");
+            listWrapper.innerHTML = "";
+
+            data.practices.forEach(practiceText => {
+                const li = document.createElement("li");
+                li.className = "practice-item";
+                li.innerText = practiceText;
+                listWrapper.appendChild(li);
+            });
+
+            // Micro-interaction flash feedback reinforcement
+            const displayBox = document.getElementById("dashboard-display");
+            displayBox.style.transform = "scale(1.004)";
+            setTimeout(() => {
+                displayBox.style.transform = "scale(1)";
+            }, 150);
+        }
+
+        // Trigger bootstrap configuration cycle to draw initial list fields cleanly
+        focusQuadrant(0);
+    </script>
+</body>
+</html>
