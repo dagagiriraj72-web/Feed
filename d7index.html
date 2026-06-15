@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The OODA Loop - Interactive System</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #fcf8f2;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100vw;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        /* 16:9 ARTICULATE STORYLINE VIEWPORT CONTAINER
+           Locks boundaries strictly at 1280x720 to completely neutralize vertical overlap,
+           clashing text containers, or unexpected scrollbar regressions.
+        */
+        .slide-wrapper {
+            width: 100%;
+            height: 100%;
+            max-width: 1280px;
+            max-height: 720px;
+            aspect-ratio: 16 / 9;
+            padding: 2.2rem 3.5rem 1.5rem 3.5rem;
+            background-color: #fdfaf6;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            box-sizing: border-box;
+        }
+
+        /* Top Header Component */
+        .header-section {
+            margin-bottom: 0.5rem;
+            flex-shrink: 0;
+        }
+
+        .main-title {
+            font-size: 2.8rem;
+            color: #3d2314;
+            font-weight: 800;
+            line-height: 1.1;
+            position: relative;
+            padding-bottom: 0.4rem;
+        }
+
+        .main-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 140px;
+            height: 4px;
+            background-color: #3a443d;
+            border-radius: 2px;
+        }
+
+        /* HORIZONTAL OODA PIPELINE SECTOR TRACK
+           Arranges the 4 process nodes laterally to maximize vertical text space below.
+        */
+        .ooda-pipeline-track {
+            display: grid;
+            grid-template-columns: 1fr auto 1fr auto 1fr auto 1fr;
+            align-items: center;
+            margin: 1.2rem 0;
+            flex-shrink: 0;
+            width: 100%;
+        }
+
+        .ooda-node-btn {
+            background-color: #e2dbd5;
+            border: 1px solid rgba(61, 35, 20, 0.08);
+            border-top: 4px solid #cbd5e1;
+            border-radius: 8px;
+            padding: 0.8rem 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            cursor: pointer;
+            transition: all 0.25s cubic-bezier(0.165, 0.84, 0.44, 1);
+        }
+
+        .ooda-node-btn:hover {
+            transform: translateY(-2px);
+            background-color: #ebdcd1;
+        }
+
+        .node-circle-id {
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+            background-color: #3a443d;
+            color: #ffffff;
+            font-size: 1.05rem;
+            font-weight: 800;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-shrink: 0;
+        }
+
+        .node-text-block {
+            display: flex;
+            flex-direction: column;
+            text-align: left;
+            min-width: 0;
+        }
+
+        .node-title-lbl {
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: #3d2314;
+        }
+
+        .node-status-lbl {
+            font-size: 0.72rem;
+            font-weight: 800;
+            color: #8d7d74;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .pipeline-connector {
+            width: 28px;
+            height: 4px;
+            background-color: #9db2a3;
+            margin: 0 0.4rem;
+            border-radius: 2px;
+            flex-shrink: 0;
+        }
+
+        /* Active Selected Tab Highlight Modifiers */
+        .ooda-node-btn.active-step {
+            background-color: #ffffff;
+            border-top-color: #3a443d;
+            box-shadow: 0 4px 12px rgba(58, 68, 61, 0.06);
+            transform: translateY(-2px);
+        }
+        .ooda-node-btn.active-step .node-title-lbl { color: #3a443d; }
+        .ooda-node-btn.active-step .node-status-lbl { color: #3a443d; }
+
+        /* FIXED UN-OVERLAPPING ANALYTICS VIEW CARD (BOTTOM HALF)
+           Dedicated wide-open workspace zone prioritizing layout containment.
+        */
+        .analytics-display-card {
+            background-color: #ffffff;
+            border: 1px solid rgba(61, 35, 20, 0.08);
+            border-radius: 12px;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.02);
+            padding: 2.2rem 2.8rem;
+            flex-grow: 1;
+            min-height: 0; /* Clear vertical overflow barrier line */
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        /* Hardcoded Static Content Blocks Display Switches */
+        .ooda-view-panel {
+            display: none;
+            flex-direction: column;
+            gap: 0.6rem;
+            animation: panelFadeIn 0.3s ease forwards;
+        }
+
+        .ooda-view-panel.visible-panel {
+            display: flex;
+        }
+
+        @keyframes panelFadeIn {
+            from { opacity: 0; transform: translateY(4px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .card-stage-tag {
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: #8d7d74;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .card-core-title {
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: #3d2314;
+            margin-bottom: 0.2rem;
+        }
+
+        .card-definition-box {
+            font-size: 1.25rem;
+            color: #4a382c;
+            font-weight: 600;
+            line-height: 1.5;
+            background-color: #fdfbf9;
+            padding: 1rem 1.4rem;
+            border-left: 5px solid #3a443d;
+            border-radius: 6px;
+        }
+
+        /* Lower Guide Strip Row */
+        .footer-bar {
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            flex-shrink: 0;
+            border-top: 1px solid rgba(61, 35, 20, 0.06);
+            padding-top: 0.6rem;
+            margin-top: 0.4rem;
+        }
+
+        .instruction-tag {
+            font-size: 0.88rem;
+            color: #a39389;
+            font-style: italic;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="slide-wrapper">
+        <div class="header-section">
+            <h1 class="main-title">The OODA Loop</h1>
+        </div>
+
+        <div class="ooda-pipeline-track">
+            <button class="ooda-node-btn active-step" id="tab-0" onclick="switchOODAPhase(0)">
+                <div class="node-circle-id">1</div>
+                <div class="node-text-block">
+                    <span class="node-title-lbl">Observe</span>
+                    <span class="node-status-lbl" id="badge-0">Viewing</span>
+                </div>
+            </button>
+            <div class="pipeline-connector"></div>
+
+            <button class="ooda-node-btn" id="tab-1" onclick="switchOODAPhase(1)">
+                <div class="node-circle-id">2</div>
+                <div class="node-text-block">
+                    <span class="node-title-lbl">Orient</span>
+                    <span class="node-status-lbl" id="badge-1">Select</span>
+                </div>
+            </button>
+            <div class="pipeline-connector"></div>
+
+            <button class="ooda-node-btn" id="tab-2" onclick="switchOODAPhase(2)">
+                <div class="node-circle-id">3</div>
+                <div class="node-text-block">
+                    <span class="node-title-lbl">Decide</span>
+                    <span class="node-status-lbl" id="badge-2">Select</span>
+                </div>
+            </button>
+            <div class="pipeline-connector"></div>
+
+            <button class="ooda-node-btn" id="tab-3" onclick="switchOODAPhase(3)">
+                <div class="node-circle-id">4</div>
+                <div class="node-text-block">
+                    <span class="node-title-lbl">Act</span>
+                    <span class="node-status-lbl" id="badge-3">Select</span>
+                </div>
+            </button>
+        </div>
+
+        <div class="analytics-display-card" id="display-card-wrapper">
+            
+            <div class="ooda-view-panel visible-panel" id="view-0">
+                <span class="card-stage-tag">Framework Sequence • Phase 01</span>
+                <h2 class="card-core-title">Observe</h2>
+                <p class="card-definition-box">Gather raw information from your environment without judgment</p>
+            </div>
+
+            <div class="ooda-view-panel" id="view-1">
+                <span class="card-stage-tag">Framework Sequence • Phase 02</span>
+                <h2 class="card-core-title">Orient</h2>
+                <p class="card-definition-box">Analyze and synthesize data through your experience and values</p>
+            </div>
+
+            <div class="ooda-view-panel" id="view-2">
+                <span class="card-stage-tag">Framework Sequence • Phase 03</span>
+                <h2 class="card-core-title">Decide</h2>
+                <p class="card-definition-box">Choose a course of action from the options you've identified</p>
+            </div>
+
+            <div class="ooda-view-panel" id="view-3">
+                <span class="card-stage-tag">Framework Sequence • Phase 04</span>
+                <h2 class="card-core-title">Act</h2>
+                <p class="card-definition-box">Execute your decision swiftly, then loop back to observe results</p>
+            </div>
+
+        </div>
+
+        <div class="footer-bar">
+            <div class="instruction-tag">Select a sequence loop node from the command track above to process tactical phase definitions.</div>
+        </div>
+    </div>
+
+    <script>
+        let currentPhaseIdx = 0;
+
+        function switchOODAPhase(targetIdx) {
+            if (targetIdx === currentPhaseIdx) return;
+
+            // Clear previous highlight markers
+            document.getElementById(`tab-${currentPhaseIdx}`).classList.remove("active-step");
+            document.getElementById(`badge-${currentPhaseIdx}`).innerText = "Select";
+            document.getElementById(`view-${currentPhaseIdx}`).classList.remove("visible-panel");
+
+            // Assign new targeted step indicators
+            currentPhaseIdx = targetIdx;
+            document.getElementById(`tab-${currentPhaseIdx}`).classList.add("active-step");
+            document.getElementById(`badge-${currentPhaseIdx}`).innerText = "Viewing";
+            document.getElementById(`view-${currentPhaseIdx}`).classList.add("visible-panel");
+
+            // Micro-interaction flash feedback scaling inside panel boundaries
+            const displayCard = document.getElementById("display-card-wrapper");
+            displayCard.style.transform = "scale(1.002)";
+            setTimeout(() => {
+                displayCard.style.transform = "scale(1)";
+            }, 150);
+        }
+    </script>
+</body>
+</html>
