@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>IB Group - Cognitive Bias Simulator</title>
+    <title>Five Pillars of Digital Transformation - Fixed Canvas</title>
     <style>
         * {
             box-sizing: border-box;
@@ -22,9 +22,9 @@
             overflow: hidden;
         }
 
-        /* HARD-LOCKED STORYLINE 16:9 VIEWPORT 
-           Constrains layout parameters strictly within 1280x720 to eliminate 
-           vertical layout bleed, text clipping, or overlapping regressions.
+        /* HARD-LOCKED 16:9 STORYLINE PRESENTATION VIEWPORT 
+           Enforces a strict 1280x720 container footprint to permanently prevent 
+           vertical layout bleed, text box collisions, or scrollbar cutting.
         */
         .slide-wrapper {
             width: 100%;
@@ -32,7 +32,7 @@
             max-width: 1280px;
             max-height: 720px;
             aspect-ratio: 16 / 9;
-            padding: 1.8rem 3rem 1.2rem 3rem;
+            padding: 2.2rem 3.5rem 1.5rem 3.5rem;
             background-color: #fdfaf6;
             display: flex;
             flex-direction: column;
@@ -40,101 +40,66 @@
             box-sizing: border-box;
         }
 
-        /* Top Branded Corporate Header Row */
+        /* Slide Top Title */
         .header-section {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            border-bottom: 2px solid #e2dbd5;
-            padding-bottom: 0.5rem;
+            margin-bottom: 0.5rem;
             flex-shrink: 0;
         }
 
         .main-title {
-            font-size: 2.4rem;
+            font-size: 2.6rem;
             color: #3d2314;
             font-weight: 800;
             line-height: 1.1;
+            position: relative;
+            padding-bottom: 0.4rem;
         }
 
-        .company-branding {
-            font-size: 1.1rem;
-            font-weight: 800;
-            color: #7b9583;
-            letter-spacing: 1.5px;
-            text-transform: uppercase;
-            background-color: rgba(123, 149, 131, 0.1);
-            padding: 0.3rem 0.8rem;
-            border-radius: 4px;
+        .main-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 140px;
+            height: 4px;
+            background-color: #cd674c;
+            border-radius: 2px;
         }
 
-        /* 2-Column Core Interface Split */
-        .workspace-layout {
-            display: grid;
-            grid-template-columns: 0.85fr 1.15fr;
-            gap: 2.2rem;
-            flex-grow: 1;
-            min-height: 0; /* Clear overflow containment barrier */
-            margin: 1rem 0;
-            align-items: center;
-        }
-
-        /* Left Side Selector Menu */
-        .bias-menu-column {
+        /* Stable Workspace Matrix Track */
+        .workspace-matrix {
             display: flex;
             flex-direction: column;
-            gap: 0.8rem;
-            height: 100%;
-            justify-content: center;
+            flex-grow: 1;
+            min-height: 0; /* Dynamic inner height constraint protecting Storyline canvas limits */
+            margin: 0.6rem 0;
         }
 
-        .menu-selection-node {
-            background-color: #ffffff;
-            border: 1px solid rgba(61, 35, 20, 0.06);
-            border-left: 6px solid #cbd5e1;
-            border-radius: 8px;
-            padding: 1rem 1.4rem;
+        /* Horizontal Menu Tabs Track Strip */
+        .tab-navigation-strip {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 0.4rem;
+            width: 100%;
+            flex-shrink: 0;
+        }
+
+        .pillar-tab-btn {
+            background-color: #e2dbd5;
+            border: 1px solid rgba(61, 35, 20, 0.08);
+            border-bottom: none;
+            padding: 0.75rem 0.5rem;
+            border-top-left-radius: 8px;
+            border-top-right-radius: 8px;
             cursor: pointer;
             display: flex;
-            align-items: center;
-            gap: 1.2rem;
-            transition: all 0.25s cubic-bezier(0.165, 0.84, 0.44, 1);
-        }
-
-        .menu-selection-node:hover {
-            transform: translateX(4px);
-            background-color: #fffdfb;
-        }
-
-        /* Geometric Icon Emblems (Directly mirroring image_bb5445.png parameters) */
-        .node-icon-shape {
-            width: 44px;
-            height: 44px;
-            border-radius: 50%;
-            background-color: #7b9583;
-            color: #ffffff;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-size: 1.2rem;
-            font-weight: bold;
-            flex-shrink: 0;
-            transition: background-color 0.25s ease;
-        }
-
-        .node-label-block {
-            display: flex;
             flex-direction: column;
+            align-items: center;
             gap: 0.15rem;
+            transition: all 0.2s ease;
         }
 
-        .node-title-text {
-            font-size: 1.25rem;
-            font-weight: 700;
-            color: #3d2314;
-        }
-
-        .node-status-tag {
+        .tab-index-lbl {
             font-size: 0.72rem;
             font-weight: 800;
             color: #8d7d74;
@@ -142,96 +107,127 @@
             letter-spacing: 0.5px;
         }
 
-        /* Selection Status Modifiers */
-        .menu-selection-node.active-node {
-            background-color: rgba(123, 149, 131, 0.04);
-            border-color: #7b9583;
-            box-shadow: 0 4px 12px rgba(123, 149, 131, 0.06);
+        .tab-title-lbl {
+            font-size: 0.95rem;
+            font-weight: 700;
+            color: #4a382c;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            width: 100%;
+            text-align: center;
         }
-        .menu-selection-node.active-node .node-title-text { color: #5c7564; }
 
-        .menu-selection-node.mastered-node {
-            border-left-color: #2a9d8f;
-            border-color: #2a9d8f;
+        /* Active Navigation Node Highlight States */
+        .pillar-tab-btn.active-tab {
+            background-color: #ffffff;
+            padding-top: 0.9rem;
+            margin-top: -0.15rem;
+            box-shadow: 0 -4px 10px rgba(61, 35, 20, 0.03);
+            z-index: 2;
+        }
+        .pillar-tab-btn[data-id="1"].active-tab, .pillar-tab-btn[data-id="3"].active-tab, .pillar-tab-btn[data-id="5"].active-tab { border-top: 4px solid #cd674c; }
+        .pillar-tab-btn[data-id="2"].active-tab, .pillar-tab-btn[data-id="4"].active-tab { border-top: 4px solid #7b9583; }
+
+        .pillar-tab-btn.active-tab .tab-title-lbl { color: #cd674c; }
+        .pillar-tab-btn.active-tab[data-id="2"] .tab-title-lbl, .pillar-tab-btn.active-tab[data-id="4"] .tab-title-lbl { color: #5c7564; }
+
+        /* Mastered Level Node State */
+        .pillar-tab-btn.mastered-tab {
+            border-top: 4px solid #2a9d8f !important;
             background-color: rgba(42, 157, 143, 0.03);
         }
-        .menu-selection-node.mastered-node .node-title-text {
+        .pillar-tab-btn.mastered-tab .tab-title-lbl {
             color: #2a9d8f;
             text-decoration: line-through;
             opacity: 0.6;
         }
-        .menu-selection-node.mastered-node .node-icon-shape { background-color: #2a9d8f; }
 
-        /* Right Side Simulator Arena Dashboard */
-        .simulation-arena-card {
+        /* SINGLE UN-OVERLAPPING SIMULATOR CARDBODY
+           By splitting layout contents left-to-right rather than vertically, 
+           elements expand safely without running out of screen bounds.
+        */
+        .unified-arena-card {
             background-color: #ffffff;
-            border-radius: 12px;
             border: 1px solid rgba(61, 35, 20, 0.08);
+            border-bottom-left-radius: 12px;
+            border-bottom-right-radius: 12px;
+            border-top-right-radius: 12px;
             box-shadow: 0 6px 20px rgba(0, 0, 0, 0.02);
-            padding: 1.8rem 2.2rem;
-            height: 100%;
-            min-height: 0;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-        }
-
-        .arena-interactive-window {
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            height: 100%;
-            min-height: 0;
-        }
-
-        .arena-header-tag {
-            font-size: 0.82rem;
-            font-weight: 700;
-            color: #7b9583;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            margin-bottom: 0.2rem;
-            flex-shrink: 0;
-        }
-
-        /* Original textbook explanation block */
-        .arena-source-brief {
-            font-size: 0.95rem;
-            color: #6e5d53;
-            line-height: 1.45;
-            background-color: #fdfbf9;
-            padding: 0.6rem 1rem;
-            border-left: 4px solid #7b9583;
-            border-radius: 4px;
-            margin-bottom: 0.8rem;
-            flex-shrink: 0;
-        }
-
-        .arena-scenario-question {
-            font-size: 1.18rem;
-            font-weight: 700;
-            color: #3d2314;
-            line-height: 1.4;
-            margin-bottom: 0.8rem;
-            flex-shrink: 0;
-        }
-
-        /* Choice options pipeline container */
-        .options-vertical-pipeline {
-            display: flex;
-            flex-direction: column;
-            gap: 0.6rem;
+            padding: 2rem 2.2rem;
             flex-grow: 1;
             min-height: 0;
+            display: flex;
+            flex-direction: column;
             justify-content: center;
+            position: relative;
+            top: -1px;
+            z-index: 1;
         }
 
-        .choice-btn-node {
+        /* Horizontal Split Presentation Grid Viewports */
+        .arena-split-view {
+            display: none; 
+            grid-template-columns: 0.95fr 1.05fr;
+            gap: 2.5rem;
+            align-items: center;
+            height: 100%;
+            width: 100%;
+        }
+
+        .arena-split-view.visible-view {
+            display: grid;
+        }
+
+        /* Left Side: Context Column */
+        .arena-brief-column {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .arena-tag-heading {
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: #cd674c;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .panel-data-green .arena-tag-heading { color: #5c7564; }
+
+        .metric-banner-box {
+            font-size: 1rem;
+            font-weight: 600;
+            color: #5c4b3f;
+            background-color: #fdfbf9;
+            padding: 0.75rem 1.2rem;
+            border-left: 4px solid #cd674c;
+            border-radius: 4px;
+            line-height: 1.4;
+        }
+        .panel-data-green .metric-banner-box { border-left-color: #7b9583; }
+
+        .challenge-statement-text {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: #3d2314;
+            line-height: 1.45;
+        }
+
+        /* Right Side: Choice Options Stack Pipeline */
+        .arena-input-column {
+            display: flex;
+            flex-direction: column;
+            gap: 0.8rem;
+            width: 100%;
+        }
+
+        .choice-interaction-card {
             background-color: #ffffff;
             border: 1px solid #cbd5e1;
-            padding: 0.9rem 1.2rem;
+            padding: 1.1rem 1.3rem;
             border-radius: 6px;
-            font-size: 0.88rem;
+            font-size: 0.92rem;
             font-weight: 600;
             color: #475569;
             cursor: pointer;
@@ -241,31 +237,40 @@
             width: 100%;
         }
 
-        .choice-btn-node:hover {
-            background-color: #fbf9f6;
-            border-color: #7b9583;
-            color: #5c7564;
+        .choice-interaction-card:hover {
+            background-color: #fffdfb;
+            border-color: #cd674c;
+            color: #cd674c;
             transform: translateX(3px);
         }
+        .panel-data-green .choice-interaction-card:hover {
+            border-color: #7b9583;
+            color: #5c7564;
+        }
 
-        /* Success Stage Layout Overlay inside card bounds */
-        .victory-stage-overlay {
+        /* Stage Clean Success Overlay Screen */
+        .stage-success-overlay {
             display: none;
             flex-direction: column;
             align-items: center;
             justify-content: center;
             text-align: center;
+            width: 100%;
             height: 100%;
-            gap: 0.6rem;
+            gap: 0.8rem;
         }
 
-        .victory-heading-text {
+        .stage-success-overlay.visible-success {
+            display: flex;
+        }
+
+        .success-heading-text {
             font-size: 1.4rem;
             font-weight: 800;
             color: #2a9d8f;
         }
 
-        /* Bottom Fixed Corporate Metrics Row */
+        /* Bottom Fixed Corporate Metrics Row Status bar */
         .footer-bar {
             display: flex;
             justify-content: space-between;
@@ -296,182 +301,41 @@
 <body>
 
     <div class="slide-wrapper">
-        <!-- Branded Title Banner Header -->
         <div class="header-section">
-            <h1 class="main-title">Cognitive Biases That Derail Decisions</h1>
-            <span class="company-branding">IB Group</span>
+            <h1 class="main-title">Five Pillars of Digital Transformation</h1>
         </div>
 
-        <!-- Balanced Non-Overlapping Main Workspace Matrix Flow -->
-        <div class="workspace-layout">
-            
-            <!-- Left Side Interactive Selector Column Menu -->
-            <div class="bias-menu-column" id="menu-container">
-                <!-- Anchor 1: Anchoring -->
-                <div class="menu-selection-node active-node" id="node-0" onclick="shiftBiasModule(0)">
-                    <div class="node-icon-shape">⚓</div>
-                    <div class="node-label-block">
-                        <span class="node-title-text">Anchoring</span>
-                        <span class="node-status-tag" id="badge-0">Active Challenge</span>
-                    </div>
-                </div>
-
-                <!-- Anchor 2: Confirmation Bias -->
-                <div class="menu-selection-node" id="node-1" onclick="shiftBiasModule(1)">
-                    <div class="node-icon-shape">✓</div>
-                    <div class="node-label-block">
-                        <span class="node-title-text">Confirmation Bias</span>
-                        <span class="node-status-tag" id="badge-1">Pending</span>
-                    </div>
-                </div>
-
-                <!-- Anchor 3: Availability Bias -->
-                <div class="menu-selection-node" id="node-2" onclick="shiftBiasModule(2)">
-                    <div class="node-icon-shape">★</div>
-                    <div class="node-label-block">
-                        <span class="node-title-text">Availability Bias</span>
-                        <span class="node-status-tag" id="badge-2">Pending</span>
-                    </div>
-                </div>
+        <div class="workspace-matrix">
+            <div class="tab-navigation-strip">
+                <button class="pillar-tab-btn active-tab" data-id="1" id="tab-0" onclick="switchTab(0)">
+                    <span class="tab-index-lbl">Pillar 1</span>
+                    <span class="tab-title-lbl">Cloud & Infra</span>
+                </button>
+                <button class="pillar-tab-btn" data-id="2" id="tab-1" onclick="switchTab(1)">
+                    <span class="tab-index-lbl">Pillar 2</span>
+                    <span class="tab-title-lbl">Data & AI</span>
+                </button>
+                <button class="pillar-tab-btn" data-id="3" id="tab-2" onclick="switchTab(2)">
+                    <span class="tab-index-lbl">Pillar 3</span>
+                    <span class="tab-title-lbl">Automation</span>
+                </button>
+                <button class="pillar-tab-btn" data-id="4" id="tab-3" onclick="switchTab(3)">
+                    <span class="tab-index-lbl">Pillar 4</span>
+                    <span class="tab-title-lbl">Customer Exp</span>
+                </button>
+                <button class="pillar-tab-btn" data-id="5" id="tab-4" onclick="switchTab(4)">
+                    <span class="tab-index-lbl">Pillar 5</span>
+                    <span class="tab-title-lbl">Cybersecurity</span>
+                </button>
             </div>
 
-            <!-- Right Side Interactive L3 Simulation Arena Box Container -->
-            <div class="simulation-arena-card" id="sandbox-card">
-                <div class="arena-interactive-window" id="quiz-view-panel">
-                    <div>
-                        <div class="arena-header-tag" id="arena-stage-title">Transformation Module 1 of 3</div>
-                        <div class="arena-source-brief" id="arena-brief-text">The first piece of information we encounter disproportionately shapes our judgment, even if it's irrelevant.</div>
-                        <h2 class="arena-scenario-question" id="arena-question-text">IB Group Case Study: A vendor presents an initial high pricing quote for automated plant machinery. How do you defend against tactical bias anchoring?</h2>
-                    </div>
-
-                    <!-- Hardcoded space allocation preventing options cutting -->
-                    <div class="options-vertical-pipeline" id="options-box-container">
-                        <!-- Populated programmatically via Script loops -->
-                    </div>
-                </div>
-
-                <!-- Simulation Success Area Overlay Component -->
-                <div class="victory-stage-overlay" id="victory-panel">
-                    <span style="font-size: 2.5rem;">⚙️</span>
-                    <p class="victory-heading-text">Strategic Vector Aligned!</p>
-                    <p style="color: #6e5d53; font-size: 0.9rem;">Select an uncompleted transformation module from the list menu grid to continue your deployment roadmap.</p>
-                </div>
-            </div>
-
-        </div>
-
-        <!-- Stable Progress Metric Row Utilities Footer -->
-        <div class="footer-bar">
-            <div class="score-tracker-badge">Biases Mitigated: <span id="progress-val">0</span> / 3</div>
-            <div class="instruction-tag">Analyze the scenario challenge vectors on the right to align IB Group strategic governance loops.</div>
-        </div>
-    </div>
-
-    <script>
-        // High fidelity scenario definitions matrix mapping textbook text parameters verbatim from image_bb5445.png
-        const biasSimulationMatrix = [
-            {
-                brief: "The first piece of information we encounter disproportionately shapes our judgment, even if it's irrelevant.",
-                question: "IB Group Case Study: A supplier quotes an inflated opening price for engineering raw materials. How do you protect the commercial procurement loop?",
-                choices: [
-                    { text: "Counter by establishing independent market value baselines before negotiating terms.", correct: true },
-                    { text: "Accept the opening quote as a realistic cost foundation and negotiate minor discounts.", correct: false }
-                ]
-            },
-            {
-                brief: "We seek information that supports what we already believe, ignoring evidence to the contrary.",
-                question: "IB Group Case Study: An internal operational audit suggests an processing plant workflow update is underperforming. How do you bypass internal team alignment blindspots?",
-                choices: [
-                    { text: "Assign independent cross-functional teams to actively surface data parameters that contradict initial target expectations.", correct: true },
-                    { text: "Re-run calculations specifically filtering for historical success matrices to confirm team momentum.", correct: false }
-                ]
-            },
-            {
-                brief: "Recent or vivid events dominate our thinking, making rare risks feel common and likely.",
-                question: "IB Group Case Study: A highly publicized logistical breakdown occurs at an external competitor. How do you assess risk metrics responsibly without overcorrecting capital budgets?",
-                choices: [
-                    { text: "Freeze near-term expansion plans and reroute major financial reserves into auxiliary storage units immediately.", correct: false },
-                    { text: "Evaluate historical multi-year probability data logs rather than over-indexing on recent high-profile anomalies.", correct: true }
-                ]
-            }
-        ];
-
-        let activeBiasIdx = 0;
-        let masteredStateMap = { 0: false, 1: false, 2: false };
-
-        function loadSimulationStage() {
-            const data = biasSimulationMatrix[activeBiasIdx];
-            
-            // Check if active target selection vector has already been verified completed
-            if (masteredStateMap[activeBiasIdx]) {
-                document.getElementById("quiz-view-panel").style.display = "none";
-                document.getElementById("victory-panel").style.display = "flex";
-                return;
-            }
-
-            document.getElementById("quiz-view-panel").style.display = "flex";
-            document.getElementById("victory-panel").style.display = "none";
-
-            document.getElementById("arena-stage-title").innerText = `Transformation Module ${activeBiasIdx + 1} of 3`;
-            document.getElementById("arena-brief-text").innerText = data.brief;
-            document.getElementById("arena-question-text").innerText = data.question;
-
-            // Generate choice option rows cleanly inside height budgeted sandboxes
-            const boxContainer = document.getElementById("options-box-container");
-            boxContainer.innerHTML = "";
-
-            data.choices.forEach(choice => {
-                const button = document.createElement("button");
-                button.className = "choice-btn-node";
-                button.innerText = choice.text;
-                button.onclick = () => evaluatePlayerChoice(choice.correct);
-                boxContainer.appendChild(button);
-            });
-        }
-
-        function shiftBiasModule(targetIndex) {
-            // Unset current menu button highlight parameters
-            document.getElementById(`node-${activeBiasIdx}`).classList.remove("active-node");
-            
-            activeBiasIdx = targetIndex;
-            document.getElementById(`node-${activeBiasIdx}`).classList.add("active-node");
-            
-            loadSimulationStage();
-        }
-
-        function evaluatePlayerChoice(isCorrectChoice) {
-            if (isCorrectChoice) {
-                masteredStateMap[activeBiasIdx] = true;
+            <div class="unified-arena-card" id="sandbox-container">
                 
-                // Transition left-hand selector components layouts parameters safely
-                const targetNode = document.getElementById(`node-${activeBiasIdx}`);
-                targetNode.classList.add("mastered-node");
-                document.getElementById(`badge-${activeBiasIdx}`).innerText = "Mitigated";
-
-                recalculateScoreMetrics();
-                loadSimulationStage(); // Trigger rendering panel update loops to pull victory view fields card overlays
-            } else {
-                // Micro-flash arena card canvas color space warning parameters to communicate diagnostic divergence
-                const sandboxCard = document.getElementById("sandbox-card");
-                sandboxCard.style.backgroundColor = "#faeae1";
-                setTimeout(() => {
-                    sandboxCard.style.backgroundColor = "#ffffff";
-                }, 350);
-            }
-        }
-
-        function recalculateScoreMetrics() {
-            const currentTotalScore = Object.values(masteredStateMap).filter(Boolean).length;
-            document.getElementById("progress-val").innerText = currentTotalScore;
-            
-            if (currentTotalScore === 3) {
-                document.getElementById("progress-val").parentElement.style.color = "#2a9d8f";
-                document.getElementById("progress-val").parentElement.style.borderColor = "#2a9d8f";
-            }
-        }
-
-        // Boot initial workspace configurations path variables
-        loadSimulationStage();
-    </script>
-</body>
-</html>
+                <div class="arena-split-view visible-view" id="view-0">
+                    <div class="arena-brief-column">
+                        <div class="arena-tag-heading">Transformation Domain 1 of 5</div>
+                        <div class="metric-banner-box">Market Metric: 85% of enterprises adopt cloud-first by 2026</div>
+                        <h2 class="challenge-statement-text">Scenario Challenge: Your organization needs to deploy an expansion stack across multiple geographic nodes. What architecture approach do you choose?</h2>
+                    </div>
+                    <div class="arena-input-column">
+                        <button class="choice-interaction-card" onclick="submitDecision(0, true)">Adopt a distributed cloud-first container model with elastic autos
