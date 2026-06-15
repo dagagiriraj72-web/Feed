@@ -3,17 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Communicating Decisions Effectively - RPG Simulator</title>
+    <title>Communicating Decisions Effectively - Stable Canvas</title>
     <style>
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
-            font-family: 'Courier New', Courier, monospace, 'Segoe UI', sans-serif;
+            font-family: 'Courier New', Courier, monospace, sans-serif;
         }
 
         body {
-            background-color: #12161a;
+            background-color: #0d1117;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -22,9 +22,9 @@
             overflow: hidden;
         }
 
-        /* HARD-LOCKED 16:9 STORYLINE PRESENTATION VIEWPORT 
-           Enforces a strict 1280x720 footprint to stop lower boundary text bleed,
-           text collisions, or component overlapping inside Storyline container web objects.
+        /* HARD-LOCKED 16:9 PRESENTATION CANVAS
+           Enforces a strict 1280x720 barrier footprint to completely eliminate 
+           vertical bleed, clashing text boxes, or footer overlap.
         */
         .slide-wrapper {
             width: 100%;
@@ -32,10 +32,10 @@
             max-width: 1280px;
             max-height: 720px;
             aspect-ratio: 16 / 9;
-            padding: 2rem 3rem 1.5rem 3rem;
-            background-color: #1a1f24;
-            border: 4px solid #3a443d;
-            box-shadow: inset 0 0 20px rgba(0,0,0,0.8);
+            padding: 2rem 3rem 1.2rem 3rem;
+            background-color: #161b22;
+            border: 2px solid #30363d;
+            box-shadow: inset 0 0 30px rgba(0, 0, 0, 0.7);
             display: flex;
             flex-direction: column;
             justify-content: space-between;
@@ -43,50 +43,47 @@
             position: relative;
         }
 
-        /* Top Branded Video Game Header Track */
+        /* Top Branded Gaming HUD Header */
         .header-section {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            border-bottom: 2px solid #3a443d;
-            padding-bottom: 0.4rem;
+            border-bottom: 2px solid #30363d;
+            padding-bottom: 0.5rem;
             flex-shrink: 0;
         }
 
         .main-title {
             font-size: 2.2rem;
-            color: #fcf8f2;
+            color: #f0f6fc;
             font-weight: 800;
-            text-shadow: 2px 2px 0px #222;
+            letter-spacing: -0.5px;
         }
 
-        .hud-status-tracker {
+        .hud-status-badge {
             font-size: 0.95rem;
             font-weight: 700;
-            color: #9db2a3;
-            background-color: #12161a;
+            color: #58a6ff;
+            background-color: #0d1117;
             padding: 0.3rem 0.8rem;
-            border: 1px solid #3a443d;
+            border: 1px solid #30363d;
             border-radius: 4px;
             letter-spacing: 1px;
         }
 
-        /* HORIZONTAL COMBAT LEVEL TIMELINE PIPELINE
-           Directly replicates the 4 sequential nodes of image_ae916d.png laterally 
-           to maximize vertical text breathing room beneath.
-        */
-        .timeline-level-strip {
+        /* Horizontal Timeline Track Pipeline */
+        .timeline-ribbon {
             display: grid;
-            grid-template-columns: 1fr auto 1fr auto 1fr auto 1fr;
-            align-items: center;
-            margin: 1rem 0;
-            flex-shrink: 0;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 0.8rem;
             width: 100%;
+            flex-shrink: 0;
+            margin: 1rem 0;
         }
 
-        .level-select-node {
-            background-color: #12161a;
-            border: 2px solid #3a443d;
+        .timeline-node-btn {
+            background-color: #0d1117;
+            border: 1px solid #30363d;
             border-radius: 6px;
             padding: 0.65rem 0.85rem;
             display: flex;
@@ -96,148 +93,155 @@
             transition: all 0.2s ease;
         }
 
-        .level-select-node:hover {
-            border-color: #9db2a3;
-            background-color: #171d22;
+        .timeline-node-btn:hover {
+            border-color: #8b949e;
+            background-color: #1f242c;
         }
 
         .node-avatar-circle {
-            width: 32px;
-            height: 32px;
+            width: 30px;
+            height: 30px;
             border-radius: 50%;
-            background-color: #3a443d;
-            color: #12161a;
-            font-size: 1.1rem;
+            background-color: #30363d;
+            color: #8b949e;
+            font-size: 1rem;
             font-weight: 900;
             display: flex;
             justify-content: center;
             align-items: center;
             flex-shrink: 0;
-            transition: all 0.2s ease;
         }
 
         .node-label-stack {
             display: flex;
             flex-direction: column;
+            text-align: left;
             min-width: 0;
         }
 
         .node-title-lbl {
-            font-size: 1rem;
+            font-size: 0.95rem;
             font-weight: 700;
-            color: #ebdcd1;
+            color: #c9d1d9;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
         }
 
         .node-state-tag {
-            font-size: 0.68rem;
+            font-size: 0.65rem;
             font-weight: bold;
-            color: #6a766d;
+            color: #484f58;
             text-transform: uppercase;
         }
 
-        .timeline-connector {
-            width: 24px;
-            height: 3px;
-            background-color: #3a443d;
-            margin: 0 0.2rem;
-            border-radius: 2px;
-            flex-shrink: 0;
+        /* High-Visibility State Highlight Modifiers */
+        .timeline-node-btn.active-level {
+            background-color: #1f242c;
+            border-color: #58a6ff;
+            box-shadow: 0 0 12px rgba(88, 166, 255, 0.15);
         }
+        .timeline-node-btn.active-level .node-avatar-circle { background-color: #58a6ff; color: #0d1117; }
+        .timeline-node-btn.active-level .node-title-lbl { color: #ffffff; }
+        .timeline-node-btn.active-level .node-state-tag { color: #58a6ff; }
 
-        /* Active Navigation Node Highlight States */
-        .level-select-node.active-level {
-            background-color: #1b2420;
-            border-color: #7b9583;
-            box-shadow: 0 0 10px rgba(123, 149, 131, 0.2);
+        .timeline-node-btn.cleared-level {
+            border-color: #2ea043;
+            background-color: rgba(46, 160, 67, 0.05);
         }
-        .level-select-node.active-level .node-avatar-circle { background-color: #7b9583; color: #12161a; }
-        .level-select-node.active-level .node-title-lbl { color: #ffffff; }
-        .level-select-node.active-level .node-state-tag { color: #7b9583; }
+        .timeline-node-btn.cleared-level .node-avatar-circle { background-color: #2ea043; color: #ffffff; }
+        .timeline-node-btn.cleared-level .node-title-lbl { color: #2ea043; opacity: 0.7; text-decoration: line-through; }
+        .timeline-node-btn.cleared-level .node-state-tag { color: #2ea043; }
 
-        /* Mastered Level Node State */
-        .level-select-node.cleared-level {
-            border-color: #2a9d8f;
-            background-color: rgba(42, 157, 143, 0.05);
-        }
-        .level-select-node.cleared-level .node-avatar-circle { background-color: #2a9d8f; color: #ffffff; }
-        .level-select-node.cleared-level .node-title-lbl { color: #2a9d8f; opacity: 0.7; text-decoration: line-through; }
-        .level-select-node.cleared-level .node-state-tag { color: #2a9d8f; }
-
-        /* SPLIT SCREEN COCKPIT COMBAT MATRIX (BOTTOM HALF)
-           Allocates independent horizontal zones ensuring options and rules text never overlap.
+        /* THE ANTI-OVERLAP WORKSPACE DESK
+           Uses a responsive vertical workflow with internal scrolling protection.
         */
         .cockpit-arena-card {
-            background-color: #12161a;
-            border: 2px solid #3a443d;
+            background-color: #0d1117;
+            border: 1px solid #30363d;
             border-radius: 8px;
-            padding: 1.6rem 2.2rem;
+            padding: 1.5rem;
             flex-grow: 1;
-            min-height: 0; /* Dynamic inner height constraint protecting Storyline canvas limits */
+            min-height: 0; /* Strict vertical containment shield */
             display: flex;
             flex-direction: column;
-            justify-content: center;
+            justify-content: space-between;
         }
 
-        .arena-split-view {
-            display: grid;
-            grid-template-columns: 0.95fr 1.05fr;
-            gap: 2.5rem;
-            align-items: center;
-            height: 100%;
+        /* Vertically isolated scrollable terminal module */
+        .terminal-scroll-sandbox {
+            flex-grow: 1;
             min-height: 0;
-        }
-
-        /* Left Split Column: Blueprint Directives */
-        .arena-blueprint-panel {
+            overflow-y: auto;
+            padding-right: 0.5rem;
             display: flex;
             flex-direction: column;
-            gap: 0.8rem;
+            gap: 1rem;
         }
 
-        .blueprint-header-tag {
+        /* Scrollbar styling to maintain dark game theme */
+        .terminal-scroll-sandbox::-webkit-scrollbar {
+            width: 6px;
+        }
+        .terminal-scroll-sandbox::-webkit-scrollbar-track {
+            background: #0d1117;
+        }
+        .terminal-scroll-sandbox::-webkit-scrollbar-thumb {
+            background: #30363d;
+            border-radius: 3px;
+        }
+
+        .blueprint-header-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px dashed #30363d;
+            padding-bottom: 0.4rem;
+        }
+
+        .blueprint-tag-lbl {
             font-size: 0.8rem;
             font-weight: bold;
-            color: #7b9583;
+            color: #58a6ff;
             text-transform: uppercase;
-            letter-spacing: 1.5px;
+            letter-spacing: 1px;
         }
 
         .blueprint-source-brief {
-            font-size: 1.05rem;
-            color: #9db2a3;
-            background-color: #171d22;
-            padding: 0.8rem 1.2rem;
-            border-left: 4px solid #7b9583;
+            font-size: 1rem;
+            color: #8b949e;
+            line-height: 1.4;
+            background-color: #161b22;
+            padding: 0.6rem 1rem;
+            border-left: 4px solid #58a6ff;
             border-radius: 4px;
-            line-height: 1.45;
         }
 
         .blueprint-challenge-text {
-            font-size: 1.25rem;
+            font-size: 1.15rem;
             font-weight: 700;
-            color: #ffffff;
-            line-height: 1.4;
+            color: #f0f6fc;
+            line-height: 1.45;
         }
 
-        /* Right Split Column: Choice Interaction Nodes Stack */
-        .arena-input-pipeline {
+        /* Stacking Options Pipeline Container */
+        .choices-stack-pipeline {
             display: flex;
             flex-direction: column;
-            gap: 0.65rem;
-            width: 100%;
+            gap: 0.5rem;
+            margin-top: auto;
+            padding-top: 1rem;
+            flex-shrink: 0;
         }
 
         .choice-btn-node {
-            background-color: #171d22;
-            border: 1px solid #3a443d;
-            padding: 1rem 1.3rem;
+            background-color: #161b22;
+            border: 1px solid #30363d;
+            padding: 0.85rem 1.2rem;
             border-radius: 6px;
             font-size: 0.9rem;
             font-weight: 600;
-            color: #ebdcd1;
+            color: #c9d1d9;
             cursor: pointer;
             text-align: left;
             line-height: 1.4;
@@ -246,13 +250,13 @@
         }
 
         .choice-btn-node:hover {
-            background-color: #20282e;
-            border-color: #7b9583;
+            background-color: #21262d;
+            border-color: #58a6ff;
             color: #ffffff;
-            transform: translateX(4px);
+            transform: translateX(3px);
         }
 
-        /* Mid-stage complete screen display */
+        /* Isolated Mid-Stage Complete Screen Panel */
         .stage-victory-overlay {
             display: none;
             flex-direction: column;
@@ -265,27 +269,27 @@
         }
 
         .victory-heading-lbl {
-            font-size: 1.4rem;
+            font-size: 1.3rem;
             font-weight: 800;
-            color: #2a9d8f;
+            color: #2ea043;
             text-transform: uppercase;
             letter-spacing: 1px;
         }
 
-        /* Lower Guideline Tracker Row Strip */
+        /* Lower Progress Utilities Footer Bar Row */
         .footer-bar {
             display: flex;
             justify-content: flex-end;
             align-items: center;
             flex-shrink: 0;
-            border-top: 1px solid #3a443d;
-            padding-top: 0.5rem;
+            border-top: 1px solid #30363d;
+            padding-top: 0.6rem;
             margin-top: 0.4rem;
         }
 
         .instruction-tag {
             font-size: 0.82rem;
-            color: #6a766d;
+            color: #484f58;
             font-style: italic;
             letter-spacing: 0.5px;
         }
@@ -294,46 +298,40 @@
 <body>
 
     <div class="slide-wrapper">
-        <!-- Game HUD Title Header -->
+        <!-- Game Header -->
         <div class="header-section">
             <h1 class="main-title">Communicating Decisions Effectively</h1>
-            <div class="hud-status-tracker">DECK SYNC: <span id="progress-val">0</span> / 4</div>
+            <div class="hud-status-badge">DECK SYNC: <span id="progress-val">0</span> / 4</div>
         </div>
 
-        <!-- Horizontal Combat Timeline Progress Track Row -->
-        <div class="timeline-level-strip">
+        <!-- Horizontal Ribbon Progress Track -->
+        <div class="timeline-ribbon">
             <!-- Level 1 -->
-            <button class="level-select-node active-level" id="tab-0" onclick="switchMissionLevel(0)">
+            <button class="timeline-node-btn active-level" id="tab-0" onclick="switchMissionLevel(0)">
                 <div class="node-avatar-circle">1</div>
                 <div class="node-label-stack">
                     <span class="node-title-lbl">State the Decision</span>
                     <span class="node-state-tag" id="badge-0">Active</span>
                 </div>
             </button>
-            <div class="timeline-connector"></div>
-
             <!-- Level 2 -->
-            <button class="level-select-node" id="tab-1" onclick="switchMissionLevel(1)">
+            <button class="timeline-node-btn" id="tab-1" onclick="switchMissionLevel(1)">
                 <div class="node-avatar-circle">2</div>
                 <div class="node-label-stack">
                     <span class="node-title-lbl">Share the Why</span>
                     <span class="node-state-tag" id="badge-1">Ready</span>
                 </div>
             </button>
-            <div class="timeline-connector"></div>
-
             <!-- Level 3 -->
-            <button class="level-select-node" id="tab-2" onclick="switchMissionLevel(2)">
+            <button class="timeline-node-btn" id="tab-2" onclick="switchMissionLevel(2)">
                 <div class="node-avatar-circle">3</div>
                 <div class="node-label-stack">
                     <span class="node-title-lbl">Acknowledge Trade-offs</span>
                     <span class="node-state-tag" id="badge-2">Ready</span>
                 </div>
             </button>
-            <div class="timeline-connector"></div>
-
             <!-- Level 4 -->
-            <button class="level-select-node" id="tab-3" onclick="switchMissionLevel(3)">
+            <button class="timeline-node-btn" id="tab-3" onclick="switchMissionLevel(3)">
                 <div class="node-avatar-circle">4</div>
                 <div class="node-label-stack">
                     <span class="node-title-lbl">Invite Questions</span>
@@ -342,43 +340,50 @@
             </button>
         </div>
 
-        <!-- Stable Bounded Dashboard Combat Sandbox Arena Card -->
+        <!-- Balanced Arena Card Box -->
         <div class="cockpit-arena-card" id="sandbox-card-window">
             
-            <div class="arena-split-view" id="interactive-view-block">
-                <!-- Left Split Panel: Source Data Block -->
-                <div class="arena-blueprint-panel">
-                    <div class="blueprint-header-tag" id="arena-stage-title">Tactical Phase 01</div>
-                    <div class="blueprint-source-brief" id="arena-brief-text">Lead with the conclusion — don't bury it in context</div>
-                    <h2 class="blueprint-challenge-text" id="arena-challenge-text">Mission Dilemma: You must announce an urgent architectural system migration structure change to the company branch. What opening play do you select?</h2>
+            <!-- Protected Stack Sandbox Terminal (Separates text from choices cleanly) -->
+            <div class="terminal-scroll-sandbox" id="interactive-view-block">
+                <div class="blueprint-header-row">
+                    <div class="blueprint-tag-lbl" id="arena-stage-title">Tactical Phase 01</div>
                 </div>
-                <!-- Right Split Panel: Dynamic Choices Pipeline stack -->
-                <div class="arena-input-pipeline" id="arena-options-container">
-                    <!-- Populated programmatically via JavaScript loops -->
+                
+                <div class="blueprint-source-brief" id="arena-brief-text">
+                    Strategic Blueprint: Lead with the conclusion — don't bury it in context
                 </div>
+                
+                <h2 class="blueprint-challenge-text" id="arena-challenge-text">
+                    Mission Dilemma: You must announce an emergency platform system switchover window across all division workspaces. What is your opening execution play?
+                </h2>
             </div>
 
-            <!-- In-Card Phase Cleared Success Overlay Panel Component -->
-            <div class="stage-victory-overlay" id="victory-overlay-panel">
-                <span style="font-size: 2.2rem;">⚔️ SYSTEM RE-ALIGNED</span>
-                <p class="victory-heading-lbl">Transmission Synced!</p>
-                <p style="color: #9db2a3; font-size: 0.9rem;">Select an uncompleted mission index node from the top timeline menu track to clear the next pattern.</p>
+            <!-- Choices Stack (Anchored safely at the bottom, separate from scenario height expansion) -->
+            <div class="choices-stack-pipeline" id="arena-options-container">
+                <!-- Loaded dynamically via JavaScript loop -->
+            </div>
+
+            <!-- In-Card Phase Cleared Success Overlay Component -->
+            <div class="stage-success-overlay" id="victory-overlay-panel">
+                <span style="font-size: 2.2rem;">⚡ DATA TRANSMISSION ALIGNED</span>
+                <p class="victory-heading-lbl">Pattern Resolved!</p>
+                <p style="color: #8b949e; font-size: 0.9rem;">Select an uncompleted mission index node from the top timeline ribbons track to sync the next data sector.</p>
             </div>
 
         </div>
 
         <!-- Lower Prompting Guideline Row Strip -->
         <div class="footer-bar">
-            <div class="instruction-tag">Select a timeline mission phase from the command header track, analyze the tactical blueprint, and deploy the clean option matrix.</div>
+            <div class="instruction-tag">Select a timeline phase from the ribbon header track, analyze the tactical blueprint, and choose the correct option vector.</div>
         </div>
     </div>
 
     <script>
-        // High fidelity text parameters dictionary mapped verbatim from image_ae916d.png values
+        // Data matrix compiled exactly from textbook variables in image_a16ee5.png
         const communicationSimulationMatrix = [
             {
                 brief: "Strategic Blueprint: Lead with the conclusion — don't bury it in context",
-                question: "Mission Dilemma: You must announce an emergency platform system switchover window across all division workspaces. What is your opening execution path?",
+                question: "Mission Dilemma: You must announce an emergency platform system switchover window across all division workspaces. What is your opening execution play?",
                 choices: [
                     { text: "Launch the email broadcast with a bold, upfront title stating the exact downtime window parameters immediately.", correct: true },
                     { text: "Write a historical summary detailing cloud microservice metrics before introducing downtime variables on page 3.", correct: false }
@@ -386,23 +391,23 @@
             },
             {
                 brief: "Strategic Blueprint: Explain the key factors that drove your choice",
-                question: "Mission Dilemma: The project team questions why you prioritized vendor engine platform adjustments over basic tool background re-coloring. How do you respond?",
+                question: "Mission Dilemma: The engineering branch questions why you prioritized backend engine optimization over minor cosmetic layout corrections. How do you respond?",
                 choices: [
-                    { text: "State that the decision was finalized by upper executive managers and execution parameters are locked down.", correct: false },
-                    { text: "Present the core data logs demonstrating that vendor optimization saves 12 hours of weekly delivery debt.", correct: true }
+                    { text: "State that parameters were decided by executive managers and cannot be modified.", correct: false },
+                    { text: "Present metrics tracking data demonstrating that backend optimization saves 12 hours of weekly operational debt loops.", correct: true }
                 ]
             },
             {
                 brief: "Strategic Blueprint: Name what you're giving up — it shows thoughtfulness",
-                question: "Mission Dilemma: Transitioning to an automated procurement script simplifies tracking but limits granular manual adjustments. How do you lead alignment?",
+                question: "Mission Dilemma: Launching an automated resource assignment script simplifies tracking but cuts manual user formatting preferences. How do you guide team alignment?",
                 choices: [
-                    { text: "Acknowledge that custom manual formatting will drop, but explain that system accuracy tracking margins rise.", correct: true },
-                    { text: "Assure stakeholders that the software transition will perform flawlessly across every single task profile with zero disruptions.", correct: false }
+                    { text: "Acknowledge that custom manual layout options drop, but outline that structural pipeline processing errors drop as well.", correct: true },
+                    { text: "Assure stakeholders that the software transition behaves identically across all workflows with zero behavioral shifts.", correct: false }
                 ]
             },
             {
                 brief: "Strategic Blueprint: Create space for concerns without reopening the decision",
-                question: "Mission Dilemma: Following a software deployment announcement loop, an auxiliary team requests a complete pause to re-vote on strategy metrics. What is your push?",
+                question: "Mission Dilemma: Following a software deployment announcement, an auxiliary team requests a complete pause to re-vote on strategy metrics. What is your push?",
                 choices: [
                     { text: "Halt all rollout sprint tracks immediately to schedule another round of cross-department scoping workshops.", correct: false },
                     { text: "Confirm that the deployment trajectory remains locked down, but host an explicit feedback clinic to optimize onboarding.", correct: true }
@@ -415,25 +420,26 @@
 
         function loadSimulationStage() {
             const data = communicationSimulationMatrix[activeLevelIdx];
-            const interactiveBlock = document.getElementById("interactive-view-block");
+            const scrollSandbox = document.getElementById("interactive-view-block");
             const victoryPanel = document.getElementById("victory-overlay-panel");
             const optionsContainer = document.getElementById("arena-options-container");
             
-            // Toggle panel view layers instantly if active target level index has already been successfully passed
             if (masteredStateMap[activeLevelIdx]) {
-                interactiveBlock.style.display = "none";
+                scrollSandbox.style.display = "none";
+                optionsContainer.style.display = "none";
                 victoryPanel.style.display = "flex";
                 return;
             }
 
-            interactiveBlock.style.display = "grid";
+            scrollSandbox.style.display = "flex";
+            optionsContainer.style.display = "flex";
             victoryPanel.style.display = "none";
 
             document.getElementById("arena-stage-title").innerText = `Tactical Phase 0${activeLevelIdx + 1}`;
             document.getElementById("arena-brief-text").innerText = data.brief;
             document.getElementById("arena-challenge-text").innerText = data.question;
 
-            // Generate option actions buttons cleanly inside right split container box space
+            // Render option buttons securely inside their distinct lower container
             optionsContainer.innerHTML = "";
             data.choices.forEach(choice => {
                 const btn = document.createElement("button");
@@ -442,15 +448,16 @@
                 btn.onclick = () => evaluateChoiceInput(choice.correct);
                 optionsContainer.appendChild(btn);
             });
+
+            // Auto reset terminal scroll baseline to the top upon changing tabs
+            scrollSandbox.scrollTop = 0;
         }
 
         function switchMissionLevel(targetIdx) {
             if (targetIdx === activeLevelIdx) return;
 
-            // Clear legacy highlight metrics classes from preceding selection node
             document.getElementById(`tab-${activeLevelIdx}`).classList.remove("active-level");
             
-            // Direct target assignments configuration
             activeLevelIdx = targetIdx;
             document.getElementById(`tab-${activeLevelIdx}`).classList.add("active-level");
 
@@ -461,18 +468,17 @@
             if (isCorrectChoicePath) {
                 masteredStateMap[activeLevelIdx] = true;
 
-                // Adjust horizontal selection track node parameters states properties
                 const activeTabBtn = document.getElementById(`tab-${activeLevelIdx}`);
                 activeTabBtn.classList.add("cleared-level");
-                document.getElementById(`badge-${activeLevelIdx}`).innerText = "Cleared";
+                document.getElementById(`badge-${activeLevelIdx}`).innerText = "Synced";
 
                 recalculateScoreMetrics();
-                loadSimulationStage(); // Re-render panels to pull success view window instantly
+                loadSimulationStage(); 
             } else {
-                // Flash the cockpit cockpit board card view background layout color to communicate diagnostic variance
+                // Flash console border red to report a compliance deviation match error
                 const windowBoard = document.getElementById("sandbox-card-window");
-                windowBoard.style.backgroundColor = "#2b1a1a";
-                setTimeout(() => windowBoard.style.backgroundColor = "#12161a", 350);
+                windowBoard.style.borderColor = "#f85149";
+                setTimeout(() => windowBoard.style.borderColor = "#30363d", 350);
             }
         }
 
@@ -481,7 +487,7 @@
             document.getElementById("progress-val").innerText = currentTotalScore;
         }
 
-        // Trigger startup engine hooks on mount run cycles
+        // Initialize engine layout maps
         loadSimulationStage();
     </script>
 </body>
