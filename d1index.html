@@ -288,4 +288,140 @@
             padding-top: 0.6rem;
             margin-top: 0.2rem;
             position: relative;
-            z-index
+            z-index: 5;
+        }
+
+        .score-tracker-badge {
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: #3d2314;
+            background-color: #fff8eb;
+            padding: 0.25rem 0.8rem;
+            border-radius: 20px;
+            border: 1px solid #f4a261;
+            font-variant-numeric: tabular-nums;
+        }
+
+        .instruction-tag {
+            font-size: 0.85rem;
+            color: #a39389;
+            font-style: italic;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="slide-wrapper">
+        <div class="header-section">
+            <h1 class="main-title">Decisiveness vs. Impulsiveness</h1>
+        </div>
+
+        <div class="workspace-layout" id="main-workspace">
+            <div class="sorting-bucket-column" id="bucket-decisiveness">
+                <h2 class="bucket-heading">Decisiveness</h2>
+                <div class="sorted-items-list" id="list-decisiveness"></div>
+            </div>
+
+            <div class="sorting-bucket-column" id="bucket-impulsiveness">
+                <h2 class="bucket-heading">Impulsiveness</h2>
+                <div class="sorted-items-list" id="list-impulsiveness"></div>
+            </div>
+        </div>
+
+        <div class="deck-hud-overlay" id="interactive-hud">
+            <div id="hud-quiz-interface" style="width: 100%; display: flex; flex-direction: column; gap: 1rem;">
+                <div class="hud-tag" id="hud-counter-lbl">Behavior Card 1 of 10</div>
+                <div class="card-display-box">
+                    <p class="trait-statement-text" id="hud-statement-lbl">Considers key information before acting</p>
+                </div>
+                <div class="hud-action-row">
+                    <button class="action-click-btn btn-left" onclick="processSelection('decisiveness')">Decisive</button>
+                    <button class="action-click-btn btn-right" onclick="processSelection('impulsiveness')">Impulsive</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="master-victory-veil" id="victory-veil">
+            <div class="victory-badge-box">
+                <span style="font-size: 3.5rem;">🎯</span>
+                <h3 class="victory-title">Sorting Matrix Resolved!</h3>
+                <p class="victory-desc">Behavioral metrics successfully mapped and categorized across corporate strategic performance indicators.</p>
+            </div>
+        </div>
+
+        <div class="footer-bar">
+            <div class="score-tracker-badge">Traits Sorted: <span id="score-lbl">0</span> / 10</div>
+            <div class="instruction-tag">Evaluate the trait inside the center floating console module and choose its correct behavior category.</div>
+        </div>
+    </div>
+
+    <script>
+        const traitsDeckMatrix = [
+            { text: "Considers key information before acting", category: "decisiveness" },
+            { text: "Reacts before gathering relevant facts", category: "impulsiveness" },
+            { text: "Accepts reasonable risk deliberately", category: "decisiveness" },
+            { text: "Ignores risk or consequences entirely", category: "impulsiveness" },
+            { text: "Commits with awareness of trade-offs", category: "decisiveness" },
+            { text: "Chooses to avoid discomfort, not to solve", category: "impulsiveness" },
+            { text: "Reflects briefly, then moves forward", category: "decisiveness" },
+            { text: "Skips reflection, regrets later", category: "impulsiveness" },
+            { text: "Takes ownership of the outcome", category: "decisiveness" },
+            { text: "Blames circumstances for poor results", category: "impulsiveness" }
+        ];
+
+        let currentActiveIdx = 0;
+        let accurateSortCount = 0;
+
+        function refreshInteractiveHUD() {
+            if (currentActiveIdx >= traitsDeckMatrix.length) {
+                // Instantly remove center cockpit module
+                document.getElementById("interactive-hud").style.display = "none";
+                
+                // Dim down workspace background items cleanly
+                const workspace = document.getElementById("main-workspace");
+                workspace.style.filter = "blur(4px)";
+                workspace.style.opacity = "0.35";
+                
+                // Elevate isolated victory screen panel
+                document.getElementById("victory-veil").style.display = "flex";
+                return;
+            }
+
+            const currentCardData = traitsDeckMatrix[currentActiveIdx];
+            document.getElementById("hud-counter-lbl").innerText = `Behavior Card ${currentActiveIdx + 1} of 10`;
+            document.getElementById("hud-statement-lbl").innerText = currentCardData.text;
+        }
+
+        function processSelection(userChosenBucketCode) {
+            if (currentActiveIdx >= traitsDeckMatrix.length) return;
+
+            const activeCardRecord = traitsDeckMatrix[currentActiveIdx];
+
+            if (userChosenBucketCode === activeCardRecord.category) {
+                accurateSortCount++;
+                
+                const columnTargetList = document.getElementById(`list-${activeCardRecord.category}`);
+                const rowItem = document.createElement("div");
+                rowItem.className = "placed-trait-node";
+                rowItem.innerText = activeCardRecord.text;
+                columnTargetList.appendChild(rowItem);
+
+                document.getElementById("score-lbl").innerText = accurateSortCount;
+
+                currentActiveIdx++;
+                refreshInteractiveHUD();
+            } else {
+                const hudCardOverlayContainer = document.getElementById("interactive-hud");
+                hudCardOverlayContainer.style.backgroundColor = "#faeae1";
+                hudCardOverlayContainer.style.borderColor = "#cd674c";
+                setTimeout(() => {
+                    hudCardOverlayContainer.style.backgroundColor = "#ffffff";
+                    hudCardOverlayContainer.style.borderColor = "rgba(61, 35, 20, 0.12)";
+                }, 350);
+            }
+        }
+
+        refreshInteractiveHUD();
+    </script>
+</body>
+</html>
