@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Common Decision Traps - Interception Game</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #fcf8f2;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100vw;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        /* 16:9 PRESENTATION CANVAS MAXIMUM FOOTPRINT
+           Locks layout boundaries tightly at 1280x720 to completely block 
+           vertical bleed, text collisions, or accidental scrollbar cutting.
+        */
+        .slide-wrapper {
+            width: 100%;
+            height: 100%;
+            max-width: 1280px;
+            max-height: 720px;
+            aspect-ratio: 16 / 9;
+            padding: 2.2rem 3.5rem 1.2rem 3.5rem;
+            background-color: #fdfaf6;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            box-sizing: border-box;
+            position: relative;
+        }
+
+        /* Top Title Header */
+        .header-section {
+            margin-bottom: 0.5rem;
+            flex-shrink: 0;
+        }
+
+        .main-title {
+            font-size: 2.6rem;
+            color: #3d2314;
+            font-weight: 800;
+            line-height: 1.1;
+            position: relative;
+            padding-bottom: 0.4rem;
+        }
+
+        .main-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 140px;
+            height: 4px;
+            background-color: #7b9583;
+            border-radius: 2px;
+        }
+
+        /* Dual Column Split Layout Workspace Matrix */
+        .workspace-layout {
+            display: grid;
+            grid-template-columns: 0.95fr 1.05fr;
+            gap: 2.5rem;
+            flex-grow: 1;
+            min-height: 0; /* Clear overflow containment shield */
+            margin: 0.8rem 0;
+            align-items: stretch;
+        }
+
+        /* Left Side: 2x2 Radar Grid Selection Buttons */
+        .traps-radar-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            grid-template-rows: 1fr 1fr;
+            gap: 10px;
+            height: 100%;
+        }
+
+        .radar-selection-node {
+            background-color: #ffffff;
+            border: 1px solid rgba(61, 35, 20, 0.06);
+            border-radius: 8px;
+            padding: 1.2rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.25s cubic-bezier(0.165, 0.84, 0.44, 1);
+        }
+
+        .radar-selection-node:hover {
+            transform: scale(0.985);
+            background-color: #fffdfb;
+        }
+
+        /* Diagnostic Symbol Badges (Directly mirroring image_aefafe.png symbols) */
+        .node-symbol-circle {
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            background-color: #7b9583;
+            color: #ffffff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 1.2rem;
+            font-weight: bold;
+            margin-bottom: 0.4rem;
+            transition: background-color 0.2s ease;
+        }
+
+        .node-title-lbl {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: #3d2314;
+        }
+
+        .node-status-tag {
+            font-size: 0.72rem;
+            font-weight: 800;
+            color: #8d7d74;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-top: 0.15rem;
+        }
+
+        /* Active Focus and Cleared Mastery States Modifiers */
+        .radar-selection-node.active-node {
+            background-color: rgba(123, 149, 131, 0.04);
+            border-color: #7b9583;
+            box-shadow: inset 0 0 0 2px #7b9583;
+        }
+
+        .radar-selection-node.mastered-node {
+            border-color: #2a9d8f;
+            background-color: rgba(42, 157, 143, 0.03);
+            box-shadow: none;
+        }
+        .radar-selection-node.mastered-node .node-title-lbl {
+            color: #2a9d8f;
+            text-decoration: line-through;
+            opacity: 0.6;
+        }
+        .radar-selection-node.mastered-node .node-symbol-circle {
+            background-color: #2a9d8f;
+        }
+
+        /* Right Side: Interactive Action Sandbox Console Card */
+        .interception-arena-card {
+            background-color: #ffffff;
+            border-radius: 12px;
+            border: 1px solid rgba(61, 35, 20, 0.08);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.02);
+            padding: 1.8rem 2.2rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            height: 100%;
+            min-height: 0;
+        }
+
+        .arena-interactive-panel {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            height: 100%;
+            min-height: 0;
+        }
+
+        .arena-header-tag {
+            font-size: 0.82rem;
+            font-weight: 700;
+            color: #7b9583;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 0.2rem;
+            flex-shrink: 0;
+        }
+
+        /* Original textbook explanation block from image_aefafe.png */
+        .arena-source-brief {
+            font-size: 0.98rem;
+            color: #6e5d53;
+            line-height: 1.45;
+            background-color: #fdfbf9;
+            padding: 0.6rem 1rem;
+            border-left: 4px solid #7b9583;
+            border-radius: 4px;
+            margin-bottom: 0.8rem;
+            flex-shrink: 0;
+        }
+
+        .arena-scenario-question {
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: #3d2314;
+            line-height: 1.4;
+            margin-bottom: 0.8rem;
+            flex-shrink: 0;
+        }
+
+        /* Choice buttons container vertical stack */
+        .choices-vertical-pipeline {
+            display: flex;
+            flex-direction: column;
+            gap: 0.6rem;
+            flex-grow: 1;
+            min-height: 0;
+            justify-content: center;
+        }
+
+        .choice-btn-node {
+            background-color: #ffffff;
+            border: 1px solid #cbd5e1;
+            padding: 0.9rem 1.2rem;
+            border-radius: 6px;
+            font-size: 0.88rem;
+            font-weight: 600;
+            color: #475569;
+            cursor: pointer;
+            text-align: left;
+            line-height: 1.4;
+            transition: all 0.2s ease;
+            width: 100%;
+        }
+
+        .choice-btn-node:hover {
+            background-color: #fbf9f6;
+            border-color: #7b9583;
+            color: #5c7564;
+            transform: translateX(3px);
+        }
+
+        /* Success Layer overlay view inside card boundaries */
+        .victory-stage-overlay {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
