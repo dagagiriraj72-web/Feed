@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Five Pillars of Digital Transformation - Simulation Game</title>
+    <title>Five Pillars of Digital Transformation - Fixed Arena</title>
     <style>
         * {
             box-sizing: border-box;
@@ -22,9 +22,9 @@
             overflow: hidden;
         }
 
-        /* 16:9 STORYLINE VIEWPORT ENFORCEMENT FRAME
-           Locks layout bounds at 1280x720 to prevent text block collisions,
-           overlapping panels, or vertical cropping in standard Web Objects.
+        /* 16:9 PRESENTATION CONTAINER FRAME
+           Guarantees strict canvas constraints (1280x720) to completely 
+           eliminate overlapping, vertical cropping, or element collisions.
         */
         .slide-wrapper {
             width: 100%;
@@ -40,7 +40,6 @@
             box-sizing: border-box;
         }
 
-        /* Header Styles */
         .header-section {
             margin-bottom: 0.4rem;
             flex-shrink: 0;
@@ -66,7 +65,6 @@
             border-radius: 2px;
         }
 
-        /* Layout Grid Wrapper */
         .workspace-matrix {
             display: flex;
             flex-direction: column;
@@ -75,7 +73,7 @@
             margin: 0.6rem 0;
         }
 
-        /* Horizontal Tabs Header Bar */
+        /* Horizontal Folder Tabs Bar Layout */
         .tab-navigation-strip {
             display: grid;
             grid-template-columns: repeat(5, 1fr);
@@ -118,7 +116,7 @@
             text-align: center;
         }
 
-        /* Active Tab Accent Coloring Maps */
+        /* Active Selected State Accents (Mapped horizontally to original design) */
         .pillar-tab-btn.active-tab {
             background-color: #ffffff;
             padding-top: 0.9rem;
@@ -132,7 +130,7 @@
         .pillar-tab-btn.active-tab .tab-title-lbl { color: #cd674c; }
         .pillar-tab-btn.active-tab[data-id="2"] .tab-title-lbl, .pillar-tab-btn.active-tab[data-id="4"] .tab-title-lbl { color: #5c7564; }
 
-        /* Solved Mastery Tab Modifier States */
+        /* Mastered Tab State Modifier */
         .pillar-tab-btn.mastered-tab {
             border-top: 4px solid #2a9d8f !important;
             background-color: rgba(42, 157, 143, 0.03);
@@ -142,9 +140,8 @@
             text-decoration: line-through;
             opacity: 0.6;
         }
-        .pillar-tab-btn.mastered-tab .tab-index-lbl { color: #2a9d8f; }
 
-        /* Unified Un-overlapping Simulation Sandbox Card */
+        /* Unified Simulator Card Body Wrapper */
         .unified-arena-card {
             background-color: #ffffff;
             border: 1px solid rgba(61, 35, 20, 0.08);
@@ -154,7 +151,7 @@
             box-shadow: 0 6px 20px rgba(0, 0, 0, 0.02);
             padding: 2rem 2.2rem;
             flex-grow: 1;
-            min-height: 0; /* Prevents card contents from vertically stretching the wrapper layout */
+            min-height: 0;
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -163,16 +160,21 @@
             z-index: 1;
         }
 
-        .arena-view-group {
-            display: grid;
+        /* 100% FIXED STATIC SCENARIO PANELS (Hardcoded to prevent rendering failure) */
+        .scenario-panel-view {
+            display: none; /* Controlled via template state updates */
             grid-template-columns: 1fr 1fr;
             gap: 2.5rem;
             align-items: center;
             height: 100%;
-            min-height: 0;
+            width: 100%;
         }
 
-        /* Left Side Column: Scenario Context */
+        .scenario-panel-view.visible-view {
+            display: grid;
+        }
+
+        /* Left Side Context Column */
         .arena-brief-column {
             display: flex;
             flex-direction: column;
@@ -186,6 +188,7 @@
             text-transform: uppercase;
             letter-spacing: 0.5px;
         }
+        .panel-data-green .arena-tag-heading { color: #5c7564; }
 
         .metric-banner-box {
             font-size: 1rem;
@@ -197,6 +200,7 @@
             border-radius: 4px;
             line-height: 1.4;
         }
+        .panel-data-green .metric-banner-box { border-left-color: #7b9583; }
 
         .challenge-statement-text {
             font-size: 1.25rem;
@@ -205,7 +209,7 @@
             line-height: 1.45;
         }
 
-        /* Right Side Column: Click Choices Stack */
+        /* Right Side Choice Click Options Stack */
         .arena-input-column {
             display: flex;
             flex-direction: column;
@@ -213,7 +217,6 @@
             width: 100%;
         }
 
-        /* Interactive Choice Buttons */
         .choice-interaction-card {
             background-color: #ffffff;
             border: 1px solid #cbd5e1;
@@ -226,6 +229,7 @@
             text-align: left;
             line-height: 1.4;
             transition: all 0.2s ease;
+            width: 100%;
         }
 
         .choice-interaction-card:hover {
@@ -234,8 +238,12 @@
             color: #cd674c;
             transform: translateX(3px);
         }
+        .panel-data-green .choice-interaction-card:hover {
+            border-color: #7b9583;
+            color: #5c7564;
+        }
 
-        /* Success Screen Display Overlay */
+        /* Success Stage Overlay */
         .stage-success-overlay {
             display: none;
             flex-direction: column;
@@ -247,13 +255,17 @@
             gap: 0.8rem;
         }
 
+        .stage-success-overlay.visible-success {
+            display: flex;
+        }
+
         .success-heading-text {
             font-size: 1.4rem;
             font-weight: 800;
             color: #2a9d8f;
         }
 
-        /* Footer Info Row */
+        /* Bottom Footer Row */
         .footer-bar {
             display: flex;
             justify-content: space-between;
@@ -289,175 +301,81 @@
         </div>
 
         <div class="workspace-matrix">
-            
-            <div class="tab-navigation-strip" id="tabs-strip-container">
-                <button class="pillar-tab-btn active-tab" data-id="1" id="tab-0" onclick="switchActivePillarTab(0)">
+            <div class="tab-navigation-strip">
+                <button class="pillar-tab-btn active-tab" data-id="1" id="tab-0" onclick="switchTab(0)">
                     <span class="tab-index-lbl">Pillar 1</span>
                     <span class="tab-title-lbl">Cloud & Infra</span>
                 </button>
-                <button class="pillar-tab-btn" data-id="2" id="tab-1" onclick="switchActivePillarTab(1)">
+                <button class="pillar-tab-btn" data-id="2" id="tab-1" onclick="switchTab(1)">
                     <span class="tab-index-lbl">Pillar 2</span>
                     <span class="tab-title-lbl">Data & AI</span>
                 </button>
-                <button class="pillar-tab-btn" data-id="3" id="tab-2" onclick="switchActivePillarTab(2)">
+                <button class="pillar-tab-btn" data-id="3" id="tab-2" onclick="switchTab(2)">
                     <span class="tab-index-lbl">Pillar 3</span>
                     <span class="tab-title-lbl">Automation</span>
                 </button>
-                <button class="pillar-tab-btn" data-id="4" id="tab-3" onclick="switchActivePillarTab(3)">
+                <button class="pillar-tab-btn" data-id="4" id="tab-3" onclick="switchTab(3)">
                     <span class="tab-index-lbl">Pillar 4</span>
                     <span class="tab-title-lbl">Customer Exp</span>
                 </button>
-                <button class="pillar-tab-btn" data-id="5" id="tab-4" onclick="switchActivePillarTab(4)">
+                <button class="pillar-tab-btn" data-id="5" id="tab-4" onclick="switchTab(4)">
                     <span class="tab-index-lbl">Pillar 5</span>
                     <span class="tab-title-lbl">Cybersecurity</span>
                 </button>
             </div>
 
-            <div class="unified-arena-card" id="sandbox-card-window">
+            <div class="unified-arena-card" id="sandbox-container">
                 
-                <div class="arena-view-group" id="interactive-view-block">
+                <div class="scenario-panel-view visible-view" id="view-0">
                     <div class="arena-brief-column">
-                        <div class="arena-tag-heading" id="arena-tag-title">Transformation Domain 1 of 5</div>
-                        <div class="metric-banner-box" id="arena-metric-text">Market Metric: 85% of enterprises adopt cloud-first by 2026</div>
-                        <h2 class="challenge-statement-text" id="arena-challenge-text">Scenario Challenge: Your organization needs to deploy an expansion stack across multiple geographic nodes. What architecture approach do you choose?</h2>
+                        <div class="arena-tag-heading">Transformation Domain 1 of 5</div>
+                        <div class="metric-banner-box">Market Metric: 85% of enterprises adopt cloud-first by 2026</div>
+                        <h2 class="challenge-statement-text">Scenario Challenge: Your organization needs to deploy an expansion stack across multiple geographic nodes. What architecture approach do you choose?</h2>
                     </div>
-                    <div class="arena-input-column" id="arena-options-container">
-                        </div>
+                    <div class="arena-input-column">
+                        <button class="choice-interaction-card" onclick="submitDecision(0, true)">Adopt a distributed cloud-first container model with elastic autoscaling algorithms.</button>
+                        <button class="choice-interaction-card" onclick="submitDecision(0, false)">Expand existing legacy on-premise physical servers to maintain localized control parameters.</button>
+                    </div>
                 </div>
 
-                <div class="stage-success-overlay" id="victory-overlay-panel">
-                    <span style="font-size: 2.5rem;">⚙️</span>
-                    <p class="success-heading-text">Strategic Architecture Aligned!</p>
-                    <p style="color: #6e5d53; font-size: 0.92rem;">Select an uncompleted folder tab from the top row to continue processing transformation scenarios.</p>
+                <div class="scenario-panel-view panel-data-green" id="view-1">
+                    <div class="arena-brief-column">
+                        <div class="arena-tag-heading">Transformation Domain 2 of 5</div>
+                        <div class="metric-banner-box">Market Metric: $632B global AI spending by 2028</div>
+                        <h2 class="challenge-statement-text">Scenario Challenge: Your production systems are accumulating vast volumes of raw data, but business teams lack insight loops. How do you deploy infrastructure?</h2>
+                    </div>
+                    <div class="arena-input-column">
+                        <button class="choice-interaction-card" onclick="submitDecision(1, false)">Isolate information in static cold-storage silos until batch archiving procedures run.</button>
+                        <button class="choice-interaction-card" onclick="submitDecision(1, true)">Build automated live semantic data pipelines feeding responsive predictive AI models.</button>
+                    </div>
                 </div>
 
-            </div>
+                <div class="scenario-panel-view" id="view-2">
+                    <div class="arena-brief-column">
+                        <div class="arena-tag-heading">Transformation Domain 3 of 5</div>
+                        <div class="metric-banner-box">Market Metric: $270B hyperautomation market by 2034</div>
+                        <h2 class="challenge-statement-text">Scenario Challenge: Processing repetitive enterprise procurement invoices takes up massive manual operations time. How do you optimize?</h2>
+                    </div>
+                    <div class="arena-input-column">
+                        <button class="choice-interaction-card" onclick="submitDecision(2, true)">Deploy a specialized hyperautomation pipeline integrating continuous process workflows.</button>
+                        <button class="choice-interaction-card" onclick="submitDecision(2, false)">Hire part-time administrative contractors to process queues manually.</button>
+                    </div>
+                </div>
 
-        </div>
+                <div class="scenario-panel-view panel-data-green" id="view-3">
+                    <div class="arena-brief-column">
+                        <div class="arena-tag-heading">Transformation Domain 4 of 5</div>
+                        <div class="metric-banner-box">Market Metric: $68B CX management market by 2032</div>
+                        <h2 class="challenge-statement-text">Scenario Challenge: User retention markers dip following a new platform feature release update. What is your responsive move?</h2>
+                    </div>
+                    <div class="arena-input-column">
+                        <button class="choice-interaction-card" onclick="submitDecision(3, true)">Deploy continuous telemetry tracking tools to isolate user drop-offs and iterate loops instantly.</button>
+                        <button class="choice-interaction-card" onclick="submitDecision(3, false)">Roll back all software changes completely to match previous feature benchmarks.</button>
+                    </div>
+                </div>
 
-        <div class="footer-bar">
-            <div class="score-tracker-badge">Pillars Optimized: <span id="progress-val">0</span> / 5</div>
-            <div class="instruction-tag">Select a top folder tab to switch domains, then choose the optimal operational response.</div>
-        </div>
-    </div>
-
-    <script>
-        // Data Matrix mapping text variables and dynamic multiple-choice scenario options
-        const pillarsSimulationMatrix = [
-            {
-                stat: "Market Metric: 85% of enterprises adopt cloud-first by 2026",
-                question: "Scenario Challenge: Your organization needs to deploy an expansion stack across multiple geographic nodes. What architecture approach do you choose?",
-                choices: [
-                    { text: "Adopt a distributed cloud-first container model with elastic autoscaling algorithms.", correct: true },
-                    { text: "Expand existing legacy on-premise physical servers to maintain localized control parameters.", correct: false }
-                ]
-            },
-            {
-                stat: "Market Metric: $632B global AI spending by 2028",
-                question: "Scenario Challenge: Your production systems are accumulating vast volumes of raw data, but business teams lack insight loops. How do you deploy infrastructure?",
-                choices: [
-                    { text: "Isolate information in static cold-storage silos until batch archiving procedures run.", correct: false },
-                    { text: "Build automated live semantic data pipelines feeding responsive predictive AI models.", correct: true }
-                ]
-            },
-            {
-                stat: "Market Metric: $270B hyperautomation market by 2034",
-                question: "Scenario Challenge: Processing repetitive enterprise procurement invoices takes up massive manual operations time. How do you optimize?",
-                choices: [
-                    { text: "Deploy a specialized hyperautomation pipeline integrating continuous process workflows.", correct: true },
-                    { text: "Hire part-time administrative contractors to process queues manually.", correct: false }
-                ]
-            },
-            {
-                stat: "Market Metric: $68B CX management market by 2032",
-                question: "Scenario Challenge: User retention markers dip following a new platform feature release update. What is your responsive move?",
-                choices: [
-                    { text: "Deploy continuous telemetry tracking tools to isolate user drop-offs and iterate loops instantly.", correct: true },
-                    { text: "Roll back all software changes completely to match previous feature benchmarks.", correct: false }
-                ]
-            },
-            {
-                stat: "Market Metric: 81% plan zero-trust frameworks by 2026",
-                question: "Scenario Challenge: Your network expands with multi-cloud endpoints and hybrid employee nodes. What protective protocol do you enforce?",
-                choices: [
-                    { text: "Enforce network-perimeter firewalls assuming full implicit trust for inside accounts.", correct: false },
-                    { text: "Embed an absolute Zero-Trust framework requiring continuous adaptive identity validation.", correct: true }
-                ]
-            }
-        ];
-
-        let activeTabIdx = 0;
-        let masteredStateMap = { 0: false, 1: false, 2: false, 3: false, 4: false };
-
-        function loadSimulationStage() {
-            const data = pillarsSimulationMatrix[activeTabIdx];
-            const interactiveBlock = document.getElementById("interactive-view-block");
-            const victoryPanel = document.getElementById("victory-overlay-panel");
-            const optionsContainer = document.getElementById("arena-options-container");
-            
-            // Check if active selector index is already completed
-            if (masteredStateMap[activeTabIdx]) {
-                interactiveBlock.style.display = "none";
-                victoryPanel.style.display = "flex";
-                return;
-            }
-
-            interactiveBlock.style.display = "grid";
-            victoryPanel.style.display = "none";
-
-            document.getElementById("arena-stage-title").innerText = `Transformation Domain ${activeTabIdx + 1} of 5`;
-            document.getElementById("arena-metric-text").innerText = data.stat;
-            document.getElementById("arena-challenge-text").innerText = data.question;
-
-            // DYNAMIC RENDER FIX: Re-create and append interactive choice cards safely on initialization
-            optionsContainer.innerHTML = "";
-            data.choices.forEach(choice => {
-                const btn = document.createElement("button");
-                btn.className = "choice-interaction-card";
-                btn.innerText = choice.text;
-                btn.onclick = () => evaluateChoiceInput(choice.correct);
-                optionsContainer.appendChild(btn);
-            });
-        }
-
-        function switchActivePillarTab(targetTabIdx) {
-            if (targetTabIdx === activeTabIdx) return;
-
-            // Remove highlighted states from the preceding selection node
-            document.getElementById(`tab-${activeTabIdx}`).classList.remove("active-tab");
-            
-            // Set new active indicators
-            activeTabIdx = targetTabIdx;
-            document.getElementById(`tab-${activeTabIdx}`).classList.add("active-tab");
-
-            loadSimulationStage();
-        }
-
-        function evaluateChoiceInput(isCorrectInputPath) {
-            if (isCorrectInputPath) {
-                masteredStateMap[activeTabIdx] = true;
-
-                // Toggle folder navigation mastery tags
-                const activeTabBtn = document.getElementById(`tab-${activeTabIdx}`);
-                activeTabBtn.classList.add("mastered-tab");
-
-                recalculateScoreMetrics();
-                loadSimulationStage(); // Re-render panels to show success overlay instantly
-            } else {
-                // Flash main arena layout dashboard wrapper to communicate error choice path feedback
-                const windowBoard = document.getElementById("sandbox-card-window");
-                windowBoard.style.backgroundColor = "#faeae1";
-                setTimeout(() => windowBoard.style.backgroundColor = "#ffffff", 350);
-            }
-        }
-
-        function recalculateScoreMetrics() {
-            const currentTotalScore = Object.values(masteredStateMap).filter(Boolean).length;
-            document.getElementById("progress-val").innerText = currentTotalScore;
-        }
-
-        // Initialize execution setup parameters on load mount
-        loadSimulationStage();
-    </script>
-</body>
-</html>
+                <div class="scenario-panel-view" id="view-4">
+                    <div class="arena-brief-column">
+                        <div class="arena-tag-heading">Transformation Domain 5 of 5</div>
+                        <div class="metric-banner-box">Market Metric: 81% plan zero-trust frameworks by 2026</div>
+                        <h2 class="challenge-statement-text
