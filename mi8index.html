@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Five Pillars of Digital Transformation</title>
+    <title>Five Pillars of Digital Transformation - Simulation Game</title>
     <style>
         * {
             box-sizing: border-box;
@@ -22,9 +22,9 @@
             overflow: hidden;
         }
 
-        /* 16:9 STORYLINE CANVAS DESKTOP FOOTPRINT
-           Locks down viewport boundaries at 1280x720 to strictly eliminate 
-           vertical bleed, text box clipping, or scrollbar regressions.
+        /* 16:9 STORYLINE VIEWPORT ENFORCEMENT FRAME
+           Locks layout bounds at 1280x720 to prevent text block collisions,
+           overlapping panels, or vertical cropping in standard Web Objects.
         */
         .slide-wrapper {
             width: 100%;
@@ -40,6 +40,7 @@
             box-sizing: border-box;
         }
 
+        /* Header Styles */
         .header-section {
             margin-bottom: 0.4rem;
             flex-shrink: 0;
@@ -65,7 +66,7 @@
             border-radius: 2px;
         }
 
-        /* FLEX WORKSPACE MATRIX SYSTEM */
+        /* Layout Grid Wrapper */
         .workspace-matrix {
             display: flex;
             flex-direction: column;
@@ -74,7 +75,7 @@
             margin: 0.6rem 0;
         }
 
-        /* HORIZONTAL COHESIVE FOLDER TABS */
+        /* Horizontal Tabs Header Bar */
         .tab-navigation-strip {
             display: grid;
             grid-template-columns: repeat(5, 1fr);
@@ -117,7 +118,7 @@
             text-align: center;
         }
 
-        /* Active Tab Accent Mappings (Matches image_be6b5e.png Styling rules) */
+        /* Active Tab Accent Coloring Maps */
         .pillar-tab-btn.active-tab {
             background-color: #ffffff;
             padding-top: 0.9rem;
@@ -131,7 +132,7 @@
         .pillar-tab-btn.active-tab .tab-title-lbl { color: #cd674c; }
         .pillar-tab-btn.active-tab[data-id="2"] .tab-title-lbl, .pillar-tab-btn.active-tab[data-id="4"] .tab-title-lbl { color: #5c7564; }
 
-        /* Mastered Operational State Tabs mapping */
+        /* Solved Mastery Tab Modifier States */
         .pillar-tab-btn.mastered-tab {
             border-top: 4px solid #2a9d8f !important;
             background-color: rgba(42, 157, 143, 0.03);
@@ -143,7 +144,7 @@
         }
         .pillar-tab-btn.mastered-tab .tab-index-lbl { color: #2a9d8f; }
 
-        /* SPATIAL PROTECTION WORKSPACE ARENA CARD */
+        /* Unified Un-overlapping Simulation Sandbox Card */
         .unified-arena-card {
             background-color: #ffffff;
             border: 1px solid rgba(61, 35, 20, 0.08);
@@ -151,9 +152,9 @@
             border-bottom-right-radius: 12px;
             border-top-right-radius: 12px;
             box-shadow: 0 6px 20px rgba(0, 0, 0, 0.02);
-            padding: 2.2rem;
+            padding: 2rem 2.2rem;
             flex-grow: 1;
-            min-height: 0; /* Keeps layout strictly bounded internally */
+            min-height: 0; /* Prevents card contents from vertically stretching the wrapper layout */
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -171,7 +172,7 @@
             min-height: 0;
         }
 
-        /* Left Content Column */
+        /* Left Side Column: Scenario Context */
         .arena-brief-column {
             display: flex;
             flex-direction: column;
@@ -204,7 +205,7 @@
             line-height: 1.45;
         }
 
-        /* Right Click Scenario Options Column */
+        /* Right Side Column: Click Choices Stack */
         .arena-input-column {
             display: flex;
             flex-direction: column;
@@ -212,10 +213,11 @@
             width: 100%;
         }
 
+        /* Interactive Choice Buttons */
         .choice-interaction-card {
             background-color: #ffffff;
             border: 1px solid #cbd5e1;
-            padding: 1rem 1.2rem;
+            padding: 1.1rem 1.3rem;
             border-radius: 6px;
             font-size: 0.92rem;
             font-weight: 600;
@@ -233,7 +235,7 @@
             transform: translateX(3px);
         }
 
-        /* Success Layer overlay view */
+        /* Success Screen Display Overlay */
         .stage-success-overlay {
             display: none;
             flex-direction: column;
@@ -251,7 +253,7 @@
             color: #2a9d8f;
         }
 
-        /* Lower Metrics Utility Footer Bar Row */
+        /* Footer Info Row */
         .footer-bar {
             display: flex;
             justify-content: space-between;
@@ -282,15 +284,12 @@
 <body>
 
     <div class="slide-wrapper">
-        <!-- Main Top Header -->
         <div class="header-section">
             <h1 class="main-title">Five Pillars of Digital Transformation</h1>
         </div>
 
-        <!-- Stable Workspace Container Box -->
         <div class="workspace-matrix">
             
-            <!-- Horizontal Folder Selection Tab Strip (Matches image_be6b5e.png Verbatim layout) -->
             <div class="tab-navigation-strip" id="tabs-strip-container">
                 <button class="pillar-tab-btn active-tab" data-id="1" id="tab-0" onclick="switchActivePillarTab(0)">
                     <span class="tab-index-lbl">Pillar 1</span>
@@ -314,7 +313,6 @@
                 </button>
             </div>
 
-            <!-- Unified Workspace Card Dashboard Area -->
             <div class="unified-arena-card" id="sandbox-card-window">
                 
                 <div class="arena-view-group" id="interactive-view-block">
@@ -323,31 +321,28 @@
                         <div class="metric-banner-box" id="arena-metric-text">Market Metric: 85% of enterprises adopt cloud-first by 2026</div>
                         <h2 class="challenge-statement-text" id="arena-challenge-text">Scenario Challenge: Your organization needs to deploy an expansion stack across multiple geographic nodes. What architecture approach do you choose?</h2>
                     </div>
-                    <!-- Selection Options container where scenario questions load instantly -->
                     <div class="arena-input-column" id="arena-options-container">
-                        <!-- Populated programmatically via JavaScript runtime loops -->
-                    </div>
+                        </div>
                 </div>
 
                 <div class="stage-success-overlay" id="victory-overlay-panel">
                     <span style="font-size: 2.5rem;">⚙️</span>
                     <p class="success-heading-text">Strategic Architecture Aligned!</p>
-                    <p style="color: #6e5d53; font-size: 0.92rem;">Select an uncompleted domain folder tab from the top navigation row to continue processing data audits.</p>
+                    <p style="color: #6e5d53; font-size: 0.92rem;">Select an uncompleted folder tab from the top row to continue processing transformation scenarios.</p>
                 </div>
 
             </div>
 
         </div>
 
-        <!-- Metrics Tracker Row Strip Footer Row -->
         <div class="footer-bar">
             <div class="score-tracker-badge">Pillars Optimized: <span id="progress-val">0</span> / 5</div>
-            <div class="instruction-tag">Select a top folder tab to alternate fields, then deploy optimal operational parameters across the grid.</div>
+            <div class="instruction-tag">Select a top folder tab to switch domains, then choose the optimal operational response.</div>
         </div>
     </div>
 
     <script>
-        // High fidelity content simulation matrix mapping text variables verbatim from image_be6b5e.png dimensions
+        // Data Matrix mapping text variables and dynamic multiple-choice scenario options
         const pillarsSimulationMatrix = [
             {
                 stat: "Market Metric: 85% of enterprises adopt cloud-first by 2026",
@@ -400,7 +395,7 @@
             const victoryPanel = document.getElementById("victory-overlay-panel");
             const optionsContainer = document.getElementById("arena-options-container");
             
-            // Render victory panel screen overlay state instantly if current active layout node is completed
+            // Check if active selector index is already completed
             if (masteredStateMap[activeTabIdx]) {
                 interactiveBlock.style.display = "none";
                 victoryPanel.style.display = "flex";
@@ -414,7 +409,7 @@
             document.getElementById("arena-metric-text").innerText = data.stat;
             document.getElementById("arena-challenge-text").innerText = data.question;
 
-            // CRITICAL FIX: Explicitly clear, create, and insert the selection options buttons dynamically on load call
+            // DYNAMIC RENDER FIX: Re-create and append interactive choice cards safely on initialization
             optionsContainer.innerHTML = "";
             data.choices.forEach(choice => {
                 const btn = document.createElement("button");
@@ -428,10 +423,10 @@
         function switchActivePillarTab(targetTabIdx) {
             if (targetTabIdx === activeTabIdx) return;
 
-            // Remove previous navigation active highlight styles
+            // Remove highlighted states from the preceding selection node
             document.getElementById(`tab-${activeTabIdx}`).classList.remove("active-tab");
             
-            // Focus target folder element
+            // Set new active indicators
             activeTabIdx = targetTabIdx;
             document.getElementById(`tab-${activeTabIdx}`).classList.add("active-tab");
 
@@ -447,9 +442,9 @@
                 activeTabBtn.classList.add("mastered-tab");
 
                 recalculateScoreMetrics();
-                loadSimulationStage(); // Updates layout parameters seamlessly
+                loadSimulationStage(); // Re-render panels to show success overlay instantly
             } else {
-                // Micro-flash sandbox box container background to register wrong path input actions
+                // Flash main arena layout dashboard wrapper to communicate error choice path feedback
                 const windowBoard = document.getElementById("sandbox-card-window");
                 windowBoard.style.backgroundColor = "#faeae1";
                 setTimeout(() => windowBoard.style.backgroundColor = "#ffffff", 350);
@@ -461,7 +456,7 @@
             document.getElementById("progress-val").innerText = currentTotalScore;
         }
 
-        // Initialize execution on mount runtime loop hooks
+        // Initialize execution setup parameters on load mount
         loadSimulationStage();
     </script>
 </body>
