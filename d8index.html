@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Two-Way Door Decisions Matrix</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #fcf8f2;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100vw;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        /* 16:9 ARTICULATE STORYLINE BOUNDARY BOX
+           Enforces a firm 1280x720 footprint to stop lower margin layout bleed,
+           text collision regressions, or unexpected canvas scaling.
+        */
+        .slide-wrapper {
+            width: 100%;
+            height: 100%;
+            max-width: 1280px;
+            max-height: 720px;
+            aspect-ratio: 16 / 9;
+            padding: 2.2rem 3.5rem 1.5rem 3.5rem;
+            background-color: #fdfaf6;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            box-sizing: border-box;
+            position: relative;
+        }
+
+        /* Top Title Header */
+        .header-section {
+            margin-bottom: 0.5rem;
+            flex-shrink: 0;
+        }
+
+        .main-title {
+            font-size: 2.6rem;
+            color: #3d2314;
+            font-weight: 800;
+            line-height: 1.1;
+            position: relative;
+            padding-bottom: 0.4rem;
+        }
+
+        .main-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 140px;
+            height: 4px;
+            background-color: #4a584d;
+            border-radius: 2px;
+        }
+
+        /* DUAL DOOR HANGAR ARCHITECTURE WORKSPACE
+           Splits the screen 50/50 laterally so content elements never overlap.
+        */
+        .hangar-deck-workspace {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            flex-grow: 1;
+            min-height: 0; /* Clear overflow containment barrier line */
+            margin: 1.5rem 0;
+            align-items: stretch;
+        }
+
+        /* Interactive Door Stage Frame */
+        .door-bay-frame {
+            background-color: #f1ede9;
+            border-radius: 12px;
+            border: 1px solid rgba(61, 35, 20, 0.06);
+            position: relative;
+            perspective: 1200px; /* Activates structural 3D door rotation depths */
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            height: 100%;
+        }
+
+        /* PROTECTED BACKGROUND DATA TERMINAL
+           Holds text securely inside the base panel; cannot clip or shift layout bounds.
+        */
+        .internal-data-terminal {
+            padding: 2rem 2.2rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            height: 100%;
+            justify-content: center;
+            opacity: 0.4;
+            transition: opacity 0.3s ease;
+        }
+
+        .terminal-heading {
+            font-size: 1.6rem;
+            font-weight: 800;
+            color: #3d2314;
+            border-bottom: 2px solid rgba(61, 35, 20, 0.08);
+            padding-bottom: 0.4rem;
+        }
+
+        .terminal-bullet-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 0.6rem;
+        }
+
+        .terminal-bullet-node {
+            font-size: 1.05rem;
+            color: #4a382c;
+            font-weight: 600;
+            line-height: 1.45;
+            position: relative;
+            padding-left: 1.4rem;
+        }
+
+        .terminal-bullet-node::before {
+            content: "•";
+            color: #4a584d;
+            font-weight: bold;
+            font-size: 1.4rem;
+            position: absolute;
+            left: 2px;
+            top: -2px;
+        }
+
+        /* ANIMATED 3D MECHANICAL DOOR SHUTTER 
+           Acts as a high-fidelity overlay panel that swings open on touch/click input.
+        */
+        .mechanical-door-shutter {
+            position: absolute;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #3a443d;
+            color: #ffffff;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem;
+            cursor: pointer;
+            z-index: 5;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.08);
+            transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1), background-color 0.25s ease;
+        }
+
+        .left-bay .mechanical-door-shutter {
+            border-top-left-radius: 11px;
+            border-bottom-left-radius: 11px;
+            transform-origin: left center; /* Hinges doors to the outer screen wings */
+            background-image: linear-gradient(135deg, #3a443d 0%, #2f3832 100%);
+            border-right: 3px solid rgba(255,255,255,0.1);
+        }
+
+        .right-bay .mechanical-door-shutter {
+            border-top-right-radius: 11px;
+            border-bottom-right-radius: 11px;
+            transform-origin: right center;
+            background-image: linear-gradient(225deg, #4c5a4f 0%, #3a443d 100%);
+            border-left: 3px solid rgba(255,255,255,0.1);
+        }
+
+        /* Shutter Hover Highlights */
+        .mechanical-door-shutter:hover {
+            filter: brightness(1.06);
+        }
+
+        .door-graphics-icon {
+            font-size: 3rem;
+            margin-bottom: 0.6rem;
+            transition: transform 0.3s ease;
+        }
+        .mechanical-door-shutter:hover .door-graphics-icon {
+            transform: scale(1.1);
+        }
+
+        .door-shutter-title {
+            font-size: 1.8rem;
+            font-weight: 800;
+            letter-spacing: 0.5px;
+            margin-bottom: 0.3rem;
+        }
+
+        .door-shutter-prompt {
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: #a9bfae;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            border: 1px solid rgba(255,255,255,0.2);
+            padding: 0.25rem 0.6rem;
+            border-radius: 4px;
+            background-color: rgba(0,0,0,0.1);
+        }
+
+        /* SWING GEOMETRY ANIMATION STATE MODIFIERS 
+           Completely rotates the panel out of view to focus terminal parameters.
+        */
+        .door-bay-frame.state-open .mechanical-door-shutter {
+            pointer-events: none; /* Allows clicks to bypass open door element limits */
+        }
+        .left-bay.state-open .mechanical-door-shutter { transform: rotateY(-105deg); opacity: 0.05; }
+        .right-bay.state-open .mechanical-door-shutter { transform: rotateY(105deg); opacity: 0.05; }
+
+        .door-bay-frame.state-open .internal-data-terminal {
+            opacity: 1;
+        }
+
+        /* Fixed Bottom Insight Banner Box */
+        .insight-banner-row {
+            background-color: #fff8eb;
+            border: 1px solid #f4a261;
+            border-left: 4px solid #f4a261;
+            padding: 0.6rem 1.2rem;
+            border-radius: 6px;
+            font-size: 0.92rem;
+            color: #3d2314;
+            line-height: 1.4;
+            flex-shrink: 0;
+            margin-top: 0.4rem;
+        }
+
+        /* Lower Guideline Strip Row */
+        .footer-bar {
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            flex-shrink: 0;
+            margin-top: 0.2rem;
+        }
+
+        .instruction-tag {
+            font-size: 0.85rem;
+            color: #a39389;
+            font-style: italic;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="slide-wrapper">
+        <div class="header-section">
+            <h1 class="main-title">Two-Way Door Decisions</h1>
+        </div>
+
+        <div class="hangar-deck-workspace">
+            
+            <div class="door-bay-frame left-bay" id="bay-0" onclick="toggleHangarGate(0)">
+                <div class="mechanical-door-shutter">
+                    <span class="door-graphics-icon">🚪🔒</span>
+                    <h2 class="door-shutter-title">One-Way Doors</h2>
+                    <span class="door-shutter-prompt" id="prompt-0">Analyze Shutter</span>
+                </div>
+                <div class="internal-data-terminal">
+                    <h2 class="terminal-heading">One-Way Doors</h2>
+                    <ul class="terminal-bullet-list">
+                        <li class="terminal-bullet-node">Irreversible or extremely costly to undo</li>
+                        <li class="terminal-bullet-node">Require thorough analysis and deliberation</li>
+                        <li class="terminal-bullet-node">Examples: selling a business, major relocations</li>
+                        <li class="terminal-bullet-node">Deserve more time and consultation</li>
+                        <li class="terminal-bullet-node">About 10% of your decisions</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="door-bay-frame right-bay" id="bay-1" onclick="toggleHangarGate(1)">
+                <div class="mechanical-door-
