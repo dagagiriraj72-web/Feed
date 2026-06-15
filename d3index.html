@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IB Group - Fear of Making the Wrong Choice</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #fcf8f2;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100vw;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        /* HARD-LOCKED STORYLINE 16:9 VIEWPORT 
+           Constrains layout parameters strictly within 1280x720 to eliminate 
+           vertical layout bleed, text clipping, or overlapping regressions.
+        */
+        .slide-wrapper {
+            width: 100%;
+            height: 100%;
+            max-width: 1280px;
+            max-height: 720px;
+            aspect-ratio: 16 / 9;
+            padding: 1.8rem 3rem 1.2rem 3rem;
+            background-color: #fdfaf6;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            box-sizing: border-box;
+        }
+
+        /* Top Branded Corporate Header Row */
+        .header-section {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            border-bottom: 2px solid #e2dbd5;
+            padding-bottom: 0.5rem;
+            flex-shrink: 0;
+        }
+
+        .main-title {
+            font-size: 2.4rem;
+            color: #3d2314;
+            font-weight: 800;
+            line-height: 1.1;
+        }
+
+        .company-branding {
+            font-size: 1.1rem;
+            font-weight: 800;
+            color: #cd674c;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            background-color: rgba(205, 103, 76, 0.1);
+            padding: 0.3rem 0.8rem;
+            border-radius: 4px;
+        }
+
+        /* 2-Column Core Interface Split */
+        .workspace-layout {
+            display: grid;
+            grid-template-columns: 0.9fr 1.1fr;
+            gap: 2rem;
+            flex-grow: 1;
+            min-height: 0; /* Clear overflow containment barrier */
+            margin: 1rem 0;
+            align-items: center;
+        }
+
+        /* Left Side: 5 Operational Challenge Files Menu Stack */
+        .scenarios-menu-column {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            height: 100%;
+            justify-content: center;
+        }
+
+        .menu-selection-node {
+            background-color: #ffffff;
+            border: 1px solid rgba(61, 35, 20, 0.06);
+            border-left: 6px solid #cbd5e1;
+            border-radius: 8px;
+            padding: 0.75rem 1.2rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            transition: all 0.25s cubic-bezier(0.165, 0.84, 0.44, 1);
+        }
+
+        .menu-selection-node:hover {
+            transform: translateX(4px);
+            background-color: #fffdfb;
+        }
+
+        .node-index-shape {
+            width: 36px;
+            height: 36px;
+            border-radius: 6px;
+            background-color: #e2dbd5;
+            color: #3d2314;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 1rem;
+            font-weight: bold;
+            flex-shrink: 0;
+            transition: all 0.25s ease;
+        }
+
+        .node-title-text {
+            font-size: 1.05rem;
+            font-weight: 700;
+            color: #3d2314;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        /* Selection Status Modifiers */
+        .menu-selection-node.active-node {
+            background-color: rgba(205, 103, 76, 0.03);
+            border-color: #cd674c;
+            box-shadow: 0 4px 12px rgba(205, 103, 76, 0.05);
+        }
+        .menu-selection-node.active-node .node-title-text { color: #cd674c; }
+        .menu-selection-node.active-node .node-index-shape { background-color: #cd674c; color: #ffffff; }
+
+        .menu-selection-node.mastered-node {
+            border-left-color: #2a9d8f;
+            border-color: #2a9d8f;
+            background-color: rgba(42, 157, 143, 0.03);
+        }
+        .menu-selection-node.mastered-node .node-title-text {
+            color: #2a9d8f;
+            text-decoration: line-through;
+            opacity: 0.6;
+        }
+        .menu-selection-node.mastered-node .node-index-shape { background-color: #2a9d8f; color: #ffffff; }
+
+        /* Right Side Simulator Arena Box Card */
+        .simulation-arena-card {
+            background-color: #ffffff;
+            border-radius: 12px;
+            border: 1px solid rgba(61, 35, 20, 0.08);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.02);
+            padding: 1.8rem 2.2rem;
+            height: 100%;
+            min-height: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .arena-interactive-window {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            height: 100%;
+            min-height: 0;
+        }
+
+        .arena-header-tag {
+            font-size: 0.82rem;
+            font-weight: 700;
+            color: #cd674c;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 0.2rem;
+            flex-shrink: 0;
+        }
+
+        /* Original core insight text box from image_bb4830.png */
+        .arena-source-brief {
+            font-size: 1rem;
+            color: #554337;
+            font-weight: 600;
+            font-style: italic;
+            line-height: 1.45;
+            background-color: #fdfbf9;
+            padding: 0.6rem 1rem;
+            border-left: 4px solid #cd674c;
+            border-radius: 4px;
+            margin-bottom: 0.8rem;
+            flex-shrink: 0;
+        }
+
+        .arena-scenario-question {
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: #3d2314;
+            line-height: 1.4;
+            margin-bottom: 0.8rem;
+            flex-shrink: 0;
+        }
+
+        /* Choice options vertical container stack */
+        .options-vertical-pipeline {
+            display: flex;
+            flex-direction: column;
+            gap: 0.6rem;
+            flex-grow: 1;
+            min-height: 0;
+            justify-content: center;
+        }
+
+        .choice-btn-node {
+            background-color: #ffffff;
+            border: 1px solid #cbd5e1;
+            padding: 0.9rem 1.2rem;
+            border-radius: 6px;
+            font-size: 0.88rem;
+            font-weight: 600;
+            color: #475569;
+            cursor: pointer;
+            text-align: left;
+            line-height: 1.4;
+            transition: all 0.2s ease;
+            width: 100%;
+        }
+
+        .choice-btn-node:hover {
+            background-color: #fbf9f6;
+            border-color: #cd674c;
+            color: #cd674c;
+            transform: translateX(3px);
+        }
+
+        /* Victory Stage Layout Overlay inside card bounds */
+        .victory-stage-overlay {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            height: 100%;
+            gap: 0.6rem;
+        }
+
+        .victory-heading-text {
+            font-size: 1.4rem;
+            font-weight: 800;
+            color: #2a9d8f;
+        }
+
+        /* Bottom Fixed Corporate Metrics Row */
+        .footer-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-shrink: 0;
+            border-top: 1px solid rgba(61, 35, 20, 0.08);
+            padding-top: 0.6rem;
+        }
+
+        .score-tracker-badge {
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: #3d2314;
+            background-color: #fff8eb;
+            padding: 0.25rem 0.8rem;
+            border-radius: 20px;
+            border: 1px solid #f4a261;
+            font-variant-numeric: tabular-nums;
+        }
+
+        .instruction-tag {
+            font-size: 0.85rem;
+            color: #a39389;
+            font-style: italic;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="slide-wrapper">
+        <!-- Branded Corporate Header Row -->
+        <div class="header-section">
+            <h1 class="main-title">Fear of Making the Wrong Choice</h1>
+            <span class="company-branding">IB Group</span>
+        </div>
+
+        <!-- Non-Overlapping Main Workspace Matrix Flow -->
+        <div class="workspace-layout">
+            
+            <!-- Left Side Interactive Selector Menu -->
+            <div class="scenarios-menu-column" id="menu-container">
+                <div class="menu-selection-node active-node" id="node-0" onclick="shiftDilemmaModule(0)">
+                    <div class="node-index-shape">01</div>
+                    <span class="node-title-text">Reversibility Index</span>
+                </div>
+
+                <div class="menu-selection-node" id="node-1" onclick="shiftDilemmaModule(1)">
+                    <div class="node-index-shape">02</div>
+                    <span class="node-title-text">Velocity Optimization</span>
+                </div>
+
+                <div class="menu-selection-node" id="node-2" onclick="shiftDilemmaModule(2)">
+                    <div class="node-index-shape">03</div>
+                    <span class="node-title-text">Inaction vs. Regret</span>
+                </div>
+
+                <div class="menu-selection-node" id="node-3" onclick="shiftDilemmaModule(3)">
+                    <div class="node-index-shape">04</div>
+                    <span class="node-title-text">Telemetry Patterns</span>
+                </div>
+
+                <div class="menu-selection-node" id="node-4" onclick="shiftDilemmaModule(4)">
+                    <div class="node-index-shape">05</div>
+                    <span class="node-title-text">Failure Reframing</span>
+                </div>
+            </div>
+
+            <!-- Right Side Interactive L3 Simulation Arena Box Container -->
+            <div class="simulation-arena-card" id="sandbox-card">
+                <div class="arena-interactive-window" id="quiz-view-panel">
+                    <div>
+                        <div class="arena-header-tag" id="arena-stage-title">Dilemma Scenario 1 of 5</div>
+                        <div class="arena-source-brief" id="arena-brief-text">Most decisions are reversible — very few are truly permanent</div>
+                        <h2 class="arena-scenario-question" id="arena-question-text">IB Group Case Study: A newly integrated software portal exhibits minor layout rendering bugs during a pilot launch. How do you direct engineering parameters?</h2>
+                    </div>
+
+                    <div class="options-vertical-pipeline" id="options-box-container">
+                        <!-- Populated programmatically via JavaScript -->
+                    </div>
+                </div>
+
+                <!-- Complete Simulation Success Area Overlay Component -->
+                <div class="victory-stage-overlay" id="victory-panel">
+                    <span style="font-size: 2.5rem;">🚀</span>
+                    <p class="victory-heading-text">Execution Vector Aligned!</p>
+                    <p style="color: #6e5d53; font-size: 0.9rem;">Select an uncompleted leadership file node from the list menu grid to continue your alignment roadmap.</p>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Stable Progress Metric Row Utilities Footer -->
+        <div class="footer-bar">
+            <div class="score-tracker-badge">Decisions Made: <span id="progress-val">0</span> / 5</div>
+            <div class="instruction-tag">"Perfectionism is indecision wearing a mask of diligence." Resolve all dilemmas to align execution matrices.</div>
+        </div>
+    </div>
+
+    <script>
+        // High fidelity scenario data matrix derived exactly from image_bb4830.png text parameters
+        const dilemmaSimulationMatrix = [
+            {
+                brief: "Most decisions are reversible — very few are truly permanent",
+                question: "IB Group Case Study: A newly deployed automation tool shows minor layout rendering errors during regional user onboarding. How do you direct execution?",
+                choices: [
+                    { text: "Authorise deployment sprint iterations instantly, processing live validation tracking adjustments in production.", correct: true },
+                    { text: "Halt all regional processing pipelines indefinitely to run a structural system architecture audit.", correct: false }
+                ]
+            },
+            {
+                brief: "A good decision made now outperforms a perfect decision made too late",
+                question: "IB Group Case Study: A competitor enters your market vertical while your corporate committee continues to analyze potential market entries. What do you authorize?",
+                choices: [
+                    { text: "Extend analysis timelines by another quarter to secure additional metrics datasets.", correct: false },
+                    { text: "Launch the strategic minimum viable product (MVP) immediately to anchor customer real-time data feedback loops.", correct: true }
+                ]
+            },
+            {
+                brief: "The pain of regret from inaction often exceeds regret from a wrong choice",
+                question: "IB Group Case Study: Market variance metrics indicate potential processing bottlenecks, but system updates require a brief operational switchover down-time. What do you do?",
+                choices: [
+                    { text: "Execute the scheduled switchover window immediately to safeguard core capacity infrastructure.", correct: true },
+                    { text: "Postpone the maintenance indefinitely to completely avoid short-term operational friction risk flags.", correct: false }
+                ]
+            },
+            {
+                brief: "Mistakes provide data; inaction provides nothing",
+                question: "IB Group Case Study: A marketing test run yields weak user conversion metrics. How does the executive team evaluate the campaign outcome metrics?",
+                choices: [
+                    { text: "Scrap the target experimental pipeline completely to prevent any future project failure metrics logs.", correct: false },
+                    { text: "Isolate the drop-off data logs to adjust your next target market parameter loop configurations.", correct: true }
+                ]
+            },
+            {
+                brief: "Reframe failure as a course-correction opportunity, not a dead end",
+                question: "IB Group Case Study: An internal automated resource tool fails to gain regional workplace adoption. How do you redirect division parameters?",
+                choices: [
+                    { text: "Treat the system pilot branch as a structured course-correction data layer to re-align tool parameters.", correct: true },
+                    { text: "Issue strict compliance warnings across all internal staff branches to force system usage.", correct: false }
+                ]
+            }
+        ];
+
+        let activeDilemmaIdx = 0;
+        let masteredStateMap = { 0: false, 1: false, 2: false, 3: false, 4: false };
+
+        function loadSimulationStage() {
+            const data = dilemmaSimulationMatrix[activeDilemmaIdx];
+            
+            if (masteredStateMap[activeDilemmaIdx]) {
+                document.getElementById("quiz-view-panel").style.display = "none";
+                document.getElementById("victory-panel").style.display = "flex";
+                return;
+            }
+
+            document.getElementById("quiz-view-panel").style.display = "flex";
+            document.getElementById("victory-panel").style.display = "none";
+
+            document.getElementById("arena-stage-title").innerText = `Dilemma Scenario ${activeDilemmaIdx + 1} of 5`;
+            document.getElementById("arena-brief-text").innerText = data.brief;
+            document.getElementById("arena-question-text").innerText = data.question;
+
+            const boxContainer = document.getElementById("options-box-container");
+            boxContainer.innerHTML = "";
+
+            data.choices.forEach(choice => {
+                const button = document.createElement("button");
+                button.className = "choice-btn-node";
+                button.innerText = choice.text;
+                button.onclick = () => evaluatePlayerChoice(choice.correct);
+                boxContainer.appendChild(button);
+            });
+        }
+
+        function shiftDilemmaModule(targetIndex) {
+            document.getElementById(`node-${activeDilemmaIdx}`).classList.remove("active-node");
+            
+            activeDilemmaIdx = targetIndex;
+            document.getElementById(`node-${activeDilemmaIdx}`).classList.add("active-node");
+            
+            loadSimulationStage();
+        }
+
+        function evaluatePlayerChoice(isCorrectChoice) {
+            if (isCorrectChoice) {
+                masteredStateMap[activeDilemmaIdx] = true;
+                
+                const targetNode = document.getElementById(`node-${activeDilemmaIdx}`);
+                targetNode.classList.add("mastered-node");
+
+                recalculateScoreMetrics();
+                loadSimulationStage(); 
+            } else {
+                const sandboxCard = document.getElementById("sandbox-card");
+                sandboxCard.style.backgroundColor = "#faeae1";
+                setTimeout(() => {
+                    sandboxCard.style.backgroundColor = "#ffffff";
+                }, 350);
+            }
+        }
+
+        function recalculateScoreMetrics() {
+            const currentTotalScore = Object.values(masteredStateMap).filter(Boolean).length;
+            document.getElementById("progress-val").innerText = currentTotalScore;
+            
+            if (currentTotalScore === 5) {
+                document.getElementById("progress-val").parentElement.style.color = "#2a9d8f";
+                document.getElementById("progress-val").parentElement.style.borderColor = "#2a9d8f";
+            }
+        }
+
+        loadSimulationStage();
+    </script>
+</body>
+</html>
