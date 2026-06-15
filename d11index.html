@@ -1,0 +1,596 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Leading with Decisiveness - L3 Command Center</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #fcf8f2;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100vw;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        /* 16:9 STORYLINE PRESENTATION CANVAS MAXIMUM FOOTPRINT
+           Locks layout boundaries tightly at 1280x720 to completely block 
+           vertical bleed, text collisions, or accidental scrollbar cutting.
+        */
+        .slide-wrapper {
+            width: 100%;
+            height: 100%;
+            max-width: 1280px;
+            max-height: 720px;
+            aspect-ratio: 16 / 9;
+            padding: 2.2rem 3.5rem 1.2rem 3.5rem;
+            background-color: #fdfaf6;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            box-sizing: border-box;
+            position: relative;
+        }
+
+        /* Confetti Overlay Canvas layer bounds */
+        #confetti-canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 50;
+        }
+
+        /* Top Title Header */
+        .header-section {
+            margin-bottom: 0.5rem;
+            flex-shrink: 0;
+        }
+
+        .main-title {
+            font-size: 2.6rem;
+            color: #3d2314;
+            font-weight: 800;
+            line-height: 1.1;
+            position: relative;
+            padding-bottom: 0.4rem;
+        }
+
+        .main-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 140px;
+            height: 4px;
+            background-color: #7b9583;
+            border-radius: 2px;
+        }
+
+        /* Dual Column Split Layout Workspace Matrix */
+        .workspace-layout {
+            display: grid;
+            grid-template-columns: 0.95fr 1.05fr;
+            gap: 2.5rem;
+            flex-grow: 1;
+            min-height: 0; 
+            margin: 0.8rem 0;
+            align-items: stretch;
+            position: relative;
+            z-index: 10;
+        }
+
+        /* Left Side: 2x2 Grid Selection Cards */
+        .command-trait-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            grid-template-rows: 1fr 1fr;
+            gap: 10px;
+            height: 100%;
+        }
+
+        .trait-selection-node {
+            background-color: #ffffff;
+            border: 1px solid rgba(61, 35, 20, 0.06);
+            border-radius: 8px;
+            padding: 1.2rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.25s cubic-bezier(0.165, 0.84, 0.44, 1);
+        }
+
+        .trait-selection-node:hover {
+            transform: scale(0.985);
+            background-color: #fffdfb;
+        }
+
+        /* Icon Badge Elements (Directly matching image_ae9548.png layouts) */
+        .node-symbol-circle {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background-color: #7b9583;
+            color: #ffffff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 1.2rem;
+            font-weight: bold;
+            margin-bottom: 0.4rem;
+            transition: background-color 0.2s ease;
+        }
+
+        .node-title-lbl {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: #3d2314;
+            line-height: 1.2;
+        }
+
+        .node-status-tag {
+            font-size: 0.7rem;
+            font-weight: 800;
+            color: #8d7d74;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-top: 0.2rem;
+        }
+
+        /* Active Focus and Cleared Mastery States Modifiers */
+        .trait-selection-node.active-node {
+            background-color: rgba(123, 149, 131, 0.04);
+            border-color: #7b9583;
+            box-shadow: inset 0 0 0 2px #7b9583;
+        }
+
+        .trait-selection-node.mastered-node {
+            border-color: #2a9d8f;
+            background-color: rgba(42, 157, 143, 0.03);
+            box-shadow: none;
+        }
+        .trait-selection-node.mastered-node .node-title-lbl {
+            color: #2a9d8f;
+            text-decoration: line-through;
+            opacity: 0.6;
+        }
+        .trait-selection-node.mastered-node .node-symbol-circle {
+            background-color: #2a9d8f;
+        }
+
+        /* Right Side: Interactive Strategy Simulation Arena */
+        .command-arena-card {
+            background-color: #ffffff;
+            border-radius: 12px;
+            border: 1px solid rgba(61, 35, 20, 0.08);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.02);
+            padding: 1.8rem 2.2rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            height: 100%;
+            min-height: 0;
+        }
+
+        .arena-interactive-panel {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            height: 100%;
+            min-height: 0;
+        }
+
+        .arena-header-tag {
+            font-size: 0.82rem;
+            font-weight: 700;
+            color: #7b9583;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 0.2rem;
+            flex-shrink: 0;
+        }
+
+        /* Original textbook explanation block from image_ae9548.png */
+        .arena-source-brief {
+            font-size: 0.95rem;
+            color: #6e5d53;
+            line-height: 1.45;
+            background-color: #fdfbf9;
+            padding: 0.6rem 1rem;
+            border-left: 4px solid #7b9583;
+            border-radius: 4px;
+            margin-bottom: 0.8rem;
+            flex-shrink: 0;
+        }
+
+        .arena-scenario-question {
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: #3d2314;
+            line-height: 1.4;
+            margin-bottom: 0.8rem;
+            flex-shrink: 0;
+        }
+
+        /* Choice options pipeline container */
+        .choices-vertical-pipeline {
+            display: flex;
+            flex-direction: column;
+            gap: 0.6rem;
+            flex-grow: 1;
+            min-height: 0;
+            justify-content: center;
+        }
+
+        .choice-btn-node {
+            background-color: #ffffff;
+            border: 1px solid #cbd5e1;
+            padding: 0.9rem 1.2rem;
+            border-radius: 6px;
+            font-size: 0.88rem;
+            font-weight: 600;
+            color: #475569;
+            cursor: pointer;
+            text-align: left;
+            line-height: 1.4;
+            transition: all 0.2s ease;
+            width: 100%;
+        }
+
+        .choice-btn-node:hover {
+            background-color: #fbf9f6;
+            border-color: #7b9583;
+            color: #5c7564;
+            transform: translateX(3px);
+        }
+
+        /* Single Segment Victory Panel Overlay */
+        .victory-stage-overlay {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            height: 100%;
+            gap: 0.6rem;
+        }
+
+        .victory-heading-text {
+            font-size: 1.4rem;
+            font-weight: 800;
+            color: #2a9d8f;
+        }
+
+        /* Grand Total Campaign Clear Screen Overrides */
+        .campaign-clear-panel {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            height: 100%;
+            gap: 0.8rem;
+            animation: popInSuccess 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.2) forwards;
+        }
+
+        @keyframes popInSuccess {
+            from { opacity: 0; transform: scale(0.95); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        /* Bottom Fixed Metrics Row Status bar */
+        .footer-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-shrink: 0;
+            border-top: 1px solid rgba(61, 35, 20, 0.08);
+            padding-top: 0.6rem;
+            margin-top: 0.2rem;
+        }
+
+        .score-tracker-badge {
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: #3d2314;
+            background-color: #fff8eb;
+            padding: 0.25rem 0.8rem;
+            border-radius: 20px;
+            border: 1px solid #f4a261;
+            font-variant-numeric: tabular-nums;
+        }
+
+        .instruction-tag {
+            font-size: 0.85rem;
+            color: #a39389;
+            font-style: italic;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="slide-wrapper">
+        <!-- Confetti Particle Stream Layer Canvas -->
+        <canvas id="confetti-canvas"></canvas>
+
+        <!-- Slide Frame Header -->
+        <div class="header-section">
+            <h1 class="main-title">Leading with Decisiveness</h1>
+        </div>
+
+        <!-- Non-Overlapping Matrix Dashboard Flow Layout -->
+        <div class="workspace-layout">
+            
+            <!-- Left Grid Menu Modules (Directly mapping labels from image_ae9548.png) -->
+            <div class="command-trait-grid" id="grid-container">
+                <!-- Module 1 -->
+                <div class="trait-selection-node active-node" id="node-0" onclick="shiftCommandModule(0)">
+                    <div class="node-symbol-circle">▶</div>
+                    <span class="node-title-lbl">Communicate Clearly</span>
+                    <span class="node-status-tag" id="badge-0">Active</span>
+                </div>
+                <!-- Module 2 -->
+                <div class="trait-selection-node" id="node-1" onclick="shiftCommandModule(1)">
+                    <div class="node-symbol-circle">⚑</div>
+                    <span class="node-title-lbl">Own the Outcome</span>
+                    <span class="node-status-tag" id="badge-1">Pending</span>
+                </div>
+                <!-- Module 3 -->
+                <div class="trait-selection-node" id="node-2" onclick="shiftCommandModule(2)">
+                    <div class="node-symbol-circle">⬌</div>
+                    <span class="node-title-lbl">Invite Input, Not Votes</span>
+                    <span class="node-status-tag" id="badge-2">Pending</span>
+                </div>
+                <!-- Module 4 -->
+                <div class="trait-selection-node" id="node-3" onclick="shiftCommandModule(3)">
+                    <div class="node-symbol-circle">⟳</div>
+                    <span class="node-title-lbl">Course-Correct Publicly</span>
+                    <span class="node-status-tag" id="badge-3">Pending</span>
+                </div>
+            </div>
+
+            <!-- Right Side: Interactive Simulation Arena Dashboard Panel -->
+            <div class="command-arena-card" id="sandbox-card">
+                
+                <!-- Standard Interaction View Wrapper -->
+                <div class="arena-interactive-panel" id="quiz-view-panel">
+                    <div>
+                        <div class="arena-header-tag" id="arena-stage-title">Command Scenario 1 of 4</div>
+                        <div class="arena-source-brief" id="arena-brief-text">State the decision, the reasoning, and the expected outcome. Ambiguity breeds confusion.</div>
+                        <h2 class="arena-scenario-question" id="arena-question-text">Scenario Challenge: A corporate operational transition creates minor division alignment frictions. What is your leadership move?</h2>
+                    </div>
+
+                    <div class="choices-vertical-pipeline" id="options-box-container">
+                        <!-- Populated programmatically via Script loops -->
+                    </div>
+                </div>
+
+                <!-- Mid-Game Module Complete Panel -->
+                <div class="victory-stage-overlay" id="victory-panel">
+                    <span style="font-size: 2.5rem;">⚙️🛡️</span>
+                    <p class="victory-heading-text">Leadership Protocol Aligned!</p>
+                    <p style="color: #6e5d53; font-size: 0.92rem;">Select an unresolved command module from the left grid interface matrix to continue your leadership track simulation.</p>
+                </div>
+
+                <!-- Grand Total Campaign Victory Screen Overlay Panel -->
+                <div class="campaign-clear-panel" id="campaign-clear-panel">
+                    <span style="font-size: 3.5rem;">👑</span>
+                    <h2 style="color: #2a9d8f; font-size: 1.8rem; font-weight: 800;">Strategic Authority Achieved!</h2>
+                    <p style="color: #4a382c; font-size: 1rem; font-weight: 600; max-width: 420px; line-height: 1.45;">All operational decisive leadership attributes successfully activated, synchronized, and locked across organizational vectors.</p>
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- Stable Progress Metric Row Utilities Footer -->
+        <div class="footer-bar">
+            <div class="score-tracker-badge">Traits Mastered: <span id="progress-val">0</span> / 4</div>
+            <div class="instruction-tag">Isolate leadership competencies across the grid matrix, deploy the strategic action path, and secure organizational alignment.</div>
+        </div>
+    </div>
+
+    <script>
+        // Scenario data tracking arrays mapping verbatim descriptions parameters from image_ae9548.png
+        const competenciesMatrix = [
+            {
+                brief: "State the decision, the reasoning, and the expected outcome. Ambiguity breeds confusion.",
+                question: "Scenario Challenge: An upcoming plant migration schedule causes minor productivity friction logs among floor supervisors. How do you anchor authority vectors?",
+                choices: [
+                    { text: "Publish an absolute directive detailing the schedule, the technical rationale, and target timelines directly.", correct: true },
+                    { text: "Issue generic reassurance memos and allow regional team supervisors to navigate individual rollout windows.", correct: false }
+                ]
+            },
+            {
+                brief: "Take responsibility regardless of results. This builds credibility and trust with your team.",
+                question: "Scenario Challenge: A newly authorized logistics software update results in an unexpected regional delivery delay log. How do you respond?",
+                choices: [
+                    { text: "Publicly assume complete administrative accountability for the transition while engineers issue tracking hotfixes.", correct: true },
+                    { text: "Launch an internal diagnostic inquiry investigation to publicly isolate developer coding discrepancies.", correct: false }
+                ]
+            },
+            {
+                brief: "Seek perspectives before deciding, but don't turn every choice into a committee decision.",
+                question: "Scenario Challenge: A priority vendor alignment parameter needs verification, but internal focus team opinions remain split down the middle. What do you run?",
+                choices: [
+                    { text: "Convene an absolute focus board session to log employee feedback data, then independently announce the final vendor selection.", correct: true },
+                    { text: "Extend committee analysis workshops into next month to secure unanimous internal votes across all departments.", correct: false }
+                ]
+            },
+            {
+                brief: "When a decision needs changing, say so openly. This normalizes adaptive leadership.",
+                question: "Scenario Challenge: Real-time telemetry data confirms that a platform infrastructure tool rolled out last month is restricting throughput volumes. What do you do?",
+                choices: [
+                    { text: "Maintain the system branch rollout to protect initial executive forecasting frameworks and avoid visibility disruptions.", correct: false },
+                    { text: "Openly address the performance drops with stakeholders, halt the branch parameters, and shift back to optimized baselines.", correct: true }
+                ]
+            }
+        ];
+
+        let activeModuleIdx = 0;
+        let masteredStateMap = { 0: false, 1: false, 2: false, 3: false };
+
+        function loadSimulationStage() {
+            const data = competenciesMatrix[activeModuleIdx];
+            const currentTotalScore = Object.values(masteredStateMap).filter(Boolean).length;
+
+            // Grand Victory condition validation routing
+            if (currentTotalScore === 4) {
+                document.getElementById("quiz-view-panel").style.display = "none";
+                document.getElementById("victory-panel").style.display = "none";
+                document.getElementById("campaign-clear-panel").style.display = "flex";
+                igniteConfettiParticlesSystem();
+                return;
+            }
+            
+            // Standard individual quadrant view router loop checks
+            if (masteredStateMap[activeModuleIdx]) {
+                document.getElementById("quiz-view-panel").style.display = "none";
+                document.getElementById("campaign-clear-panel").style.display = "none";
+                document.getElementById("victory-panel").style.display = "flex";
+                return;
+            }
+
+            document.getElementById("quiz-view-panel").style.display = "flex";
+            document.getElementById("victory-panel").style.display = "none";
+            document.getElementById("campaign-clear-panel").style.display = "none";
+
+            document.getElementById("arena-stage-title").innerText = `Command Scenario ${activeModuleIdx + 1} of 4`;
+            document.getElementById("arena-brief-text").innerText = data.brief;
+            document.getElementById("arena-question-text").innerText = data.question;
+
+            // Generate option actions buttons layouts parameters inside target container footprint cleanly
+            const boxContainer = document.getElementById("options-box-container");
+            boxContainer.innerHTML = "";
+
+            data.choices.forEach(choice => {
+                const button = document.createElement("button");
+                button.className = "choice-btn-node";
+                button.innerText = choice.text;
+                button.onclick = () => evaluatePlayerChoice(choice.correct);
+                boxContainer.appendChild(button);
+            });
+        }
+
+        function shiftCommandModule(targetIndex) {
+            if (targetIndex === activeModuleIdx) return;
+
+            // Unset current menu highlights styles
+            document.getElementById(`node-${activeModuleIdx}`).classList.remove("active-node");
+            
+            activeModuleIdx = targetIndex;
+            document.getElementById(`node-${activeModuleIdx}`).classList.add("active-node");
+            
+            loadSimulationStage();
+        }
+
+        function evaluatePlayerChoice(isCorrectChoice) {
+            if (isCorrectChoice) {
+                masteredStateMap[activeModuleIdx] = true;
+                
+                // Toggle checked completion status badges properties fields
+                const targetNode = document.getElementById(`node-${activeModuleIdx}`);
+                targetNode.classList.add("mastered-node");
+                document.getElementById(`badge-${activeModuleIdx}`).innerText = "Mastered ✓";
+
+                recalculateScoreMetrics();
+                loadSimulationStage(); 
+            } else {
+                // Interactive micro-flash simulator window layout panel background to signal variance paths
+                const sandboxCard = document.getElementById("sandbox-card");
+                sandboxCard.style.backgroundColor = "#faeae1";
+                setTimeout(() => {
+                    sandboxCard.style.backgroundColor = "#ffffff";
+                }, 350);
+            }
+        }
+
+        function recalculateScoreMetrics() {
+            const currentTotalScore = Object.values(masteredStateMap).filter(Boolean).length;
+            document.getElementById("progress-val").innerText = currentTotalScore;
+        }
+
+        /* LIGHTWEIGHT HTML5 CANVAS CONFETTI ENGINE 
+           Bypasses external network dependencies to execute immediately inside Storyline slides.
+        */
+        function igniteConfettiParticlesSystem() {
+            const canvas = document.getElementById("confetti-canvas");
+            const ctx = canvas.getContext("2d");
+            
+            // Establish rendering view canvas dimensional limits dynamically
+            canvas.width = canvas.parentElement.offsetWidth;
+            canvas.height = canvas.parentElement.offsetHeight;
+
+            const piecesCount = 130;
+            const confettiColorsPipeline = ["#2a9d8f", "#e76f51", "#f4a261", "#e9c46a", "#7b9583", "#cd674c"];
+            let particleMatrixPool = [];
+
+            class ConfettiParticle {
+                constructor() {
+                    this.x = Math.random() * canvas.width;
+                    this.y = (Math.random() * canvas.height) - canvas.height;
+                    this.size = (Math.random() * 8) + 6;
+                    this.color = confettiColorsPipeline[Math.floor(Math.random() * confettiColorsPipeline.length)];
+                    this.speedY = (Math.random() * 3) + 2;
+                    this.speedX = (Math.random() * 2) - 1;
+                    this.rotation = Math.random() * 360;
+                    this.rotationSpeed = (Math.random() * 4) - 2;
+                }
+                update() {
+                    this.y += this.speedY;
+                    this.x += this.speedX;
+                    this.rotation += this.rotationSpeed;
+                    
+                    // Reset elements safely back to upper cloud ring baseline bounds once viewport drop limit is crossed
+                    if (this.y > canvas.height) {
+                        this.y = -20;
+                        this.x = Math.random() * canvas.width;
+                    }
+                }
+                draw() {
+                    ctx.save();
+                    ctx.translate(this.x, this.y);
+                    ctx.rotate(this.rotation * Math.PI / 180);
+                    ctx.fillStyle = this.color;
+                    ctx.fillRect(-this.size / 2, -this.size / 2, this.size, this.size);
+                    ctx.restore();
+                }
+            }
+
+            for (let i = 0; i < piecesCount; i++) {
+                particleMatrixPool.push(new ConfettiParticle());
+            }
+
+            function animationLoopRenderHook() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                
+                particleMatrixPool.forEach(particle => {
+                    particle.update();
+                    particle.draw();
+                });
+
+                requestAnimationFrame(animationLoopRenderHook);
+            }
+
+            animationLoopRenderHook();
+        }
+
+        // Initialize active dashboard pipeline properties maps parameters on mount run cycles
+        loadSimulationStage();
+    </script>
+</body>
+</html>
