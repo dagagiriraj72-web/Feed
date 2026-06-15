@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Breaking Analysis Paralysis - Interactive Terminal</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #fcf8f2;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100vw;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        /* 16:9 STORYLINE PRESENTATION CANVAS MAXIMUM FOOTPRINT
+           Locks down layout bounds at 1280x720 to completely eliminate vertical
+           bleed, clashing text boxes, or scrollbar regressions in standard Web Objects.
+        */
+        .slide-wrapper {
+            width: 100%;
+            height: 100%;
+            max-width: 1280px;
+            max-height: 720px;
+            aspect-ratio: 16 / 9;
+            padding: 2.2rem 3.5rem 1.5rem 3.5rem;
+            background-color: #fdfaf6;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            box-sizing: border-box;
+        }
+
+        /* Top Header Area */
+        .header-section {
+            margin-bottom: 0.5rem;
+            flex-shrink: 0;
+        }
+
+        .main-title {
+            font-size: 2.8rem;
+            color: #3d2314;
+            font-weight: 800;
+            line-height: 1.1;
+            position: relative;
+            padding-bottom: 0.4rem;
+        }
+
+        .main-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 140px;
+            height: 4px;
+            background-color: #3a443d;
+            border-radius: 2px;
+        }
+
+        /* HORIZONTAL PROCESS TIMELINE TRACK
+           Organizes the 4 steps laterally to ensure plenty of vertical text space underneath.
+        */
+        .roadmap-progress-pipeline {
+            display: grid;
+            grid-template-columns: 1fr auto 1fr auto 1fr auto 1fr;
+            align-items: center;
+            margin: 1.2rem 0;
+            flex-shrink: 0;
+            width: 100%;
+        }
+
+        .roadmap-node-btn {
+            background-color: #e2dbd5;
+            border: 1px solid rgba(61, 35, 20, 0.08);
+            border-top: 4px solid #cbd5e1;
+            border-radius: 8px;
+            padding: 0.8rem 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            cursor: pointer;
+            transition: all 0.25s cubic-bezier(0.165, 0.84, 0.44, 1);
+        }
+
+        .roadmap-node-btn:hover {
+            transform: translateY(-2px);
+            background-color: #ebdcd1;
+        }
+
+        .node-circle-number {
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+            background-color: #3a443d;
+            color: #ffffff;
+            font-size: 1.05rem;
+            font-weight: 800;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-shrink: 0;
+        }
+
+        .node-label-block {
+            display: flex;
+            flex-direction: column;
+            text-align: left;
+            min-width: 0;
+        }
+
+        .node-title-text {
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: #3d2314;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .node-status-text {
+            font-size: 0.72rem;
+            font-weight: 800;
+            color: #8d7d74;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .pipeline-connector {
+            width: 28px;
+            height: 4px;
+            background-color: #9db2a3;
+            margin: 0 0.4rem;
+            border-radius: 2px;
+            flex-shrink: 0;
+        }
+
+        /* Active Navigation Tab Modifier */
+        .roadmap-node-btn.active-step {
+            background-color: #ffffff;
+            border-top-color: #3a443d;
+            box-shadow: 0 4px 12px rgba(58, 68, 61, 0.06);
+            transform: translateY(-2px);
+        }
+        .roadmap-node-btn.active-step .node-title-text { color: #3a443d; }
+        .roadmap-node-btn.active-step .node-status-text { color: #3a443d; }
+
+        /* FIXED UN-OVERLAPPING EXECUTION DISPATCH BOARD (BOTTOM HALF)
+           Dedicated wide-open workspace area prioritizing layout containment.
+        */
+        .execution-board-card {
+            background-color: #ffffff;
+            border: 1px solid rgba(61, 35, 20, 0.08);
+            border-radius: 12px;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.02);
+            padding: 2.2rem 2.8rem;
+            flex-grow: 1;
+            min-height: 0; /* Clear overflow containment shield */
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        /* Hidden Content Panels Base Switcher Styles */
+        .board-view-panel {
+            display: none;
+            flex-direction: column;
+            gap: 0.6rem;
+            animation: panelFadeIn 0.3s ease forwards;
+        }
+
+        .board-view-panel.visible-panel {
+            display: flex;
+        }
+
+        @keyframes panelFadeIn {
+            from { opacity: 0; transform: translateY(4px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .panel-stage-tag {
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: #8d7d74;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .panel-core-heading {
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: #3d2314;
+            margin-bottom: 0.2rem;
+        }
+
+        .panel-definition-box {
+            font-size: 1.25rem;
+            color: #4a382c;
+            font-weight: 600;
+            line-height: 1.5;
+            background-color: #fdfbf9;
+            padding: 1rem 1.4rem;
+            border-left: 5px solid #3a443d;
+            border-radius: 6px;
+        }
+
+        /* Lower Guide Info Strip Row */
+        .footer-bar {
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            flex-shrink: 0;
+            border-top: 1px solid rgba(61, 35, 20, 0.06);
+            padding-top: 0.6rem;
+            margin-top: 0.4rem;
+        }
+
+        .instruction-tag {
+            font-size: 0.88rem;
+            color: #a39389;
+            font-style: italic;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="slide-wrapper">
+        <!-- Main Slide Header Title -->
+        <div class="header-section">
+            <h1 class="main-title">Breaking Analysis Paralysis</h1>
+        </div>
+
+        <!-- Horizontal Process Selection Track -->
+        <div class="roadmap-progress-pipeline">
+            <!-- Step 1 -->
+            <button class="roadmap-node-btn active-step" id="tab-0" onclick="switchRoadmapPhase(0)">
+                <div class="node-circle-number">1</div>
+                <div class="node-label-block">
+                    <span class="node-title-text">Set a Deadline</span>
+                    <span class="node-status-text" id="badge-0">Viewing</span>
+                </div>
+            </button>
+            <div class="pipeline-connector"></div>
+
+            <!-- Step 2 -->
+            <button class="roadmap-node-btn" id="tab-1" onclick="switchRoadmapPhase(1)">
+                <div class="node-circle-number">2</div>
+                <div class="node-label-block">
+                    <span class="node-title-text">Limit Options</span>
+                    <span class="node-status-text" id="badge-1">Select</span>
+                </div>
+            </button>
+            <div class="pipeline-connector"></div>
+
+            <!-- Step 3 -->
+            <button class="roadmap-node-btn" id="tab-2" onclick="switchRoadmapPhase(2)">
+                <div class="node-circle-number">3</div>
+                <div class="node-label-block">
+                    <span class="node-title-text">Define 'Good Enough'</span>
+                    <span class="node-status-text" id="badge-2">Select</span>
+                </div>
+            </button>
+            <div class="pipeline-connector"></div>
+
+            <!-- Step 4 -->
+            <button class="roadmap-node-btn" id="tab-3" onclick="switchRoadmapPhase(3)">
+                <div class="node-circle-number">4</div>
+                <div class="node-label-block">
+                    <span class="node-title-text">Decide and Move</span>
+                    <span class="node-status-text" id="badge-3">Select</span>
+                </div>
+            </button>
+        </div>
+
+        <!-- Stable Bounded Definition Card Terminal (Bypasses Overlaps Extrusion Errors) -->
+        <div class="execution-board-card" id="display-card-wrapper">
+            
+            <!-- Phase 1 View (Verbatim Text from image_aef75f.png) -->
+            <div class="board-view-panel visible-panel" id="view-0">
+                <span class="panel-stage-tag">Action Directive • Step 01</span>
+                <h2 class="panel-core-heading">Set a Deadline</h2>
+                <p class="panel-definition-box">Give yourself a firm cutoff — then honor it no matter what</p>
+            </div>
+
+            <!-- Phase 2 View -->
+            <div class="board-view-panel" id="view-1">
+                <span class="panel-stage-tag">Action Directive • Step 02</span>
+                <h2 class="panel-core-heading">Limit Options</h2>
+                <p class="panel-definition-box">Narrow to 2-3 choices maximum before deep comparison</p>
+            </div>
+
+            <!-- Phase 3 View -->
+            <div class="board-view-panel" id="view-2">
+                <span class="panel-stage-tag">Action Directive • Step 03</span>
+                <h2 class="panel-core-heading">Define 'Good Enough'</h2>
+                <p class="panel-definition-box">Write down minimum criteria before you start evaluating</p>
+            </div>
+
+            <!-- Phase 4 View -->
+            <div class="board-view-panel" id="view-3">
+                <span class="panel-stage-tag">Action Directive • Step 04</span>
+                <h2 class="panel-core-heading">Decide and Move</h2>
+                <p class="panel-definition-box">Choose, commit, and redirect energy to execution</p>
+            </div>
+
+        </div>
+
+        <!-- Lower Prompting Guideline Row Strip -->
+        <div class="footer-bar">
+            <div class="instruction-tag">Select an action node from the execution roadmap above to process tactical phase parameters.</div>
+        </div>
+    </div>
+
+    <script>
+        let currentPhaseIdx = 0;
+
+        function switchRoadmapPhase(targetIdx) {
+            if (targetIdx === currentPhaseIdx) return;
+
+            // Clear highlighted metrics from preceding node
+            document.getElementById(`tab-${currentPhaseIdx}`).classList.remove("active-step");
+            document.getElementById(`badge-${currentPhaseIdx}`).innerText = "Select";
+            document.getElementById(`view-${currentPhaseIdx}`).classList.remove("visible-panel");
+
+            // Build active indicators on targeted action layout item
+            currentPhaseIdx = targetIdx;
+            document.getElementById(`tab-${currentPhaseIdx}`).classList.add("active-step");
+            document.getElementById(`badge-${currentPhaseIdx}`).innerText = "Viewing";
+            document.getElementById(`view-${currentPhaseIdx}`).classList.add("visible-panel");
+
+            // Micro-interaction fluid visual shake confirmation inside bounds
+            const boardContainerCard = document.getElementById("display-card-wrapper");
+            boardContainerCard.style.transform = "scale(1.002)";
+            setTimeout(() => {
+                boardContainerCard.style.transform = "scale(1)";
+            }, 150);
+        }
+    </script>
+</body>
+</html>
