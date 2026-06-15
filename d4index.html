@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IB Group - The Overthinking Cycle</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #fcf8f2;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100vw;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        /* HARD-LOCKED STORYLINE 16:9 VIEWPORT 
+           Constrains layout parameters strictly within 1280x720 to eliminate 
+           vertical layout bleed, text clipping, or overlapping regressions.
+        */
+        .slide-wrapper {
+            width: 100%;
+            height: 100%;
+            max-width: 1280px;
+            max-height: 720px;
+            aspect-ratio: 16 / 9;
+            padding: 1.8rem 3rem 1.2rem 3rem;
+            background-color: #fdfaf6;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            box-sizing: border-box;
+        }
+
+        /* Top Branded Corporate Header Row */
+        .header-section {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            border-bottom: 2px solid #e2dbd5;
+            padding-bottom: 0.5rem;
+            flex-shrink: 0;
+        }
+
+        .main-title {
+            font-size: 2.4rem;
+            color: #3d2314;
+            font-weight: 800;
+            line-height: 1.1;
+        }
+
+        .company-branding {
+            font-size: 1.1rem;
+            font-weight: 800;
+            color: #4a584d;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            background-color: rgba(74, 88, 77, 0.1);
+            padding: 0.3rem 0.8rem;
+            border-radius: 4px;
+        }
+
+        /* HORIZONTAL SEQUENCE PROCESS TRACK 
+           Directly replicates the flow and styling nodes of image_bb41a2.png laterally.
+        */
+        .cycle-progress-pipeline {
+            display: grid;
+            grid-template-columns: 1fr auto 1fr auto 1fr auto 1fr;
+            align-items: center;
+            margin: 0.8rem 0;
+            flex-shrink: 0;
+            width: 100%;
+        }
+
+        .pipeline-node {
+            background-color: #ffffff;
+            border: 1px solid rgba(61, 35, 20, 0.08);
+            border-radius: 8px;
+            padding: 0.6rem 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            cursor: pointer;
+            transition: all 0.25s ease;
+        }
+
+        .pipeline-node:hover {
+            transform: translateY(-2px);
+            background-color: #fffdfb;
+        }
+
+        .node-circle-id {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background-color: #3a443d;
+            color: #ffffff;
+            font-size: 1rem;
+            font-weight: 800;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-shrink: 0;
+        }
+
+        .node-label-block {
+            display: flex;
+            flex-direction: column;
+            min-width: 0;
+        }
+
+        .node-title-lbl {
+            font-size: 1.05rem;
+            font-weight: 700;
+            color: #3d2314;
+        }
+
+        .node-status-lbl {
+            font-size: 0.72rem;
+            font-weight: 800;
+            color: #8d7d74;
+            text-transform: uppercase;
+        }
+
+        .pipeline-separator {
+            width: 24px;
+            height: 4px;
+            background-color: #9db2a3;
+            margin: 0 0.4rem;
+            border-radius: 2px;
+            flex-shrink: 0;
+        }
+
+        /* Status Modifiers for Track Steps */
+        .pipeline-node.active-step {
+            background-color: rgba(58, 68, 61, 0.04);
+            border-color: #3a443d;
+            box-shadow: 0 4px 12px rgba(58, 68, 61, 0.06);
+        }
+        .pipeline-node.active-step .node-title-lbl { color: #3a443d; }
+
+        .pipeline-node.interdicted-step {
+            border-color: #2a9d8f;
+            background-color: rgba(42, 157, 143, 0.03);
+        }
+        .pipeline-node.interdicted-step .node-title-lbl {
+            color: #2a9d8f;
+            text-decoration: line-through;
+            opacity: 0.6;
+        }
+        .pipeline-node.interdicted-step .node-circle-id {
+            background-color: #2a9d8f;
+        }
+
+        /* SINGLE COHESIVE COCKPIT CARD (BOTTOM HALF)
+           Side-by-side layout ensures options and questions never collide vertically.
+        */
+        .unified-arena-card {
+            background-color: #ffffff;
+            border: 1px solid rgba(61, 35, 20, 0.08);
+            border-radius: 12px;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.02);
+            padding: 1.6rem 2.2rem;
+            flex-grow: 1;
+            min-height: 0; /* Strict vertical containment shield */
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .arena-split-view {
+            display: grid;
+            grid-template-columns: 0.95fr 1.05fr;
+            gap: 2.2rem;
+            align-items: center;
+            height: 100%;
+            min-height: 0;
+        }
+
+        /* Left Split Column: Source Data Context */
+        .arena-brief-column {
+            display: flex;
+            flex-direction: column;
+            gap: 0.8rem;
+        }
+
+        .arena-tag-lbl {
+            font-size: 0.82rem;
+            font-weight: 700;
+            color: #3a443d;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .metric-banner-box {
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: #5c4b3f;
+            background-color: #fdfbf9;
+            padding: 0.6rem 1rem;
+            border-left: 4px solid #3a443d;
+            border-radius: 4px;
+            line-height: 1.4;
+        }
+
+        .challenge-statement-text {
+            font-size: 1.18rem;
+            font-weight: 700;
+            color: #3d2314;
+            line-height: 1.45;
+        }
+
+        /* Right Split Column: Click Options Stack */
+        .arena-input-column {
+            display: flex;
+            flex-direction: column;
+            gap: 0.6rem;
+            width: 100%;
+        }
+
+        .choice-interaction-card {
+            background-color: #ffffff;
+            border: 1px solid #cbd5e1;
+            padding: 0.95rem 1.2rem;
+            border-radius: 6px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: #475569;
+            cursor: pointer;
+            text-align: left;
+            line-height: 1.4;
+            transition: all 0.2s ease;
+            width: 100%;
+        }
+
+        .choice-interaction-card:hover {
+            background-color: #fbf9f6;
+            border-color: #3a443d;
+            color: #3a443d;
+            transform: translateX(3px);
+        }
+
+        /* Cycle Broken Overlay View */
+        .stage-success-overlay {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            width: 100%;
+            height: 100%;
+            gap: 0.6rem;
+        }
+
+        .success-heading-text {
+            font-size: 1.35rem;
+            font-weight: 800;
+            color: #2a9d8f;
+        }
+
+        /* Lower Metrics Utility Footer Bar */
+        .footer-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-shrink: 0;
+            border-top: 1px solid rgba(61, 35, 20, 0.08);
+            padding-top: 0.6rem;
+        }
+
+        .score-tracker-badge {
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: #3d2314;
+            background-color: #fff8eb;
+            padding: 0.25rem 0.8rem;
+            border-radius: 20px;
+            border: 1px solid #f4a261;
+            font-variant-numeric: tabular-nums;
+        }
+
+        .instruction-tag {
+            font-size: 0.85rem;
+            color: #a39389;
+            font-style: italic;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="slide-wrapper">
+        <!-- Main Branded Header Row -->
+        <div class="header-section">
+            <h1 class="main-title">The Overthinking Cycle</h1>
+            <span class="company-branding">IB Group</span>
+        </div>
+
+        <!-- Lateral Process Sequence Track (Replicating image_bb41a2.png elements layout) -->
+        <div class="cycle-progress-pipeline" id="pipeline-track">
+            <!-- Node 1 -->
+            <div class="pipeline-node active-step" id="node-0" onclick="switchCyclePhase(0)">
+                <div class="node-circle-id">1</div>
+                <div class="node-label-block">
+                    <span class="node-title-text">Trigger</span>
+                    <span class="node-status-lbl" id="badge-0">Active</span>
+                </div>
+            </div>
+            <div class="pipeline-separator"></div>
+
+            <!-- Node 2 -->
+            <div class="pipeline-node" id="node-1" onclick="switchCyclePhase(1)">
+                <div class="node-circle-id">2</div>
+                <div class="node-label-block">
+                    <span class="node-title-text">Rumination</span>
+                    <span class="node-status-lbl" id="badge-1">Pending</span>
+                </div>
+            </div>
+            <div class="pipeline-separator"></div>
+
+            <!-- Node 3 -->
+            <div class="pipeline-node" id="node-2" onclick="switchCyclePhase(2)">
+                <div class="node-circle-id">3</div>
+                <div class="node-label-block">
+                    <span class="node-title-text">Paralysis</span>
+                    <span class="node-status-lbl" id="badge-2">Pending</span>
+                </div>
+            </div>
+            <div class="pipeline-separator"></div>
+
+            <!-- Node 4 -->
+            <div class="pipeline-node" id="node-3" onclick="switchCyclePhase(3)">
+                <div class="node-circle-id">4</div>
+                <div class="node-label-block">
+                    <span class="node-title-text">Regret</span>
+                    <span class="node-status-lbl" id="badge-3">Pending</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Stable Bounded Dashboard Sandbox Arena -->
+        <div class="unified-arena-card" id="sandbox-card-window">
+            
+            <div class="arena-split-view" id="interactive-view-block">
+                <div class="arena-brief-column">
+                    <div class="arena-tag-lbl" id="arena-stage-title">Cycle Phase 1 of 4</div>
+                    <div class="metric-banner-box" id="arena-brief-text">A choice appears and feels high-stakes or ambiguous</div>
+                    <h2 class="challenge-statement-text" id="arena-challenge-text">IB Group Case Study: A complex, ambiguous logistical request enters your work queue. How do you interdict an immediate overthinking loop?</h2>
+                </div>
+                <div class="arena-input-column" id="arena-options-container">
+                    <!-- Populated programmatically via JavaScript runtime loops -->
+                </div>
+            </div>
+
+            <!-- Cycle Broken Interdiction Success Overlay Panel -->
+            <div class="stage-success-overlay" id="victory-overlay-panel">
+                <span style="font-size: 2.5rem;">⛓️💥</span>
+                <p class="success-heading-text">Cognitive Cycle Interdicted!</p>
+                <p style="color: #6e5d53; font-size: 0.92rem;">Select an uncompleted cycle node from the top horizontal track to neutralize the next pattern.</p>
+            </div>
+
+        </div>
+
+        <!-- Stable Metrics Footer Strip Row -->
+        <div class="footer-bar">
+            <div class="score-tracker-badge">Phases Interdicted: <span id="progress-val">0</span> / 4</div>
+            <div class="instruction-tag">Break the cognitive feedback loop across all 4 operational phases to optimize executive execution vectors.</div>
+        </div>
+    </div>
+
+    <script>
+        // High fidelity content simulation matrix mapping text variables verbatim from image_bb41a2.png
+        const cycleSimulationMatrix = [
+            {
+                brief: "Cycle Phase Focus: A choice appears and feels high-stakes or ambiguous",
+                question: "IB Group Case Study: A complex asset procurement choice appears with high ambiguity markers. How do you intervene early at the Trigger phase?",
+                choices: [
+                    { text: "Define explicit scope boundaries and isolate the minimal acceptable choice parameters immediately.", correct: true },
+                    { text: "Delay the file assessment until perfect cross-border market stability variables match.", correct: false }
+                ]
+            },
+            {
+                brief: "Cycle Phase Focus: You replay scenarios endlessly, seeking certainty that doesn't exist",
+                question: "IB Group Case Study: Your project team is caught spinning wheels, replaying risk sub-scenarios endlessly for a single contract point. How do you bypass Rumination?",
+                choices: [
+                    { text: "Run a time-boxed strategy workshop to vote on alternate projections again next week.", correct: false },
+                    { text: "Enforce a firm time-limit rule and transition execution into a reversible pilot run immediately.", correct: true }
+                ]
+            },
+            {
+                brief: "Cycle Phase Focus: Fear of the wrong move prevents any move at all",
+                question: "IB Group Case Study: Total analysis-paralysis locks your operational pipeline because teams fear failure flags. How do you break the Paralysis stage?",
+                choices: [
+                    { text: "Reframe the decision as a data-gathering experiment where minor mistakes simply yield operational telemetry.", correct: true },
+                    { text: "Increase compliance oversight loops to ensure the opening deployment is 100% flaw-free.", correct: false }
+                ]
+            },
+            {
+                brief: "Cycle Phase Focus: Time passes, options narrow, and you regret not acting sooner",
+                question: "IB Group Case Study: A delayed deployment has narrowed your delivery options, threatening operational margins. How do you bypass Regret and take command?",
+                choices: [
+                    { text: "Document past systemic processing delays and archive them for review next financial year.", correct: false },
+                    { text: "Conduct a rapid triage run on remaining project tracks and execute the best current pathway without delay.", correct: true }
+                ]
+            }
+        ];
+
+        let activePhaseIdx = 0;
+        let masteredStateMap = { 0: false, 1: false, 2: false, 3: false };
+
+        function loadSimulationStage() {
+            const data = cycleSimulationMatrix[activePhaseIdx];
+            const interactiveBlock = document.getElementById("interactive-view-block");
+            const victoryPanel = document.getElementById("victory-overlay-panel");
+            const optionsContainer = document.getElementById("arena-options-container");
+            
+            // Toggle panel view states immediately if target node index has already been successfully interdicted
+            if (masteredStateMap[activePhaseIdx]) {
+                interactiveBlock.style.display = "none";
+                victoryPanel.style.display = "flex";
+                return;
+            }
+
+            interactiveBlock.style.display = "grid";
+            victoryPanel.style.display = "none";
+
+            document.getElementById("arena-stage-title").innerText = `Cycle Phase ${activePhaseIdx + 1} of 4`;
+            document.getElementById("arena-brief-text").innerText = data.brief;
+            document.getElementById("arena-challenge-text").innerText = data.question;
+
+            // Generate options buttons cleanly inside the right split block
+            optionsContainer.innerHTML = "";
+            data.choices.forEach(choice => {
+                const btn = document.createElement("button");
+                btn.className = "choice-interaction-card";
+                btn.innerText = choice.text;
+                btn.onclick = () => evaluateChoiceInput(choice.correct);
+                optionsContainer.appendChild(btn);
+            });
+        }
+
+        function switchCyclePhase(targetIdx) {
+            if (targetIdx === activePhaseIdx) return;
+
+            // Clear legacy highlighted indicators state classes cleanly
+            document.getElementById(`node-${activePhaseIdx}`).classList.remove("active-step");
+            
+            // Set new active phase
+            activePhaseIdx = targetIdx;
+            document.getElementById(`node-${activePhaseIdx}`).classList.add("active-step");
+
+            loadSimulationStage();
+        }
+
+        function evaluateChoiceInput(isCorrectInputPath) {
+            if (isCorrectInputPath) {
+                masteredStateMap[activePhaseIdx] = true;
+
+                // Mark current horizontal track node complete
+                const activeNodeBtn = document.getElementById(`node-${activePhaseIdx}`);
+                activeNodeBtn.classList.add("interdicted-step");
+                document.getElementById(`badge-${activePhaseIdx}`).innerText = "Interdicted";
+
+                recalculateScoreMetrics();
+                loadSimulationStage(); // Refreshes dashboard views to reveal successful overlay panel instantly
+            } else {
+                // Interactive micro-flash sandbox wrapper background to communicate a misaligned tactical solution path
+                const windowBoard = document.getElementById("sandbox-card-window");
+                windowBoard.style.backgroundColor = "#faeae1";
+                setTimeout(() => windowBoard.style.backgroundColor = "#ffffff", 350);
+            }
+        }
+
+        function recalculateScoreMetrics() {
+            const currentTotalScore = Object.values(masteredStateMap).filter(Boolean).length;
+            document.getElementById("progress-val").innerText = currentTotalScore;
+        }
+
+        // Initialize template settings calculations smoothly on load launch
+        loadSimulationStage();
+    </script>
+</body>
+</html>
