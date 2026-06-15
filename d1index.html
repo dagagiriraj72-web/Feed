@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Decisiveness vs. Impulsiveness - Challenge Arena</title>
+    <title>Decisiveness vs. Impulsiveness - Balanced HUD Arena</title>
     <style>
         * {
             box-sizing: border-box;
@@ -72,11 +72,12 @@
             grid-template-columns: 1fr 1fr;
             gap: 2.5rem;
             flex-grow: 1;
-            min-height: 0; /* Clear overflow containment barrier */
+            min-height: 0; 
             margin: 1rem 0;
             align-items: stretch;
             position: relative;
-            z-index: 1; /* Sits underneath floating interactive overlay deck */
+            z-index: 1;
+            transition: filter 0.4s ease, opacity 0.4s ease;
         }
 
         /* Target Content Placement Buckets Columns */
@@ -145,10 +146,7 @@
             to { transform: translateY(0); opacity: 1; }
         }
 
-        /* CRITICAL LAYER FIX: INTERACTIVE FLOATING CONSOLE DECK 
-           z-index: 10 + position: absolute lifts interactive button elements cleanly 
-           clear of background layers, restoring full, immediate touch responsiveness.
-        */
+        /* INTERACTIVE FLOATING CONSOLE CARD HUD */
         .deck-hud-overlay {
             position: absolute;
             left: 50%;
@@ -165,7 +163,8 @@
             align-items: center;
             text-align: center;
             gap: 1rem;
-            z-index: 10; /* Completely isolated interface stack layer */
+            z-index: 10;
+            transition: all 0.3s ease;
         }
 
         .hud-tag {
@@ -195,7 +194,7 @@
             line-height: 1.4;
         }
 
-        /* Layout Grid Controls Group */
+        /* Controls Layout Buttons */
         .hud-action-row {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -219,22 +218,64 @@
             transform: translateY(-1px);
         }
 
-        .btn-left  { background-color: #7b9583; } /* Corporate Decisiveness Green */
-        .btn-right { background-color: #cd674c; } /* Corporate Impulsiveness Orange */
+        .btn-left  { background-color: #7b9583; } 
+        .btn-right { background-color: #cd674c; } 
 
-        /* Complete Stage Victory Component view */
-        .hud-victory-view {
+        /* ANTI-OVERLAP ABSOLUTE VICTORY VEIL
+           Isolates final screens from background items to block collisions.
+        */
+        .master-victory-veil {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(253, 250, 246, 0.85);
+            backdrop-filter: blur(8px);
+            z-index: 20;
             display: none;
             flex-direction: column;
             align-items: center;
-            gap: 0.4rem;
-            padding: 0.5rem 0;
+            justify-content: center;
+            text-align: center;
+            gap: 1.2rem;
+            border-radius: 12px;
+            animation: fadeInVeil 0.4s ease forwards;
+        }
+
+        @keyframes fadeInVeil {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .victory-badge-box {
+            background: #ffffff;
+            border: 1px solid rgba(61, 35, 20, 0.1);
+            padding: 2.5rem 3.5rem;
+            border-radius: 16px;
+            box-shadow: 0 15px 40px rgba(61, 35, 20, 0.08);
+            max-width: 480px;
+            transform: scale(0.92);
+            animation: scaleUpBadge 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.15) forwards;
+        }
+
+        @keyframes scaleUpBadge {
+            to { transform: scale(1); }
         }
 
         .victory-title {
-            font-size: 1.4rem;
+            font-size: 1.8rem;
             font-weight: 800;
             color: #2a9d8f;
+            margin-top: 0.8rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .victory-desc {
+            color: #6e5d53; 
+            font-size: 1rem; 
+            line-height: 1.45;
+            font-weight: 500;
         }
 
         /* Bottom Status Info Strip Row */
@@ -246,155 +287,5 @@
             border-top: 1px solid rgba(61, 35, 20, 0.08);
             padding-top: 0.6rem;
             margin-top: 0.2rem;
-        }
-
-        .score-tracker-badge {
-            font-size: 0.85rem;
-            font-weight: 700;
-            color: #3d2314;
-            background-color: #fff8eb;
-            padding: 0.25rem 0.8rem;
-            border-radius: 20px;
-            border: 1px solid #f4a261;
-            font-variant-numeric: tabular-nums;
-        }
-
-        .instruction-tag {
-            font-size: 0.85rem;
-            color: #a39389;
-            font-style: italic;
-        }
-    </style>
-</head>
-<body>
-
-    <div class="slide-wrapper">
-        <!-- Header View -->
-        <div class="header-section">
-            <h1 class="main-title">Decisiveness vs. Impulsiveness</h1>
-        </div>
-
-        <!-- Stable Grid Matrix Columns Layout -->
-        <div class="workspace-layout">
-            
-            <!-- Left Bucket Node: Decisiveness -->
-            <div class="sorting-bucket-column" id="bucket-decisiveness">
-                <h2 class="bucket-heading">Decisiveness</h2>
-                <div class="sorted-items-list" id="list-decisiveness">
-                    <!-- Sorted options dump row text entries -->
-                </div>
-            </div>
-
-            <!-- Right Bucket Node: Impulsiveness -->
-            <div class="sorting-bucket-column" id="bucket-impulsiveness">
-                <h2 class="bucket-heading">Impulsiveness</h2>
-                <div class="sorted-items-list" id="list-impulsiveness">
-                    <!-- Sorted options dump row text entries -->
-                </div>
-            </div>
-
-        </div>
-
-        <!-- CENTER FLOATING HIGH-LAYER COCKPIT CONSOLE DECK -->
-        <div class="deck-hud-overlay" id="interactive-hud">
-            
-            <!-- Active Gameplay Console Window Frame Component -->
-            <div id="hud-quiz-interface" style="width: 100%; display: flex; flex-direction: column; gap: 1rem;">
-                <div class="hud-tag" id="hud-counter-lbl">Behavior Card 1 of 10</div>
-                
-                <div class="card-display-box">
-                    <p class="trait-statement-text" id="hud-statement-lbl">Considers key information before acting</p>
-                </div>
-
-                <div class="hud-action-row">
-                    <button class="action-click-btn btn-left" onclick="processSelection('decisiveness')">Decisive</button>
-                    <button class="action-click-btn btn-right" onclick="processSelection('impulsiveness')">Impulsive</button>
-                </div>
-            </div>
-
-            <!-- Complete Game Mastered Overlay View Window -->
-            <div class="hud-victory-view" id="hud-success-interface">
-                <span style="font-size: 2.8rem;">🎯</span>
-                <h3 class="victory-title">Sorting Matrix Resolved!</h3>
-                <p style="color: #6e5d53; font-size: 0.9rem; line-height: 1.35;">Behavioral metrics successfully mapped and categorized across corporate indicators.</p>
-            </div>
-
-        </div>
-
-        <!-- System Analytics Footer Bar Line Row -->
-        <div class="footer-bar">
-            <div class="score-tracker-badge">Traits Sorted: <span id="score-lbl">0</span> / 10</div>
-            <div class="instruction-tag">Evaluate the trait inside the center floating console module and choose its correct behavior category.</div>
-        </div>
-    </div>
-
-    <script>
-        // Decoupled comprehensive text variables catalog compiled directly from image_bb3d0c.png values
-        const traitsDeckMatrix = [
-            { text: "Considers key information before acting", category: "decisiveness" },
-            { text: "Reacts before gathering relevant facts", category: "impulsiveness" },
-            { text: "Accepts reasonable risk deliberately", category: "decisiveness" },
-            { text: "Ignores risk or consequences entirely", category: "impulsiveness" },
-            { text: "Commits with awareness of trade-offs", category: "decisiveness" },
-            { text: "Chooses to avoid discomfort, not to solve", category: "impulsiveness" },
-            { text: "Reflects briefly, then moves forward", category: "decisiveness" },
-            { text: "Skips reflection, regrets later", category: "impulsiveness" },
-            { text: "Takes ownership of the outcome", category: "decisiveness" },
-            { text: "Blames circumstances for poor results", category: "impulsiveness" }
-        ];
-
-        let currentActiveIdx = 0;
-        let accurateSortCount = 0;
-
-        function refreshInteractiveHUD() {
-            if (currentActiveIdx >= traitsDeckMatrix.length) {
-                // Clear quiz panel window elements, toggle success layer overlay components
-                document.getElementById("hud-quiz-interface").style.display = "none";
-                document.getElementById("hud-success-interface").style.display = "flex";
-                return;
-            }
-
-            const currentCardData = traitsDeckMatrix[currentActiveIdx];
-            document.getElementById("hud-counter-lbl").innerText = `Behavior Card ${currentActiveIdx + 1} of 10`;
-            document.getElementById("hud-statement-lbl").innerText = currentCardData.text;
-        }
-
-        function processSelection(userChosenBucketCode) {
-            // Safety guard checking array step thresholds
-            if (currentActiveIdx >= traitsDeckMatrix.length) return;
-
-            const activeCardRecord = traitsDeckMatrix[currentActiveIdx];
-
-            if (userChosenBucketCode === activeCardRecord.category) {
-                accurateSortCount++;
-                
-                // Form bullet points text block elements rows inside correct tracking column footprint bucket
-                const columnTargetList = document.getElementById(`list-${activeCardRecord.category}`);
-                const rowItem = document.createElement("div");
-                rowItem.className = "placed-trait-node";
-                rowItem.innerText = activeCardRecord.text;
-                columnTargetList.appendChild(rowItem);
-
-                // Update badge scoreboard variables tracking
-                document.getElementById("score-lbl").innerText = accurateSortCount;
-
-                // Alternate pointer step indices
-                currentActiveIdx++;
-                refreshInteractiveHUD();
-            } else {
-                // Flash console dashboard window layout card container red to flag diagnostic deviation
-                const hudCardOverlayContainer = document.getElementById("interactive-hud");
-                hudCardOverlayContainer.style.backgroundColor = "#faeae1";
-                hudCardOverlayContainer.style.borderColor = "#cd674c";
-                setTimeout(() => {
-                    hudCardOverlayContainer.style.backgroundColor = "#ffffff";
-                    hudCardOverlayContainer.style.borderColor = "rgba(61, 35, 20, 0.12)";
-                }, 350);
-            }
-        }
-
-        // Initialize engine startup cycle hooks configuration parameters
-        refreshInteractiveHUD();
-    </script>
-</body>
-</html>
+            position: relative;
+            z-index
