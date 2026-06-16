@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SMART Goals Strategic Simulator</title>
+    <title>SMART Framework - Stable Simulation Matrix</title>
     <style>
         * {
             box-sizing: border-box;
@@ -22,9 +22,9 @@
             overflow: hidden;
         }
 
-        /* 16:9 STORYLINE PRESENTATION CANVAS MAXIMUM FOOTPRINT
-           Locks down layout bounds at 1280x720 to completely eliminate vertical
-           bleed, clashing text boxes, or footer regressions in Storyline Web Objects.
+        /* HARD-LOCKED STORYLINE 16:9 VIEWPORT 
+           Locks coordinates exactly at 1280x720 to completely fix vertical 
+           layout transitions, element crushing, or lower baseline text bleeding.
         */
         .slide-wrapper {
             width: 100%;
@@ -32,7 +32,7 @@
             max-width: 1280px;
             max-height: 720px;
             aspect-ratio: 16 / 9;
-            padding: 2rem 3.5rem 1.2rem 3.5rem;
+            padding: 2.2rem 3.5rem 1.5rem 3.5rem;
             background-color: #fdfaf6;
             display: flex;
             flex-direction: column;
@@ -41,52 +41,54 @@
             position: relative;
         }
 
-        /* Top Header Row */
+        /* Top Branded Header Row */
         .header-section {
-            margin-bottom: 0.4rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            border-bottom: 2px solid #e2dbd5;
+            padding-bottom: 0.5rem;
             flex-shrink: 0;
         }
 
         .main-title {
-            font-size: 2.5rem;
+            font-size: 2.4rem;
             color: #3d2314;
             font-weight: 800;
             line-height: 1.1;
-            position: relative;
-            padding-bottom: 0.4rem;
         }
 
-        .main-title::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 140px;
-            height: 4px;
-            background-color: #7b9583;
-            border-radius: 2px;
+        .company-branding {
+            font-size: 1.1rem;
+            font-weight: 800;
+            color: #7b9583;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            background-color: rgba(123, 149, 131, 0.1);
+            padding: 0.3rem 0.8rem;
+            border-radius: 4px;
         }
 
-        /* Layout Grid Stack Matrix Wrapper */
+        /* Master Workspace Container Track */
         .workspace-matrix {
             display: flex;
             flex-direction: column;
             flex-grow: 1;
-            min-height: 0; 
-            margin: 0.6rem 0;
+            min-height: 0; /* Clear anti-collapse barrier line */
+            margin: 1rem 0;
         }
 
-        /* Horizontal Selection Ribbon Strip Track */
+        /* Horizontal Selection Ribbon Track Strip */
         .ribbon-navigation-track {
             display: grid;
             grid-template-columns: repeat(5, 1fr);
             gap: 0.5rem;
             width: 100%;
             flex-shrink: 0;
-            margin-bottom: 1rem;
+            margin-bottom: 1.2rem;
         }
 
-        .smart-hub-btn {
+        .business-hub-btn {
             background-color: #e2dbd5;
             border: 1px solid rgba(61, 35, 20, 0.08);
             border-radius: 8px;
@@ -118,29 +120,28 @@
             text-align: center;
         }
 
-        /* Active Navigation Node Highlight States */
-        .smart-hub-btn.active-tab {
+        /* Active Selected Tab States */
+        .business-hub-btn.active-tab {
             background-color: #ffffff;
-            border-color: #7b9583;
-            box-shadow: 0 4px 12px rgba(123, 149, 131, 0.08);
+            border-color: #cd674c;
+            box-shadow: 0 4px 12px rgba(205, 103, 76, 0.08);
         }
-        .smart-hub-btn.active-tab .hub-title-lbl { color: #5c7564; }
-        .smart-hub-btn.active-tab .hub-index-lbl { color: #5c7564; }
+        .business-hub-btn.active-tab .hub-title-lbl { color: #cd674c; }
+        .business-hub-btn.active-tab .hub-index-lbl { color: #cd674c; }
 
-        /* Mastered Level Node State Complete Modifiers */
-        .smart-hub-btn.mastered-tab {
+        .business-hub-btn.mastered-tab {
             border-color: #2a9d8f !important;
             background-color: rgba(42, 157, 143, 0.03);
         }
-        .smart-hub-btn.mastered-tab .hub-title-lbl {
+        .business-hub-btn.mastered-tab .hub-title-lbl {
             color: #2a9d8f;
             text-decoration: line-through;
             opacity: 0.6;
         }
-        .smart-hub-btn.mastered-tab .hub-index-lbl { color: #2a9d8f; }
+        .business-hub-btn.mastered-tab .hub-index-lbl { color: #2a9d8f; }
 
-        /* SIDE-BY-SIDE SIMULATOR INTERACTIVE CONSOLE
-           Splits content left-to-right to optimize space and resolve overlaps.
+        /* SINGLE BALANCED INTERACTIVE PLAYGROUND CARD 
+           Using a stable vertical layout to guarantee zero component overlapping.
         */
         .unified-arena-card {
             background-color: #ffffff;
@@ -149,345 +150,33 @@
             box-shadow: 0 6px 20px rgba(0, 0, 0, 0.02);
             padding: 1.8rem 2.2rem;
             flex-grow: 1;
-            min-height: 0; 
+            min-height: 0;
             display: flex;
             flex-direction: column;
-            justify-content: center;
+            justify-content: space-between;
         }
 
-        /* Lateral Split-Screen Viewports Layout */
-        .arena-split-view {
-            display: none; 
-            grid-template-columns: 0.95fr 1.05fr;
-            gap: 2.5rem;
-            align-items: center;
-            height: 100%;
-            width: 100%;
-        }
-
-        .arena-split-view.visible-view {
-            display: grid;
-        }
-
-        /* Left Split Column: Context Data */
-        .arena-brief-column {
+        /* Safe scroll sandbox zone preventing text parameters overflow issues */
+        .terminal-scroll-sandbox {
+            flex-grow: 1;
+            min-height: 0;
+            max-height: 450px; /* Rigid vertical ceiling constraint */
+            overflow-y: auto;
+            padding-right: 0.5rem;
             display: flex;
             flex-direction: column;
-            gap: 0.8rem;
+            gap: 1rem;
         }
+
+        .terminal-scroll-sandbox::-webkit-scrollbar { width: 5px; }
+        .terminal-scroll-sandbox::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
 
         .arena-tag-heading {
-            font-size: 0.82rem;
+            font-size: 0.85rem;
             font-weight: 700;
-            color: #7b9583;
+            color: #cd674c;
             text-transform: uppercase;
             letter-spacing: 0.5px;
         }
 
-        .framework-criterion-box {
-            font-size: 0.96rem;
-            font-weight: 600;
-            color: #6e5d53;
-            background-color: #fdfbf9;
-            padding: 0.65rem 1rem;
-            border-left: 4px solid #7b9583;
-            border-radius: 4px;
-            line-height: 1.45;
-        }
-
-        .challenge-statement-text {
-            font-size: 1.2rem;
-            font-weight: 700;
-            color: #3d2314;
-            line-height: 1.42;
-        }
-
-        /* Right Split Column: Choice Options Stacking Pipeline */
-        .arena-input-column {
-            display: flex;
-            flex-direction: column;
-            gap: 0.7rem;
-            width: 100%;
-        }
-
-        .choice-interaction-card {
-            background-color: #ffffff;
-            border: 1px solid #cbd5e1;
-            padding: 1.1rem 1.3rem;
-            border-radius: 8px;
-            font-size: 0.9rem;
-            font-weight: 600;
-            color: #475569;
-            cursor: pointer;
-            text-align: left;
-            line-height: 1.45;
-            transition: all 0.2s ease;
-            width: 100%;
-        }
-
-        .choice-interaction-card:hover {
-            background-color: #fffdf7;
-            border-color: #7b9583;
-            color: #5c7564;
-            transform: translateX(3px);
-        }
-
-        /* In-Card Stage Complete Success Screen Overlay Layer */
-        .stage-success-overlay {
-            display: none;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-            width: 100%;
-            height: 100%;
-            gap: 0.6rem;
-        }
-
-        .stage-success-overlay.visible-success {
-            display: flex;
-        }
-
-        .success-heading-text {
-            font-size: 1.35rem;
-            font-weight: 800;
-            color: #2a9d8f;
-        }
-
-        /* Grand Total Campaign Clear Screen Overrides */
-        .campaign-clear-panel {
-            display: none;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-            height: 100%;
-            gap: 0.8rem;
-        }
-
-        .campaign-clear-panel.visible-success {
-            display: flex;
-        }
-
-        .campaign-title-lbl {
-            font-size: 1.8rem;
-            font-weight: 800;
-            color: #2a9d8f;
-        }
-
-        /* Bottom Fixed Corporate Metrics Row Status Bar */
-        .footer-bar {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-shrink: 0;
-            border-top: 1px solid rgba(61, 35, 20, 0.08);
-            padding-top: 0.6rem;
-        }
-
-        .score-tracker-badge {
-            font-size: 0.85rem;
-            font-weight: 700;
-            color: #3d2314;
-            background-color: #fff8eb;
-            padding: 0.25rem 0.8rem;
-            border-radius: 20px;
-            border: 1px solid #f4a261;
-            font-variant-numeric: tabular-nums;
-        }
-
-        .instruction-tag {
-            font-size: 0.85rem;
-            color: #a39389;
-            font-style: italic;
-        }
-    </style>
-</head>
-<body>
-
-    <div class="slide-wrapper">
-        <div class="header-section">
-            <h1 class="main-title">SMART Goal Strategic Framework</h1>
-        </div>
-
-        <div class="workspace-matrix">
-            
-            <div class="ribbon-navigation-track">
-                <button class="smart-hub-btn active-tab" id="tab-0" onclick="switchSMARTTab(0)">
-                    <span class="hub-index-lbl">[ S ]</span>
-                    <span class="hub-title-lbl">Specific</span>
-                </button>
-                <button class="smart-hub-btn" id="tab-1" onclick="switchSMARTTab(1)">
-                    <span class="hub-index-lbl">[ M ]</span>
-                    <span class="hub-title-lbl">Measurable</span>
-                </button>
-                <button class="smart-hub-btn" id="tab-2" onclick="switchSMARTTab(2)">
-                    <span class="hub-index-lbl">[ A ]</span>
-                    <span class="hub-title-lbl">Achievable</span>
-                </button>
-                <button class="smart-hub-btn" id="tab-3" onclick="switchSMARTTab(3)">
-                    <span class="hub-index-lbl">[ R ]</span>
-                    <span class="hub-title-lbl">Relevant</span>
-                </button>
-                <button class="smart-hub-btn" id="tab-4" onclick="switchSMARTTab(4)">
-                    <span class="hub-index-lbl">[ T ]</span>
-                    <span class="smart-hub-btn hub-title-lbl">Time-Bound</span>
-                </button>
-            </div>
-
-            <div class="unified-arena-card" id="sandbox-container">
-                
-                <div class="arena-split-view visible-view" id="view-0">
-                    <div class="arena-brief-column">
-                        <div class="arena-tag-heading">SMART Dimension: Specific</div>
-                        <div class="framework-criterion-box">Goal Setup: Goals must be clear, distinct, and highly targeted to avoid ambiguous execution and tracking errors.</div>
-                        <h2 class="challenge-statement-text">Scenario Dilemma: A corporate expansion team wants to upgrade infrastructure. Which target directive is structured correctly to meet the "Specific" criteria?</h2>
-                    </div>
-                    <div class="arena-input-column">
-                        <button class="choice-interaction-card" onclick="submitDecision(0, true)">"Deploy a distributed data container architecture with elastic auto-scaling clusters across the Western region."</button>
-                        <button class="choice-interaction-card" onclick="submitDecision(0, false)">"Drive broad digital transformation across standard operations to improve platform velocity."</button>
-                    </div>
-                </div>
-
-                <div class="arena-split-view" id="view-1">
-                    <div class="arena-brief-column">
-                        <div class="arena-tag-heading">SMART Dimension: Measurable</div>
-                        <div class="framework-criterion-box">Goal Setup: Establish concrete numerical variables and quantifiable telemetry metrics to track progress baseline adjustments.</div>
-                        <h2 class="challenge-statement-text">Scenario Dilemma: The operations manager wants to optimize line fulfillment pipelines. Which option adheres to "Measurable" standards?</h2>
-                    </div>
-                    <div class="arena-input-column">
-                        <button class="choice-interaction-card" onclick="submitDecision(1, false)">"Improve system transaction throughput speeds and general backend stability parameters."</button>
-                        <button class="choice-interaction-card" onclick="submitDecision(1, true)">"Increase platform processing output to reach a target milestone benchmark of 1,200 transactions per second."</button>
-                    </div>
-                </div>
-
-                <div class="arena-split-view" id="view-2">
-                    <div class="arena-brief-column">
-                        <div class="arena-tag-heading">SMART Dimension: Achievable</div>
-                        <div class="framework-criterion-box">Goal Setup: Keep objectives realistic and within technical limits, stretching team capabilities without defining impossible metrics.</div>
-                        <h2 class="challenge-statement-text">Scenario Dilemma: The team charts a quarterly roadmap framework. Which target demonstrates an "Achievable" model?</h2>
-                    </div>
-                    <div class="arena-input-column">
-                        <button class="choice-interaction-card" onclick="submitDecision(2, true)">"Grow active storefront conversion rates by 15% using optimized user onboarding flows."</button>
-                        <button class="choice-interaction-card" onclick="submitDecision(2, false)">"Instantly scale customer account creation metrics by 500% over the weekend with zero budget additions."</button>
-                    </div>
-                </div>
-
-                <div class="arena-split-view" id="view-3">
-                    <div class="arena-brief-column">
-                        <div class="arena-tag-heading">SMART Dimension: Relevant</div>
-                        <div class="framework-criterion-box">Goal Setup: Goals must connect directly into current core strategic initiatives, company values, and resource allocations.</div>
-                        <h2 class="challenge-statement-text">Scenario Dilemma: An agile engineering division plans its next sprint cycle objectives. Which focus matches the "Relevant" operational criterion?</h2>
-                    </div>
-                    <div class="arena-input-column">
-                        <button class="choice-interaction-card" onclick="submitDecision(3, true)">"Integrate three modern low-latency payment options to address confirmed customer checkout checkout drop-offs."</button>
-                        <button class="choice-interaction-card" onclick="submitDecision(3, false)">"Divert backend development hours to rewrite legacy layout components on out-of-date internal pages."</button>
-                    </div>
-                </div>
-
-                <div class="arena-split-view" id="view-4">
-                    <div class="arena-brief-column">
-                        <div class="arena-tag-heading">SMART Dimension: Time-Bound</div>
-                        <div class="framework-criterion-box">Goal Setup: Anchor target metrics inside a clear, non-negotiable deadline window to prevent operational drift.</div>
-                        <h2 class="challenge-statement-text">Scenario Dilemma: The delivery team schedules a legacy system migration. Which directive follows "Time-Bound" parameters?</h2>
-                    </div>
-                    <div class="arena-input-column">
-                        <button class="choice-interaction-card" onclick="submitDecision(4, false)">"Deploy updated data compliance software whenever backend development pipelines clear up."</button>
-                        <button class="choice-interaction-card" onclick="submitDecision(4, true)">"Complete standard migration verification loops and take the system live by the end of Q3."</button>
-                    </div>
-                </div>
-
-                <div class="stage-success-overlay" id="victory-panel">
-                    <span style="font-size: 2.5rem;">⚙️</span>
-                    <p class="success-heading-text">Strategic Dimension Aligned!</p>
-                    <p style="color: #6e5d53; font-size: 0.92rem;">Select an unresolved SMART module from the top ribbon menu track to continue optimizing your operational roadmap.</p>
-                </div>
-
-                <div class="campaign-clear-panel" id="campaign-clear-panel">
-                    <span style="font-size: 3.5rem;">👑</span>
-                    <h2 class="campaign-title-lbl">Strategic Excellence Achieved!</h2>
-                    <p style="color: #4a382c; font-size: 1rem; font-weight: 600; max-width: 440px; line-height: 1.45;">All operational planning targets have been successfully synchronized under verified SMART criteria.</p>
-                </div>
-
-            </div>
-        </div>
-
-        <div class="footer-bar">
-            <div class="score-tracker-badge">Metrics Aligned: <span id="progress-val">0</span> / 5</div>
-            <div class="instruction-tag">Alternate the top horizontal business unit hubs to evaluate and structure tactical execution matrices.</div>
-        </div>
-    </div>
-
-    <script>
-        let currentActiveIdx = 0;
-        let masteredStateMap = { 0: false, 1: false, 2: false, 3: false, 4: false };
-
-        function switchSMARTTab(targetIdx) {
-            if (targetIdx === currentActiveIdx) return;
-
-            // Remove highlighted active class from preceding element node
-            document.getElementById(`tab-${currentActiveIdx}`).classList.remove("active-tab");
-            
-            // Hide previous layout grid panel view fields
-            const activeView = document.getElementById(`view-${currentActiveIdx}`);
-            if (activeView) activeView.classList.remove("visible-view");
-
-            // Re-assign target pointers
-            currentActiveIdx = targetIdx;
-            document.getElementById(`tab-${currentActiveIdx}`).classList.add("active-tab");
-
-            // Evaluate view visibility properties based on completion states mapping memory
-            const victoryPanel = document.getElementById("victory-panel");
-            const clearPanel = document.getElementById("campaign-clear-panel");
-            const totalClearsCount = Object.values(masteredStateMap).filter(Boolean).length;
-
-            if (totalClearsCount === 5) {
-                victoryPanel.classList.remove("visible-success");
-                clearPanel.classList.add("visible-success");
-                return;
-            }
-
-            clearPanel.classList.remove("visible-success");
-            if (masteredStateMap[currentActiveIdx]) {
-                victoryPanel.classList.add("visible-success");
-            } else {
-                victoryPanel.classList.remove("visible-success");
-                document.getElementById(`view-${currentActiveIdx}`).classList.add("visible-view");
-            }
-        }
-
-        function submitDecision(pillarIdx, isCorrectChoice) {
-            if (isCorrectChoice) {
-                masteredStateMap[pillarIdx] = true;
-
-                // Adjust horizontal selector ribbon cards complete states properties
-                document.getElementById(`tab-${pillarIdx}`).classList.add("mastered-tab");
-
-                // Evaluate grand final success parameters metrics hooks
-                const totalClearsCount = Object.values(masteredStateMap).filter(Boolean).length;
-                document.getElementById(`view-${pillarIdx}`).classList.remove("visible-view");
-
-                if (totalClearsCount === 5) {
-                    document.getElementById("campaign-clear-panel").classList.add("visible-success");
-                } else {
-                    document.getElementById("victory-panel").classList.add("visible-success");
-                }
-
-                updateGlobalMetricsTracker();
-            } else {
-                // Instantly flash playground bounding arena frame red to indicate an invalid choice setup
-                const containerBox = document.getElementById("sandbox-container");
-                containerBox.style.backgroundColor = "#faeae1";
-                setTimeout(() => {
-                    containerBox.style.backgroundColor = "#ffffff";
-                }, 350);
-            }
-        }
-
-        function updateGlobalMetricsTracker() {
-            const sumCleared = Object.values(masteredStateMap).filter(Boolean).length;
-            document.getElementById("progress-val").innerText = sumCleared;
-        }
-    </script>
-</body>
-</html>
+        /* Textbook Core Value Information Block
