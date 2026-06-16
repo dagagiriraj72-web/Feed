@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Proactive vs. Reactive Leadership Simulator - Fixed Stack</title>
+    <title>IB Group - Proactive vs Reactive Leadership Center</title>
     <style>
         * {
             box-sizing: border-box;
@@ -22,9 +22,9 @@
             overflow: hidden;
         }
 
-        /* HARD-LOCKED 16:9 STORYLINE PRESENTATION CANVAS MAXIMUM FOOTPRINT
-           Locks down layout bounds at 1280x720 to permanently resolve 
-           blank screen drops, vertical layout shifts, or element clipping.
+        /* 16:9 ARTICULATE STORYLINE CONTAINER 
+           Locks bounds strictly at 1280x720 to prevent text bleeding into margins,
+           overlapping canvas components, or breaking layout limits.
         */
         .slide-wrapper {
             width: 100%;
@@ -32,7 +32,7 @@
             max-width: 1280px;
             max-height: 720px;
             aspect-ratio: 16 / 9;
-            padding: 2rem 3.5rem 1.5rem 3.5rem;
+            padding: 2rem 3.5rem 1.2rem 3.5rem;
             background-color: #fdfaf6;
             display: flex;
             flex-direction: column;
@@ -41,135 +41,132 @@
             position: relative;
         }
 
-        /* Top Header Component Section */
+        /* Top Branded Header Row */
         .header-section {
-            margin-bottom: 0.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            border-bottom: 2px solid #e2dbd5;
+            padding-bottom: 0.5rem;
             flex-shrink: 0;
         }
 
         .main-title {
-            font-size: 2.6rem;
+            font-size: 2.4rem;
             color: #3d2314;
             font-weight: 800;
             line-height: 1.1;
-            position: relative;
-            padding-bottom: 0.4rem;
         }
 
-        .main-title::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 140px;
-            height: 4px;
-            background-color: #d97706;
-            border-radius: 2px;
+        .company-branding {
+            font-size: 1.1rem;
+            font-weight: 800;
+            color: #7b9583;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            background-color: rgba(123, 149, 131, 0.1);
+            padding: 0.3rem 0.8rem;
+            border-radius: 4px;
         }
 
-        /* MAIN MASTER FLEX PIPELINE WORKSPACE 
-           Core Fix: Uses flexible column growth to ensure the sandbox area 
-           is forced open and remains 100% visible inside the slide canvas.
+        /* CORE SITUATION SIMULATOR WORKSPACE
+           Flexible column stack that anchors structural components smoothly.
         */
         .workspace-pipeline {
             display: flex;
             flex-direction: column;
             flex-grow: 1;
-            min-height: 0; /* Anti-collapse structural safety guardrail */
-            margin: 1rem 0;
+            min-height: 0; /* Core anti-collapse safety guardrail */
+            margin: 0.8rem 0;
         }
 
-        /* UPPER SITUATION INCIDENT DESK ARENA */
         .incident-desk-card {
             background-color: #ffffff;
             border: 1px solid rgba(61, 35, 20, 0.08);
             border-radius: 12px;
             box-shadow: 0 6px 20px rgba(0, 0, 0, 0.02);
-            padding: 2rem 2.4rem;
+            padding: 1.4rem 2rem;
             flex-grow: 1;
-            min-height: 0; /* Prevents text payload from blowing out container height limits */
-            margin-bottom: 1.2rem;
+            min-height: 0; 
+            margin-bottom: 1rem;
             display: flex;
             flex-direction: column;
-            justify-content: center;
+            justify-content: space-between;
         }
 
-        /* Side-by-Side Split Column Matrix */
-        .arena-split-view {
-            display: grid;
-            grid-template-columns: 0.95fr 1.05fr;
-            gap: 2.5rem;
-            align-items: center;
-            height: 100%;
-            width: 100%;
-        }
-
-        /* Left Side: Text Parameter Context Column */
-        .arena-brief-column {
+        /* Internal vertical layout engine scroll protection zone */
+        .terminal-scroll-sandbox {
+            flex-grow: 1;
+            min-height: 0;
+            overflow-y: auto;
+            padding-right: 0.4rem;
             display: flex;
             flex-direction: column;
             gap: 0.8rem;
         }
 
+        .terminal-scroll-sandbox::-webkit-scrollbar { width: 5px; }
+        .terminal-scroll-sandbox::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
+
         .arena-tag-heading {
             font-size: 0.85rem;
             font-weight: 700;
-            color: #d97706;
+            color: #dd7253;
             text-transform: uppercase;
             letter-spacing: 0.5px;
         }
 
         .situation-brief-box {
-            font-size: 1rem;
+            font-size: 0.96rem;
             font-weight: 600;
             color: #6e5d53;
             background-color: #fdfbf9;
-            padding: 0.75rem 1.2rem;
-            border-left: 4px solid #d97706;
+            padding: 0.6rem 1rem;
+            border-left: 4px solid #dd7253;
             border-radius: 4px;
-            line-height: 1.45;
+            line-height: 1.4;
         }
 
         .challenge-statement-text {
-            font-size: 1.25rem;
+            font-size: 1.15rem;
             font-weight: 700;
             color: #3d2314;
-            line-height: 1.42;
+            line-height: 1.4;
         }
 
-        /* Right Side: Options Interactive Input Stack */
-        .arena-input-column {
+        /* Stacking Options Pipeline Container (Anchored at lower end safely) */
+        .choices-stack-pipeline {
             display: flex;
             flex-direction: column;
-            gap: 0.8rem;
-            width: 100%;
+            gap: 0.5rem;
+            margin-top: auto;
+            padding-top: 0.6rem;
+            flex-shrink: 0;
         }
 
         .choice-interaction-card {
             background-color: #ffffff;
             border: 1px solid #cbd5e1;
-            padding: 1.1rem 1.3rem;
+            padding: 0.85rem 1.2rem;
             border-radius: 6px;
-            font-size: 0.92rem;
+            font-size: 0.9rem;
             font-weight: 600;
             color: #475569;
             cursor: pointer;
             text-align: left;
-            line-height: 1.42;
+            line-height: 1.4;
             transition: all 0.2s ease;
             width: 100%;
         }
 
         .choice-interaction-card:hover {
             background-color: #fffdfb;
-            border-color: #d97706;
-            color: #d97706;
+            border-color: #dd7253;
+            color: #5c7564;
             transform: translateX(3px);
         }
 
-        /* LOWER BASELINE STANDARDIZED CORE RULES REFFRENCE DOCK 
-           Anchors textbook metrics neatly at the bottom to maximize space.
-        */
+        /* LOWER TIMELINE CORE PRINCIPLES REFERENCE MARKS */
         .lower-reference-dock {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -181,11 +178,11 @@
         .dock-pillar-card {
             background-color: #f1ede9;
             border-radius: 8px;
-            padding: 0.8rem 1.4rem;
+            padding: 0.75rem 1.2rem;
             border: 1px solid rgba(61, 35, 20, 0.05);
             display: flex;
             flex-direction: column;
-            gap: 0.2rem;
+            gap: 0.15rem;
             transition: all 0.3s ease;
         }
 
@@ -202,7 +199,7 @@
         }
 
         .dock-header-lbl {
-            font-size: 1.1rem;
+            font-size: 1.05rem;
             font-weight: 800;
             text-transform: uppercase;
             letter-spacing: 0.5px;
@@ -211,7 +208,7 @@
         .reactive-lbl { color: #6e5d53; }
 
         .dock-desc-lbl {
-            font-size: 0.9rem;
+            font-size: 0.88rem;
             font-weight: 600;
             color: #4a382c;
             white-space: nowrap;
@@ -219,7 +216,7 @@
             text-overflow: ellipsis;
         }
 
-        /* Success Layer Banner Display Components */
+        /* Success Stage Transitions Display Sheets */
         .stage-success-overlay {
             display: none;
             flex-direction: column;
@@ -228,7 +225,7 @@
             text-align: center;
             width: 100%;
             height: 100%;
-            gap: 0.8rem;
+            gap: 0.6rem;
         }
 
         .success-heading-text {
@@ -244,8 +241,8 @@
             align-items: center;
             flex-shrink: 0;
             border-top: 1px solid rgba(61, 35, 20, 0.08);
-            padding-top: 0.6rem;
-            margin-top: 0.4rem;
+            padding-top: 0.5rem;
+            margin-top: 0.2rem;
         }
 
         .score-tracker-badge {
@@ -269,136 +266,151 @@
 <body>
 
     <div class="slide-wrapper">
-        <!-- Frame Header -->
+        <!-- Dashboard Header -->
         <div class="header-section">
-            <h1 class="main-title">Proactive vs. Reactive Leadership</h1>
+            <h1 class="main-title">Proactive vs Reactive Leadership</h1>
+            <span class="company-branding">IB Group</span>
         </div>
 
-        <!-- Master Anti-Overlap Workspace -->
+        <!-- Master Workspace -->
         <div class="workspace-pipeline">
             
-            <!-- Upper Incident Desk Arena Dashboard Card Component -->
+            <!-- Dynamic Incident Deck Sandbox -->
             <div class="incident-desk-card" id="sandbox-card-window">
                 
-                <div class="arena-split-view" id="interactive-view-block">
-                    <!-- Left Column: Dilemma Context Fields -->
-                    <div class="arena-brief-column">
-                        <div class="arena-tag-heading" id="arena-stage-title">Strategic Challenge 1 of 4</div>
-                        <div class="situation-brief-box" id="arena-brief-text">Core Parameter: Anticipates problems before they arise vs. Responds only when problems appear.</div>
-                        <h2 class="challenge-statement-text" id="arena-challenge-text">Incident Dilemma: Telemetry log maps indicate that infrastructure database connection traffic is steadily approaching capacity thresholds. What route do you execute?</h2>
-                    </div>
-                    <!-- Right Column: Interactive Stacking Option Pipeline -->
-                    <div class="arena-input-column" id="arena-options-container">
-                        <!-- Populated programmatically via Script loops -->
-                    </div>
+                <!-- Upper scroll block separating typography fields -->
+                <div class="terminal-scroll-sandbox" id="interactive-view-block">
+                    <div class="arena-tag-heading" id="arena-stage-title">Sector Scenario 1 of 5</div>
+                    <div class="situation-brief-box" id="arena-brief-text">Loading operational parameters...</div>
+                    <h2 class="challenge-statement-text" id="arena-challenge-text">Loading challenge question vectors...</h2>
                 </div>
 
-                <!-- Stage Clear Success Screen Component Overlay -->
+                <!-- Lower structured choices stack pipeline layout -->
+                <div class="choices-stack-pipeline" id="arena-options-container">
+                    <!-- Populated dynamically via Javascript -->
+                </div>
+
+                <!-- Stage Clear Success Screen Overlay Layer -->
                 <div class="stage-success-overlay" id="victory-overlay-panel">
-                    <span style="font-size: 2.5rem;">🎯🛡️</span>
-                    <p class="success-heading-text">Operational Paradigm Aligned!</p>
-                    <p style="color: #6e5d53; font-size: 0.92rem;">The simulator is deploying the next corporate leadership contingency pattern. Standby.</p>
+                    <span style="font-size: 2.5rem;">🎯⚙️</span>
+                    <p class="success-heading-text">Operational Strategy Aligned!</p>
+                    <p style="color: #6e5d53; font-size: 0.92rem;">Simulating next critical sector dilemma tracking sequence. Standby.</p>
                 </div>
 
             </div>
 
-            <!-- Lower Static Framework Reference Dock Track (Verbatim text values from image_4cd27b.png) -->
+            <!-- Lower Framework Reference Docks -->
             <div class="lower-reference-dock">
                 <div class="dock-pillar-card" id="dock-proactive">
-                    <span class="dock-header-lbl proactive-lbl">Proactive Behavior</span>
-                    <span class="dock-desc-lbl">Anticipates problems, creates growth opportunities, takes ownership.</span>
+                    <span class="dock-header-lbl proactive-lbl">Proactive Execution</span>
+                    <span class="dock-desc-lbl">Anticipates problems, creates growth, takes absolute ownership.</span>
                 </div>
                 <div class="dock-pillar-card" id="dock-reactive">
-                    <span class="dock-header-lbl reactive-lbl">Reactive Behavior</span>
+                    <span class="dock-header-lbl reactive-lbl">Reactive Execution</span>
                     <span class="dock-desc-lbl">Responds only when problems appear, waits for instructions, blames context.</span>
                 </div>
             </div>
 
         </div>
 
-        <!-- Analytics Metrics Footer Bar Row -->
+        <!-- Analytics Metrics Status Row Utilities Footer -->
         <div class="footer-bar">
-            <div class="score-tracker-badge">Scenarios Resolved: <span id="progress-val">0</span> / 4</div>
-            <div class="instruction-tag">Analyze the corporate dilemma above and choose the strategy that demonstrates proactive leadership optimization.</div>
+            <div class="score-tracker-badge">Sectors Optimized: <span id="progress-val">0</span> / 5</div>
+            <div class="instruction-tag">Evaluate the specialized IB Group sector dilemma and deploy the proactive countermeasure response.</div>
         </div>
     </div>
 
     <script>
-        // Data dictionary derived exactly from image_4cd27b.png definitions
-        const situationSimulationMatrix = [
+        // High fidelity L3 custom situation parameters built directly around IB Group corporate sectors
+        const sectorSimulationMatrix = [
             {
-                brief: "Core Parameter: Anticipates problems before they arise vs. Responds only when problems appear.",
-                question: "Incident Dilemma: Telemetry log maps indicate that infrastructure database connection traffic is steadily approaching capacity thresholds. What route do you execute?",
+                unit: "Broiler Integration Division",
+                brief: "Framework Alignment: Anticipates problems before they arise vs. Responds only when problems appear.",
+                question: "Sector Scenario: Weather predictions show an unseasonable heatwave incoming across your contract poultry farming zones next week. What is your leadership directive?",
                 choices: [
-                    { text: "Allocate elastic microservice scaling buffers now to securely absorb traffic surges before latency peaks.", behavior: "proactive", correct: true },
-                    { text: "Maintain current infrastructure baselines and standby for explicit system crash tickets to file.", behavior: "reactive", correct: false }
+                    { text: "Proactively coordinate with field supervisors to distribute cooling equipment and deploy hydration supplements before ambient farm temperatures spike.", behavior: "proactive", correct: true },
+                    { text: "Maintain current feeding timelines and wait for supervisors to report mortality logs before deploying auxiliary ventilation.", behavior: "reactive", correct: false }
                 ]
             },
             {
-                brief: "Core Parameter: Creates opportunities for growth vs. Waits for instructions to act.",
-                question: "Incident Dilemma: An internal workflow optimization tool shows high efficiency markers, but teams lack integration guidance. How do you advance?",
+                unit: "Abis Pro Chicken Retail Shops",
+                brief: "Framework Alignment: Creates opportunities for growth vs. Waits for instructions to act.",
+                question: "Sector Scenario: Telemetry logs show a sudden 20% spike in product sales for pre-marinated products in two test retail shops. What is your push?",
                 choices: [
-                    { text: "Wait for corporate headquarters to issue a standardized mandate before training local staff.", behavior: "reactive", correct: false },
-                    { text: "Launch a cross-department pilot group immediately to model integration tracks and scale performance.", behavior: "proactive", correct: true }
+                    { text: "Wait for corporate headquarters to launch a national product assortment review next quarter.", behavior: "reactive", correct: false },
+                    { text: "Immediately adjust localized store inventories to capture market demand and design cross-promotions.", behavior: "proactive", correct: true }
                 ]
             },
             {
-                brief: "Core Parameter: Takes ownership of outcomes vs. Blames circumstances for results.",
-                question: "Incident Dilemma: A critical branch delivery deadline drops because a third-party software node encounters an unhandled exception loop. How do you lead?",
+                unit: "Fish & Shrimp Feed Plant",
+                brief: "Framework Alignment: Takes ownership of outcomes vs. Blames circumstances for results.",
+                question: "Sector Scenario: A raw material shipment variance results in an unexpected batch density deviation flag at the feed extrusion line. How do you respond?",
                 choices: [
-                    { text: "Publicly assume systemic accountability for the deadline drop, patch the loop, and build fallback arrays.", behavior: "proactive", correct: true },
-                    { text: "Issue alert logs explaining that operations are completely gridlocked until vendor tech teams fix their codebase.", behavior: "reactive", correct: false }
+                    { text: "Assume accountability, halt processing lines to re-calibrate extruder pressure settings, and trace supplier consistency.", behavior: "proactive", correct: true },
+                    { text: "Continue processing the current inventory run and attribute any output quality flags to external vendor shipping delays.", behavior: "reactive", correct: false }
                 ]
             },
             {
-                brief: "Core Parameter: Focuses on what can be controlled vs. Focuses on what cannot be changed.",
-                question: "Incident Dilemma: Shifted regulatory supply compliance frameworks limit access to historical raw material paths. What is your team move?",
+                unit: "Abis Edible Oil Manufacturing",
+                brief: "Framework Alignment: Focuses on what can be controlled vs. Focuses on what cannot be changed.",
+                question: "Sector Scenario: Volatile international bulk shipping rates create unpredictable price surges for external raw oil imports. What strategy do you enforce?",
                 choices: [
-                    { text: "File administrative protest logs with regulators while pausing near-term fulfillment loops.", behavior: "reactive", correct: false },
-                    { text: "Audit local supply lines immediately to configure alternative compliant procurement pathways.", behavior: "proactive", correct: true }
+                    { text: "Pause local packaging expansion projects and wait for international trade metrics to normalize down to historical lines.", behavior: "reactive", correct: false },
+                    { text: "Optimize internal extraction efficiencies and build local contract sourcing alliances to control what can be changed.", behavior: "proactive", correct: true }
+                ]
+            },
+            {
+                unit: "Lynk Sweets Confectionery",
+                brief: "Framework Alignment: Transitioning operational mindsets from passive tracking to adaptive market strategy loops.",
+                question: "Sector Scenario: A sudden shift in consumer demand leaves your confectionery line with high inventories of seasonal sugar candy. How do you intervene?",
+                choices: [
+                    { text: "Re-route distribution channels toward alternate regional markets and bundle products before inventory expiration dates loom.", behavior: "proactive", correct: true },
+                    { text: "Store items in deep-freeze logistics bays and hope demand parameters organically recover during winter holidays.", behavior: "reactive", correct: false }
                 ]
             }
         ];
 
-        let currentActiveIdx = 0;
-        let clearedScenariosCount = 0;
+        let activeStageIdx = 0;
+        let solvedCount = 0;
 
         function loadSimulationStage() {
-            const interactiveBlock = document.getElementById("interactive-view-block");
+            const scrollSandbox = document.getElementById("interactive-view-block");
             const victoryPanel = document.getElementById("victory-overlay-panel");
             const optionsContainer = document.getElementById("arena-options-container");
             
-            // Wipe dock highlight classes cleanly
+            // Clean dynamic structural reference highlights
             document.getElementById("dock-proactive").className = "dock-pillar-card";
             document.getElementById("dock-reactive").className = "dock-pillar-card";
 
-            if (currentActiveIdx >= situationSimulationMatrix.length) {
-                interactiveBlock.style.display = "none";
+            if (activeStageIdx >= sectorSimulationMatrix.length) {
+                scrollSandbox.style.display = "none";
+                optionsContainer.style.display = "none";
                 victoryPanel.style.display = "flex";
                 victoryPanel.innerHTML = `
                     <span style="font-size: 3.5rem;">👑</span>
-                    <p class="success-heading-text" style="color: #2a9d8f;">Behavioral Command Achieved!</p>
-                    <p style="color: #4a382c; font-size: 1rem; font-weight: 600;">All operational decision tracks successfully migrated from reactive models to proactive execution frameworks.</p>
+                    <h2 style="color: #2a9d8f; font-size: 1.6rem; font-weight: 800; margin-top:0.4rem;">IB Group Leadership Aligned!</h2>
+                    <p style="color: #4a382c; font-size: 0.98rem; font-weight: 600; max-width:480px; margin:0.4rem auto; line-height:1.4;">All strategic business sectors successfully synchronized under proactive corporate governance execution frameworks.</p>
                 `;
                 return;
             }
 
-            const data = situationSimulationMatrix[currentActiveIdx];
-            interactiveBlock.style.display = "grid";
+            const data = sectorSimulationMatrix[activeStageIdx];
+            scrollSandbox.style.display = "flex";
+            optionsContainer.style.display = "flex";
             victoryPanel.style.display = "none";
 
-            document.getElementById("arena-stage-title").innerText = `Strategic Challenge ${currentActiveIdx + 1} of 4`;
+            document.getElementById("arena-stage-title").innerText = `${data.unit} • Challenge 0${activeStageIdx + 1}`;
             document.getElementById("arena-brief-text").innerText = data.brief;
             document.getElementById("arena-challenge-text").innerText = data.question;
 
-            // Generate option buttons securely inside their distinct lower container
+            // Generate responses vertically within their dedicated non-overlapping lower zone
             optionsContainer.innerHTML = "";
             data.choices.forEach(choice => {
                 const btn = document.createElement("button");
                 btn.className = "choice-interaction-card";
                 btn.innerText = choice.text;
                 
-                // Mouse hover anchors dynamic class highlights to lower reference dock
+                // Track mouse paths to activate corresponding behavioral dock rules
                 btn.onmouseenter = () => {
                     document.getElementById(`dock-${choice.behavior}`).classList.add(`highlighted-${choice.behavior}`);
                 };
@@ -406,33 +418,37 @@
                     document.getElementById(`dock-${choice.behavior}`).classList.remove(`highlighted-${choice.behavior}`);
                 };
                 
-                btn.onclick = () => evaluateChoiceInput(choice.correct);
+                btn.onclick = () => processPlayerInput(choice.correct);
                 optionsContainer.appendChild(btn);
             });
+
+            // Ensure smooth baseline reset for question scroll context upon changing modules
+            scrollSandbox.scrollTop = 0;
         }
 
-        function evaluateChoiceInput(isCorrectChoicePath) {
+        function processPlayerInput(isCorrectChoicePath) {
             if (isCorrectChoicePath) {
-                clearedScenariosCount++;
-                document.getElementById("progress-val").innerText = clearedScenariosCount;
+                solvedCount++;
+                document.getElementById("progress-val").innerText = solvedCount;
 
-                // Toggle success view panel
+                // Toggle phase victory layout parameters
                 document.getElementById("interactive-view-block").style.display = "none";
+                document.getElementById("arena-options-container").style.display = "none";
                 document.getElementById("victory-overlay-panel").style.display = "flex";
 
                 setTimeout(() => {
-                    currentActiveIdx++;
+                    activeStageIdx++;
                     loadSimulationStage();
-                }, 1500);
+                }, 1600);
             } else {
-                // Flash the cockpit workspace card background red to report a validation error
+                // Instantly flash cockpit box container red to report a strategy mismatch
                 const windowBoard = document.getElementById("sandbox-card-window");
                 windowBoard.style.backgroundColor = "#faeae1";
                 setTimeout(() => windowBoard.style.backgroundColor = "#ffffff", 350);
             }
         }
 
-        // Run baseline setup hooks
+        // Mount initial application tracks
         loadSimulationStage();
     </script>
 </body>
