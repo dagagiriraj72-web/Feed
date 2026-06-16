@@ -22,9 +22,9 @@
             overflow: hidden;
         }
 
-        /* 16:9 STORYLINE PRESENTATION CANVAS MAXIMUM FOOTPRINT
-           Locks down layout bounds at 1280x720 to completely eliminate vertical
-           bleed, clashing text boxes, or footer regressions in Storyline Web Objects.
+        /* 16:9 STORYLINE PRESENTATION CANVAS FIXED VIEWPORT
+           Locks down layout bounds at 1280x720 to completely fix vertical
+           clipping, blank space drops, or footer overlap errors.
         */
         .slide-wrapper {
             width: 100%;
@@ -32,7 +32,7 @@
             max-width: 1280px;
             max-height: 720px;
             aspect-ratio: 16 / 9;
-            padding: 2rem 3.5rem 1.2rem 3.5rem;
+            padding: 2.2rem 3.5rem 1.5rem 3.5rem;
             background-color: #fdfaf6;
             display: flex;
             flex-direction: column;
@@ -58,12 +58,12 @@
             justify-content: space-between;
             align-items: flex-start;
             border-bottom: 2px solid #e2dbd5;
-            padding-bottom: 0.4rem;
+            padding-bottom: 0.5rem;
             flex-shrink: 0;
         }
 
         .main-title {
-            font-size: 2.4rem;
+            font-size: 2.6rem;
             color: #3d2314;
             font-weight: 800;
             line-height: 1.1;
@@ -85,15 +85,15 @@
             display: flex;
             flex-direction: column;
             flex-grow: 1;
-            min-height: 0; /* Dynamic height clip barrier */
-            margin: 0.6rem 0;
+            min-height: 0; /* Core fix: allows child content elements to stretch natively */
+            margin: 1.2rem 0;
         }
 
         /* Horizontal Selection Ribbon Strip Track */
         .ribbon-navigation-track {
             display: grid;
             grid-template-columns: repeat(5, 1fr);
-            gap: 0.4rem;
+            gap: 0.5rem;
             width: 100%;
             flex-shrink: 0;
         }
@@ -102,19 +102,19 @@
             background-color: #e2dbd5;
             border: 1px solid rgba(61, 35, 20, 0.08);
             border-bottom: none;
-            padding: 0.75rem 0.5rem;
+            padding: 0.8rem 0.6rem;
             border-top-left-radius: 8px;
             border-top-right-radius: 8px;
             cursor: pointer;
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 0.15rem;
+            gap: 0.2rem;
             transition: all 0.2s ease;
         }
 
         .hub-index-lbl {
-            font-size: 0.7rem;
+            font-size: 0.72rem;
             font-weight: 800;
             color: #8d7d74;
             text-transform: uppercase;
@@ -122,7 +122,7 @@
         }
 
         .hub-title-lbl {
-            font-size: 0.92rem;
+            font-size: 0.95rem;
             font-weight: 700;
             color: #4a382c;
             white-space: nowrap;
@@ -135,8 +135,8 @@
         /* Active Navigation Node Highlight States */
         .business-hub-btn.active-tab {
             background-color: #ffffff;
-            padding-top: 0.9rem;
-            margin-top: -0.15rem;
+            padding-top: 1rem;
+            margin-top: -0.2rem;
             box-shadow: 0 -4px 10px rgba(61, 35, 20, 0.03);
             z-index: 2;
         }
@@ -158,8 +158,8 @@
         }
         .business-hub-btn.mastered-tab .hub-index-lbl { color: #2a9d8f; }
 
-        /* SINGLE SIDE-BY-SIDE SIMULATOR CONSOLE CARD
-           Allocates independent horizontal zones ensuring options and text parameter frames never clash.
+        /* SIDE-BY-SIDE SIMULATOR INTERACTIVE CONSOLE
+           Splits content left-to-right to optimize space and resolve the rendering dropout error.
         */
         .unified-arena-card {
             background-color: #ffffff;
@@ -168,9 +168,9 @@
             border-bottom-right-radius: 12px;
             border-top-right-radius: 12px;
             box-shadow: 0 6px 20px rgba(0, 0, 0, 0.02);
-            padding: 1.8rem 2.2rem;
+            padding: 2rem 2.4rem;
             flex-grow: 1;
-            min-height: 0;
+            min-height: 0; /* Prevents hidden overflows */
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -197,11 +197,11 @@
         .arena-brief-column {
             display: flex;
             flex-direction: column;
-            gap: 0.8rem;
+            gap: 1rem;
         }
 
         .arena-tag-heading {
-            font-size: 0.82rem;
+            font-size: 0.85rem;
             font-weight: 700;
             color: #cd674c;
             text-transform: uppercase;
@@ -210,11 +210,11 @@
         .panel-data-green .arena-tag-heading { color: #5c7564; }
 
         .framework-criterion-box {
-            font-size: 0.96rem;
+            font-size: 1rem;
             font-weight: 600;
             color: #6e5d53;
             background-color: #fdfbf9;
-            padding: 0.6rem 1rem;
+            padding: 0.75rem 1.2rem;
             border-left: 4px solid #cd674c;
             border-radius: 4px;
             line-height: 1.45;
@@ -222,31 +222,31 @@
         .panel-data-green .framework-criterion-box { border-left-color: #7b9583; }
 
         .challenge-statement-text {
-            font-size: 1.18rem;
+            font-size: 1.25rem;
             font-weight: 700;
             color: #3d2314;
-            line-height: 1.42;
+            line-height: 1.45;
         }
 
         /* Right Split Column: Choice Options Stacking Pipeline */
         .arena-input-column {
             display: flex;
             flex-direction: column;
-            gap: 0.65rem;
+            gap: 0.8rem;
             width: 100%;
         }
 
         .choice-interaction-card {
             background-color: #ffffff;
             border: 1px solid #cbd5e1;
-            padding: 1rem 1.2rem;
+            padding: 1.1rem 1.3rem;
             border-radius: 6px;
-            font-size: 0.88rem;
+            font-size: 0.92rem;
             font-weight: 600;
             color: #475569;
             cursor: pointer;
             text-align: left;
-            line-height: 1.4;
+            line-height: 1.42;
             transition: all 0.2s ease;
             width: 100%;
         }
@@ -271,7 +271,7 @@
             text-align: center;
             width: 100%;
             height: 100%;
-            gap: 0.6rem;
+            gap: 0.8rem;
         }
 
         .stage-success-overlay.visible-success {
@@ -279,7 +279,7 @@
         }
 
         .success-heading-text {
-            font-size: 1.35rem;
+            font-size: 1.4rem;
             font-weight: 800;
             color: #2a9d8f;
         }
@@ -332,15 +332,19 @@
 <body>
 
     <div class="slide-wrapper">
+        <!-- Confetti Stream Layer Canvas -->
         <canvas id="confetti-layer"></canvas>
 
+        <!-- Slide Header Title Block -->
         <div class="header-section">
             <h1 class="main-title">SMART Framework Strategic Simulator</h1>
             <span class="company-branding">IB Group</span>
         </div>
 
+        <!-- Bounded Fixed Dashboard Framework -->
         <div class="workspace-matrix">
             
+            <!-- Horizontal Folders Tabs Track Row -->
             <div class="ribbon-navigation-track">
                 <button class="business-hub-btn active-tab" data-id="1" id="tab-0" onclick="switchDivisionTab(0)">
                     <span class="hub-index-lbl">Specific</span>
@@ -362,3 +366,230 @@
                     <span class="hub-index-lbl">Time-Bound</span>
                     <span class="hub-title-lbl">Abis Edible Oil</span>
                 </button>
+            </div>
+
+            <!-- Master Playground Display Arena Card Container (Fully Restored & Functional) -->
+            <div class="unified-arena-card" id="sandbox-container">
+                
+                <!-- Pillar 1 Scenario Panel View -->
+                <div class="arena-split-view visible-view" id="view-0">
+                    <div class="arena-brief-column">
+                        <div class="arena-tag-heading">SMART Dimension: Specific [S]</div>
+                        <div class="framework-criterion-box">Goal Setup: Goals must be clear, distinct, and highly targeted to avoid ambiguous tracking errors across lines.</div>
+                        <h2 class="challenge-statement-text">IB Group Case Profile: The Broiler Integration division wants to expand operations. Which operational target statement aligns with "Specific" planning criteria?</h2>
+                    </div>
+                    <div class="arena-input-column">
+                        <button class="choice-interaction-card" onclick="submitDecision(0, true)">"Expand contract farming footprints by onboarding 150 verified farmer clusters across the Western region."</button>
+                        <button class="choice-interaction-card" onclick="submitDecision(0, false)">"Increase broiler poultry performance output and drive general vertical growth metrics this fiscal year."</button>
+                    </div>
+                </div>
+
+                <!-- Pillar 2 Scenario Panel View -->
+                <div class="arena-split-view panel-data-green" id="view-1">
+                    <div class="arena-brief-column">
+                        <div class="arena-tag-heading">SMART Dimension: Measurable [M]</div>
+                        <div class="framework-criterion-box">Goal Setup: Establish concrete numerical variables and telemetry markers to chart baseline operational advancement.</div>
+                        <h2 class="challenge-statement-text">IB Group Case Profile: The Fish Feed division wants to measure product line performance. Which planning target statement maps correctly to "Measurable" standards?</h2>
+                    </div>
+                    <div class="arena-input-column">
+                        <button class="choice-interaction-card" onclick="submitDecision(1, false)">"Optimize premium floating feed quality standards to secure better market adoption and client satisfaction."</button>
+                        <button class="choice-interaction-card" onclick="submitDecision(1, true)">"Increase premium fish feed output volumes to reach a target baseline parameter of 1,200 metric tons per month."</button>
+                    </div>
+                </div>
+
+                <!-- Pillar 3 Scenario Panel View -->
+                <div class="arena-split-view" id="view-2">
+                    <div class="arena-brief-column">
+                        <div class="arena-tag-heading">SMART Dimension: Achievable [A]</div>
+                        <div class="framework-criterion-box">Goal Setup: Keep goal variables realistic, stretching team capabilities responsibly without defining mathematically impossible baselines.</div>
+                        <h2 class="challenge-statement-text">IB Group Case Profile: The Abis Pro Retail Shop network plots its regional store performance setup. Which execution model meets the "Achievable" criterion?</h2>
+                    </div>
+                    <div class="arena-input-column">
+                        <button class="choice-interaction-card" onclick="submitDecision(2, true)">"Grow active retail walk-in footprint conversions by 15% using optimized regional inventory optimization."</button>
+                        <button class="choice-interaction-card" onclick="submitDecision(2, false)">"Instantly increase local daily transaction counts by 400% over the weekend with zero marketing asset drops."</button>
+                    </div>
+                </div>
+
+                <!-- Pillar 4 Scenario Panel View -->
+                <div class="arena-split-view panel-data-green" id="view-3">
+                    <div class="arena-brief-column">
+                        <div class="arena-tag-heading">SMART Dimension: Relevant [R]</div>
+                        <div class="framework-criterion-box">Goal Setup: Goals must connect seamlessly into current strategic corporate matrices, core missions, and resource tracks.</div>
+                        <h2 class="challenge-statement-text">IB Group Case Profile: The Lynk Sweets confectionery team defines near-term development tracks. Which option aligns with the "Relevant" corporate criterion?</h2>
+                    </div>
+                    <div class="arena-input-column">
+                        <button class="choice-interaction-card" onclick="submitDecision(3, true)">"Launch three low-sugar confectionery variations to directly match emerging regional consumer health market demands."</button>
+                        <button class="choice-interaction-card" onclick="submitDecision(3, false)">"Invest operational capital budgets into acquiring localized automated heavy hardware metal shipping containers."</button>
+                    </div>
+                </div>
+
+                <!-- Pillar 5 Scenario Panel View -->
+                <div class="arena-split-view" id="view-4">
+                    <div class="arena-brief-column">
+                        <div class="arena-tag-heading">SMART Dimension: Time-Bound [T]</div>
+                        <div class="framework-criterion-box">Goal Setup: Anchor target metrics inside a clear, non-negotiable target timeline window to avoid operational drift.</div>
+                        <h2 class="challenge-statement-text">IB Group Case Profile: The Abis Edible Oil division sets refinery processing objectives. Which directive follows "Time-Bound" scheduling protocols?</h2>
+                    </div>
+                    <div class="arena-input-column">
+                        <button class="choice-interaction-card" onclick="submitDecision(4, false)">"Deploy updated purification packaging machines to clear refinery capacity deficits whenever engineering pipelines clear."</button>
+                        <button class="choice-interaction-card" onclick="submitDecision(4, true)">"Complete mechanical installation and optimization of the new oil packaging pipeline by the end of Q3."</button>
+                    </div>
+                </div>
+
+                <!-- Individual Division Success Panel Overlay Layer -->
+                <div class="stage-success-overlay" id="victory-panel">
+                    <span style="font-size: 2.5rem;">⚙️</span>
+                    <p class="success-heading-text">Strategic Dimension Aligned!</p>
+                    <p style="color: #6e5d53; font-size: 0.92rem;">Select an unresolved business division segment from the top folder row menu to continue optimizing the corporate roadmap.</p>
+                </div>
+
+                <!-- Grand Campaign Matrix Complete Screen Panel -->
+                <div class="stage-success-overlay" id="campaign-clear-panel">
+                    <span style="font-size: 3.5rem;">👑</span>
+                    <h2 class="campaign-title-lbl">Strategic Excellence Achieved!</h2>
+                    <p style="color: #4a382c; font-size: 1rem; font-weight: 600; max-width: 440px; line-height: 1.45;">All IB Group operational divisions have been successfully synchronized under verified SMART planning frameworks.</p>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Progress Tracking Status Row -->
+        <div class="footer-bar">
+            <div class="score-tracker-badge">S.M.A.R.T. Metrics Aligned: <span id="progress-val">0</span> / 5</div>
+            <div class="instruction-tag">Alternate the top horizontal business unit hubs to evaluate and structure tactical execution matrices.</div>
+        </div>
+    </div>
+
+    <script>
+        let currentActiveIdx = 0;
+        let masteredStateMap = { 0: false, 1: false, 2: false, 3: false, 4: false };
+
+        function switchDivisionTab(targetIdx) {
+            if (targetIdx === currentActiveIdx) return;
+
+            // Remove highlighted active class from preceding element node
+            document.getElementById(`tab-${currentActiveIdx}`).classList.remove("active-tab");
+            
+            // Hide previous layout grid panel view fields
+            const activeView = document.getElementById(`view-${currentActiveIdx}`);
+            if (activeView) activeView.classList.remove("visible-view");
+
+            // Re-assign target pointers
+            currentActiveIdx = targetIdx;
+            document.getElementById(`tab-${currentActiveIdx}`).classList.add("active-tab");
+
+            // Evaluate view visibility properties based on completion states mapping memory
+            const victoryPanel = document.getElementById("victory-panel");
+            const clearPanel = document.getElementById("campaign-clear-panel");
+            const totalClearsCount = Object.values(masteredStateMap).filter(Boolean).length;
+
+            if (totalClearsCount === 5) {
+                victoryPanel.classList.remove("visible-success");
+                clearPanel.classList.add("visible-success");
+                return;
+            }
+
+            clearPanel.classList.remove("visible-success");
+            if (masteredStateMap[currentActiveIdx]) {
+                victoryPanel.classList.add("visible-success");
+            } else {
+                victoryPanel.classList.remove("visible-success");
+                document.getElementById(`view-${currentActiveIdx}`).classList.add("visible-view");
+            }
+        }
+
+        function submitDecision(divisionIdx, isCorrectChoice) {
+            if (isCorrectChoice) {
+                masteredStateMap[divisionIdx] = true;
+
+                // Adjust horizontal selector ribbon cards complete states properties
+                document.getElementById(`tab-${divisionIdx}`).classList.add("mastered-tab");
+
+                // Evaluate grand final success parameters metrics hooks
+                const totalClearsCount = Object.values(masteredStateMap).filter(Boolean).length;
+                document.getElementById(`view-${divisionIdx}`).classList.remove("visible-view");
+
+                if (totalClearsCount === 5) {
+                    document.getElementById("campaign-clear-panel").classList.add("visible-success");
+                    triggerConfettiStreamEngine();
+                } else {
+                    document.getElementById("victory-panel").classList.add("visible-success");
+                }
+
+                updateGlobalMetricsTracker();
+            } else {
+                // Instantly flash playground bounding arena frame red to indicate an invalid operational trajectory setup choice
+                const containerBox = document.getElementById("sandbox-container");
+                containerBox.style.backgroundColor = "#faeae1";
+                setTimeout(() => {
+                    containerBox.style.backgroundColor = "#ffffff";
+                }, 350);
+            }
+        }
+
+        function updateGlobalMetricsTracker() {
+            const sumCleared = Object.values(masteredStateMap).filter(Boolean).length;
+            document.getElementById("progress-val").innerText = sumCleared;
+        }
+
+        /* HARDCODED INTERACTION CONFETTI CANVAS CORE ENGINE */
+        function triggerConfettiStreamEngine() {
+            const canvas = document.getElementById("confetti-layer");
+            const ctx = canvas.getContext("2d");
+            
+            canvas.width = canvas.parentElement.offsetWidth;
+            canvas.height = canvas.parentElement.offsetHeight;
+
+            const particlesCount = 140;
+            const colorsMatrix = ["#2a9d8f", "#cd674c", "#7b9583", "#e9c46a", "#f4a261"];
+            let pool = [];
+
+            class ConfettiPiece {
+                constructor() {
+                    this.x = Math.random() * canvas.width;
+                    this.y = (Math.random() * canvas.height) - canvas.height;
+                    this.size = (Math.random() * 8) + 6;
+                    this.color = colorsMatrix[Math.floor(Math.random() * colorsMatrix.length)];
+                    this.speedY = (Math.random() * 3) + 2.5;
+                    this.speedX = (Math.random() * 2) - 1;
+                    this.rotation = Math.random() * 360;
+                    this.rotationSpeed = (Math.random() * 4) - 2;
+                }
+                update() {
+                    this.y += this.speedY;
+                    this.x += this.speedX;
+                    this.rotation += this.rotationSpeed;
+                    
+                    if (this.y > canvas.height) {
+                        this.y = -20;
+                        this.x = Math.random() * canvas.width;
+                    }
+                }
+                draw() {
+                    ctx.save();
+                    ctx.translate(this.x, this.y);
+                    ctx.rotate(this.rotation * Math.PI / 180);
+                    ctx.fillStyle = this.color;
+                    ctx.fillRect(-this.size / 2, -this.size / 2, this.size, this.size);
+                    ctx.restore();
+                }
+            }
+
+            for (let i = 0; i < particlesCount; i++) {
+                pool.push(new ConfettiPiece());
+            }
+
+            function animationLoop() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                pool.forEach(p => {
+                    p.update();
+                    p.draw();
+                });
+                requestAnimationFrame(animationLoop);
+            }
+
+            animationLoop();
+        }
+    </script>
+</body>
+</html>
