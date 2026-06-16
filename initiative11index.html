@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Proactive vs. Reactive Leadership Simulator</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #fcf8f2;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100vw;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        /* HARD-LOCKED 16:9 ARTICULATE STORYLINE PRESENTATION VIEWPORT
+           Limits boundaries at 1280x720 to permanently stop lower margin layout bleed,
+           text collision errors, or canvas truncation regressions inside web objects.
+        */
+        .slide-wrapper {
+            width: 100%;
+            height: 100%;
+            max-width: 1280px;
+            max-height: 720px;
+            aspect-ratio: 16 / 9;
+            padding: 2.2rem 3.5rem 1.5rem 3.5rem;
+            background-color: #fdfaf6;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            box-sizing: border-box;
+            position: relative;
+        }
+
+        /* Top Title Header */
+        .header-section {
+            margin-bottom: 0.4rem;
+            flex-shrink: 0;
+        }
+
+        .main-title {
+            font-size: 2.6rem;
+            color: #3d2314;
+            font-weight: 800;
+            line-height: 1.1;
+            position: relative;
+            padding-bottom: 0.4rem;
+        }
+
+        .main-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 140px;
+            height: 4px;
+            background-color: #d97706;
+            border-radius: 2px;
+        }
+
+        /* UPPER LIVE SITUATION INCIDENT DESK
+           Splits active content components laterally to give text blocks infinite growth room.
+        */
+        .incident-desk-card {
+            background-color: #ffffff;
+            border: 1px solid rgba(61, 35, 20, 0.08);
+            border-radius: 12px;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.02);
+            padding: 1.8rem 2.2rem;
+            flex-grow: 1;
+            min-height: 0; /* Clear overflow containment barrier */
+            margin-bottom: 1.2rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .arena-split-view {
+            display: grid;
+            grid-template-columns: 0.95fr 1.05fr;
+            gap: 2.5rem;
+            align-items: center;
+            height: 100%;
+            width: 100%;
+        }
+
+        /* Left Split: Case Parameters */
+        .arena-brief-column {
+            display: flex;
+            flex-direction: column;
+            gap: 0.8rem;
+        }
+
+        .arena-tag-heading {
+            font-size: 0.82rem;
+            font-weight: 700;
+            color: #d97706;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .situation-brief-box {
+            font-size: 1rem;
+            font-weight: 600;
+            color: #6e5d53;
+            background-color: #fdfbf9;
+            padding: 0.65rem 1rem;
+            border-left: 4px solid #d97706;
+            border-radius: 4px;
+            line-height: 1.45;
+        }
+
+        .challenge-statement-text {
+            font-size: 1.22rem;
+            font-weight: 700;
+            color: #3d2314;
+            line-height: 1.4;
+        }
+
+        /* Right Split: Interaction Action Stack */
+        .arena-input-column {
+            display: flex;
+            flex-direction: column;
+            gap: 0.7rem;
+            width: 100%;
+        }
+
+        .choice-interaction-card {
+            background-color: #ffffff;
+            border: 1px solid #cbd5e1;
+            padding: 1.1rem 1.3rem;
+            border-radius: 6px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: #475569;
+            cursor: pointer;
+            text-align: left;
+            line-height: 1.45;
+            transition: all 0.2s ease;
+            width: 100%;
+        }
+
+        .choice-interaction-card:hover {
+            background-color: #fffdfb;
+            border-color: #d97706;
+            color: #d97706;
+            transform: translateX(3px);
+        }
+
+        /* LOWER BASELINE REFERENCE DOCK TRACK
+           Maps static rules cards at the base to optimize screen real estate.
+        */
+        .lower-reference-dock {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
