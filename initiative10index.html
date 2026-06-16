@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SMART Framework - Stable Simulation Matrix</title>
+    <title>SMART Goals Strategic Simulator - Bulletproof Standard</title>
     <style>
         * {
             box-sizing: border-box;
@@ -22,17 +22,14 @@
             overflow: hidden;
         }
 
-        /* HARD-LOCKED STORYLINE 16:9 VIEWPORT 
-           Locks coordinates exactly at 1280x720 to completely fix vertical 
-           layout transitions, element crushing, or lower baseline text bleeding.
+        /* HARD-LOCKED 16:9 STORYLINE PRESENTATION DECK FOOTPRINT
+           Locks coordinates exactly at 1280x720. This acts as a fixed physical canvas, 
+           permanently preventing container collapse, invisible drops, or vertical bleeding.
         */
         .slide-wrapper {
-            width: 100%;
-            height: 100%;
-            max-width: 1280px;
-            max-height: 720px;
-            aspect-ratio: 16 / 9;
-            padding: 2.2rem 3.5rem 1.5rem 3.5rem;
+            width: 1280px;
+            height: 720px;
+            padding: 40px 50px 30px 50px;
             background-color: #fdfaf6;
             display: flex;
             flex-direction: column;
@@ -41,14 +38,15 @@
             position: relative;
         }
 
-        /* Top Branded Header Row */
+        /* Top Branded Corporate Header Row */
         .header-section {
             display: flex;
             justify-content: space-between;
             align-items: flex-start;
             border-bottom: 2px solid #e2dbd5;
-            padding-bottom: 0.5rem;
+            padding-bottom: 8px;
             flex-shrink: 0;
+            height: 60px;
         }
 
         .main-title {
@@ -65,40 +63,43 @@
             letter-spacing: 1.5px;
             text-transform: uppercase;
             background-color: rgba(123, 149, 131, 0.1);
-            padding: 0.3rem 0.8rem;
+            padding: 5px 12px;
             border-radius: 4px;
         }
 
-        /* Master Workspace Container Track */
+        /* Workspace Matrix Area */
         .workspace-matrix {
             display: flex;
             flex-direction: column;
-            flex-grow: 1;
-            min-height: 0; /* Clear anti-collapse barrier line */
-            margin: 1rem 0;
+            height: 520px; /* Rigidly forces workspace open to prevent blank screen drops */
+            margin-top: 15px;
+            margin-bottom: 15px;
         }
 
         /* Horizontal Selection Ribbon Track Strip */
         .ribbon-navigation-track {
             display: grid;
             grid-template-columns: repeat(5, 1fr);
-            gap: 0.5rem;
+            gap: 10px;
             width: 100%;
+            height: 65px;
             flex-shrink: 0;
-            margin-bottom: 1.2rem;
+            margin-bottom: 15px;
         }
 
         .business-hub-btn {
             background-color: #e2dbd5;
             border: 1px solid rgba(61, 35, 20, 0.08);
             border-radius: 8px;
-            padding: 0.75rem 0.6rem;
+            padding: 10px;
             cursor: pointer;
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 0.15rem;
+            justify-content: center;
+            gap: 2px;
             transition: all 0.2s ease;
+            height: 100%;
         }
 
         .hub-index-lbl {
@@ -120,7 +121,7 @@
             text-align: center;
         }
 
-        /* Active Selected Tab States */
+        /* Active Navigation Tab Highlighting */
         .business-hub-btn.active-tab {
             background-color: #ffffff;
             border-color: #cd674c;
@@ -129,6 +130,7 @@
         .business-hub-btn.active-tab .hub-title-lbl { color: #cd674c; }
         .business-hub-btn.active-tab .hub-index-lbl { color: #cd674c; }
 
+        /* Mastered Level Node State Complete Modifiers */
         .business-hub-btn.mastered-tab {
             border-color: #2a9d8f !important;
             background-color: rgba(42, 157, 143, 0.03);
@@ -141,16 +143,15 @@
         .business-hub-btn.mastered-tab .hub-index-lbl { color: #2a9d8f; }
 
         /* SINGLE BALANCED INTERACTIVE PLAYGROUND CARD 
-           Using a stable vertical layout to guarantee zero component overlapping.
+           Locks elements within a strict vertical footprint to eliminate layout overlap.
         */
         .unified-arena-card {
             background-color: #ffffff;
             border: 1px solid rgba(61, 35, 20, 0.08);
             border-radius: 12px;
             box-shadow: 0 6px 20px rgba(0, 0, 0, 0.02);
-            padding: 1.8rem 2.2rem;
-            flex-grow: 1;
-            min-height: 0;
+            padding: 30px;
+            height: 440px; /* Locked frame height */
             display: flex;
             flex-direction: column;
             justify-content: space-between;
@@ -159,13 +160,12 @@
         /* Safe scroll sandbox zone preventing text parameters overflow issues */
         .terminal-scroll-sandbox {
             flex-grow: 1;
-            min-height: 0;
-            max-height: 450px; /* Rigid vertical ceiling constraint */
             overflow-y: auto;
-            padding-right: 0.5rem;
+            padding-right: 10px;
             display: flex;
             flex-direction: column;
-            gap: 1rem;
+            gap: 15px;
+            margin-bottom: 15px;
         }
 
         .terminal-scroll-sandbox::-webkit-scrollbar { width: 5px; }
@@ -179,4 +179,115 @@
             letter-spacing: 0.5px;
         }
 
-        /* Textbook Core Value Information Block
+        /* Textbook Core Value Information Block */
+        .framework-criterion-box {
+            font-size: 1rem;
+            font-weight: 600;
+            color: #6e5d53;
+            background-color: #fdfbf9;
+            padding: 12px 20px;
+            border-left: 4px solid #cd674c;
+            border-radius: 4px;
+            line-height: 1.45;
+        }
+
+        .challenge-statement-text {
+            font-size: 1.22rem;
+            font-weight: 700;
+            color: #3d2314;
+            line-height: 1.42;
+        }
+
+        /* Stacking Options Pipeline Lower Section Base */
+        .choices-stack-pipeline {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            flex-shrink: 0;
+            width: 100%;
+        }
+
+        .choice-interaction-card {
+            background-color: #ffffff;
+            border: 1px solid #cbd5e1;
+            padding: 15px 20px;
+            border-radius: 8px;
+            font-size: 0.92rem;
+            font-weight: 600;
+            color: #475569;
+            cursor: pointer;
+            text-align: left;
+            line-height: 1.42;
+            transition: all 0.2s ease;
+            width: 100%;
+        }
+
+        .choice-interaction-card:hover {
+            background-color: #fffbf7;
+            border-color: #cd674c;
+            color: #cd674c;
+            transform: translateX(3px);
+        }
+
+        /* Phase Clear Success Overlay Component Layer */
+        .stage-success-overlay {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            width: 100%;
+            height: 100%;
+            gap: 10px;
+        }
+
+        .success-heading-text {
+            font-size: 1.4rem;
+            font-weight: 800;
+            color: #2a9d8f;
+        }
+
+        /* Grand Total Campaign Clear Screen Overrides */
+        .campaign-clear-panel {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            width: 100%;
+            height: 100%;
+            gap: 12px;
+        }
+
+        /* Bottom Fixed Corporate Metrics Row Status Bar */
+        .footer-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-shrink: 0;
+            border-top: 1px solid rgba(61, 35, 20, 0.08);
+            padding-top: 10px;
+            height: 40px;
+        }
+
+        .score-tracker-badge {
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: #3d2314;
+            background-color: #fff8eb;
+            padding: 4px 15px;
+            border-radius: 20px;
+            border: 1px solid #f4a261;
+            font-variant-numeric: tabular-nums;
+        }
+
+        .instruction-tag {
+            font-size: 0.85rem;
+            color: #a39389;
+            font-style: italic;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="slide-wrapper">
