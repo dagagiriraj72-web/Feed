@@ -3,15 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>IB Group - 30-Day Action Plan Input Console</title>
+    <title>Your 30-Day Action Plan - Interactive Panel Console</title>
     <style>
-        /* FORCE GLOBAL SYSTEM CONTAINERS TO OCCUPY THE ENTIRE SLIDE IFRAME WINDOW */
+        /* BASE RESET & GLOBAL CONTAINER OVERRIDES TO FORCE FULL SCREEN IFRAME REVEAL */
         html, body {
             margin: 0;
             padding: 0;
             width: 100%;
             height: 100%;
-            background-color: #2b1a11; /* Dark chocolate theme from image_076390.png */
+            background-color: #2b1a11; /* Warm dark theme from image_066c46.png */
             font-family: 'Segoe UI', Arial, sans-serif;
             overflow-x: hidden;
             overflow-y: auto;
@@ -22,18 +22,21 @@
             min-height: 100%;
             padding: 30px;
             box-sizing: border-box;
-            display: block;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
         }
 
-        /* Top Header Row Title */
+        /* Top Header Layout */
         .header-section {
             border-bottom: 2px solid #523b2e;
             padding-bottom: 12px;
-            margin-bottom: 25px;
+            margin-bottom: 20px;
+            overflow: hidden;
         }
 
         .main-title {
-            font-size: 36px;
+            font-size: 32px;
             color: #ffffff;
             font-weight: 800;
             margin: 0;
@@ -42,12 +45,12 @@
 
         .main-title span {
             color: #f4a261; /* Orange accent text highlight */
-            border-bottom: 4px solid #f4a261;
+            border-bottom: 3px solid #f4a261;
         }
 
         .company-branding {
             float: right;
-            font-size: 14px;
+            font-size: 13px;
             font-weight: 800;
             color: #7b9583;
             letter-spacing: 1px;
@@ -55,100 +58,131 @@
             background-color: rgba(123, 149, 131, 0.15);
             padding: 5px 12px;
             border-radius: 4px;
-            margin-top: 8px;
+            margin-top: 6px;
         }
 
-        /* 4-COLUMN MILESTONE GRID MATRIX WRAPPER */
-        .roadmap-grid-matrix {
+        /* HORIZONTAL PROGRESSIVE NAVIGATION TAB TRACK
+           Replaces squished 4-column layout to prevent clipping or missing inputs.
+        */
+        .tab-navigation-strip {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
             width: 100%;
-            margin-bottom: 25px;
-            display: table;
-            table-layout: fixed;
-            border-collapse: separate;
-            border-spacing: 15px 0px;
+            margin-bottom: 15px;
         }
 
-        /* Column Node Structure */
-        .week-column-node {
-            display: table-cell;
-            background-color: #3d281e; /* Darker card background */
+        .nav-week-tab {
+            background-color: #3d281e;
             border: 2px solid #523b2e;
-            border-radius: 12px;
-            padding: 20px 15px;
-            vertical-align: top;
-            box-sizing: border-box;
-            transition: all 0.3s ease;
+            border-radius: 8px;
+            padding: 12px;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            transition: all 0.25s ease;
         }
 
-        /* GATEKEEPING GATED CLOSED STATES */
-        .week-column-node.gated-locked {
-            opacity: 0.25;
+        .nav-week-tab:hover:not(.tab-gated-locked) {
+            background-color: #4a3225;
+            border-color: #f4a261;
+        }
+
+        .tab-index-lbl {
+            font-size: 11px;
+            font-weight: 800;
+            color: #a39389;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .tab-title-lbl {
+            font-size: 15px;
+            font-weight: 700;
+            color: #ddcbbb;
+        }
+
+        /* DYNAMIC NAVIGATION INTERACTIVE STATES */
+        .nav-week-tab.tab-active {
+            background-color: #ffffff !important;
+            border-color: #f4a261 !important;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+        .nav-week-tab.tab-active .tab-index-lbl { color: #e76f51; }
+        .nav-week-tab.tab-active .tab-title-lbl { color: #2b1a11; }
+
+        .nav-week-tab.tab-unlocked {
+            border-color: #2a9d8f;
+        }
+        .nav-week-tab.tab-unlocked .tab-index-lbl { color: #2a9d8f; }
+
+        .nav-week-tab.tab-gated-locked {
+            opacity: 0.3;
+            cursor: not-allowed;
             background-color: #21150e;
-            pointer-events: none; /* Disables all inputs inside locked columns */
             border-style: dashed;
         }
 
-        .column-header-block {
-            text-align: center;
+        /* MASTER CENTRAL WORKSPACE WORKSTATION CARD */
+        .workspace-card {
+            background-color: #3d281e; /* Dark theme paneling match */
+            border: 2px solid #523b2e;
+            border-radius: 12px;
+            padding: 25px 30px;
             margin-bottom: 20px;
-            border-bottom: 1px solid #523b2e;
-            padding-bottom: 10px;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.15);
         }
 
-        .week-index-lbl {
-            font-size: 12px;
-            font-weight: 800;
-            color: #e76f51;
-            text-transform: uppercase;
-            letter-spacing: 1px;
+        /* Single Focused Module Section Views */
+        .week-content-panel {
+            display: none;
+        }
+
+        .week-content-panel.panel-visible {
             display: block;
-            margin-bottom: 4px;
+            animation: panelFadeIn 0.3s ease-out forwards;
         }
 
-        .week-title-lbl {
-            font-size: 20px;
-            font-weight: 700;
-            color: #ffffff;
-            display: block;
+        @keyframes panelFadeIn {
+            from { opacity: 0; transform: translateY(4px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
-        /* INPUT LIST PIPELINE TRACK */
-        .items-vertical-stack {
-            display: block;
-            width: 100%;
-        }
-
-        .item-input-group {
+        /* INPUT CARD PIECES CONTAINER */
+        .item-input-row {
             background-color: #4a3225;
             border: 1px solid #5e3d2f;
             border-radius: 8px;
-            padding: 12px;
+            padding: 15px;
             margin-bottom: 15px;
-            box-sizing: border-box;
+        }
+
+        .item-input-row:last-child {
+            margin-bottom: 0;
         }
 
         .item-prompt-text {
-            font-size: 13.5px;
-            color: #ddcbbb;
+            font-size: 14px;
+            color: #ffffff;
             font-weight: 600;
             line-height: 1.4;
-            margin-bottom: 8px;
+            margin-bottom: 10px;
             display: block;
         }
 
-        /* TEXT INPUT FIELDS ENGINE */
+        /* TEXT ENTRY COMPONENT */
         .learner-text-field {
             width: 100%;
             background-color: #21150e;
-            border: 1px solid #5e3d2f;
-            border-radius: 4px;
-            padding: 8px 10px;
+            border: 2px solid #5e3d2f;
+            border-radius: 6px;
+            padding: 10px 14px;
             color: #ffffff;
-            font-size: 13px;
+            font-size: 14px;
             box-sizing: border-box;
             outline: none;
-            resize: none;
-            transition: border-color 0.2s ease;
+            transition: all 0.25s ease;
         }
 
         .learner-text-field:focus {
@@ -156,20 +190,17 @@
             background-color: #1a110a;
         }
 
-        /* Verified Complete Input Glow State */
-        .learner-text-field.field-filled {
+        /* Filled and Verified Successful State */
+        .learner-text-field.field-verified {
             border-color: #2a9d8f;
             background-color: #16241f;
         }
 
-        /* LOWER ANALYSIS HUD CONTROLS BAR */
+        /* LOWER ANALYSIS REVENUE STATUS HUB FOOTER ROW */
         .footer-bar {
-            margin-top: 30px;
             border-top: 1px solid #523b2e;
             padding-top: 15px;
-            width: 100%;
-            clear: both;
-            display: block;
+            overflow: hidden;
         }
 
         .score-tracker-badge {
@@ -195,60 +226,179 @@
 <body>
 
     <div class="slide-wrapper">
+        <!-- Dashboard Branded Header -->
         <div class="header-section">
             <h1 class="main-title">Your <span>30-Day Action Plan</span></h1>
             <span class="company-branding">IB Group</span>
         </div>
 
-        <div class="roadmap-grid-matrix">
+        <!-- Horizontal Interactive Selection Ribbon Track -->
+        <div class="tab-navigation-strip">
+            <!-- Tab 1 -->
+            <div class="nav-week-tab tab-active" id="tab-0" onclick="switchActiveWeekTab(0)">
+                <span class="tab-index-lbl">Week 1</span>
+                <span class="tab-title-lbl">Awareness</span>
+            </div>
+            <!-- Tab 2 -->
+            <div class="nav-week-tab tab-gated-locked" id="tab-1" onclick="switchActiveWeekTab(1)">
+                <span class="tab-index-lbl">Week 2</span>
+                <span class="tab-title-lbl">Small Actions</span>
+            </div>
+            <!-- Tab 3 -->
+            <div class="nav-week-tab tab-gated-locked" id="tab-2" onclick="switchActiveWeekTab(2)">
+                <span class="tab-index-lbl">Week 3</span>
+                <span class="tab-title-lbl">Momentum</span>
+            </div>
+            <!-- Tab 4 -->
+            <div class="nav-week-tab tab-gated-locked" id="tab-3" onclick="switchActiveWeekTab(3)">
+                <span class="tab-index-lbl">Week 4</span>
+                <span class="tab-title-lbl">Commitment</span>
+            </div>
+        </div>
+
+        <!-- Master Presentation Viewport Card Board Window Box -->
+        <div class="workspace-card">
             
-            <div class="week-column-node" id="week-block-0">
-                <div class="column-header-block">
-                    <span class="week-index-lbl">Week 1</span>
-                    <span class="week-title-lbl">Awareness</span>
+            <!-- WEEK 1 INTERFACE PANEL MODULE VIEW -->
+            <div class="week-content-panel panel-visible" id="panel-0">
+                <div class="item-input-row">
+                    <span class="item-prompt-text">Identify 3 areas where you could take more initiative:</span>
+                    <input type="text" class="learner-text-field" oninput="verifyFieldProcessing(0)" placeholder="Enter your detailed action commitment...">
                 </div>
-                <div class="items-vertical-stack">
-                    <div class="item-input-group">
-                        <span class="item-prompt-text">Identify 3 areas where you could take more initiative:</span>
-                        <input type="text" class="learner-text-field" oninput="evaluateColumnLockProgress(0)" placeholder="Type your action commitment...">
-                    </div>
-                    <div class="item-input-group">
-                        <span class="item-prompt-text">Journal daily observations about your proactivity:</span>
-                        <input type="text" class="learner-text-field" oninput="evaluateColumnLockProgress(0)" placeholder="Type your action commitment...">
-                    </div>
-                    <div class="item-input-group">
-                        <span class="item-prompt-text">Set one SMART goal for the month:</span>
-                        <input type="text" class="learner-text-field" oninput="evaluateColumnLockProgress(0)" placeholder="Type your action commitment...">
-                    </div>
+                <div class="item-input-row">
+                    <span class="item-prompt-text">Journal daily observations about your proactivity:</span>
+                    <input type="text" class="learner-text-field" oninput="verifyFieldProcessing(0)" placeholder="Enter your detailed action commitment...">
+                </div>
+                <div class="item-input-row">
+                    <span class="item-prompt-text">Set one SMART goal for the month:</span>
+                    <input type="text" class="learner-text-field" oninput="verifyFieldProcessing(0)" placeholder="Enter your detailed action commitment...">
                 </div>
             </div>
 
-            <div class="week-column-node gated-locked" id="week-block-1">
-                <div class="column-header-block">
-                    <span class="week-index-lbl">Week 2</span>
-                    <span class="week-title-lbl">Small Actions</span>
+            <!-- WEEK 2 INTERFACE PANEL MODULE VIEW -->
+            <div class="week-content-panel" id="panel-1">
+                <div class="item-input-row">
+                    <span class="item-prompt-text">Volunteer for one new task at work:</span>
+                    <input type="text" class="learner-text-field" oninput="verifyFieldProcessing(1)" placeholder="Enter your detailed action commitment...">
                 </div>
-                <div class="items-vertical-stack">
-                    <div class="item-input-group">
-                        <span class="item-prompt-text">Volunteer for one new task at work:</span>
-                        <input type="text" class="learner-text-field" oninput="evaluateColumnLockProgress(1)" placeholder="Locked. Complete previous week.">
-                    </div>
-                    <div class="item-input-group">
-                        <span class="item-prompt-text">Practice the 5-second rule three times daily:</span>
-                        <input type="text" class="learner-text-field" oninput="evaluateColumnLockProgress(1)" placeholder="Locked. Complete previous week.">
-                    </div>
-                    <div class="item-input-group">
-                        <span class="item-prompt-text">Share one idea in a team meeting:</span>
-                        <input type="text" class="learner-text-field" oninput="evaluateColumnLockProgress(1)" placeholder="Locked. Complete previous week.">
-                    </div>
+                <div class="item-input-row">
+                    <span class="item-prompt-text">Practice the 5-second rule three times daily:</span>
+                    <input type="text" class="learner-text-field" oninput="verifyFieldProcessing(1)" placeholder="Enter your detailed action commitment...">
+                </div>
+                <div class="item-input-row">
+                    <span class="item-prompt-text">Share one idea in a team meeting:</span>
+                    <input type="text" class="learner-text-field" oninput="verifyFieldProcessing(1)" placeholder="Enter your detailed action commitment...">
                 </div>
             </div>
 
-            <div class="week-column-node gated-locked" id="week-block-2">
-                <div class="column-header-block">
-                    <span class="week-index-lbl">Week 3</span>
-                    <span class="week-title-lbl">Momentum</span>
+            <!-- WEEK 3 INTERFACE PANEL MODULE VIEW -->
+            <div class="week-content-panel" id="panel-2">
+                <div class="item-input-row">
+                    <span class="item-prompt-text">Take ownership of a process improvement:</span>
+                    <input type="text" class="learner-text-field" oninput="verifyFieldProcessing(2)" placeholder="Enter your detailed action commitment...">
                 </div>
-                <div class="items-vertical-stack">
-                    <div class="item-input-group">
-                        <span class="item-
+                <div class="item-input-row">
+                    <span class="item-prompt-text">Seek feedback on your initiative efforts:</span>
+                    <input type="text" class="learner-text-field" oninput="verifyFieldProcessing(2)" placeholder="Enter your detailed action commitment...">
+                </div>
+                <div class="item-input-row">
+                    <span class="item-prompt-text">Build one new professional connection:</span>
+                    <input type="text" class="learner-text-field" oninput="verifyFieldProcessing(2)" placeholder="Enter your detailed action commitment...">
+                </div>
+            </div>
+
+            <!-- WEEK 4 INTERFACE PANEL MODULE VIEW -->
+            <div class="week-content-panel" id="panel-3">
+                <div class="item-input-row">
+                    <span class="item-prompt-text">Reflect on your progress and adjust goals:</span>
+                    <input type="text" class="learner-text-field" oninput="verifyFieldProcessing(3)" placeholder="Enter your detailed action commitment...">
+                </div>
+                <div class="item-input-row">
+                    <span class="item-prompt-text">Establish a daily initiative habit:</span>
+                    <input type="text" class="learner-text-field" oninput="verifyFieldProcessing(3)" placeholder="Enter your detailed action commitment...">
+                </div>
+                <div class="item-input-row">
+                    <span class="item-prompt-text">Plan your next 30-day challenge:</span>
+                    <input type="text" class="learner-text-field" oninput="verifyFieldProcessing(3)" placeholder="Enter your detailed action commitment...">
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Lower Analytics HUD Status Row Line -->
+        <div class="footer-bar">
+            <div class="score-tracker-badge" id="milestones-tracker">Overall Milestones Met: 0 / 12</div>
+            <div class="instruction-tag">Provide meaningful inputs for each statement to safely unlock downstream milestones.</div>
+        </div>
+    </div>
+
+    <script>
+        let currentlySelectedTabIdx = 0;
+        let weekValidationCache = { 0: false, 1: false, 2: false, 3: false };
+
+        function verifyFieldProcessing(weekIdx) {
+            const targetedPanel = document.getElementById(`panel-${weekIdx}`);
+            const fields = targetedPanel.querySelectorAll('.learner-text-field');
+            
+            let allInputsValid = true;
+
+            fields.forEach(input => {
+                // Core fix: Validates if anything has been typed (greater than 0 characters)
+                if (input.value.trim().length > 0) {
+                    input.classList.add('field-verified');
+                } else {
+                    input.classList.remove('field-verified');
+                    allInputsValid = false;
+                }
+            });
+
+            weekValidationCache[weekIdx] = allInputsValid;
+
+            // Instantly clear or assign unlocked tab classes based on current entries state
+            const subsequentTab = document.getElementById(`tab-${weekIdx + 1}`);
+            if (allInputsValid) {
+                document.getElementById(`tab-${weekIdx}`).classList.add('tab-unlocked');
+                if (subsequentTab) {
+                    subsequentTab.classList.remove('tab-gated-locked');
+                }
+            } else {
+                document.getElementById(`tab-${weekIdx}`).classList.remove('tab-unlocked');
+                // Cascade lock downstream tabs if the current tab falls out of valid states
+                for (let i = weekIdx + 1; i <= 3; i++) {
+                    const downstreamTab = document.getElementById(`tab-${i}`);
+                    if (downstreamTab) {
+                        downstreamTab.classList.add('tab-gated-locked');
+                        if (currentlySelectedTabIdx === i) {
+                            switchActiveWeekTab(weekIdx);
+                        }
+                    }
+                }
+            }
+
+            recalculateGlobalMilestonesHUD();
+        }
+
+        function switchActiveWeekTab(targetIdx) {
+            const destinationTab = document.getElementById(`tab-${targetIdx}`);
+            
+            // Block navigation to tabs that are locked down via the gate keeping framework
+            if (destinationTab.classList.contains('tab-gated-locked')) return;
+
+            // Toggle active tracking classes on tab buttons
+            document.getElementById(`tab-${currentlySelectedTabIdx}`).classList.remove('tab-active');
+            destinationTab.classList.add('tab-active');
+
+            // Swap slide panels viewport display cards
+            document.getElementById(`panel-${currentlySelectedTabIdx}`).classList.remove('panel-visible');
+            document.getElementById(`panel-${targetIdx}`).classList.add('panel-visible');
+
+            currentlySelectedTabIdx = targetIdx;
+        }
+
+        function recalculateGlobalMilestonesHUD() {
+            const verifiedFieldsCount = document.querySelectorAll('.learner-text-field.field-verified').length;
+            document.getElementById('milestones-tracker').innerText = `Overall Milestones Met: ${verifiedFieldsCount} / 12`;
+        }
+    </script>
+</body>
+</html>
