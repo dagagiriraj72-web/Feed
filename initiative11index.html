@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Proactive vs. Reactive Leadership Simulator</title>
+    <title>Proactive vs. Reactive Leadership Simulator - Fixed Stack</title>
     <style>
         * {
             box-sizing: border-box;
@@ -22,9 +22,9 @@
             overflow: hidden;
         }
 
-        /* HARD-LOCKED 16:9 ARTICULATE STORYLINE PRESENTATION VIEWPORT
-           Limits boundaries at 1280x720 to permanently stop lower margin layout bleed,
-           text collision errors, or canvas truncation regressions inside web objects.
+        /* HARD-LOCKED 16:9 STORYLINE PRESENTATION CANVAS MAXIMUM FOOTPRINT
+           Locks down layout bounds at 1280x720 to permanently resolve 
+           blank screen drops, vertical layout shifts, or element clipping.
         */
         .slide-wrapper {
             width: 100%;
@@ -32,7 +32,7 @@
             max-width: 1280px;
             max-height: 720px;
             aspect-ratio: 16 / 9;
-            padding: 2.2rem 3.5rem 1.5rem 3.5rem;
+            padding: 2rem 3.5rem 1.5rem 3.5rem;
             background-color: #fdfaf6;
             display: flex;
             flex-direction: column;
@@ -41,9 +41,9 @@
             position: relative;
         }
 
-        /* Top Title Header */
+        /* Top Header Component Section */
         .header-section {
-            margin-bottom: 0.4rem;
+            margin-bottom: 0.5rem;
             flex-shrink: 0;
         }
 
@@ -67,23 +67,34 @@
             border-radius: 2px;
         }
 
-        /* UPPER LIVE SITUATION INCIDENT DESK
-           Splits active content components laterally to give text blocks infinite growth room.
+        /* MAIN MASTER FLEX PIPELINE WORKSPACE 
+           Core Fix: Uses flexible column growth to ensure the sandbox area 
+           is forced open and remains 100% visible inside the slide canvas.
         */
+        .workspace-pipeline {
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+            min-height: 0; /* Anti-collapse structural safety guardrail */
+            margin: 1rem 0;
+        }
+
+        /* UPPER SITUATION INCIDENT DESK ARENA */
         .incident-desk-card {
             background-color: #ffffff;
             border: 1px solid rgba(61, 35, 20, 0.08);
             border-radius: 12px;
             box-shadow: 0 6px 20px rgba(0, 0, 0, 0.02);
-            padding: 1.8rem 2.2rem;
+            padding: 2rem 2.4rem;
             flex-grow: 1;
-            min-height: 0; /* Clear overflow containment barrier */
+            min-height: 0; /* Prevents text payload from blowing out container height limits */
             margin-bottom: 1.2rem;
             display: flex;
             flex-direction: column;
             justify-content: center;
         }
 
+        /* Side-by-Side Split Column Matrix */
         .arena-split-view {
             display: grid;
             grid-template-columns: 0.95fr 1.05fr;
@@ -93,7 +104,7 @@
             width: 100%;
         }
 
-        /* Left Split: Case Parameters */
+        /* Left Side: Text Parameter Context Column */
         .arena-brief-column {
             display: flex;
             flex-direction: column;
@@ -101,7 +112,7 @@
         }
 
         .arena-tag-heading {
-            font-size: 0.82rem;
+            font-size: 0.85rem;
             font-weight: 700;
             color: #d97706;
             text-transform: uppercase;
@@ -113,24 +124,24 @@
             font-weight: 600;
             color: #6e5d53;
             background-color: #fdfbf9;
-            padding: 0.65rem 1rem;
+            padding: 0.75rem 1.2rem;
             border-left: 4px solid #d97706;
             border-radius: 4px;
             line-height: 1.45;
         }
 
         .challenge-statement-text {
-            font-size: 1.22rem;
+            font-size: 1.25rem;
             font-weight: 700;
             color: #3d2314;
-            line-height: 1.4;
+            line-height: 1.42;
         }
 
-        /* Right Split: Interaction Action Stack */
+        /* Right Side: Options Interactive Input Stack */
         .arena-input-column {
             display: flex;
             flex-direction: column;
-            gap: 0.7rem;
+            gap: 0.8rem;
             width: 100%;
         }
 
@@ -139,12 +150,12 @@
             border: 1px solid #cbd5e1;
             padding: 1.1rem 1.3rem;
             border-radius: 6px;
-            font-size: 0.9rem;
+            font-size: 0.92rem;
             font-weight: 600;
             color: #475569;
             cursor: pointer;
             text-align: left;
-            line-height: 1.45;
+            line-height: 1.42;
             transition: all 0.2s ease;
             width: 100%;
         }
@@ -156,9 +167,273 @@
             transform: translateX(3px);
         }
 
-        /* LOWER BASELINE REFERENCE DOCK TRACK
-           Maps static rules cards at the base to optimize screen real estate.
+        /* LOWER BASELINE STANDARDIZED CORE RULES REFFRENCE DOCK 
+           Anchors textbook metrics neatly at the bottom to maximize space.
         */
         .lower-reference-dock {
             display: grid;
             grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+            flex-shrink: 0;
+            width: 100%;
+        }
+
+        .dock-pillar-card {
+            background-color: #f1ede9;
+            border-radius: 8px;
+            padding: 0.8rem 1.4rem;
+            border: 1px solid rgba(61, 35, 20, 0.05);
+            display: flex;
+            flex-direction: column;
+            gap: 0.2rem;
+            transition: all 0.3s ease;
+        }
+
+        .dock-pillar-card.highlighted-proactive {
+            background-color: rgba(221, 114, 83, 0.08);
+            border-color: #dd7253;
+            box-shadow: inset 0 0 0 1px #dd7253;
+        }
+
+        .dock-pillar-card.highlighted-reactive {
+            background-color: rgba(110, 93, 83, 0.08);
+            border-color: #6e5d53;
+            box-shadow: inset 0 0 0 1px #6e5d53;
+        }
+
+        .dock-header-lbl {
+            font-size: 1.1rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .proactive-lbl { color: #dd7253; }
+        .reactive-lbl { color: #6e5d53; }
+
+        .dock-desc-lbl {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: #4a382c;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        /* Success Layer Banner Display Components */
+        .stage-success-overlay {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            width: 100%;
+            height: 100%;
+            gap: 0.8rem;
+        }
+
+        .success-heading-text {
+            font-size: 1.4rem;
+            font-weight: 800;
+            color: #2a9d8f;
+        }
+
+        /* Bottom Fixed Corporate Metrics Row Status Bar */
+        .footer-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-shrink: 0;
+            border-top: 1px solid rgba(61, 35, 20, 0.08);
+            padding-top: 0.6rem;
+            margin-top: 0.4rem;
+        }
+
+        .score-tracker-badge {
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: #3d2314;
+            background-color: #fff8eb;
+            padding: 0.25rem 0.8rem;
+            border-radius: 20px;
+            border: 1px solid #f4a261;
+            font-variant-numeric: tabular-nums;
+        }
+
+        .instruction-tag {
+            font-size: 0.85rem;
+            color: #a39389;
+            font-style: italic;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="slide-wrapper">
+        <!-- Frame Header -->
+        <div class="header-section">
+            <h1 class="main-title">Proactive vs. Reactive Leadership</h1>
+        </div>
+
+        <!-- Master Anti-Overlap Workspace -->
+        <div class="workspace-pipeline">
+            
+            <!-- Upper Incident Desk Arena Dashboard Card Component -->
+            <div class="incident-desk-card" id="sandbox-card-window">
+                
+                <div class="arena-split-view" id="interactive-view-block">
+                    <!-- Left Column: Dilemma Context Fields -->
+                    <div class="arena-brief-column">
+                        <div class="arena-tag-heading" id="arena-stage-title">Strategic Challenge 1 of 4</div>
+                        <div class="situation-brief-box" id="arena-brief-text">Core Parameter: Anticipates problems before they arise vs. Responds only when problems appear.</div>
+                        <h2 class="challenge-statement-text" id="arena-challenge-text">Incident Dilemma: Telemetry log maps indicate that infrastructure database connection traffic is steadily approaching capacity thresholds. What route do you execute?</h2>
+                    </div>
+                    <!-- Right Column: Interactive Stacking Option Pipeline -->
+                    <div class="arena-input-column" id="arena-options-container">
+                        <!-- Populated programmatically via Script loops -->
+                    </div>
+                </div>
+
+                <!-- Stage Clear Success Screen Component Overlay -->
+                <div class="stage-success-overlay" id="victory-overlay-panel">
+                    <span style="font-size: 2.5rem;">🎯🛡️</span>
+                    <p class="success-heading-text">Operational Paradigm Aligned!</p>
+                    <p style="color: #6e5d53; font-size: 0.92rem;">The simulator is deploying the next corporate leadership contingency pattern. Standby.</p>
+                </div>
+
+            </div>
+
+            <!-- Lower Static Framework Reference Dock Track (Verbatim text values from image_4cd27b.png) -->
+            <div class="lower-reference-dock">
+                <div class="dock-pillar-card" id="dock-proactive">
+                    <span class="dock-header-lbl proactive-lbl">Proactive Behavior</span>
+                    <span class="dock-desc-lbl">Anticipates problems, creates growth opportunities, takes ownership.</span>
+                </div>
+                <div class="dock-pillar-card" id="dock-reactive">
+                    <span class="dock-header-lbl reactive-lbl">Reactive Behavior</span>
+                    <span class="dock-desc-lbl">Responds only when problems appear, waits for instructions, blames context.</span>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Analytics Metrics Footer Bar Row -->
+        <div class="footer-bar">
+            <div class="score-tracker-badge">Scenarios Resolved: <span id="progress-val">0</span> / 4</div>
+            <div class="instruction-tag">Analyze the corporate dilemma above and choose the strategy that demonstrates proactive leadership optimization.</div>
+        </div>
+    </div>
+
+    <script>
+        // Data dictionary derived exactly from image_4cd27b.png definitions
+        const situationSimulationMatrix = [
+            {
+                brief: "Core Parameter: Anticipates problems before they arise vs. Responds only when problems appear.",
+                question: "Incident Dilemma: Telemetry log maps indicate that infrastructure database connection traffic is steadily approaching capacity thresholds. What route do you execute?",
+                choices: [
+                    { text: "Allocate elastic microservice scaling buffers now to securely absorb traffic surges before latency peaks.", behavior: "proactive", correct: true },
+                    { text: "Maintain current infrastructure baselines and standby for explicit system crash tickets to file.", behavior: "reactive", correct: false }
+                ]
+            },
+            {
+                brief: "Core Parameter: Creates opportunities for growth vs. Waits for instructions to act.",
+                question: "Incident Dilemma: An internal workflow optimization tool shows high efficiency markers, but teams lack integration guidance. How do you advance?",
+                choices: [
+                    { text: "Wait for corporate headquarters to issue a standardized mandate before training local staff.", behavior: "reactive", correct: false },
+                    { text: "Launch a cross-department pilot group immediately to model integration tracks and scale performance.", behavior: "proactive", correct: true }
+                ]
+            },
+            {
+                brief: "Core Parameter: Takes ownership of outcomes vs. Blames circumstances for results.",
+                question: "Incident Dilemma: A critical branch delivery deadline drops because a third-party software node encounters an unhandled exception loop. How do you lead?",
+                choices: [
+                    { text: "Publicly assume systemic accountability for the deadline drop, patch the loop, and build fallback arrays.", behavior: "proactive", correct: true },
+                    { text: "Issue alert logs explaining that operations are completely gridlocked until vendor tech teams fix their codebase.", behavior: "reactive", correct: false }
+                ]
+            },
+            {
+                brief: "Core Parameter: Focuses on what can be controlled vs. Focuses on what cannot be changed.",
+                question: "Incident Dilemma: Shifted regulatory supply compliance frameworks limit access to historical raw material paths. What is your team move?",
+                choices: [
+                    { text: "File administrative protest logs with regulators while pausing near-term fulfillment loops.", behavior: "reactive", correct: false },
+                    { text: "Audit local supply lines immediately to configure alternative compliant procurement pathways.", behavior: "proactive", correct: true }
+                ]
+            }
+        ];
+
+        let currentActiveIdx = 0;
+        let clearedScenariosCount = 0;
+
+        function loadSimulationStage() {
+            const interactiveBlock = document.getElementById("interactive-view-block");
+            const victoryPanel = document.getElementById("victory-overlay-panel");
+            const optionsContainer = document.getElementById("arena-options-container");
+            
+            // Wipe dock highlight classes cleanly
+            document.getElementById("dock-proactive").className = "dock-pillar-card";
+            document.getElementById("dock-reactive").className = "dock-pillar-card";
+
+            if (currentActiveIdx >= situationSimulationMatrix.length) {
+                interactiveBlock.style.display = "none";
+                victoryPanel.style.display = "flex";
+                victoryPanel.innerHTML = `
+                    <span style="font-size: 3.5rem;">👑</span>
+                    <p class="success-heading-text" style="color: #2a9d8f;">Behavioral Command Achieved!</p>
+                    <p style="color: #4a382c; font-size: 1rem; font-weight: 600;">All operational decision tracks successfully migrated from reactive models to proactive execution frameworks.</p>
+                `;
+                return;
+            }
+
+            const data = situationSimulationMatrix[currentActiveIdx];
+            interactiveBlock.style.display = "grid";
+            victoryPanel.style.display = "none";
+
+            document.getElementById("arena-stage-title").innerText = `Strategic Challenge ${currentActiveIdx + 1} of 4`;
+            document.getElementById("arena-brief-text").innerText = data.brief;
+            document.getElementById("arena-challenge-text").innerText = data.question;
+
+            // Generate option buttons securely inside their distinct lower container
+            optionsContainer.innerHTML = "";
+            data.choices.forEach(choice => {
+                const btn = document.createElement("button");
+                btn.className = "choice-interaction-card";
+                btn.innerText = choice.text;
+                
+                // Mouse hover anchors dynamic class highlights to lower reference dock
+                btn.onmouseenter = () => {
+                    document.getElementById(`dock-${choice.behavior}`).classList.add(`highlighted-${choice.behavior}`);
+                };
+                btn.onmouseleave = () => {
+                    document.getElementById(`dock-${choice.behavior}`).classList.remove(`highlighted-${choice.behavior}`);
+                };
+                
+                btn.onclick = () => evaluateChoiceInput(choice.correct);
+                optionsContainer.appendChild(btn);
+            });
+        }
+
+        function evaluateChoiceInput(isCorrectChoicePath) {
+            if (isCorrectChoicePath) {
+                clearedScenariosCount++;
+                document.getElementById("progress-val").innerText = clearedScenariosCount;
+
+                // Toggle success view panel
+                document.getElementById("interactive-view-block").style.display = "none";
+                document.getElementById("victory-overlay-panel").style.display = "flex";
+
+                setTimeout(() => {
+                    currentActiveIdx++;
+                    loadSimulationStage();
+                }, 1500);
+            } else {
+                // Flash the cockpit workspace card background red to report a validation error
+                const windowBoard = document.getElementById("sandbox-card-window");
+                windowBoard.style.backgroundColor = "#faeae1";
+                setTimeout(() => windowBoard.style.backgroundColor = "#ffffff", 350);
+            }
+        }
+
+        // Run baseline setup hooks
+        loadSimulationStage();
+    </script>
+</body>
+</html>
