@@ -3,291 +3,439 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SMART Goals Strategic Simulator - Bulletproof Standard</title>
+    <title>SMART Framework Strategic Simulator</title>
     <style>
-        * {
-            box-sizing: border-box;
+        /* FORCE GLOBAL CONTAINERS TO REMAIN OPEN AND OCCUPY THE ENTIRE IFRAME WINDOW */
+        html, body {
             margin: 0;
             padding: 0;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-
-        body {
+            width: 100%;
+            height: 100%;
             background-color: #fcf8f2;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            width: 100vw;
-            height: 100vh;
-            overflow: hidden;
+            font-family: 'Segoe UI', Arial, sans-serif;
+            overflow-x: hidden;
+            overflow-y: auto;
         }
 
-        /* HARD-LOCKED 16:9 STORYLINE PRESENTATION DECK FOOTPRINT
-           Locks coordinates exactly at 1280x720. This acts as a fixed physical canvas, 
-           permanently preventing container collapse, invisible drops, or vertical bleeding.
-        */
+        /* Outer safety hull that spans full frame height natively */
         .slide-wrapper {
-            width: 1280px;
-            height: 720px;
-            padding: 40px 50px 30px 50px;
-            background-color: #fdfaf6;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
+            width: 100%;
+            min-height: 100%;
+            padding: 25px;
             box-sizing: border-box;
-            position: relative;
+            display: block;
         }
 
-        /* Top Branded Corporate Header Row */
+        /* Top Title Layout Block */
         .header-section {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
+            display: block;
             border-bottom: 2px solid #e2dbd5;
-            padding-bottom: 8px;
-            flex-shrink: 0;
-            height: 60px;
+            padding-bottom: 10px;
+            margin-bottom: 15px;
         }
 
         .main-title {
-            font-size: 2.4rem;
+            font-size: 28px;
             color: #3d2314;
             font-weight: 800;
-            line-height: 1.1;
+            margin: 0;
+            display: inline-block;
         }
 
         .company-branding {
-            font-size: 1.1rem;
+            float: right;
+            font-size: 14px;
             font-weight: 800;
             color: #7b9583;
-            letter-spacing: 1.5px;
+            letter-spacing: 1px;
             text-transform: uppercase;
-            background-color: rgba(123, 149, 131, 0.1);
-            padding: 5px 12px;
+            background-color: rgba(123, 149, 131, 0.15);
+            padding: 4px 10px;
             border-radius: 4px;
         }
 
-        /* Workspace Matrix Area */
-        .workspace-matrix {
-            display: flex;
-            flex-direction: column;
-            height: 520px; /* Rigidly forces workspace open to prevent blank screen drops */
-            margin-top: 15px;
-            margin-bottom: 15px;
-        }
-
-        /* Horizontal Selection Ribbon Track Strip */
+        /* Horizontal Selection Ribbon */
         .ribbon-navigation-track {
-            display: grid;
-            grid-template-columns: repeat(5, 1fr);
-            gap: 10px;
+            display: block;
             width: 100%;
-            height: 65px;
-            flex-shrink: 0;
             margin-bottom: 15px;
+            clear: both;
         }
 
+        /* Float tabs side-by-side to ensure visibility regardless of layout rendering models */
         .business-hub-btn {
+            width: 19%;
+            margin-right: 1%;
+            float: left;
             background-color: #e2dbd5;
-            border: 1px solid rgba(61, 35, 20, 0.08);
-            border-radius: 8px;
-            padding: 10px;
+            border: 1px solid rgba(61, 35, 20, 0.1);
+            border-radius: 6px;
+            padding: 12px 5px;
             cursor: pointer;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            gap: 2px;
-            transition: all 0.2s ease;
-            height: 100%;
+            text-align: center;
+            box-sizing: border-box;
         }
 
         .hub-index-lbl {
-            font-size: 0.72rem;
+            font-size: 11px;
             font-weight: 800;
             color: #8d7d74;
             text-transform: uppercase;
-            letter-spacing: 0.5px;
+            display: block;
+            margin-bottom: 2px;
         }
 
         .hub-title-lbl {
-            font-size: 0.95rem;
+            font-size: 13px;
             font-weight: 700;
             color: #4a382c;
+            display: block;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
-            width: 100%;
-            text-align: center;
         }
 
-        /* Active Navigation Tab Highlighting */
+        /* Selection Feedback Color Changes */
         .business-hub-btn.active-tab {
             background-color: #ffffff;
             border-color: #cd674c;
-            box-shadow: 0 4px 12px rgba(205, 103, 76, 0.08);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
         }
-        .business-hub-btn.active-tab .hub-title-lbl { color: #cd674c; }
-        .business-hub-btn.active-tab .hub-index-lbl { color: #cd674c; }
+        .business-hub-btn.active-tab .hub-title-lbl, 
+        .business-hub-btn.active-tab .hub-index-lbl { 
+            color: #cd674c; 
+        }
 
-        /* Mastered Level Node State Complete Modifiers */
         .business-hub-btn.mastered-tab {
             border-color: #2a9d8f !important;
-            background-color: rgba(42, 157, 143, 0.03);
+            background-color: rgba(42, 157, 143, 0.05);
         }
         .business-hub-btn.mastered-tab .hub-title-lbl {
             color: #2a9d8f;
             text-decoration: line-through;
             opacity: 0.6;
         }
-        .business-hub-btn.mastered-tab .hub-index-lbl { color: #2a9d8f; }
 
-        /* SINGLE BALANCED INTERACTIVE PLAYGROUND CARD 
-           Locks elements within a strict vertical footprint to eliminate layout overlap.
-        */
+        /* Central Work Arena Base Plate Card */
         .unified-arena-card {
             background-color: #ffffff;
             border: 1px solid rgba(61, 35, 20, 0.08);
-            border-radius: 12px;
-            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.02);
-            padding: 30px;
-            height: 440px; /* Locked frame height */
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
+            border-radius: 10px;
+            padding: 25px;
+            margin-top: 85px; /* Pushes card down away from floated tabs */
+            box-shadow: 0 4px 15px rgba(0,0,0,0.02);
+            clear: both;
+            display: block;
         }
-
-        /* Safe scroll sandbox zone preventing text parameters overflow issues */
-        .terminal-scroll-sandbox {
-            flex-grow: 1;
-            overflow-y: auto;
-            padding-right: 10px;
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-            margin-bottom: 15px;
-        }
-
-        .terminal-scroll-sandbox::-webkit-scrollbar { width: 5px; }
-        .terminal-scroll-sandbox::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
 
         .arena-tag-heading {
-            font-size: 0.85rem;
+            font-size: 13px;
             font-weight: 700;
             color: #cd674c;
             text-transform: uppercase;
-            letter-spacing: 0.5px;
+            margin-bottom: 10px;
         }
 
-        /* Textbook Core Value Information Block */
+        /* Concept Guide Block */
         .framework-criterion-box {
-            font-size: 1rem;
+            font-size: 15px;
             font-weight: 600;
             color: #6e5d53;
             background-color: #fdfbf9;
-            padding: 12px 20px;
+            padding: 12px 15px;
             border-left: 4px solid #cd674c;
             border-radius: 4px;
-            line-height: 1.45;
+            line-height: 1.4;
+            margin-bottom: 15px;
         }
 
+        /* Question Directive */
         .challenge-statement-text {
-            font-size: 1.22rem;
+            font-size: 18px;
             font-weight: 700;
             color: #3d2314;
-            line-height: 1.42;
+            line-height: 1.4;
+            margin-bottom: 20px;
         }
 
-        /* Stacking Options Pipeline Lower Section Base */
+        /* Multiple Choice Stack Pipeline */
         .choices-stack-pipeline {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            flex-shrink: 0;
+            display: block;
             width: 100%;
         }
 
         .choice-interaction-card {
             background-color: #ffffff;
             border: 1px solid #cbd5e1;
-            padding: 15px 20px;
-            border-radius: 8px;
-            font-size: 0.92rem;
+            padding: 14px 20px;
+            border-radius: 6px;
+            font-size: 14px;
             font-weight: 600;
             color: #475569;
             cursor: pointer;
             text-align: left;
-            line-height: 1.42;
-            transition: all 0.2s ease;
+            line-height: 1.4;
             width: 100%;
+            margin-bottom: 10px;
+            display: block;
         }
 
         .choice-interaction-card:hover {
             background-color: #fffbf7;
             border-color: #cd674c;
             color: #cd674c;
-            transform: translateX(3px);
         }
 
-        /* Phase Clear Success Overlay Component Layer */
+        /* Success States Panels */
         .stage-success-overlay {
             display: none;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
             text-align: center;
-            width: 100%;
-            height: 100%;
-            gap: 10px;
+            padding: 40px 10px;
         }
 
         .success-heading-text {
-            font-size: 1.4rem;
+            font-size: 22px;
             font-weight: 800;
             color: #2a9d8f;
+            margin-top: 10px;
+            margin-bottom: 5px;
         }
 
-        /* Grand Total Campaign Clear Screen Overrides */
-        .campaign-clear-panel {
-            display: none;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-            width: 100%;
-            height: 100%;
-            gap: 12px;
-        }
-
-        /* Bottom Fixed Corporate Metrics Row Status Bar */
+        /* Lower Tracking Status Bar Row */
         .footer-bar {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-shrink: 0;
+            margin-top: 25px;
             border-top: 1px solid rgba(61, 35, 20, 0.08);
-            padding-top: 10px;
-            height: 40px;
+            padding-top: 12px;
+            display: block;
+            width: 100%;
+            clear: both;
         }
 
         .score-tracker-badge {
-            font-size: 0.85rem;
+            float: left;
+            font-size: 13px;
             font-weight: 700;
             color: #3d2314;
             background-color: #fff8eb;
-            padding: 4px 15px;
+            padding: 4px 12px;
             border-radius: 20px;
             border: 1px solid #f4a261;
-            font-variant-numeric: tabular-nums;
         }
 
         .instruction-tag {
-            font-size: 0.85rem;
+            float: right;
+            font-size: 13px;
             color: #a39389;
             font-style: italic;
+            margin-top: 4px;
         }
     </style>
 </head>
 <body>
 
     <div class="slide-wrapper">
+        <!-- Main Slide Header -->
+        <div class="header-section">
+            <h1 class="main-title">SMART Framework Strategic Simulator</h1>
+            <span class="company-branding">IB Group</span>
+        </div>
+
+        <!-- Master Workspace Wrapper -->
+        <div class="workspace-matrix">
+            
+            <!-- Horizontal Folder Tab Row Ribbon -->
+            <div class="ribbon-navigation-track">
+                <div class="business-hub-btn active-tab" id="tab-0" onclick="switchDivisionTab(0)">
+                    <span class="hub-index-lbl">Specific</span>
+                    <span class="hub-title-lbl">Broiler Integration</span>
+                </div>
+                <div class="business-hub-btn" id="tab-1" onclick="switchDivisionTab(1)">
+                    <span class="hub-index-lbl">Measurable</span>
+                    <span class="hub-title-lbl">Fish Feed Plant</span>
+                </div>
+                <div class="business-hub-btn" id="tab-2" onclick="switchDivisionTab(2)">
+                    <span class="hub-index-lbl">Achievable</span>
+                    <span class="hub-title-lbl">Abis Pro Retail</span>
+                </div>
+                <div class="business-hub-btn" id="tab-3" onclick="switchDivisionTab(3)">
+                    <span class="hub-index-lbl">Relevant</span>
+                    <span class="hub-title-lbl">Lynk Sweets</span>
+                </div>
+                <div class="business-hub-btn" id="tab-4" onclick="switchDivisionTab(4)">
+                    <span class="hub-index-lbl">Time-Bound</span>
+                    <span class="hub-title-lbl">Abis Edible Oil</span>
+                </div>
+            </div>
+
+            <!-- Master Arena Card Container -->
+            <div class="unified-arena-card" id="sandbox-container">
+                
+                <!-- Main Core Question and Content Blocks -->
+                <div id="interactive-view-block" style="display: block;">
+                    <div class="arena-tag-heading" id="arena-stage-title">SMART Dimension: Specific [S]</div>
+                    <div class="framework-criterion-box" id="arena-brief-text">Goal Setup: Goals must be clear, distinct, and highly targeted to avoid ambiguous tracking errors across lines.</div>
+                    <h2 class="challenge-statement-text" id="arena-challenge-text">IB Group Case Profile: The Broiler Integration division wants to expand operations. Which operational target statement aligns with "Specific" planning criteria?</h2>
+                    
+                    <div class="choices-stack-pipeline" id="arena-options-container">
+                        <!-- Rendered directly via internal loop script engine -->
+                    </div>
+                </div>
+
+                <!-- Individual Module Step Success Panel -->
+                <div class="stage-success-overlay" id="victory-overlay-panel">
+                    <span style="font-size: 40px;">🎯</span>
+                    <p class="success-heading-text">Strategic Dimension Aligned!</p>
+                    <p style="color: #6e5d53; font-size: 14px; margin: 0;">Select an uncompleted business division segment from the top ribbon menu to continue optimizing the corporate roadmap.</p>
+                </div>
+
+                <!-- Grand Campaign Complete Screen Panel -->
+                <div class="stage-success-overlay" id="campaign-clear-panel">
+                    <span style="font-size: 50px;">👑</span>
+                    <h2 style="color: #2a9d8f; font-size: 24px; font-weight: 800; margin: 10px 0 5px 0;">Strategic Excellence Achieved!</h2>
+                    <p style="color: #4a382c; font-size: 14px; font-weight: 600; margin: 0;">All IB Group operational divisions have been successfully synchronized under verified SMART planning frameworks.</p>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Progress Metrics Tracking Status Footer Bar Row -->
+        <div class="footer-bar">
+            <div class="score-tracker-badge">S.M.A.R.T. Metrics Aligned: <span id="progress-val">0</span> / 5</div>
+            <div class="instruction-tag">Alternate the top horizontal business unit hubs to evaluate and structure tactical execution matrices.</div>
+        </div>
+    </div>
+
+    <script>
+        // Data array containing verbatim image context questions
+        const sectorSimulationMatrix = [
+            {
+                index: "Specific [S]",
+                criterion: "Goal Setup: Goals must be clear, distinct, and highly targeted to avoid ambiguous tracking errors across lines.",
+                case: "IB Group Case Profile: The Broiler Integration division wants to expand operations. Which operational target statement aligns with \"Specific\" planning criteria?",
+                choices: [
+                    { text: "\"Expand contract farming footprints by onboarding 150 verified farmer clusters across the Western region.\"", correct: true },
+                    { text: "\"Increase broiler poultry performance output and drive general vertical growth metrics this fiscal year.\"", correct: false }
+                ]
+            },
+            {
+                index: "Measurable [M]",
+                criterion: "Goal Setup: Establish concrete numerical variables and telemetry markers to chart baseline operational advancement.",
+                case: "IB Group Case Profile: The Fish Feed Plant division wants to measure product line performance. Which planning target statement maps correctly to \"Measurable\" standards?",
+                choices: [
+                    { text: "\"Optimize premium floating feed quality standards to secure better market adoption and client satisfaction.\"", correct: false },
+                    { text: "\"Increase premium fish feed output volumes to reach a target baseline parameter of 1,200 metric tons per month.\"", correct: true }
+                ]
+            },
+            {
+                index: "Achievable [A]",
+                criterion: "Goal Setup: Keep goal variables realistic, stretching team capabilities responsibly without defining mathematically impossible baselines.",
+                case: "IB Group Case Profile: The Abis Pro Retail network plots its regional store performance setup. Which execution model meets the \"Achievable\" criterion?",
+                choices: [
+                    { text: "\"Grow active retail walk-in footprint conversions by 15% using optimized regional inventory optimization.\"", correct: true },
+                    { text: "\"Instantly increase local daily transaction counts by 400% over the weekend with zero marketing asset drops.\"", correct: false }
+                ]
+            },
+            {
+                index: "Relevant [R]",
+                criterion: "Goal Setup: Goals must connect seamlessly into current strategic corporate matrices, core missions, and resource tracks.",
+                case: "IB Group Case Profile: The Lynk Sweets confectionery team defines near-term development tracks. Which option aligns with the \"Relevant\" corporate criterion?",
+                choices: [
+                    { text: "\"Launch three low-sugar confectionery variations to directly match emerging regional consumer health market demands.\"", correct: true },
+                    { text: "\"Invest operational capital budgets into acquiring localized automated heavy hardware metal shipping containers.\"", correct: false }
+                ]
+            },
+            {
+                index: "Time-Bound [T]",
+                criterion: "Goal Setup: Anchor target metrics inside a clear, non-negotiable target timeline window to avoid operational drift.",
+                case: "IB Group Case Profile: The Abis Edible Oil division sets refinery processing objectives. Which directive follows \"Time-Bound\" scheduling protocols?",
+                choices: [
+                    { text: "\"Deploy updated purification packaging machines to clear refinery capacity deficits whenever engineering pipelines clear.\"", correct: false },
+                    { text: "\"Complete mechanical installation and optimization of the new oil packaging pipeline by the end of Q3.\"", correct: true }
+                ]
+            }
+        ];
+
+        let activeStageIdx = 0;
+        let solvedCount = 0;
+        let masteredStateMap = { 0: false, 1: false, 2: false, 3: false, 4: false };
+
+        function loadSimulationStage() {
+            const interactiveBlock = document.getElementById("interactive-view-block");
+            const victoryPanel = document.getElementById("victory-overlay-panel");
+            const clearPanel = document.getElementById("campaign-clear-panel");
+            const optionsContainer = document.getElementById("arena-options-container");
+            
+            if (masteredStateMap[activeStageIdx]) {
+                interactiveBlock.style.display = "none";
+                victoryPanel.style.display = "block";
+                clearPanel.style.display = "none";
+                return;
+            }
+
+            interactiveBlock.style.display = "block";
+            victoryPanel.style.display = "none";
+            clearPanel.style.display = "none";
+
+            const data = sectorSimulationMatrix[activeStageIdx];
+            document.getElementById("arena-stage-title").innerText = `SMART Dimension: ${data.index}`;
+            document.getElementById("arena-brief-text").innerText = data.criterion;
+            document.getElementById("arena-challenge-text").innerText = data.case;
+
+            // Generate choices stack directly inside container
+            optionsContainer.innerHTML = "";
+            data.choices.forEach(choice => {
+                const btn = document.createElement("button");
+                btn.className = "choice-interaction-card";
+                btn.innerText = choice.text;
+                btn.onclick = () => evaluateChoiceInput(choice.correct);
+                optionsContainer.appendChild(btn);
+            });
+        }
+
+        function switchDivisionTab(targetIdx) {
+            if (targetIdx === activeStageIdx) return;
+
+            document.getElementById(`tab-${activeStageIdx}`).classList.remove("active-tab");
+            activeStageIdx = targetIdx;
+            document.getElementById(`tab-${activeStageIdx}`).classList.add("active-tab");
+
+            const totalClearsCount = Object.values(masteredStateMap).filter(Boolean).length;
+            if (totalClearsCount === 5) {
+                document.getElementById("interactive-view-block").style.display = "none";
+                document.getElementById("victory-overlay-panel").style.display = "none";
+                document.getElementById("campaign-clear-panel").style.display = "block";
+                return;
+            }
+
+            loadSimulationStage();
+        }
+
+        function evaluateChoiceInput(isCorrectChoicePath) {
+            if (isCorrectChoicePath) {
+                masteredStateMap[activeStageIdx] = true;
+                solvedCount++;
+                document.getElementById("progress-val").innerText = solvedCount;
+
+                document.getElementById(`tab-${activeStageIdx}`).classList.add("mastered-tab");
+
+                const totalClearsCount = Object.values(masteredStateMap).filter(Boolean).length;
+                document.getElementById("interactive-view-block").style.display = "none";
+
+                if (totalClearsCount === 5) {
+                    document.getElementById("campaign-clear-panel").style.display = "block";
+                } else {
+                    document.getElementById("victory-overlay-panel").style.display = "block";
+                }
+            } else {
+                // Flash wrapper card soft red to notify incorrect path entry
+                const windowBoard = document.getElementById("sandbox-container");
+                windowBoard.style.backgroundColor = "#faeae1";
+                setTimeout(() => windowBoard.style.backgroundColor = "#ffffff", 350);
+            }
+        }
+
+        // Trigger loading loop immediately on page parsing window load execution
+        loadSimulationStage();
+    </script>
+</body>
+</html>
