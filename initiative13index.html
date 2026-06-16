@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IB Group - 30-Day Action Plan Input Console</title>
+    <style>
+        /* FORCE GLOBAL SYSTEM CONTAINERS TO OCCUPY THE ENTIRE SLIDE IFRAME WINDOW */
+        html, body {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #2b1a11; /* Dark chocolate theme from image_076390.png */
+            font-family: 'Segoe UI', Arial, sans-serif;
+            overflow-x: hidden;
+            overflow-y: auto;
+        }
+
+        .slide-wrapper {
+            width: 100%;
+            min-height: 100%;
+            padding: 30px;
+            box-sizing: border-box;
+            display: block;
+        }
+
+        /* Top Header Row Title */
+        .header-section {
+            border-bottom: 2px solid #523b2e;
+            padding-bottom: 12px;
+            margin-bottom: 25px;
+        }
+
+        .main-title {
+            font-size: 36px;
+            color: #ffffff;
+            font-weight: 800;
+            margin: 0;
+            display: inline-block;
+        }
+
+        .main-title span {
+            color: #f4a261; /* Orange accent text highlight */
+            border-bottom: 4px solid #f4a261;
+        }
+
+        .company-branding {
+            float: right;
+            font-size: 14px;
+            font-weight: 800;
+            color: #7b9583;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            background-color: rgba(123, 149, 131, 0.15);
+            padding: 5px 12px;
+            border-radius: 4px;
+            margin-top: 8px;
+        }
+
+        /* 4-COLUMN MILESTONE GRID MATRIX WRAPPER */
+        .roadmap-grid-matrix {
+            width: 100%;
+            margin-bottom: 25px;
+            display: table;
+            table-layout: fixed;
+            border-collapse: separate;
+            border-spacing: 15px 0px;
+        }
+
+        /* Column Node Structure */
+        .week-column-node {
+            display: table-cell;
+            background-color: #3d281e; /* Darker card background */
+            border: 2px solid #523b2e;
+            border-radius: 12px;
+            padding: 20px 15px;
+            vertical-align: top;
+            box-sizing: border-box;
+            transition: all 0.3s ease;
+        }
+
+        /* GATEKEEPING GATED CLOSED STATES */
+        .week-column-node.gated-locked {
+            opacity: 0.25;
+            background-color: #21150e;
+            pointer-events: none; /* Disables all inputs inside locked columns */
+            border-style: dashed;
+        }
+
+        .column-header-block {
+            text-align: center;
+            margin-bottom: 20px;
+            border-bottom: 1px solid #523b2e;
+            padding-bottom: 10px;
+        }
+
+        .week-index-lbl {
+            font-size: 12px;
+            font-weight: 800;
+            color: #e76f51;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            display: block;
+            margin-bottom: 4px;
+        }
+
+        .week-title-lbl {
+            font-size: 20px;
+            font-weight: 700;
+            color: #ffffff;
+            display: block;
+        }
+
+        /* INPUT LIST PIPELINE TRACK */
+        .items-vertical-stack {
+            display: block;
+            width: 100%;
+        }
+
+        .item-input-group {
+            background-color: #4a3225;
+            border: 1px solid #5e3d2f;
+            border-radius: 8px;
+            padding: 12px;
+            margin-bottom: 15px;
+            box-sizing: border-box;
+        }
+
+        .item-prompt-text {
+            font-size: 13.5px;
+            color: #ddcbbb;
+            font-weight: 600;
+            line-height: 1.4;
+            margin-bottom: 8px;
+            display: block;
+        }
+
+        /* TEXT INPUT FIELDS ENGINE */
+        .learner-text-field {
+            width: 100%;
+            background-color: #21150e;
+            border: 1px solid #5e3d2f;
+            border-radius: 4px;
+            padding: 8px 10px;
+            color: #ffffff;
+            font-size: 13px;
+            box-sizing: border-box;
+            outline: none;
+            resize: none;
+            transition: border-color 0.2s ease;
+        }
+
+        .learner-text-field:focus {
+            border-color: #f4a261;
+            background-color: #1a110a;
+        }
+
+        /* Verified Complete Input Glow State */
+        .learner-text-field.field-filled {
+            border-color: #2a9d8f;
+            background-color: #16241f;
+        }
+
+        /* LOWER ANALYSIS HUD CONTROLS BAR */
+        .footer-bar {
+            margin-top: 30px;
+            border-top: 1px solid #523b2e;
+            padding-top: 15px;
+            width: 100%;
+            clear: both;
+            display: block;
+        }
+
+        .score-tracker-badge {
+            float: left;
+            font-size: 14px;
+            font-weight: 700;
+            color: #ffffff;
+            background-color: #e76f51;
+            padding: 6px 16px;
+            border-radius: 20px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+        }
+
+        .instruction-tag {
+            float: right;
+            font-size: 13.5px;
+            color: #bfaea0;
+            font-style: italic;
+            margin-top: 6px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="slide-wrapper">
+        <div class="header-section">
+            <h1 class="main-title">Your <span>30-Day Action Plan</span></h1>
+            <span class="company-branding">IB Group</span>
+        </div>
+
+        <div class="roadmap-grid-matrix">
+            
+            <div class="week-column-node" id="week-block-0">
+                <div class="column-header-block">
+                    <span class="week-index-lbl">Week 1</span>
+                    <span class="week-title-lbl">Awareness</span>
+                </div>
+                <div class="items-vertical-stack">
+                    <div class="item-input-group">
+                        <span class="item-prompt-text">Identify 3 areas where you could take more initiative:</span>
+                        <input type="text" class="learner-text-field" oninput="evaluateColumnLockProgress(0)" placeholder="Type your action commitment...">
+                    </div>
+                    <div class="item-input-group">
+                        <span class="item-prompt-text">Journal daily observations about your proactivity:</span>
+                        <input type="text" class="learner-text-field" oninput="evaluateColumnLockProgress(0)" placeholder="Type your action commitment...">
+                    </div>
+                    <div class="item-input-group">
+                        <span class="item-prompt-text">Set one SMART goal for the month:</span>
+                        <input type="text" class="learner-text-field" oninput="evaluateColumnLockProgress(0)" placeholder="Type your action commitment...">
+                    </div>
+                </div>
+            </div>
+
+            <div class="week-column-node gated-locked" id="week-block-1">
+                <div class="column-header-block">
+                    <span class="week-index-lbl">Week 2</span>
+                    <span class="week-title-lbl">Small Actions</span>
+                </div>
+                <div class="items-vertical-stack">
+                    <div class="item-input-group">
+                        <span class="item-prompt-text">Volunteer for one new task at work:</span>
+                        <input type="text" class="learner-text-field" oninput="evaluateColumnLockProgress(1)" placeholder="Locked. Complete previous week.">
+                    </div>
+                    <div class="item-input-group">
+                        <span class="item-prompt-text">Practice the 5-second rule three times daily:</span>
+                        <input type="text" class="learner-text-field" oninput="evaluateColumnLockProgress(1)" placeholder="Locked. Complete previous week.">
+                    </div>
+                    <div class="item-input-group">
+                        <span class="item-prompt-text">Share one idea in a team meeting:</span>
+                        <input type="text" class="learner-text-field" oninput="evaluateColumnLockProgress(1)" placeholder="Locked. Complete previous week.">
+                    </div>
+                </div>
+            </div>
+
+            <div class="week-column-node gated-locked" id="week-block-2">
+                <div class="column-header-block">
+                    <span class="week-index-lbl">Week 3</span>
+                    <span class="week-title-lbl">Momentum</span>
+                </div>
+                <div class="items-vertical-stack">
+                    <div class="item-input-group">
+                        <span class="item-
