@@ -3,495 +3,81 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Leading with Decisiveness - Stable Presentation Console</title>
-    <style>
-        /* FORCE CONTAINER BOUNDS TO REMAIN 100% OPEN INSIDE THE STORYLINE WEB OBJECT IFRAME */
-        html, body {
-            margin: 0;
-            padding: 0;
-            width: 100%;
-            height: 100%;
-            background-color: #fcf8f2;
-            font-family: 'Segoe UI', Arial, sans-serif;
-            overflow: hidden;
-        }
-
-        /* 16:9 VIEWPORT RESTRAINT EMBED HULL
-           Locks coordinates strictly at standard player boundaries to completely 
-           eliminate vertical text bleeding, element crushing, or footer cutoff errors.
-        */
-        .slide-wrapper {
-            width: 100%;
-            height: 100%;
-            max-width: 1280px;
-            max-height: 720px;
-            aspect-ratio: 16 / 9;
-            padding: 2.2rem 3.5rem 1.5rem 3.5rem;
-            background-color: #fdfaf6;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            box-sizing: border-box;
-            position: relative;
-        }
-
-        /* Top Header Title Row Block */
-        .header-section {
-            border-bottom: 2px solid #e2dbd5;
-            padding-bottom: 0.5rem;
-            margin-bottom: 1rem;
-            flex-shrink: 0;
-        }
-
-        .main-title {
-            font-size: 2.5rem;
-            color: #3d2314;
-            font-weight: 800;
-            line-height: 1.1;
-        }
-
-        /* MASTER SINGLE-ROW WORKSPACE PIPELINE
-           Distributes selection tracks and display terminals using a flexible vertical architecture.
-        */
-        .workspace-matrix {
-            display: flex;
-            flex-direction: column;
-            flex-grow: 1;
-            min-height: 0; /* Clear anti-collapse barrier line */
-            margin: 0.5rem 0;
-        }
-
-        /* Horizontal Selection Ribbon Tab Track */
-        .ribbon-navigation-track {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 0.6rem;
-            width: 100%;
-            flex-shrink: 0;
-            margin-bottom: 1.2rem;
-        }
-
-        .competency-nav-btn {
-            background-color: #e2dbd5;
-            border: 1px solid rgba(61, 35, 20, 0.08);
-            border-radius: 8px;
-            padding: 0.75rem 0.8rem;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 0.6rem;
-            transition: all 0.2s cubic-bezier(0.165, 0.84, 0.44, 1);
-        }
-
-        .competency-nav-btn:hover {
-            background-color: #ebdcd1;
-        }
-
-        .btn-badge-circle {
-            width: 28px;
-            height: 28px;
-            border-radius: 50%;
-            background-color: #3d2314;
-            color: #ffffff;
-            font-size: 0.95rem;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            flex-shrink: 0;
-        }
-
-        .btn-label-block {
-            display: flex;
-            flex-direction: column;
-            text-align: left;
-            min-width: 0;
-        }
-
-        .btn-title-lbl {
-            font-size: 1rem;
-            font-weight: 700;
-            color: #4a382c;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-
-        .btn-status-lbl {
-            font-size: 0.68rem;
-            font-weight: 800;
-            color: #8d7d74;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        /* Active Navigation Tab Highlighting States */
-        .competency-nav-btn.active-tab {
-            background-color: #ffffff;
-            border-color: #cd674c;
-            box-shadow: 0 4px 12px rgba(205, 103, 76, 0.06);
-        }
-        .competency-nav-btn.active-tab .btn-title-lbl { color: #cd674c; }
-        .competency-nav-btn.active-tab .btn-status-lbl { color: #cd674c; }
-
-        /* Mastered Level Node State Complete Modifiers */
-        .competency-nav-btn.mastered-tab {
-            border-color: #2a9d8f !important;
-            background-color: rgba(42, 157, 143, 0.04);
-        }
-        .competency-nav-btn.mastered-tab .btn-title-lbl {
-            color: #2a9d8f;
-            text-decoration: line-through;
-            opacity: 0.7;
-        }
-        .competency-nav-btn.mastered-tab .btn-badge-circle { background-color: #2a9d8f; }
-
-        /* LATERAL SPLIT-SCREEN SIMULATOR INTERACTIVE CONSOLE
-           Separates data components horizontally into distinct non-overlapping tracks.
-        */
-        .unified-arena-card {
-            background-color: #ffffff;
-            border: 1px solid rgba(61, 35, 20, 0.08);
-            border-radius: 12px;
-            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.02);
-            padding: 1.8rem 2.2rem;
-            flex-grow: 1;
-            min-height: 0;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-        }
-
-        /* Lateral Split Columns Layout Base */
-        .arena-split-view {
-            display: none; 
-            grid-template-columns: 0.95fr 1.05fr;
-            gap: 2.5rem;
-            align-items: center;
-            width: 100%;
-            height: 100%;
-        }
-
-        .arena-split-view.visible-view {
-            display: grid;
-        }
-
-        /* Left Column: Context Text Payload Box with Scroll Safety Lane */
-        .arena-brief-column {
-            display: flex;
-            flex-direction: column;
-            gap: 0.8rem;
-            max-height: 440px; /* Locked maximum ceiling prevents vertical leaks */
-            overflow-y: auto;
-            padding-right: 0.5rem;
-        }
-
-        .arena-brief-column::-webkit-scrollbar { width: 4px; }
-        .arena-brief-column::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 2px; }
-
-        .arena-tag-heading {
-            font-size: 0.82rem;
-            font-weight: 700;
-            color: #cd674c;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        /* Textbook Framework Directive Box */
-        .framework-criterion-box {
-            font-size: 1rem;
-            font-weight: 600;
-            color: #6e5d53;
-            background-color: #fdfbf9;
-            padding: 0.75rem 1.2rem;
-            border-left: 4px solid #cd674c;
-            border-radius: 4px;
-            line-height: 1.45;
-        }
-
-        .challenge-statement-text {
-            font-size: 1.2rem;
-            font-weight: 700;
-            color: #3d2314;
-            line-height: 1.42;
-            margin: 0;
-        }
-
-        /* Right Column: Choices Options Stacking Pipeline */
-        .arena-input-column {
-            display: flex;
-            flex-direction: column;
-            gap: 0.7rem;
-            width: 100%;
-        }
-
-        .choice-interaction-card {
-            background-color: #ffffff;
-            border: 1px solid #cbd5e1;
-            padding: 1.1rem 1.4rem;
-            border-radius: 8px;
-            font-size: 0.92rem;
-            font-weight: 600;
-            color: #334155;
-            cursor: pointer;
-            text-align: left;
-            line-height: 1.42;
-            transition: all 0.2s ease;
-            width: 100%;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.01);
-        }
-
-        .choice-interaction-card:hover {
-            background-color: #fffbf7;
-            border-color: #cd674c;
-            color: #cd674c;
-            transform: translateX(4px);
-        }
-
-        /* Stage Complete Success Screen Overlay Component Layer */
-        .stage-success-overlay {
-            display: none;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-            width: 100%;
-            height: 100%;
-            gap: 0.6rem;
-        }
-
-        .success-heading-text {
-            font-size: 1.4rem;
-            font-weight: 800;
-            color: #2a9d8f;
-        }
-
-        /* Grand Total Campaign Clear Screen Overrides */
-        .campaign-clear-panel {
-            display: none;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-            width: 100%;
-            height: 100%;
-            gap: 0.8rem;
-        }
-
-        /* Bottom Fixed Corporate Metrics Row Status Bar */
-        .footer-bar {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-shrink: 0;
-            border-top: 1px solid rgba(61, 35, 20, 0.08);
-            padding-top: 0.6rem;
-            margin-top: 0.2rem;
-        }
-
-        .score-tracker-badge {
-            font-size: 0.85rem;
-            font-weight: 700;
-            color: #3d2314;
-            background-color: #fff8eb;
-            padding: 0.25rem 0.8rem;
-            border-radius: 20px;
-            border: 1px solid #f4a261;
-            font-variant-numeric: tabular-nums;
-        }
-
-        .instruction-tag {
-            font-size: 0.85rem;
-            color: #a39389;
-            font-style: italic;
-        }
-    </style>
+    <title>Leading with Decisiveness Dashboard</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-    <div class="slide-wrapper">
-        <div class="header-section">
+    <div class="slide-container">
+        
+        <header class="slide-header">
             <h1 class="main-title">Leading with Decisiveness</h1>
-        </div>
+        </header>
 
-        <div class="workspace-matrix">
-            
-            <div class="ribbon-navigation-track">
-                <button class="competency-nav-btn active-tab" id="tab-0" onclick="switchCompetencyTab(0)">
-                    <div class="btn-badge-circle">▶</div>
-                    <div class="btn-label-block">
-                        <span class="btn-title-lbl">Communicate Clearly</span>
-                        <span class="btn-status-lbl" id="badge-0">Active</span>
-                    </div>
-                </button>
-                <button class="competency-nav-btn" id="tab-1" onclick="switchCompetencyTab(1)">
-                    <div class="btn-badge-circle">⚑</div>
-                    <div class="btn-label-block">
-                        <span class="btn-title-lbl">Own the Outcome</span>
-                        <span class="btn-status-lbl" id="badge-1">Pending</span>
-                    </div>
-                </button>
-                <button class="competency-nav-btn" id="tab-2" onclick="switchCompetencyTab(2)">
-                    <div class="btn-badge-circle">↔</div>
-                    <div class="btn-label-block">
-                        <span class="btn-title-lbl">Invite Input, Not Votes</span>
-                        <span class="btn-status-lbl" id="badge-2">Pending</span>
-                    </div>
-                </button>
-                <button class="competency-nav-btn" id="tab-3" onclick="switchCompetencyTab(3)">
-                    <div class="btn-badge-circle">↺</div>
-                    <div class="btn-label-block">
-                        <span class="btn-title-lbl">Course-Correct Publicly</span>
-                        <span class="btn-status-lbl" id="badge-3">Pending</span>
-                    </div>
-                </button>
+        <nav class="ribbon-menu">
+            <div class="tab-item pending">
+                <span class="icon">▶</span>
+                <div class="tab-text">
+                    <h3>Communicate Clearly</h3>
+                    <span class="status">PENDING</span>
+                </div>
+            </div>
+            <div class="tab-item pending">
+                <span class="icon">🏳</span>
+                <div class="tab-text">
+                    <h3>Own the Outcome</h3>
+                    <span class="status">PENDING</span>
+                </div>
+            </div>
+            <div class="tab-item pending">
+                <span class="icon">↔</span>
+                <div class="tab-text">
+                    <h3>Invite Input, Not Votes</h3>
+                    <span class="status">PENDING</span>
+                </div>
+            </div>
+            <div class="tab-item active">
+                <span class="icon">↻</span>
+                <div class="tab-text">
+                    <h3>Course-Correct Publicly</h3>
+                    <span class="status">ACTIVE</span>
+                </div>
+            </div>
+        </nav>
+
+        <main class="scenario-panel">
+            <div class="scenario-meta">
+                <span class="meta-tag">COMMAND SCENARIO 4 OF 4</span>
+                <span class="tracker-badge">Traits Mastered: 0 / 4</span>
             </div>
 
-            <div class="unified-arena-card" id="sandbox-container">
-                
-                <div class="arena-split-view visible-view" id="view-0">
-                    <div class="arena-brief-column">
-                        <div class="arena-tag-heading">Command Scenario 1 of 4</div>
-                        <div class="framework-criterion-box">State the decision, the reasoning, and the expected outcome. Ambiguity breeds confusion.</div>
-                        <h2 class="challenge-statement-text">Scenario Challenge: An upcoming plant migration schedule causes minor productivity logs among floor supervisors. How do you anchor authority vectors?</h2>
+            <div class="panel-grid">
+                <div class="challenge-side">
+                    <div class="quote-callout">
+                        <p>When a decision needs changing, say so openly. This normalizes adaptive leadership.</p>
                     </div>
-                    <div class="arena-input-column">
-                        <button class="choice-interaction-card" onclick="submitDecision(0, true)">Publish an absolute directive detailing the schedule, the technical rationale, and target timelines directly.</button>
-                        <button class="choice-interaction-card" onclick="submitDecision(0, false)">Issue generic reassurance memos and allow regional team supervisors to navigate individual rollout windows.</button>
+                    <div class="challenge-text">
+                        <h2>Scenario Challenge:</h2>
+                        <p>Live performance logs indicate that a previously selected transport lane choice increases broiler mortality by 3%. What route do you execute?</p>
                     </div>
                 </div>
 
-                <div class="arena-split-view" id="view-1">
-                    <div class="arena-brief-column">
-                        <div class="arena-tag-heading">Command Scenario 2 of 4</div>
-                        <div class="framework-criterion-box">Take responsibility regardless of results. This builds credibility and trust with your team.</div>
-                        <h2 class="challenge-statement-text">Scenario Challenge: A newly deployed automated inventory tracking module reports a data sync delay that impacts regional store dispatch speeds. How do you lead?</h2>
-                    </div>
-                    <div class="arena-input-column">
-                        <button class="choice-interaction-card" onclick="submitDecision(1, true)">Publicly assume complete accountability for the implementation variance and prioritize system updates immediately.</button>
-                        <button class="choice-interaction-card" onclick="submitDecision(1, false)">Attribute the processing bottlenecks entirely to an unexpected vendor database latency spike during peak hours.</button>
-                    </div>
+                <div class="options-side">
+                    <button class="option-card correct">
+                        <p>Acknowledge the routing deviation openly during the morning briefing and switch lanes immediately.</p>
+                    </button>
+                    <button class="option-card">
+                        <p>Gradually alter shipment distribution volumes over two weeks to hide preceding routing misalignments.</p>
+                    </button>
                 </div>
-
-                <div class="arena-split-view" id="view-2">
-                    <div class="arena-brief-column">
-                        <div class="arena-tag-heading">Command Scenario 3 of 4</div>
-                        <div class="framework-criterion-box">Seek perspectives before deciding, but don't turn every choice into a committee decision.</div>
-                        <h2 class="challenge-statement-text">Scenario Challenge: You need to formulate alternative ingredient compound routes for the shrimp feed extrusion line. How do you navigate input matrices?</h2>
-                    </div>
-                    <div class="arena-input-column">
-                        <button class="choice-interaction-card" onclick="submitDecision(2, true)">Gather raw validation data parameters from the technical specialists, then establish the final compound path independently.</button>
-                        <button class="choice-interaction-card" onclick="submitDecision(2, false)">Keep running cross-department team refinement voting tracks until absolute unanimous consensus is achieved.</button>
-                    </div>
-                </div>
-
-                <div class="arena-split-view" id="view-3">
-                    <div class="arena-brief-column">
-                        <div class="arena-tag-heading">Command Scenario 4 of 4</div>
-                        <div class="framework-criterion-box">When a decision needs changing, say so openly. This normalizes adaptive leadership.</div>
-                        <h2 class="challenge-statement-text">Scenario Challenge: Live performance logs indicate that a previously selected transport lane choice increases broiler mortality parameters by 3%. What route do you execute?</h2>
-                    </div>
-                    <div class="arena-input-column">
-                        <button class="choice-interaction-card" onclick="submitDecision(3, true)">Acknowledge the routing deviation openly during the morning briefing and switch lanes immediately.</button>
-                        <button class="choice-interaction-card" onclick="submitDecision(3, false)">Gradually alter shipment distribution volumes over two weeks to hide preceding routing misalignments.</button>
-                    </div>
-                </div>
-
-                <div class="stage-success-overlay" id="victory-overlay-panel">
-                    <span style="font-size: 40px;">🎯⚡</span>
-                    <p class="success-heading-text">Leadership Competency Aligned!</p>
-                    <p style="color: #6e5d53; font-size: 0.92rem; margin: 0;">Select an uncompleted competency block from the top ribbon navigation menu to continue your trajectory.</p>
-                </div>
-
-                <div class="campaign-clear-panel" id="campaign-clear-panel">
-                    <span style="font-size: 50px;">👑</span>
-                    <h2 style="color: #2a9d8f; font-size: 24px; font-weight: 800; margin: 5px 0;">Decisive Command Achieved!</h2>
-                    <p style="color: #4a382c; font-size: 14px; font-weight: 600; max-width: 460px; margin: 0 auto; line-height: 1.45;">All critical enterprise scenario dilemmas have been successfully optimized under verified adaptive leadership standards.</p>
-                </div>
-
             </div>
-        </div>
+        </main>
 
-        <div class="footer-bar">
-            <div class="score-tracker-badge">Traits Mastered: <span id="progress-val">0</span> / 4</div>
-            <div class="instruction-tag">Isolate leadership competencies across the ribbon menu above to resolve scenario dilemmas.</div>
-        </div>
+        <footer class="slide-footer">
+            <p>Isolate leadership competencies across the ribbon menu above to resolve scenario dilemmas.</p>
+        </footer>
+
     </div>
 
-    <script>
-        let activeStageIdx = 0;
-        let solvedCount = 0;
-        let masteredStateMap = { 0: false, 1: false, 2: false, 3: false };
-
-        function loadSimulationStage() {
-            const splitView = document.getElementById(`view-${activeStageIdx}`);
-            const victoryPanel = document.getElementById("victory-overlay-panel");
-            const clearPanel = document.getElementById("campaign-clear-panel");
-
-            if (masteredStateMap[activeStageIdx]) {
-                if (splitView) splitView.classList.remove("visible-view");
-                victoryPanel.style.display = "flex";
-                clearPanel.style.display = "none";
-                return;
-            }
-
-            victoryPanel.style.display = "none";
-            clearPanel.style.display = "none";
-            
-            for (let i = 0; i < 4; i++) {
-                const targetView = document.getElementById(`view-${i}`);
-                if (targetView) {
-                    if (i === activeStageIdx) {
-                        targetView.classList.add("visible-view");
-                    } else {
-                        targetView.classList.remove("visible-view");
-                    }
-                }
-            }
-        }
-
-        function switchCompetencyTab(targetIdx) {
-            if (targetIdx === activeStageIdx) return;
-
-            document.getElementById(`tab-${activeStageIdx}`).classList.remove("active-tab");
-            document.getElementById(`badge-${activeStageIdx}`).innerText = masteredStateMap[activeStageIdx] ? "Mastered" : "Pending";
-            
-            activeStageIdx = targetIdx;
-            document.getElementById(`tab-${activeStageIdx}`).classList.add("active-tab");
-            document.getElementById(`badge-${activeStageIdx}`).innerText = masteredStateMap[activeStageIdx] ? "Mastered" : "Active";
-
-            const totalMasteryCount = Object.values(masteredStateMap).filter(Boolean).length;
-            if (totalMasteryCount === 4) {
-                document.getElementById(`view-${targetIdx}`).classList.remove("visible-view");
-                document.getElementById("victory-overlay-panel").style.display = "none";
-                document.getElementById("campaign-clear-panel").style.display = "flex";
-                return;
-            }
-
-            loadSimulationStage();
-        }
-
-        function submitDecision(pillarIdx, isCorrectChoice) {
-            if (isCorrectChoice) {
-                masteredStateMap[pillarIdx] = true;
-                solvedCount = Object.values(masteredStateMap).filter(Boolean).length;
-                document.getElementById("progress-val").innerText = solvedCount;
-
-                const activeTab = document.getElementById(`tab-${pillarIdx}`);
-                activeTab.classList.add("mastered-tab");
-                document.getElementById(`badge-${pillarIdx}`).innerText = "Mastered";
-
-                document.getElementById(`view-${pillarIdx}`).classList.remove("visible-view");
-                if (solvedCount === 4) {
-                    document.getElementById("campaign-clear-panel").style.display = "flex";
-                } else {
-                    document.getElementById("victory-overlay-panel").style.display = "flex";
-                }
-            } else {
-                const windowBoard = document.getElementById("sandbox-container");
-                windowBoard.style.backgroundColor = "#faeae1";
-                setTimeout(() => windowBoard.style.backgroundColor = "#ffffff", 350);
-            }
-        }
-    </script>
 </body>
 </html>
