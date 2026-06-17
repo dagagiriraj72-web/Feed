@@ -3,500 +3,77 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>The 10-10-10 Rule - Stable Interactive Arena</title>
-    <style>
-        /* RESET & ANTI-COLLAPSE FALLBACK
-           Storyline web objects can often collapse if parent containers don't provide a strict aspect ratio.
-           This absolute boundary locks coordinates and creates a fixed 16:9 presentation slide uncollapsible footprint, 
-           preventing components from crashing into each other on load.
-        */
-        html, body {
-            margin: 0;
-            padding: 0;
-            width: 100vw;
-            height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            background-color: #f5f1ea; /* Light-tan background from image_b1601d.png */
-            overflow: hidden;
-        }
-
-        .slide-wrapper {
-            position: absolute;
-            max-width: 100%;
-            max-height: 100%;
-            aspect-ratio: 16 / 9;
-            height: auto;
-            width: auto;
-            display: flex;
-            flex-direction: column;
-            padding: 30px 40px;
-            box-sizing: border-box;
-            font-family: 'Times New Roman', Times, serif, sans-serif;
-            background-color: #f5f1ea;
-            border: 1px solid #e0ac8d; /* Subtle light-orange border accent */
-            border-radius: 6px;
-        }
-
-        /* Top Branded Gaming HUD Header [cite: 0] */
-        .header-section {
-            border-bottom: 2px solid #2c3e34; /* Dark-green underline accent from image_b1601d.png */
-            padding-bottom: 10px;
-            margin-bottom: 20px;
-        }
-
-        .main-title {
-            font-size: 36px;
-            color: #2c3e34; /* Dark charcoal/green from image_b1601d.png */
-            font-weight: 800;
-            margin: 0;
-            line-spacing: -1px;
-        }
-
-        /* Scenario Challenge Text Block
-           Uses native vertical expansion. Pushes arena down natively. [cite: image_b162e2.png]
-        */
-        .scenario-banner {
-            font-size: 16px;
-            color: #2c3e34;
-            background-color: #e0ac8d; /* Light-orange background from image_b162e2.png */
-            font-weight: bold;
-            padding: 10px 15px;
-            border-radius: 4px;
-            border-left: 5px solid #2c3e34;
-            margin-bottom: 25px;
-        }
-
-        /* MASTER WORKSPACE MATRIX LAYOUT
-           Splits content left-to-right to optimize space and resolve vertical clashes.
-        */
-        .workspace-matrix {
-            display: grid;
-            grid-template-columns: 280px 1fr; /* Rigid nav sidebar to prevent horizontal collision */
-            gap: 30px;
-            flex-grow: 1;
-            min-height: 0; /* Dynamic height buffer prevents collapse on load [cite: 0] */
-        }
-
-        /* Lateral Vertical Tab Dock Column [cite: image_b162e2.png] */
-        .tabs-sidebar {
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-            align-items: start;
-        }
-
-        /* Clean, non-overlapping circular node based on image_b1601d.png. [cite: image_b1601d.png] */
-        .temporal-node {
-            display: flex;
-            align-items: center;
-            width: 100%;
-            height: 90px;
-            border: 2px solid #e0ac8d;
-            border-radius: 6px;
-            background-color: #ffffff;
-            cursor: pointer;
-            transition: all 0.2s ease;
-        }
-
-        .temporal-node:hover {
-            border-color: #2c3e34;
-            background-color: #e6e6e6;
-        }
-
-        .node-circle-badged {
-            width: 80px;
-            height: 80px;
-            border-radius: 50%;
-            background-color: #2c3e34; /* Dark green [cite: image_b1601d.png] */
-            color: #ffffff;
-            font-size: 14px;
-            font-weight: bold;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            margin-left: -40px; /* Overlap fix: node hangs off left natively */
-            transition: margin-left 0.2s ease;
-        }
-
-        .temporal-node:hover .node-circle-badged {
-            margin-left: -5px; /* Node is pulled in on hover */
-        }
-
-        .node-circle-badged span {
-            font-size: 16px;
-            font-weight: 900;
-        }
-
-        .node-label-block {
-            padding: 0 15px;
-        }
-
-        .node-title-lbl {
-            font-size: 18px;
-            font-weight: bold;
-            color: #2c3e34;
-            display: block;
-        }
-
-        .node-status-tag {
-            font-size: 11px;
-            font-weight: 800;
-            color: #e0ac8d;
-            text-transform: uppercase;
-            display: block;
-        }
-
-        /* High-Visibility State Highlight Modifiers [cite: image_b162e2.png] */
-        .temporal-node.active-stage {
-            border-color: #2c3e34;
-            background-color: #ffffff;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-        }
-        .temporal-node.active-stage .node-title-lbl { color: #2c3e34; }
-        .temporal-node.active-stage .node-circle-badged { box-shadow: 0 0 10px rgba(44, 62, 52, 0.4); }
-
-        .temporal-node.complete-stage {
-            border-color: #8db568; /* Clean green accent for success [cite: image_b162e2.png] */
-            background-color: rgba(141, 181, 104, 0.1);
-        }
-        .temporal-node.complete-stage .node-title-lbl { color: #8db568; }
-        .temporal-node.complete-stage .node-status-tag { color: #8db568; }
-        .temporal-node.complete-stage .node-circle-badged { background-color: #8db568; }
-
-        /* Master Playbook Content window [cite: image_b162e2.png] */
-        .playbook-cockpit {
-            background-color: #ffffff;
-            border: 2px solid #e0ac8d;
-            border-radius: 6px;
-            padding: 30px;
-            box-sizing: border-box;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-        }
-
-        /* Single, spacious diagnostic results arena where text and choices expand natively
-           Uses flex column for stacked blocks. Elements never touch.
-        */
-        .diagnostic-arena {
-            display: flex;
-            flex-direction: column;
-            gap: 15px; /* Vertical spacy separation barrier [cite: 0] */
-        }
-
-        .temporal-tag-heading {
-            font-size: 13px;
-            color: #e0ac8d;
-            font-weight: 800;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        /* Question Directive [cite: image_b1601d.png] */
-        .question-brief-box {
-            font-size: 17px;
-            color: #2c3e34;
-            font-weight: bold;
-            background-color: #fcfbf9;
-            padding: 10px 15px;
-            border-radius: 4px;
-            border-left: 5px solid #2c3e34;
-            line-height: 1.4;
-        }
-
-        /* Multiple Choice Stack Pipeline [cite: image_b162e2.png] */
-        .choices-stack-pipeline {
-            display: flex;
-            flex-direction: column;
-            gap: 8px; /* Clean option row separation */
-        }
-
-        .choice-interaction-card {
-            background-color: #ffffff;
-            border: 1px solid #e0ac8d;
-            padding: 12px 18px;
-            border-radius: 4px;
-            font-size: 15px;
-            color: #2c3e34;
-            cursor: pointer;
-            text-align: left;
-            font-weight: bold;
-            line-height: 1.4;
-            transition: all 0.2s ease;
-            width: 100%;
-        }
-
-        .choice-interaction-card:hover {
-            background-color: #fffbf7;
-            border-color: #2c3e34;
-            transform: translateX(3px);
-        }
-
-        /* Success Stage complete Screen Panel [cite: 0] */
-        .success-overlay-panel {
-            display: none;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-            width: 100%;
-            height: 100%;
-            gap: 10px;
-        }
-
-        .success-heading-text {
-            font-size: 24px;
-            font-weight: 800;
-            color: #8db568;
-            margin: 0;
-        }
-
-        /* Final Simulation clear Screen Panel */
-        .clear-total-victory {
-            display: none;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-            width: 100%;
-            height: 100%;
-            gap: 15px;
-        }
-
-        /* Overall Progress Utilites footer bar Row [cite: image_b162e2.png] */
-        .footer-bar {
-            display: flex;
-            justify-content: flex-end;
-            align-items: center;
-            border-top: 1px solid #2c3e34;
-            padding-top: 12px;
-            margin-top: 15px;
-        }
-
-        .score-tracker-badge {
-            font-size: 12px;
-            color: #ffffff;
-            font-weight: 800;
-            background-color: #e0ac8d; /* Orange accent [cite: image_b162e2.png] */
-            padding: 4px 15px;
-            border-radius: 20px;
-            font-variant-numeric: tabular-nums;
-        }
-
-        .instruction-tag {
-            font-size: 11px;
-            color: #b3b3b3;
-            font-style: italic;
-        }
-    </style>
+    <title>The 10-10-10 Rule - Interactive Slide</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-    <div class="slide-wrapper">
-        <!-- Main modern title Banner [cite: image_b162e2.png] -->
-        <div class="header-section">
+    <div class="slide-container">
+        
+        <header class="slide-header">
             <h1 class="main-title">The 10-10-10 Rule</h1>
-        </div>
+            <div class="challenge-banner">
+                <strong>Scenario Challenge:</strong> An intense debate threatens to derail a high-stakes project meeting. How do you respond?
+            </div>
+        </header>
 
-        <!-- Uncrowded Scenario Banner
-             Text is fully legible and expands natives [cite: image_b162e2.png]
-        -->
-        <div class="scenario-banner">
-            Scenario Challenge: An intense debate threatens to derail a high-stakes project meeting. How do you respond?
-        </div>
-
-        <!-- Master spacy workspace grid matrix [cite: image_b162e2.png] -->
-        <div class="workspace-matrix">
+        <div class="workspace-grid">
             
-            <!-- Lateral Vertical Node Dock Control Track [cite: image_b162e2.png] -->
-            <div class="tabs-sidebar">
-                <!-- 10 Minutes Node -->
-                <div class="temporal-node active-stage" id="node-0" onclick="switchTemporalStage(0)">
-                    <div class="node-circle-badged">
-                        10<span>M</span>
-                    </div>
-                    <div class="node-label-block">
-                        <span class="node-title-lbl">10 Minutes</span>
-                        <span class="node-status-tag" id="badge-0">Active</span>
-                    </div>
-                </div>
-                <!-- 10 Months Node -->
-                <div class="temporal-node" id="node-1" onclick="switchTemporalStage(1)">
-                    <div class="node-circle-badged">
-                        10<span>MO</span>
-                    </div>
-                    <div class="node-label-block">
-                        <span class="node-title-lbl">10 Months</span>
-                        <span class="node-status-tag" id="badge-1">Pending</span>
-                    </div>
-                </div>
-                <!-- 10 Years Node -->
-                <div class="temporal-node" id="node-2" onclick="switchTemporalStage(2)">
-                    <div class="node-circle-badged">
-                        10<span>Y</span>
-                    </div>
-                    <div class="node-label-block">
-                        <span class="node-title-lbl">10 Years</span>
-                        <span class="node-status-tag" id="badge-2">Pending</span>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Central Content Display Terminal Deck [cite: image_b162e2.png] -->
-            <div class="playbook-cockpit" id="arena-card">
+            <nav class="timeline-sidebar">
                 
-                <!-- Individual Diagnostic Results Arena Section
-                     Stacks question and choices list naturally. Content never overlaps.
-                -->
-                <div class="diagnostic-arena" id="interactive-loop">
-                    <div class="temporal-tag-heading" id="arena-stage-title">Temporal Horizon 1 of 3</div>
-                    <div class="question-brief-box" id="arena-brief-text">
-                        Framework Question: How will I feel about this decision ten minutes from now?
-                    </div>
-                    
-                    <!-- options row buttons stack natively separately from scenario boundaries [cite: image_b162e2.png] -->
-                    <div class="choices-stack-pipeline" id="arena-options-container">
-                        <!-- Loaded programmatically via script loops -->
+                <div class="timeline-tab active" data-horizon="10m">
+                    <div class="circle-badge">10<br>M</div>
+                    <div class="tab-details">
+                        <h3>10 Minutes</h3>
+                        <span class="status active-text">ACTIVE</span>
                     </div>
                 </div>
 
-                <!-- Step Success Inner Overlay Component Sheet -->
-                <div class="success-overlay-panel" id="victory-card">
-                    <span style="font-size: 4rem;">🎯⚙️</span>
-                    <p class="success-heading-text">Horizon Matrix Aligned!</p>
-                    <p style="color: #6a6a6a; font-size: 13px; margin: 0;">Click an uncompleted temporal node from the left sidebar dock track to continue your decision trajectory.</p>
+                <div class="timeline-tab" data-horizon="10mo">
+                    <div class="circle-badge">10<br>MO</div>
+                    <div class="tab-details">
+                        <h3>10 Months</h3>
+                        <span class="status">PENDING</span>
+                    </div>
                 </div>
 
-                <!-- Simulation Master success Panel Screen sheet -->
-                <div class="clear-total-victory" id="campaign-clear-panel">
-                    <span style="font-size: 5rem;">👑</span>
-                    <h2 style="color: #8db568; font-size: 28px; font-weight: 800;">Strategic Excellence Achieved!</h2>
-                    <p style="color: #6a6a6a; font-size: 14px; font-weight: bold; max-width: 440px; line-height: 1.45; margin: 0;">You successfully applied the 10-10-10 Rule to cut through emotional fog. All three decision matrices are now fully synchronized.</p>
+                <div class="timeline-tab" data-horizon="10y">
+                    <div class="circle-badge">10<br>Y</div>
+                    <div class="tab-details">
+                        <h3>10 Years</h3>
+                        <span class="status">PENDING</span>
+                    </div>
                 </div>
 
-            </div>
+            </nav>
+
+            <main class="display-panel">
+                <span class="horizon-indicator" id="horizonIndicator">TEMPORAL HORIZON 1 OF 3</span>
+                
+                <div class="question-box">
+                    <span class="box-tag">Framework Question</span>
+                    <p id="frameworkQuestion">How will I feel about this decision ten minutes from now?</p>
+                </div>
+
+                <div class="options-group" id="optionsGroup">
+                    <button class="option-btn text-danger">
+                        React defensively on the spot to assert your position.
+                    </button>
+                    <button class="option-btn text-success">
+                        Enforce a strategic operational pause to cool down immediate adrenaline spikes before deciding.
+                    </button>
+                </div>
+            </main>
+
         </div>
 
-        <!-- Overall Progress Utilities Status Bar Row [cite: image_b162e2.png] -->
-        <div class="footer-bar">
-            <div class="score-tracker-badge">Overall Milestones Met: <span id="progress-val">0</span> / 3</div>
-            <div class="instruction-tag">Ask yourself three diagnostic questions to cut through emotional fog and secure clear strategic perspectives.</div>
-        </div>
+        <footer class="slide-footer">
+            <span class="milestone-pill">Overall Milestones Met: 0 / 3</span>
+            <p class="footer-hint">Ask yourself three diagnostic questions to cut through emotional fog and secure clear strategic perspectives.</p>
+        </footer>
+
     </div>
 
-    <script>
-        // High fidelity L3 custom situation parameters built directly around textbook variables [cite: image_b1601d.png, image_b162e2.png]
-        const simulationMatrix = [
-            {
-                brief: "Framework Question: How will I feel about this decision ten minutes from now? [cite: image_b1601d.png]",
-                choices: [
-                    { text: "React defensively on the spot to assert your position. [cite: image_b162e2.png]", correct: false },
-                    { text: "Enforce a strategic operational pause to cool down immediate adrenaline spikes before deciding. [cite: image_b162e2.png]", correct: true }
-                ]
-            },
-            {
-                brief: "Framework Question: How will I feel about it ten months from now? [cite: image_b1601d.png]",
-                choices: [
-                    { text: "Still regret damaging relationships from a heated argument. [cite: 0]", correct: false },
-                    { text: "Be glad I prioritized a stable solution over personal victory. [cite: 0]", correct: true }
-                ]
-            },
-            {
-                brief: "Framework Question: How will I feel about it ten years from now? [cite: image_b1601d.png]",
-                choices: [
-                    { text: "Have forgotten the conflict entirely, but regret the lost opportunity for collaboration. [cite: 0]", correct: false },
-                    { text: "Appreciate that I took a moment to think and built a stronger, long-term team relationship. [cite: 0]", correct: true }
-                ]
-            }
-        ];
-
-        let activeStageIdx = 0;
-        let solvedCount = 0;
-        let masteredStateMap = { 0: false, 1: false, 2: false };
-
-        function loadSimulationStage() {
-            const interactiveBlock = document.getElementById("interactive-loop");
-            const victoryCard = document.getElementById("victory-card");
-            const optionsContainer = document.getElementById("arena-options-container");
-            
-            if (masteredStateMap[activeStageIdx]) {
-                interactiveBlock.style.display = "none";
-                victoryCard.style.display = "flex";
-                return;
-            }
-
-            interactiveBlock.style.display = "flex";
-            victoryCard.style.display = "none";
-
-            const data = simulationMatrix[activeStageIdx];
-            document.getElementById("arena-stage-title").innerText = `Temporal Horizon ${activeStageIdx + 1} of 3`;
-            document.getElementById("arena-brief-text").innerText = data.brief;
-
-            // Generate option action cards inside the right container stack safely
-            optionsContainer.innerHTML = "";
-            data.choices.forEach(choice => {
-                const btn = document.createElement("button");
-                btn.className = "choice-interaction-card";
-                btn.innerText = choice.text;
-                btn.onclick = () => evaluateChoiceInput(choice.correct);
-                optionsContainer.appendChild(btn);
-            });
-        }
-
-        function switchTemporalStage(targetIdx) {
-            if (targetIdx === activeStageIdx) return;
-
-            // Remove highlighted active class from preceding element node
-            document.getElementById(`node-${activeStageIdx}`).classList.remove("active-stage");
-            document.getElementById(`badge-${activeStageIdx}`).innerText = masteredStateMap[activeStageIdx] ? "Mastered" : "Pending";
-            
-            // Re-route operational index pointers
-            activeStageIdx = targetIdx;
-            document.getElementById(`node-${activeStageIdx}`).classList.add("active-stage");
-            document.getElementById(`badge-${activeStageIdx}`).innerText = masteredStateMap[activeStageIdx] ? "Mastered" : "Active";
-
-            const totalClearsCount = Object.values(masteredStateMap).filter(Boolean).length;
-            if (totalClearsCount === 3) {
-                document.getElementById("interactive-loop").style.display = "none";
-                document.getElementById("victory-card").style.display = "none";
-                document.getElementById("campaign-clear-panel").style.display = "flex";
-                return;
-            }
-
-            loadSimulationStage();
-        }
-
-        function evaluateChoiceInput(isCorrectChoicePath) {
-            if (isCorrectChoicePath) {
-                masteredStateMap[activeStageIdx] = true;
-                solvedCount++;
-                document.getElementById("progress-val").innerText = solvedCount;
-
-                // Adjust horizontal selector ribbon cards complete states properties
-                document.getElementById(`node-${activeStageIdx}`).classList.add("complete-stage");
-                document.getElementById(`badge-${activeStageIdx}`).innerText = "Mastered";
-
-                const totalClearsCount = Object.values(masteredStateMap).filter(Boolean).length;
-                document.getElementById("interactive-loop").style.display = "none";
-
-                if (totalClearsCount === 3) {
-                    document.getElementById("campaign-clear-panel").style.display = "flex";
-                } else {
-                    document.getElementById("victory-card").style.display = "flex";
-                }
-            } else {
-                // Instantly flash bounding card background red to report a decision deviation match error
-                const windowBoard = document.getElementById("arena-card");
-                windowBoard.style.backgroundColor = "#faeae1";
-                setTimeout(() => windowBoard.style.backgroundColor = "#ffffff", 350);
-            }
-        }
-
-        // Initialize setup on run load mount configurations
-        loadSimulationStage();
-    </script>
+    <script src="script.js"></script>
 </body>
 </html>
