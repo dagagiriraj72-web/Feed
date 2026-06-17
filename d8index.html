@@ -3,40 +3,76 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Decision Framework</title>
+    <title>Two-Way Door Decisions Interface</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-    <main class="container">
-        <h1 class="main-title">Two-Way Door Decisions</h1>
+    <div class="slide-container">
         
-        <div class="card-wrapper">
-            <section class="card">
-                <h2>One-Way Doors</h2>
-                <hr class="divider">
-                <ul class="list">
-                    <li>Irreversible or extremely costly to undo</li>
-                    <li>Require thorough analysis and deliberation</li>
-                    <li><strong>Examples:</strong> selling a business, major relocations</li>
-                    <li>Deserve more time and consultation</li>
-                    <li class="footer-text">About 10% of your decisions</li>
-                </ul>
-            </section>
+        <header class="slide-header">
+            <h1 class="main-title">Two-Way Door Decisions</h1>
+            <p class="subtitle">A framework for velocity: matching your decision speed to its reversibility.</p>
+        </header>
 
-            <section class="card">
-                <h2>Two-Way Doors</h2>
-                <hr class="divider">
-                <ul class="list">
-                    <li>Easily reversible with low cost</li>
-                    <li>Should be made quickly and iterated on</li>
-                    <li><strong>Examples:</strong> testing a new tool, trying a process</li>
-                    <li>Overthinking these wastes time and energy</li>
-                    <li class="footer-text">About 90% of your decisions</li>
-                </ul>
-            </section>
+        <div class="doors-wrapper">
+            
+            <div class="door-panel one-way active" data-target="oneway-content">
+                <div class="door-handle-edge"></div>
+                <div class="door-preview">
+                    <span class="door-number">01</span>
+                    <h2>One-Way Doors</h2>
+                    <span class="percentage-pill">~10% of decisions</span>
+                </div>
+            </div>
+
+            <div class="door-panel two-way" data-target="twoway-content">
+                <div class="door-handle-edge"></div>
+                <div class="door-preview">
+                    <span class="door-number">02</span>
+                    <h2>Two-Way Doors</h2>
+                    <span class="percentage-pill">~90% of decisions</span>
+                </div>
+            </div>
+
+            <main class="content-vault">
+                
+                <div class="vault-pane active" id="oneway-content">
+                    <div class="pane-header">
+                        <span class="risk-badge high">IRREVERSIBLE STRATEGY</span>
+                        <h3>Deep Analysis Required</h3>
+                    </div>
+                    <ul class="details-list">
+                        <li>Irreversible or extremely costly to undo once committed.</li>
+                        <li>Requires thorough, methodical analysis and deep deliberation.</li>
+                        <li><strong>Core Examples:</strong> Selling a business, major relocations, changing architectural foundations.</li>
+                        <li>Deserves extended timelines, extensive consultation, and protective guardrails.</li>
+                    </ul>
+                </div>
+
+                <div class="vault-pane" id="twoway-content">
+                    <div class="pane-header">
+                        <span class="risk-badge low">EASILY REVERSIBLE</span>
+                        <h3>High-Velocity Iteration</h3>
+                    </div>
+                    <ul class="details-list">
+                        <li>Easily reversible with remarkably low cost of failure.</li>
+                        <li>Should be made quickly, using minimal committees, and iterated upon in production.</li>
+                        <li><strong>Core Examples:</strong> Testing a new software tool, experimenting with a process variant.</li>
+                        <li>Overthinking these operational micro-steps systematically wastes team time and execution energy.</li>
+                    </ul>
+                </div>
+
+            </main>
+
         </div>
-    </main>
 
+        <footer class="slide-footer">
+            <p>Select or hover over either decision door archetype to instantly review its operational blueprint parameters.</p>
+        </footer>
+
+    </div>
+
+    <script src="script.js"></script>
 </body>
 </html>
