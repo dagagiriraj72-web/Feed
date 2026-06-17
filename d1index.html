@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Decisiveness vs. Impulsiveness - Interactive Slide</title>
+    <title>Decisiveness vs. Impulsiveness - No-Scroll Slide</title>
     
     <style>
         /* ==========================================================================
-           1. Core Reset & Presentation Foundations
+           1. Structural Reset & Fixed Dimensions (Prevents All Scrollbars)
            ========================================================================== */
         * {
             box-sizing: border-box;
@@ -16,28 +16,29 @@
         }
 
         body {
-            font-family: 'Georgia', serif; /* Matching the premium serif typography of image_96a0ff.png */
+            font-family: 'Georgia', serif; /* Keeps the premium typography of image_968e3a.png */
             background-color: #dfdad1;
             color: #2b1b0f;
             display: flex;
             justify-content: center;
             align-items: center;
             min-height: 100vh;
-            padding: 20px;
+            overflow: hidden; /* Prevent body scroll browser-side */
+            padding: 10px;
         }
 
-        /* Fixed 16:9 Slide Canvas Framework (Guarantees NO scrollbars in Storyline) */
+        /* Fixed 16:9 Slide Framework - Strict dimensions ensure zero scrolling */
         .slide-container {
             background-color: #faf8f5;
             width: 1280px;
             height: 720px;
-            padding: 55px 65px;
+            padding: 40px 50px 30px 50px; /* Optimized padding to reclaim vertical space */
             border-radius: 8px;
             box-shadow: 0 20px 50px rgba(0,0,0,0.12);
             display: flex;
             flex-direction: column;
             justify-content: space-between;
-            overflow: hidden; /* Safety lock against layout breaking overflows */
+            overflow: hidden; /* Hard lock safety gate */
         }
 
         /* ==========================================================================
@@ -48,36 +49,35 @@
         }
 
         .main-title {
-            font-size: 2.8rem;
+            font-size: 2.6rem;
             font-weight: 700;
             color: #262626;
-            line-height: 1.2;
+            line-height: 1.1;
         }
 
         /* ==========================================================================
-           3. Side-by-Side Interactive Row Grid
+           3. Layout Grid Matrix
            ========================================================================== */
         .comparison-grid {
             display: flex;
-            gap: 30px;
+            gap: 25px;
             flex: 1;
-            margin: 35px 0 25px 0;
+            margin: 25px 0 20px 0; /* Reduced margins to prevent pushing content down */
             align-items: stretch;
-            height: calc(100% - 150px);
+            height: calc(100% - 130px);
         }
 
         /* Interactive Profile Column Card */
         .profile-card {
             flex: 1;
-            background-color: #f2eee7; /* Muted tan container color matching image_96a0ff.png */
+            background-color: #f2eee7;
             border: 2px solid transparent;
             border-radius: 14px;
-            padding: 40px 45px;
+            padding: 30px 35px; /* Streamlined inner padding */
             cursor: pointer;
             display: flex;
             flex-direction: column;
             justify-content: flex-start;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.01);
             transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
@@ -86,32 +86,32 @@
             transform: translateY(-2px);
         }
 
-        /* Dynamic selection highlight state matching platform guidelines */
+        /* Active highlight status matching image_968e3a.png */
         .profile-card.active {
             background-color: #ffffff;
-            box-shadow: 0 10px 30px rgba(63, 75, 62, 0.08);
+            box-shadow: 0 10px 30px rgba(63, 75, 62, 0.06);
         }
         
         .profile-card.active.decisiveness-theme {
-            border-color: #58694d; /* Muted brand green accent */
+            border-color: #58694d;
         }
 
         .profile-card.active.impulsiveness-theme {
-            border-color: #baa18d; /* Muted warning brown accent */
+            border-color: #baa18d;
         }
 
-        /* Card Header Elements */
+        /* Card Header Block */
         .card-header-block {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            margin-bottom: 25px;
+            margin-bottom: 20px;
             border-bottom: 1px solid rgba(0, 0, 0, 0.05);
-            padding-bottom: 12px;
+            padding-bottom: 10px;
         }
 
         .card-header-block h2 {
-            font-size: 2rem;
+            font-size: 1.8rem;
             font-weight: 700;
             color: #2c3e2b;
         }
@@ -120,17 +120,19 @@
             color: #4a3e3d;
         }
 
+        /* Refined Pill Badges matching the snapshot */
         .status-badge {
             font-family: 'Segoe UI', system-ui, sans-serif;
-            font-size: 0.75rem;
+            font-size: 0.72rem;
             font-weight: 800;
-            letter-spacing: 1px;
+            letter-spacing: 0.5px;
             text-transform: uppercase;
-            padding: 4px 10px;
+            padding: 4px 8px;
             border-radius: 4px;
             color: #8a7e71;
             background-color: rgba(0, 0, 0, 0.04);
-            transition: all 0.3s;
+            transition: all 0.2s;
+            white-space: nowrap;
         }
 
         .decisiveness-theme.active .status-badge {
@@ -143,36 +145,35 @@
             color: #b54a24;
         }
 
-        /* Structured Behavioral List Matrix (Prevents overlap & text cuts) */
+        /* Behavior List Matrix Layout */
         .behavior-list {
             list-style-type: none;
             display: flex;
             flex-direction: column;
-            gap: 16px;
+            gap: 12px; /* Balanced spacing keeps text tightly managed inside the box dimensions */
         }
 
         .behavior-list li {
             font-family: 'Segoe UI', system-ui, sans-serif;
-            font-size: 1.05rem;
-            line-height: 1.45;
+            font-size: 1rem;
+            line-height: 1.4;
             color: #473a30;
             position: relative;
-            padding-left: 24px;
-            opacity: 0.85;
-            transition: opacity 0.25s, transform 0.25s;
+            padding-left: 20px;
+            opacity: 0.8;
+            transition: opacity 0.2s;
         }
 
-        /* Custom solid circular list markers mapping reference layouts */
+        /* Clean list dot accent rules */
         .behavior-list li::before {
             content: "•";
             position: absolute;
             left: 0;
             top: -2px;
-            font-size: 1.4rem;
+            font-size: 1.3rem;
             color: #9e9587;
         }
 
-        /* Active highlight animations for internal list items */
         .profile-card.active .behavior-list li {
             opacity: 1;
         }
@@ -190,13 +191,13 @@
            ========================================================================== */
         .slide-footer {
             border-top: 1px solid #ebdcd0;
-            padding-top: 15px;
+            padding-top: 12px;
             text-align: center;
         }
 
         .slide-footer p {
             font-family: 'Segoe UI', system-ui, sans-serif;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             color: #9c9184;
             font-style: italic;
         }
@@ -211,10 +212,10 @@
             <h1 class="main-title">Decisiveness vs. Impulsiveness</h1>
         </header>
 
-        <!-- Main Comparison Split Grid Layout -->
+        <!-- Main Workspace Grid Layout Matrix -->
         <div class="comparison-grid">
             
-            <!-- Profile Card 1: Decisiveness -->
+            <!-- Profile Card: Decisiveness -->
             <div class="profile-card decisiveness-theme active" id="card-decisiveness">
                 <div class="card-header-block">
                     <h2>Decisiveness</h2>
@@ -229,7 +230,7 @@
                 </ul>
             </div>
 
-            <!-- Profile Card 2: Impulsiveness -->
+            <!-- Profile Card: Impulsiveness -->
             <div class="profile-card impulsiveness-theme" id="card-impulsiveness">
                 <div class="card-header-block">
                     <h2>Impulsiveness</h2>
@@ -246,26 +247,24 @@
 
         </div>
 
-        <!-- Slide Footer Guidance Element -->
+        <!-- Footnote Help Row -->
         <footer class="slide-footer">
             <p>Click or select either behavioral container block profile above to analyze its tactical indicators and operational outcomes.</p>
         </footer>
 
     </div>
 
-    <!-- ==========================================================================
-       5. Interactive JavaScript Controller Module
-       ========================================================================== -->
+    <!-- Interactive Event Handlers -->
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             const profiles = document.querySelectorAll('.profile-card');
 
             profiles.forEach(card => {
                 card.addEventListener('click', () => {
-                    // Remove dynamic active layout states across choice lists
+                    // Reset active highlighting parameters
                     profiles.forEach(p => p.classList.remove('active'));
 
-                    // Append highlighting active layout vectors to clicked card target
+                    // Inject active attribute to chosen target
                     card.classList.add('active');
                 });
             });
