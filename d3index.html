@@ -3,312 +3,68 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>IB Group - Cognitive Biases Console</title>
-    <style>
-        /* FORCE CONTAINER BOUNDS TO REMAIN 100% OPEN INSIDE THE WEB OBJECT IFRAME */
-        html, body {
-            margin: 0;
-            padding: 0;
-            width: 100%;
-            height: 100%;
-            background-color: #fdfaf6; /* Balanced light cream background */
-            font-family: 'Segoe UI', Arial, sans-serif;
-            overflow: hidden;
-        }
-
-        /* 16:9 Aspect Ratio Absolute Viewport Safety Hull */
-        .slide-wrapper {
-            width: 100%;
-            height: 100%;
-            padding: 40px 60px;
-            box-sizing: border-box;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-        }
-
-        /* Top Branded Corporate Header Row */
-        .header-section {
-            border-bottom: 2px solid #e2dbd5;
-            padding-bottom: 10px;
-            margin-bottom: 30px;
-            flex-shrink: 0;
-            display: block;
-            width: 100%;
-        }
-
-        .main-title {
-            font-size: 38px;
-            color: #3d2314;
-            font-weight: 800;
-            margin: 0;
-            display: inline-block;
-            letter-spacing: -0.5px;
-        }
-
-        .company-branding {
-            float: right;
-            font-size: 13px;
-            font-weight: 800;
-            color: #7b9583;
-            letter-spacing: 1.5px;
-            text-transform: uppercase;
-            background-color: rgba(123, 149, 131, 0.12);
-            padding: 5px 12px;
-            border-radius: 4px;
-            margin-top: 10px;
-        }
-
-        /* LATERAL SPLIT ARCHITECTURE WORKSPACE
-           Forces side-by-side distribution to completely stop layout clashing.
-        */
-        .workspace-layout {
-            display: grid;
-            grid-template-columns: 0.85fr 1.15fr; /* Split side-tab proportions */
-            gap: 40px;
-            flex-grow: 1;
-            min-height: 0; /* Anti-collapse guardrail baseline */
-            align-items: center;
-        }
-
-        /* Left Side Tab Navigation Column Stack */
-        .tabs-vertical-stack {
-            display: flex;
-            flex-direction: column;
-            gap: 16px;
-            width: 100%;
-        }
-
-        .bias-nav-btn {
-            background-color: #ffffff;
-            border: 2px solid rgba(61, 35, 20, 0.06);
-            border-radius: 12px;
-            padding: 16px 20px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 18px;
-            transition: all 0.2s cubic-bezier(0.165, 0.84, 0.44, 1);
-            text-align: left;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.01);
-            width: 100%;
-        }
-
-        .bias-nav-btn:hover {
-            transform: translateX(4px);
-            background-color: #fffdfa;
-            border-color: #7b9583;
-        }
-
-        .btn-graphic-badge {
-            width: 44px;
-            height: 44px;
-            border-radius: 50%;
-            background-color: #7b9583; /* Muted slate-green circle badge */
-            color: #ffffff;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-size: 1.2rem;
-            flex-shrink: 0;
-        }
-
-        .btn-label-block {
-            display: flex;
-            flex-direction: column;
-        }
-
-        .btn-title-lbl {
-            font-size: 20px;
-            font-weight: 700;
-            color: #3d2314;
-            line-height: 1.2;
-        }
-
-        .btn-status-lbl {
-            font-size: 11px;
-            font-weight: 800;
-            color: #a39389;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            margin-top: 2px;
-        }
-
-        /* Active Selected Tab Modifier Highlighting */
-        .bias-nav-btn.active-tab {
-            background-color: #ffffff;
-            border-color: #7b9583;
-            box-shadow: inset -4px 0 0 #7b9583, 0 6px 18px rgba(123, 149, 131, 0.12);
-        }
-        .bias-nav-btn.active-tab .btn-title-lbl { color: #5c7564; }
-        .bias-nav-btn.active-tab .btn-status-lbl { color: #7b9583; }
-
-        /* Right Side Dedicated Presentation Frame Box */
-        .display-content-card {
-            background-color: #eae5de; /* Cream descriptive layout card match */
-            border: 1px solid rgba(61, 35, 20, 0.08);
-            border-radius: 16px;
-            box-shadow: 0 8px 25px rgba(0,0,0,0.02);
-            padding: 40px;
-            height: 100%;
-            max-height: 440px; /* Secure boundary container line */
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-        }
-
-        /* Inner reveal animation components panel slots */
-        .reveal-data-panel {
-            display: none;
-            flex-direction: column;
-            gap: 15px;
-            animation: contextFadeIn 0.3s ease-out forwards;
-        }
-
-        .reveal-data-panel.panel-visible {
-            display: flex;
-        }
-
-        @keyframes contextFadeIn {
-            from { opacity: 0; transform: translateY(6px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .panel-header-badge {
-            font-size: 12px;
-            font-weight: 800;
-            color: #7b9583;
-            text-transform: uppercase;
-            letter-spacing: 1.5px;
-        }
-
-        .panel-title-lbl {
-            font-size: 32px;
-            font-weight: 800;
-            color: #3d2314;
-            line-height: 1.15;
-        }
-
-        .panel-description-lbl {
-            font-size: 18px;
-            color: #4a382c;
-            line-height: 1.55;
-            background-color: rgba(255, 255, 255, 0.6);
-            padding: 20px 24px;
-            border-left: 5px solid #7b9583;
-            border-radius: 6px;
-            font-weight: 500;
-        }
-
-        /* Lower Static Operational Guidance Row Bar Strip */
-        .footer-bar {
-            border-top: 1px solid #e2dbd5;
-            padding-top: 12px;
-            flex-shrink: 0;
-            display: block;
-            width: 100%;
-        }
-
-        .instruction-tag {
-            font-size: 13px;
-            color: #a39389;
-            font-style: italic;
-            text-align: left;
-        }
-    </style>
+    <title>Cognitive Biases Dashboard</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-    <div class="slide-wrapper">
-        <!-- Interactive Slide Title Header -->
-        <div class="header-section">
+    <div class="slide-container">
+        
+        <header class="slide-header">
             <h1 class="main-title">Cognitive Biases That Derail Decisions</h1>
-            <span class="company-branding">IB Group</span>
-        </div>
+            <span class="group-badge">IB GROUP</span>
+        </header>
 
-        <!-- Master Anti-Overlap Sidebar Matrix Layout -->
-        <div class="workspace-layout">
+        <div class="dashboard-grid">
             
-            <!-- Left Side Sidebars Dock Target Controls -->
-            <div class="tabs-vertical-stack">
-                <!-- Tab 1 -->
-                <button class="bias-nav-btn active-tab" id="tab-0" onclick="revealBiasDefinition(0)">
-                    <div class="btn-graphic-badge">⚓</div>
-                    <div class="btn-label-block">
-                        <span class="btn-title-lbl">Anchoring</span>
-                        <span class="btn-status-lbl">Active Challenge</span>
-                    </div>
-                </button>
-                <!-- Tab 2 -->
-                <button class="bias-nav-btn" id="tab-1" onclick="revealBiasDefinition(1)">
-                    <div class="btn-graphic-badge">✓</div>
-                    <div class="btn-label-block">
-                        <span class="btn-title-lbl">Confirmation Bias</span>
-                        <span class="btn-status-lbl">Pending</span>
-                    </div>
-                </button>
-                <!-- Tab 3 -->
-                <button class="bias-nav-btn" id="tab-2" onclick="revealBiasDefinition(2)">
-                    <div class="btn-graphic-badge">★</div>
-                    <div class="btn-label-block">
-                        <span class="btn-title-lbl">Availability Bias</span>
-                        <span class="btn-status-lbl">Pending</span>
-                    </div>
-                </button>
-            </div>
-
-            <!-- Right Side Presentation Board Card Display Window -->
-            <div class="display-content-card">
+            <nav class="sidebar-tabs">
                 
-                <!-- Definition Panel View 1: Anchoring -->
-                <div class="reveal-data-panel panel-visible" id="view-panel-0">
-                    <span class="panel-header-badge">Behavioral Pattern • 01</span>
-                    <h2 class="panel-title-lbl">Anchoring</h2>
-                    <p class="panel-description-lbl">The first piece of information we encounter disproportionately shapes our judgment, even if it's irrelevant.</p>
+                <div class="tab-card active" data-bias="anchoring">
+                    <div class="icon-circle anchor-icon">⚓</div>
+                    <div class="tab-info">
+                        <h3>Anchoring</h3>
+                        <span class="status-label">ACTIVE CHALLENGE</span>
+                    </div>
                 </div>
 
-                <!-- Definition Panel View 2: Confirmation Bias -->
-                <div class="reveal-data-panel" id="view-panel-1">
-                    <span class="panel-header-badge">Behavioral Pattern • 02</span>
-                    <h2 class="panel-title-lbl">Confirmation Bias</h2>
-                    <p class="panel-description-lbl">We seek information that supports what we already believe, ignoring evidence to the contrary.</p>
+                <div class="tab-card" data-bias="confirmation">
+                    <div class="icon-circle check-icon">✓</div>
+                    <div class="tab-info">
+                        <h3>Confirmation Bias</h3>
+                        <span class="status-label">PENDING</span>
+                    </div>
                 </div>
 
-                <!-- Definition Pattern View 3: Availability Bias -->
-                <div class="reveal-data-panel" id="view-panel-2">
-                    <span class="panel-header-badge">Behavioral Pattern • 03</span>
-                    <h2 class="panel-title-lbl">Availability Bias</h2>
-                    <p class="panel-description-lbl">Recent or vivid events dominate our thinking, making rare risks feel common and likely.</p>
+                <div class="tab-card" data-bias="availability">
+                    <div class="icon-circle star-icon">★</div>
+                    <div class="tab-info">
+                        <h3>Availability Bias</h3>
+                        <span class="status-label">PENDING</span>
+                    </div>
                 </div>
 
-            </div>
+            </nav>
+
+            <main class="display-panel" id="displayPanel">
+                <div class="panel-content">
+                    <h2 id="panelTitle">Anchoring Bias</h2>
+                    <span class="challenge-tag">Scenario Challenge</span>
+                    <p id="panelDescription">The team relies too heavily on the first piece of information encountered when making decisions, even if it is completely irrelevant to the actual market reality.</p>
+                    
+                    <div class="action-box">
+                        <strong>Mitigation Strategy:</strong> Seek out objective, baseline data points from independent secondary sources before opening team deliberations.
+                    </div>
+                </div>
+            </main>
 
         </div>
 
-        <!-- Lower Prompting Guideline Status Footer Strip Block -->
-        <div class="footer-bar">
-            <div class="instruction-tag">Click on individual roadmap goals across any week section to build your initiative tracking logs.</div>
-        </div>
+        <footer class="slide-footer">
+            <p>Click on individual roadmap goals across any week section to build your initiative tracking logs.</p>
+        </footer>
+
     </div>
 
-    <script>
-        let operationalActiveIdx = 0;
-
-        function revealBiasDefinition(targetIdx) {
-            if (targetIdx === operationalActiveIdx) return;
-
-            // Instantly remove highlight styles rules from previous node tab configurations
-            document.getElementById(`tab-${operationalActiveIdx}`).classList.remove("active-tab");
-            // Hide the active text presentation view panel
-            document.getElementById(`view-panel-${operationalActiveIdx}`).classList.remove("panel-visible");
-
-            // Re-route operational index pointers
-            operationalActiveIdx = targetIdx;
-
-            // Apply highlight states variables to selected data targets blocks
-            document.getElementById(`tab-${operationalActiveIdx}`).add("active-tab");
-            document.getElementById(`view-panel-${operationalActiveIdx}`).classList.add("panel-visible");
-        }
-    </script>
+    <script src="script.js"></script>
 </body>
 </html>
