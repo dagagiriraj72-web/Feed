@@ -3,425 +3,273 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Decisiveness vs. Impulsiveness - Balanced HUD Arena</title>
+    <title>Decisiveness vs. Impulsiveness - Interactive Slide</title>
+    
     <style>
+        /* ==========================================================================
+           1. Core Reset & Presentation Foundations
+           ========================================================================== */
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
 
         body {
-            background-color: #fcf8f2;
+            font-family: 'Georgia', serif; /* Matching the premium serif typography of image_96a0ff.png */
+            background-color: #dfdad1;
+            color: #2b1b0f;
             display: flex;
             justify-content: center;
             align-items: center;
-            width: 100vw;
-            height: 100vh;
-            overflow: hidden;
+            min-height: 100vh;
+            padding: 20px;
         }
 
-        /* 16:9 PRESENTATION CANVAS MAXIMUM FOOTPRINT 
-           Strictly isolates slide boundaries to preserve layout dimensions without cropping.
-        */
-        .slide-wrapper {
-            width: 100%;
-            height: 100%;
-            max-width: 1280px;
-            max-height: 720px;
-            aspect-ratio: 16 / 9;
-            padding: 2.2rem 3.5rem 1.2rem 3.5rem;
-            background-color: #fdfaf6;
+        /* Fixed 16:9 Slide Canvas Framework (Guarantees NO scrollbars in Storyline) */
+        .slide-container {
+            background-color: #faf8f5;
+            width: 1280px;
+            height: 720px;
+            padding: 55px 65px;
+            border-radius: 8px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.12);
             display: flex;
             flex-direction: column;
             justify-content: space-between;
-            box-sizing: border-box;
-            position: relative;
+            overflow: hidden; /* Safety lock against layout breaking overflows */
         }
 
-        /* Top Title Header */
-        .header-section {
-            margin-bottom: 0.5rem;
-            flex-shrink: 0;
+        /* ==========================================================================
+           2. Slide Header Component
+           ========================================================================== */
+        .slide-header {
+            margin-bottom: 5px;
         }
 
         .main-title {
-            font-size: 2.6rem;
-            color: #3d2314;
-            font-weight: 800;
-            line-height: 1.1;
-            position: relative;
-            padding-bottom: 0.4rem;
+            font-size: 2.8rem;
+            font-weight: 700;
+            color: #262626;
+            line-height: 1.2;
         }
 
-        .main-title::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 140px;
-            height: 4px;
-            background-color: #7b9583;
-            border-radius: 2px;
-        }
-
-        /* Stable Main Grid Workspace */
-        .workspace-layout {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 2.5rem;
-            flex-grow: 1;
-            min-height: 0; 
-            margin: 1rem 0;
+        /* ==========================================================================
+           3. Side-by-Side Interactive Row Grid
+           ========================================================================== */
+        .comparison-grid {
+            display: flex;
+            gap: 30px;
+            flex: 1;
+            margin: 35px 0 25px 0;
             align-items: stretch;
-            position: relative;
-            z-index: 1;
-            transition: filter 0.4s ease, opacity 0.4s ease;
+            height: calc(100% - 150px);
         }
 
-        /* Target Content Placement Buckets Columns */
-        .sorting-bucket-column {
-            background-color: #f1ede9;
-            border-radius: 12px;
-            border: 1px solid rgba(61, 35, 20, 0.05);
-            padding: 1.5rem 1.8rem;
-            display: flex;
-            flex-direction: column;
-            gap: 0.8rem;
-            height: 100%;
-            min-height: 0;
-        }
-
-        .bucket-heading {
-            font-size: 1.5rem;
-            font-weight: 800;
-            color: #3d2314;
-            border-bottom: 2px solid rgba(61, 35, 20, 0.08);
-            padding-bottom: 0.5rem;
-            margin-bottom: 0.4rem;
-            flex-shrink: 0;
-        }
-
-        /* Sorted list items row tracks wrapper */
-        .sorted-items-list {
-            display: flex;
-            flex-direction: column;
-            gap: 0.5rem;
-            flex-grow: 1;
-            min-height: 0;
-            overflow-y: auto;
-        }
-
-        /* Placed Text Trait Element styling */
-        .placed-trait-node {
-            background-color: #ffffff;
-            border-radius: 6px;
-            padding: 0.6rem 1rem;
-            font-size: 0.92rem;
-            font-weight: 600;
-            color: #4a382c;
-            border: 1px solid rgba(61, 35, 20, 0.06);
-            box-shadow: 0 2px 5px rgba(0,0,0,0.01);
-            animation: slideInNode 0.25s cubic-bezier(0.165, 0.84, 0.44, 1) forwards;
-            display: flex;
-            align-items: center;
-            gap: 0.6rem;
-            flex-shrink: 0;
-        }
-
-        .placed-trait-node::before {
-            content: "•";
-            color: #7b9583;
-            font-weight: 900;
-            font-size: 1.2rem;
-        }
-
-        #bucket-impulsiveness .placed-trait-node::before {
-            color: #cd674c;
-        }
-
-        @keyframes slideInNode {
-            from { transform: translateY(4px); opacity: 0; }
-            to { transform: translateY(0); opacity: 1; }
-        }
-
-        /* INTERACTIVE FLOATING CONSOLE CARD HUD */
-        .deck-hud-overlay {
-            position: absolute;
-            left: 50%;
-            top: 50%;
-            transform: translate(-50%, -46%);
-            width: 380px;
-            background-color: #ffffff;
-            border-radius: 12px;
-            border: 1px solid rgba(61, 35, 20, 0.12);
-            box-shadow: 0 10px 35px rgba(61, 35, 20, 0.16);
-            padding: 1.5rem;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            text-align: center;
-            gap: 1rem;
-            z-index: 10;
-            transition: all 0.3s ease;
-        }
-
-        .hud-tag {
-            font-size: 0.78rem;
-            font-weight: 800;
-            color: #cd674c;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        .card-display-box {
-            background-color: #fffdfb;
-            border: 2px dashed rgba(205, 103, 76, 0.4);
-            border-radius: 8px;
-            padding: 1.2rem 1rem;
-            width: 100%;
-            min-height: 85px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .trait-statement-text {
-            font-size: 1.1rem;
-            font-weight: 700;
-            color: #3d2314;
-            line-height: 1.4;
-        }
-
-        /* Controls Layout Buttons */
-        .hud-action-row {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 0.8rem;
-            width: 100%;
-        }
-
-        .action-click-btn {
-            border: none;
-            padding: 0.75rem 1rem;
-            border-radius: 6px;
-            color: #ffffff;
-            font-size: 0.92rem;
-            font-weight: 700;
+        /* Interactive Profile Column Card */
+        .profile-card {
+            flex: 1;
+            background-color: #f2eee7; /* Muted tan container color matching image_96a0ff.png */
+            border: 2px solid transparent;
+            border-radius: 14px;
+            padding: 40px 45px;
             cursor: pointer;
-            transition: all 0.2s ease;
-        }
-
-        .action-click-btn:hover {
-            opacity: 0.92;
-            transform: translateY(-1px);
-        }
-
-        .btn-left  { background-color: #7b9583; } 
-        .btn-right { background-color: #cd674c; } 
-
-        /* ANTI-OVERLAP ABSOLUTE VICTORY VEIL
-           Isolates final screens from background items to block collisions.
-        */
-        .master-victory-veil {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(253, 250, 246, 0.85);
-            backdrop-filter: blur(8px);
-            z-index: 20;
-            display: none;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-            gap: 1.2rem;
-            border-radius: 12px;
-            animation: fadeInVeil 0.4s ease forwards;
-        }
-
-        @keyframes fadeInVeil {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-
-        .victory-badge-box {
-            background: #ffffff;
-            border: 1px solid rgba(61, 35, 20, 0.1);
-            padding: 2.5rem 3.5rem;
-            border-radius: 16px;
-            box-shadow: 0 15px 40px rgba(61, 35, 20, 0.08);
-            max-width: 480px;
-            transform: scale(0.92);
-            animation: scaleUpBadge 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.15) forwards;
-        }
-
-        @keyframes scaleUpBadge {
-            to { transform: scale(1); }
-        }
-
-        .victory-title {
-            font-size: 1.8rem;
-            font-weight: 800;
-            color: #2a9d8f;
-            margin-top: 0.8rem;
-            margin-bottom: 0.5rem;
-        }
-
-        .victory-desc {
-            color: #6e5d53; 
-            font-size: 1rem; 
-            line-height: 1.45;
-            font-weight: 500;
-        }
-
-        /* Bottom Status Info Strip Row */
-        .footer-bar {
             display: flex;
-            justify-content: space-between;
+            flex-direction: column;
+            justify-content: flex-start;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.01);
+            transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .profile-card:hover {
+            background-color: #e8e2d7;
+            transform: translateY(-2px);
+        }
+
+        /* Dynamic selection highlight state matching platform guidelines */
+        .profile-card.active {
+            background-color: #ffffff;
+            box-shadow: 0 10px 30px rgba(63, 75, 62, 0.08);
+        }
+        
+        .profile-card.active.decisiveness-theme {
+            border-color: #58694d; /* Muted brand green accent */
+        }
+
+        .profile-card.active.impulsiveness-theme {
+            border-color: #baa18d; /* Muted warning brown accent */
+        }
+
+        /* Card Header Elements */
+        .card-header-block {
+            display: flex;
             align-items: center;
-            flex-shrink: 0;
-            border-top: 1px solid rgba(61, 35, 20, 0.08);
-            padding-top: 0.6rem;
-            margin-top: 0.2rem;
-            position: relative;
-            z-index: 5;
+            justify-content: space-between;
+            margin-bottom: 25px;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+            padding-bottom: 12px;
         }
 
-        .score-tracker-badge {
-            font-size: 0.85rem;
+        .card-header-block h2 {
+            font-size: 2rem;
             font-weight: 700;
-            color: #3d2314;
-            background-color: #fff8eb;
-            padding: 0.25rem 0.8rem;
-            border-radius: 20px;
-            border: 1px solid #f4a261;
-            font-variant-numeric: tabular-nums;
+            color: #2c3e2b;
+        }
+        
+        .impulsiveness-theme .card-header-block h2 {
+            color: #4a3e3d;
         }
 
-        .instruction-tag {
-            font-size: 0.85rem;
-            color: #a39389;
+        .status-badge {
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            font-size: 0.75rem;
+            font-weight: 800;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            padding: 4px 10px;
+            border-radius: 4px;
+            color: #8a7e71;
+            background-color: rgba(0, 0, 0, 0.04);
+            transition: all 0.3s;
+        }
+
+        .decisiveness-theme.active .status-badge {
+            background-color: #e4edf7;
+            color: #246fb5;
+        }
+
+        .impulsiveness-theme.active .status-badge {
+            background-color: #f7e9e4;
+            color: #b54a24;
+        }
+
+        /* Structured Behavioral List Matrix (Prevents overlap & text cuts) */
+        .behavior-list {
+            list-style-type: none;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .behavior-list li {
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            font-size: 1.05rem;
+            line-height: 1.45;
+            color: #473a30;
+            position: relative;
+            padding-left: 24px;
+            opacity: 0.85;
+            transition: opacity 0.25s, transform 0.25s;
+        }
+
+        /* Custom solid circular list markers mapping reference layouts */
+        .behavior-list li::before {
+            content: "•";
+            position: absolute;
+            left: 0;
+            top: -2px;
+            font-size: 1.4rem;
+            color: #9e9587;
+        }
+
+        /* Active highlight animations for internal list items */
+        .profile-card.active .behavior-list li {
+            opacity: 1;
+        }
+
+        .profile-card.active.decisiveness-theme .behavior-list li::before {
+            color: #58694d;
+        }
+
+        .profile-card.active.impulsiveness-theme .behavior-list li::before {
+            color: #baa18d;
+        }
+
+        /* ==========================================================================
+           4. Slide Footer Component
+           ========================================================================== */
+        .slide-footer {
+            border-top: 1px solid #ebdcd0;
+            padding-top: 15px;
+            text-align: center;
+        }
+
+        .slide-footer p {
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            font-size: 0.9rem;
+            color: #9c9184;
             font-style: italic;
         }
     </style>
 </head>
 <body>
 
-    <div class="slide-wrapper">
-        <div class="header-section">
+    <div class="slide-container">
+        
+        <!-- Header Section -->
+        <header class="slide-header">
             <h1 class="main-title">Decisiveness vs. Impulsiveness</h1>
-        </div>
+        </header>
 
-        <div class="workspace-layout" id="main-workspace">
-            <div class="sorting-bucket-column" id="bucket-decisiveness">
-                <h2 class="bucket-heading">Decisiveness</h2>
-                <div class="sorted-items-list" id="list-decisiveness"></div>
-            </div>
-
-            <div class="sorting-bucket-column" id="bucket-impulsiveness">
-                <h2 class="bucket-heading">Impulsiveness</h2>
-                <div class="sorted-items-list" id="list-impulsiveness"></div>
-            </div>
-        </div>
-
-        <div class="deck-hud-overlay" id="interactive-hud">
-            <div id="hud-quiz-interface" style="width: 100%; display: flex; flex-direction: column; gap: 1rem;">
-                <div class="hud-tag" id="hud-counter-lbl">Behavior Card 1 of 10</div>
-                <div class="card-display-box">
-                    <p class="trait-statement-text" id="hud-statement-lbl">Considers key information before acting</p>
+        <!-- Main Comparison Split Grid Layout -->
+        <div class="comparison-grid">
+            
+            <!-- Profile Card 1: Decisiveness -->
+            <div class="profile-card decisiveness-theme active" id="card-decisiveness">
+                <div class="card-header-block">
+                    <h2>Decisiveness</h2>
+                    <span class="status-badge">Strategic Path</span>
                 </div>
-                <div class="hud-action-row">
-                    <button class="action-click-btn btn-left" onclick="processSelection('decisiveness')">Decisive</button>
-                    <button class="action-click-btn btn-right" onclick="processSelection('impulsiveness')">Impulsive</button>
+                <ul class="behavior-list">
+                    <li>Considers key information before acting</li>
+                    <li>Accepts reasonable risk deliberately</li>
+                    <li>Commits with awareness of trade-offs</li>
+                    <li>Reflects briefly, then moves forward</li>
+                    <li>Takes ownership of the outcome</li>
+                </ul>
+            </div>
+
+            <!-- Profile Card 2: Impulsiveness -->
+            <div class="profile-card impulsiveness-theme" id="card-impulsiveness">
+                <div class="card-header-block">
+                    <h2>Impulsiveness</h2>
+                    <span class="status-badge">Reactive Path</span>
                 </div>
+                <ul class="behavior-list">
+                    <li>Reacts before gathering relevant facts</li>
+                    <li>Ignores risk or consequences entirely</li>
+                    <li>Chooses to avoid discomfort, not to solve</li>
+                    <li>Skips reflection, regrets later</li>
+                    <li>Blames circumstances for poor results</li>
+                </ul>
             </div>
+
         </div>
 
-        <div class="master-victory-veil" id="victory-veil">
-            <div class="victory-badge-box">
-                <span style="font-size: 3.5rem;">🎯</span>
-                <h3 class="victory-title">Sorting Matrix Resolved!</h3>
-                <p class="victory-desc">Behavioral metrics successfully mapped and categorized across corporate strategic performance indicators.</p>
-            </div>
-        </div>
+        <!-- Slide Footer Guidance Element -->
+        <footer class="slide-footer">
+            <p>Click or select either behavioral container block profile above to analyze its tactical indicators and operational outcomes.</p>
+        </footer>
 
-        <div class="footer-bar">
-            <div class="score-tracker-badge">Traits Sorted: <span id="score-lbl">0</span> / 10</div>
-            <div class="instruction-tag">Evaluate the trait inside the center floating console module and choose its correct behavior category.</div>
-        </div>
     </div>
 
+    <!-- ==========================================================================
+       5. Interactive JavaScript Controller Module
+       ========================================================================== -->
     <script>
-        const traitsDeckMatrix = [
-            { text: "Considers key information before acting", category: "decisiveness" },
-            { text: "Reacts before gathering relevant facts", category: "impulsiveness" },
-            { text: "Accepts reasonable risk deliberately", category: "decisiveness" },
-            { text: "Ignores risk or consequences entirely", category: "impulsiveness" },
-            { text: "Commits with awareness of trade-offs", category: "decisiveness" },
-            { text: "Chooses to avoid discomfort, not to solve", category: "impulsiveness" },
-            { text: "Reflects briefly, then moves forward", category: "decisiveness" },
-            { text: "Skips reflection, regrets later", category: "impulsiveness" },
-            { text: "Takes ownership of the outcome", category: "decisiveness" },
-            { text: "Blames circumstances for poor results", category: "impulsiveness" }
-        ];
+        document.addEventListener('DOMContentLoaded', () => {
+            const profiles = document.querySelectorAll('.profile-card');
 
-        let currentActiveIdx = 0;
-        let accurateSortCount = 0;
+            profiles.forEach(card => {
+                card.addEventListener('click', () => {
+                    // Remove dynamic active layout states across choice lists
+                    profiles.forEach(p => p.classList.remove('active'));
 
-        function refreshInteractiveHUD() {
-            if (currentActiveIdx >= traitsDeckMatrix.length) {
-                // Instantly remove center cockpit module
-                document.getElementById("interactive-hud").style.display = "none";
-                
-                // Dim down workspace background items cleanly
-                const workspace = document.getElementById("main-workspace");
-                workspace.style.filter = "blur(4px)";
-                workspace.style.opacity = "0.35";
-                
-                // Elevate isolated victory screen panel
-                document.getElementById("victory-veil").style.display = "flex";
-                return;
-            }
-
-            const currentCardData = traitsDeckMatrix[currentActiveIdx];
-            document.getElementById("hud-counter-lbl").innerText = `Behavior Card ${currentActiveIdx + 1} of 10`;
-            document.getElementById("hud-statement-lbl").innerText = currentCardData.text;
-        }
-
-        function processSelection(userChosenBucketCode) {
-            if (currentActiveIdx >= traitsDeckMatrix.length) return;
-
-            const activeCardRecord = traitsDeckMatrix[currentActiveIdx];
-
-            if (userChosenBucketCode === activeCardRecord.category) {
-                accurateSortCount++;
-                
-                const columnTargetList = document.getElementById(`list-${activeCardRecord.category}`);
-                const rowItem = document.createElement("div");
-                rowItem.className = "placed-trait-node";
-                rowItem.innerText = activeCardRecord.text;
-                columnTargetList.appendChild(rowItem);
-
-                document.getElementById("score-lbl").innerText = accurateSortCount;
-
-                currentActiveIdx++;
-                refreshInteractiveHUD();
-            } else {
-                const hudCardOverlayContainer = document.getElementById("interactive-hud");
-                hudCardOverlayContainer.style.backgroundColor = "#faeae1";
-                hudCardOverlayContainer.style.borderColor = "#cd674c";
-                setTimeout(() => {
-                    hudCardOverlayContainer.style.backgroundColor = "#ffffff";
-                    hudCardOverlayContainer.style.borderColor = "rgba(61, 35, 20, 0.12)";
-                }, 350);
-            }
-        }
-
-        refreshInteractiveHUD();
+                    // Append highlighting active layout vectors to clicked card target
+                    card.classList.add('active');
+                });
+            });
+        });
     </script>
 </body>
 </html>
