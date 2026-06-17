@@ -77,29 +77,31 @@
         }
 
         /* ==========================================================================
-           3. Active Deal Deck Arena (Top Half)
+           3. Dynamic Central Action Zone (Adapts on Finish)
            ========================================================================== */
-        .deck-arena {
-            height: 180px;
+        .arena-workspace {
+            flex: 1;
             display: flex;
+            flex-direction: column;
             justify-content: center;
             align-items: center;
             margin: 20px 0;
+            transition: all 0.4s ease;
         }
 
         .action-card {
             background-color: #ffffff;
             border: 2px dashed #baa18d;
             border-radius: 12px;
-            width: 550px;
-            height: 120px;
+            width: 600px;
+            height: 130px;
             display: flex;
             justify-content: center;
             align-items: center;
             text-align: center;
-            padding: 20px 30px;
-            box-shadow: 0 8px 20px rgba(0,0,0,0.03);
-            position: relative;
+            padding: 20px 45px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.02);
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
         .action-card p {
@@ -109,12 +111,61 @@
             line-height: 1.4;
         }
 
-        /* End game card override styling */
-        .action-card.completed {
-            border-style: solid;
-            border-color: #58694d;
-            background-color: #f4f8f1;
+        /* End-Game Breakdown Matrix Panel (Revealed smoothly at termination) */
+        .mastery-dashboard {
+            display: none;
+            width: 100%;
+            height: 100%;
+            gap: 25px;
+            animation: paneFadeShiftIn 0.5s ease-out;
         }
+
+        .summary-column {
+            flex: 1;
+            background-color: #ffffff;
+            border-radius: 12px;
+            padding: 25px 35px;
+            box-shadow: 0 6px 18px rgba(0,0,0,0.03);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .summary-column h2 {
+            font-family: 'Georgia', serif;
+            font-size: 1.6rem;
+            border-bottom: 2px solid #f2eee7;
+            padding-bottom: 10px;
+            margin-bottom: 15px;
+        }
+
+        .decisive-col h2 { color: #58694d; border-color: #e4edf7; }
+        .impulsive-col h2 { color: #baa18d; border-color: #f7e9e4; }
+
+        .summary-column ul {
+            list-style-type: none;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .summary-column li {
+            font-size: 0.95rem;
+            line-height: 1.45;
+            color: #473a30;
+            position: relative;
+            padding-left: 20px;
+        }
+
+        .summary-column li::before {
+            content: "•";
+            position: absolute;
+            left: 0;
+            font-size: 1.2rem;
+            top: -2px;
+        }
+
+        .decisive-col li::before { color: #58694d; }
+        .impulsive-col li::before { color: #baa18d; }
 
         /* ==========================================================================
            4. Sorting Buckets / Drop Zones (Bottom Half Grid)
@@ -122,8 +173,9 @@
         .sorting-zones-grid {
             display: flex;
             gap: 30px;
-            height: 280px;
+            height: 250px;
             align-items: stretch;
+            transition: all 0.3s ease;
         }
 
         .bucket-zone {
@@ -131,7 +183,7 @@
             background-color: #f2eee7;
             border: 2px solid transparent;
             border-radius: 12px;
-            padding: 25px;
+            padding: 20px;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -143,45 +195,35 @@
             transform: translateY(-2px);
         }
 
-        .bucket-zone.decisive-zone:hover {
-            border-color: #58694d;
-            background-color: #f8f6f2;
-        }
-
-        .bucket-zone.impulsive-zone:hover {
-            border-color: #baa18d;
-            background-color: #fdfcfb;
-        }
+        .bucket-zone.decisive-zone:hover { border-color: #58694d; background-color: #f8f6f2; }
+        .bucket-zone.impulsive-zone:hover { border-color: #baa18d; background-color: #fdfcfb; }
 
         .bucket-zone h2 {
             font-family: 'Georgia', serif;
-            font-size: 1.6rem;
-            margin-bottom: 15px;
+            font-size: 1.5rem;
+            margin-bottom: 12px;
             color: #262626;
         }
 
-        /* Click Trigger Sorting Arrow Controls */
         .sort-action-btn {
             background-color: #3f4b3e;
             color: #ffffff;
             border: none;
             padding: 10px 20px;
             border-radius: 6px;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             font-weight: 700;
             text-transform: uppercase;
             letter-spacing: 0.5px;
             margin-top: auto;
-            pointer-events: none; /* Let the parent bucket handle click events */
-            transition: background-color 0.2s;
+            pointer-events: none;
         }
 
         .decisive-zone .sort-action-btn { background-color: #58694d; }
         .impulsive-zone .sort-action-btn { background-color: #baa18d; }
 
-        /* Real-Time Feedback Pop Alerts underneath buttons */
         .feedback-message {
-            margin-top: 10px;
+            margin-top: 8px;
             font-size: 0.9rem;
             font-weight: 700;
             min-height: 20px;
@@ -203,68 +245,93 @@
             color: #9c9184;
             font-style: italic;
         }
+
+        @keyframes paneFadeShiftIn {
+            from { opacity: 0; transform: translateY(12px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
     </style>
 </head>
 <body>
 
     <div class="game-slide-container">
         
-        <!-- Top HUD Panel Row -->
+        <!-- Header HUD Dashboard -->
         <header class="game-header">
-            <h1 class="game-title">Behavior Categorization Challenge</h1>
+            <h1 class="game-title" id="header-title">Behavior Categorization Challenge</h1>
             <div class="hud-metrics">
-                <div class="metric-pill">Remaining: <span id="cards-left">5</span></div>
-                <div class="metric-pill">Correct: <span id="correct-score" style="color: #58694d;">0</span></div>
+                <div class="metric-pill" id="hud-remaining-box">Remaining: <span id="cards-left">6</span></div>
+                <div class="metric-pill" id="hud-score-box">Correct: <span id="correct-score" style="color: #58694d;">0</span></div>
             </div>
         </header>
 
-        <!-- Top Active Dealing Card Deck Container Frame -->
-        <div class="deck-arena">
+        <!-- Main Dynamic Play Field Area -->
+        <div class="arena-workspace" id="arena-stage">
+            
+            <!-- Sorting Card Deck Facade -->
             <div class="action-card" id="active-trait-card">
                 <p id="trait-text">Considers key information before acting</p>
             </div>
+
+            <!-- End-Game Descriptions Screen Layout (Hidden by default) -->
+            <div class="mastery-dashboard" id="mastery-screen">
+                
+                <!-- Pillar 1 Profile Breakdown -->
+                <div class="summary-column decisive-col">
+                    <h2>Decisiveness Paradigm</h2>
+                    <ul>
+                        <li><strong>Informed Action:</strong> Systematically reviews key quantitative data matrices before picking a target.</li>
+                        <li><strong>Deliberate Risk:</strong> Evaluates trade-offs and accepts calculated exposures transparently.</li>
+                        <li><strong>Total Accountability:</strong> Firmly takes ownership of downstream execution results, bypassing personal defense.</li>
+                    </ul>
+                </div>
+
+                <!-- Pillar 2 Profile Breakdown -->
+                <div class="summary-column impulsive-col">
+                    <h2>Impulsiveness Pitfall</h2>
+                    <ul>
+                        <li><strong>Factual Deficit:</strong> Reacts immediately to situational elements before gathering comprehensive logs.</li>
+                        <li><strong>Avoidance Mindset:</strong> Makes hasty cuts purely to circumvent immediate presentation discomfort or operational friction.</li>
+                        <li><strong>Blame Dispersal:</strong> Deflects accountability onto external circumstances or team variables when plans encounter resistance.</li>
+                    </ul>
+                </div>
+
+            </div>
+
         </div>
 
-        <!-- Sorting Targets Drop Zone Grid Map -->
-        <div class="sorting-zones-grid">
-            
-            <!-- Category Target Bucket 1: Decisiveness -->
+        <!-- Lower Bucket Options Panel Stack -->
+        <div class="sorting-zones-grid" id="buckets-container">
             <div class="bucket-zone decisive-zone" onclick="submitSort('decisive')">
                 <h2>Decisiveness</h2>
                 <button class="sort-action-btn">Sort Left ◀</button>
                 <div class="feedback-message" id="decisive-feedback"></div>
             </div>
 
-            <!-- Category Target Bucket 2: Impulsiveness -->
             <div class="bucket-zone impulsive-zone" onclick="submitSort('impulsive')">
                 <h2>Impulsiveness</h2>
                 <button class="sort-action-btn">Sort Right ▶</button>
                 <div class="feedback-message" id="impulsive-feedback"></div>
             </div>
-
         </div>
 
-        <!-- Instructions Slide Footnote Line Component -->
-        <footer class="slide-footer">
-            <p>Click directly on either the Decisiveness or Impulsiveness drop bucket grid row boxes below to sort the active center text block profile card trait.</p>
+        <!-- Instructions Slide Footer -->
+        <footer class="game-footer">
+            <p id="footer-instructions">Click directly on either the Decisiveness or Impulsiveness drop bucket row boxes below to sort the active center text block profile card trait.</p>
         </footer>
 
     </div>
 
     <!-- ==========================================================================
-       6. Sorting Application Engine Script Matrix
+       6. Sorting & State Switch Routing Engine
        ========================================================================== -->
     <script>
-        // Data stack pool housing behaviors sourced straight from image layouts
+        // Trimmed, high-impact data stack sourced from slide blueprints
         const behaviorDeck = [
             { text: "Considers key information before acting", category: "decisive" },
             { text: "Reacts before gathering relevant facts", category: "impulsive" },
             { text: "Accepts reasonable risk deliberately", category: "decisive" },
-            { text: "Ignores risk or consequences entirely", category: "impulsive" },
-            { text: "Commits with awareness of trade-offs", category: "decisive" },
             { text: "Chooses to avoid discomfort, not to solve", category: "impulsive" },
-            { text: "Reflects briefly, then moves forward", category: "decisive" },
-            { text: "Skips reflection, regrets later", category: "impulsive" },
             { text: "Takes ownership of the outcome", category: "decisive" },
             { text: "Blames circumstances for poor results", category: "impulsive" }
         ];
@@ -273,37 +340,32 @@
         let correctMatches = 0;
 
         function submitSort(userChoice) {
-            // Stop logic evaluation if the stack runs out of cards
             if (currentCardIndex >= behaviorDeck.length) return;
 
             const activeItem = behaviorDeck[currentCardIndex];
             const decisiveFeedback = document.getElementById('decisive-feedback');
             const impulsiveFeedback = document.getElementById('impulsive-feedback');
             
-            // Clean slate alert view models
             decisiveFeedback.style.opacity = '0';
             impulsiveFeedback.style.opacity = '0';
 
-            // Match confirmation checking routing parameters
             if (userChoice === activeItem.category) {
                 correctMatches++;
                 document.getElementById('correct-score').textContent = correctMatches;
                 
-                // Fire dynamic pop alert responses based on target drop zone
                 if (userChoice === 'decisive') {
-                    showFeedback(decisiveFeedback, "✓ Correct Category", "#58694d");
+                    showFeedback(decisiveFeedback, "✓ Correct Mastery Match", "#58694d");
                 } else {
-                    showFeedback(impulsiveFeedback, "✓ Correct Category", "#baa18d");
+                    showFeedback(impulsiveFeedback, "✓ Correct Mastery Match", "#baa18d");
                 }
             } else {
                 if (userChoice === 'decisive') {
-                    showFeedback(decisiveFeedback, "✗ Incorrect Path", "#b54a24");
+                    showFeedback(decisiveFeedback, "✗ Incorrect Categorization", "#b54a24");
                 } else {
-                    showFeedback(impulsiveFeedback, "✗ Incorrect Path", "#b54a24");
+                    showFeedback(impulsiveFeedback, "✗ Incorrect Categorization", "#b54a24");
                 }
             }
 
-            // Move to next card object profile inside the data matrix arrays
             currentCardIndex++;
             updateCardDisplay();
         }
@@ -312,26 +374,31 @@
             element.textContent = message;
             element.style.color = color;
             element.style.opacity = '1';
-            setTimeout(() => { element.style.opacity = '0'; }, 1200);
+            setTimeout(() => { element.style.opacity = '0'; }, 1000);
         }
 
         function updateCardDisplay() {
             const remainingCount = behaviorDeck.length - currentCardIndex;
             document.getElementById('cards-left').textContent = remainingCount;
 
-            const cardEl = document.getElementById('active-trait-card');
-            const textEl = document.getElementById('trait-text');
-
             if (currentCardIndex < behaviorDeck.length) {
-                textEl.textContent = behaviorDeck[currentCardIndex].text;
+                document.getElementById('trait-text').textContent = behaviorDeck[currentCardIndex].text;
             } else {
-                // Render finished dashboard summary stage state view
-                cardEl.classList.add('completed');
-                textEl.innerHTML = `<strong>Challenge Complete!</strong><br>Final Score: ${correctMatches} out of ${behaviorDeck.length} Matches Correct.`;
+                // Execute Transition to End Game View Dashboard Screen (Zero Scroll Rule)
+                document.getElementById('active-trait-card').style.display = 'none';
+                document.getElementById('buckets-container').style.display = 'none';
+                
+                // Expand workspace panel to full height and render descriptions matrix
+                document.getElementById('arena-stage').style.height = 'calc(100% - 100px)';
+                document.getElementById('mastery-screen').style.display = 'flex';
+                
+                // Rewrite HUD text profiles to match final state
+                document.getElementById('header-title').textContent = `Review Framework Summary (Final Score: ${correctMatches}/${behaviorDeck.length})`;
+                document.getElementById('hud-remaining-box').style.display = 'none';
+                document.getElementById('footer-instructions').textContent = "Review both archetypes thoroughly. You can now close out this lesson block tab module safely.";
             }
         }
 
-        // Initialize state markers on initial presentation execution lifecycle
         document.getElementById('cards-left').textContent = behaviorDeck.length;
     </script>
 </body>
