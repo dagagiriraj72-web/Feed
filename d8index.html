@@ -3,292 +3,247 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>The 10-10-10 Rule - Stable Interactive Arena</title>
+    <title>Two-Way Door Decisions - Fully Functional Hangar</title>
     <style>
-        /* RESET & ANTI-COLLAPSE FALLBACK
-           Storyline web objects can often collapse if parent containers don't provide a strict aspect ratio.
-           This absolute boundary locks coordinates and creates a fixed 16:9 presentation slide uncollapsible footprint, 
-           preventing components from crashing into each other on load.
-        */
+        /* FORCE CONTAINERS TO FILL WINDOW TO PREVENT COLLAPSE IN STORYLINE IFRAMES */
         html, body {
             margin: 0;
             padding: 0;
-            width: 100vw;
-            height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            background-color: #f5f1ea; /* Light-tan background from image_b1601d.png */
+            width: 100%;
+            height: 100%;
+            background-color: #fcf8f2;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             overflow: hidden;
         }
 
+        /* HARD-LOCKED 16:9 VIEWPORT 
+           Locks bounds strictly at 1280x720 to protect elements from text box 
+           clashing, vertical margin bleed, or layout distortions.
+        */
         .slide-wrapper {
-            position: absolute;
-            max-width: 100%;
-            max-height: 100%;
-            aspect-ratio: 16 / 9;
-            height: auto;
-            width: auto;
-            display: flex;
-            flex-direction: column;
-            padding: 30px 40px;
-            box-sizing: border-box;
-            font-family: 'Times New Roman', Times, serif, sans-serif;
-            background-color: #f5f1ea;
-            border: 1px solid #e0ac8d; /* Subtle light-orange border accent */
-            border-radius: 6px;
-        }
-
-        /* Top Branded Gaming HUD Header [cite: 0] */
-        .header-section {
-            border-bottom: 2px solid #2c3e34; /* Dark-green underline accent from image_b1601d.png */
-            padding-bottom: 10px;
-            margin-bottom: 20px;
-        }
-
-        .main-title {
-            font-size: 36px;
-            color: #2c3e34; /* Dark charcoal/green from image_b1601d.png */
-            font-weight: 800;
-            margin: 0;
-            line-spacing: -1px;
-        }
-
-        /* Scenario Challenge Text Block
-           Uses native vertical expansion. Pushes arena down natively. [cite: image_b162e2.png]
-        */
-        .scenario-banner {
-            font-size: 16px;
-            color: #2c3e34;
-            background-color: #e0ac8d; /* Light-orange background from image_b162e2.png */
-            font-weight: bold;
-            padding: 10px 15px;
-            border-radius: 4px;
-            border-left: 5px solid #2c3e34;
-            margin-bottom: 25px;
-        }
-
-        /* MASTER WORKSPACE MATRIX LAYOUT
-           Splits content left-to-right to optimize space and resolve vertical clashes.
-        */
-        .workspace-matrix {
-            display: grid;
-            grid-template-columns: 280px 1fr; /* Rigid nav sidebar to prevent horizontal collision */
-            gap: 30px;
-            flex-grow: 1;
-            min-height: 0; /* Dynamic height buffer prevents collapse on load [cite: 0] */
-        }
-
-        /* Lateral Vertical Tab Dock Column [cite: image_b162e2.png] */
-        .tabs-sidebar {
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-            align-items: start;
-        }
-
-        /* Clean, non-overlapping circular node based on image_b1601d.png. [cite: image_b1601d.png] */
-        .temporal-node {
-            display: flex;
-            align-items: center;
             width: 100%;
-            height: 90px;
-            border: 2px solid #e0ac8d;
-            border-radius: 6px;
-            background-color: #ffffff;
-            cursor: pointer;
-            transition: all 0.2s ease;
-        }
-
-        .temporal-node:hover {
-            border-color: #2c3e34;
-            background-color: #e6e6e6;
-        }
-
-        .node-circle-badged {
-            width: 80px;
-            height: 80px;
-            border-radius: 50%;
-            background-color: #2c3e34; /* Dark green [cite: image_b1601d.png] */
-            color: #ffffff;
-            font-size: 14px;
-            font-weight: bold;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            margin-left: -40px; /* Overlap fix: node hangs off left natively */
-            transition: margin-left 0.2s ease;
-        }
-
-        .temporal-node:hover .node-circle-badged {
-            margin-left: -5px; /* Node is pulled in on hover */
-        }
-
-        .node-circle-badged span {
-            font-size: 16px;
-            font-weight: 900;
-        }
-
-        .node-label-block {
-            padding: 0 15px;
-        }
-
-        .node-title-lbl {
-            font-size: 18px;
-            font-weight: bold;
-            color: #2c3e34;
-            display: block;
-        }
-
-        .node-status-tag {
-            font-size: 11px;
-            font-weight: 800;
-            color: #e0ac8d;
-            text-transform: uppercase;
-            display: block;
-        }
-
-        /* High-Visibility State Highlight Modifiers [cite: image_b162e2.png] */
-        .temporal-node.active-stage {
-            border-color: #2c3e34;
-            background-color: #ffffff;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-        }
-        .temporal-node.active-stage .node-title-lbl { color: #2c3e34; }
-        .temporal-node.active-stage .node-circle-badged { box-shadow: 0 0 10px rgba(44, 62, 52, 0.4); }
-
-        .temporal-node.complete-stage {
-            border-color: #8db568; /* Clean green accent for success [cite: image_b162e2.png] */
-            background-color: rgba(141, 181, 104, 0.1);
-        }
-        .temporal-node.complete-stage .node-title-lbl { color: #8db568; }
-        .temporal-node.complete-stage .node-status-tag { color: #8db568; }
-        .temporal-node.complete-stage .node-circle-badged { background-color: #8db568; }
-
-        /* Master Playbook Content window [cite: image_b162e2.png] */
-        .playbook-cockpit {
-            background-color: #ffffff;
-            border: 2px solid #e0ac8d;
-            border-radius: 6px;
-            padding: 30px;
-            box-sizing: border-box;
+            height: 100%;
+            max-width: 1280px;
+            max-height: 720px;
+            aspect-ratio: 16 / 9;
+            padding: 2.2rem 3.5rem 1.5rem 3.5rem;
+            background-color: #fdfaf6;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
+            box-sizing: border-box;
+            position: relative;
         }
 
-        /* Single, spacious diagnostic results arena where text and choices expand natively
-           Uses flex column for stacked blocks. Elements never touch.
+        /* Title Header */
+        .header-section {
+            margin-bottom: 0.5rem;
+            flex-shrink: 0;
+        }
+
+        .main-title {
+            font-size: 2.6rem;
+            color: #3d2314;
+            font-weight: 800;
+            line-height: 1.1;
+            position: relative;
+            padding-bottom: 0.4rem;
+        }
+
+        .main-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 140px;
+            height: 4px;
+            background-color: #4a584d;
+            border-radius: 2px;
+        }
+
+        /* TWIN-COLUMN COCKPIT GRID MATRIX
+           Gives both bays equal horizontal clearance so text payloads never overlap.
         */
-        .diagnostic-arena {
-            display: flex;
-            flex-direction: column;
-            gap: 15px; /* Vertical spacy separation barrier [cite: 0] */
+        .hangar-deck-workspace {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            flex-grow: 1;
+            min-height: 0; /* Dynamic height buffer safety guardrail */
+            margin: 1.5rem 0;
+            align-items: stretch;
         }
 
-        .temporal-tag-heading {
-            font-size: 13px;
-            color: #e0ac8d;
-            font-weight: 800;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        /* Question Directive [cite: image_b1601d.png] */
-        .question-brief-box {
-            font-size: 17px;
-            color: #2c3e34;
-            font-weight: bold;
-            background-color: #fcfbf9;
-            padding: 10px 15px;
-            border-radius: 4px;
-            border-left: 5px solid #2c3e34;
-            line-height: 1.4;
-        }
-
-        /* Multiple Choice Stack Pipeline [cite: image_b162e2.png] */
-        .choices-stack-pipeline {
-            display: flex;
-            flex-direction: column;
-            gap: 8px; /* Clean option row separation */
-        }
-
-        .choice-interaction-card {
-            background-color: #ffffff;
-            border: 1px solid #e0ac8d;
-            padding: 12px 18px;
-            border-radius: 4px;
-            font-size: 15px;
-            color: #2c3e34;
+        /* Interactive Hangar Frame Box */
+        .door-bay-frame {
+            background-color: #f1ede9;
+            border-radius: 12px;
+            border: 1px solid rgba(61, 35, 20, 0.06);
+            position: relative;
+            perspective: 1200px; /* Triggers hardware-accelerated 3D swinging depths */
             cursor: pointer;
-            text-align: left;
-            font-weight: bold;
-            line-height: 1.4;
-            transition: all 0.2s ease;
-            width: 100%;
-        }
-
-        .choice-interaction-card:hover {
-            background-color: #fffbf7;
-            border-color: #2c3e34;
-            transform: translateX(3px);
-        }
-
-        /* Success Stage complete Screen Panel [cite: 0] */
-        .success-overlay-panel {
-            display: none;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-            width: 100%;
             height: 100%;
-            gap: 10px;
         }
 
-        .success-heading-text {
-            font-size: 24px;
+        /* BASE TEXT DATA TERMINALS (Hidden behind covers natively) */
+        .internal-data-terminal {
+            padding: 2rem 2.2rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            height: 100%;
+            justify-content: center;
+            opacity: 0;
+            transform: scale(0.95);
+            transition: opacity 0.4s ease, transform 0.4s ease;
+            pointer-events: none; /* Disables click hijacking while covered */
+        }
+
+        .terminal-heading {
+            font-size: 1.6rem;
             font-weight: 800;
-            color: #8db568;
+            color: #3d2314;
+            border-bottom: 2px solid rgba(61, 35, 20, 0.08);
+            padding-bottom: 0.4rem;
             margin: 0;
         }
 
-        /* Final Simulation clear Screen Panel */
-        .clear-total-victory {
-            display: none;
+        .terminal-bullet-list {
+            list-style: none;
+            display: flex;
             flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-            width: 100%;
-            height: 100%;
-            gap: 15px;
+            gap: 0.6rem;
+            margin: 0;
+            padding: 0;
         }
 
-        /* Overall Progress Utilites footer bar Row [cite: image_b162e2.png] */
+        .terminal-bullet-node {
+            font-size: 1.05rem;
+            color: #4a382c;
+            font-weight: 600;
+            line-height: 1.45;
+            position: relative;
+            padding-left: 1.4rem;
+        }
+
+        .terminal-bullet-node::before {
+            content: "•";
+            color: #4a584d;
+            font-weight: bold;
+            font-size: 1.4rem;
+            position: absolute;
+            left: 2px;
+            top: -2px;
+        }
+
+        /* 3D MECHANICAL OVERLAY COVER SHUTTERS (THE DOORS) */
+        .mechanical-door-shutter {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            color: #ffffff;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem;
+            z-index: 10;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.05);
+            transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.4s ease, filter 0.2s ease;
+            backface-visibility: hidden;
+            box-sizing: border-box;
+        }
+
+        /* Symmetrical Swing Hinge Roots */
+        #left-door-shutter {
+            border-radius: 11px;
+            transform-origin: left center; /* Hinges One-Way door left */
+            background-image: linear-gradient(135deg, #3a443d 0%, #2f3832 100%);
+            border-right: 3px solid rgba(255,255,255,0.08);
+        }
+
+        #right-door-shutter {
+            border-radius: 11px;
+            transform-origin: right center; /* Hinges Two-Way door right */
+            background-image: linear-gradient(225deg, #4c5a4f 0%, #3a443d 100%);
+            border-left: 3px solid rgba(255,255,255,0.08);
+        }
+
+        .door-bay-frame:hover .mechanical-door-shutter {
+            filter: brightness(1.08);
+        }
+
+        .door-graphics-icon {
+            font-size: 3.2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .door-shutter-title {
+            font-size: 1.8rem;
+            font-weight: 800;
+            letter-spacing: 0.5px;
+            margin-bottom: 0.4rem;
+            color: #ffffff;
+        }
+
+        .door-shutter-prompt {
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: #a9bfae;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            border: 1px solid rgba(255,255,255,0.2);
+            padding: 0.25rem 0.8rem;
+            border-radius: 4px;
+            background-color: rgba(0,0,0,0.1);
+        }
+
+        /* INDEPENDENT SYMMETRICAL MECHANICAL SWING TRIGGERS */
+        .door-bay-frame.left-open #left-door-shutter {
+            transform: rotateY(-115deg);
+            opacity: 0;
+        }
+
+        .door-bay-frame.right-open #right-door-shutter {
+            transform: rotateY(115deg);
+            opacity: 0;
+        }
+
+        .door-bay-frame.left-open #left-terminal,
+        .door-bay-frame.right-open #right-terminal {
+            opacity: 1;
+            transform: scale(1);
+            pointer-events: auto; /* Restores copy/highlight tracking functionality once open */
+        }
+
+        /* Shared Baseline Static Context Box */
+        .insight-banner-row {
+            background-color: #fff8eb;
+            border: 1px solid #f4a261;
+            border-left: 4px solid #f4a261;
+            padding: 0.6rem 1.2rem;
+            border-radius: 6px;
+            font-size: 0.92rem;
+            color: #3d2314;
+            line-height: 1.4;
+            flex-shrink: 0;
+            margin-top: 0.4rem;
+        }
+
+        /* Bottom Guidance Strip Line */
         .footer-bar {
             display: flex;
             justify-content: flex-end;
             align-items: center;
-            border-top: 1px solid #2c3e34;
-            padding-top: 12px;
-            margin-top: 15px;
-        }
-
-        .score-tracker-badge {
-            font-size: 12px;
-            color: #ffffff;
-            font-weight: 800;
-            background-color: #e0ac8d; /* Orange accent [cite: image_b162e2.png] */
-            padding: 4px 15px;
-            border-radius: 20px;
-            font-variant-numeric: tabular-nums;
+            flex-shrink: 0;
+            margin-top: 0.2rem;
         }
 
         .instruction-tag {
-            font-size: 11px;
-            color: #b3b3b3;
+            font-size: 0.85rem;
+            color: #a39389;
             font-style: italic;
         }
     </style>
@@ -296,207 +251,74 @@
 <body>
 
     <div class="slide-wrapper">
-        <!-- Main modern title Banner [cite: image_b162e2.png] -->
         <div class="header-section">
-            <h1 class="main-title">The 10-10-10 Rule</h1>
+            <h1 class="main-title">Two-Way Door Decisions</h1>
         </div>
 
-        <!-- Uncrowded Scenario Banner
-             Text is fully legible and expands natives [cite: image_b162e2.png]
-        -->
-        <div class="scenario-banner">
-            Scenario Challenge: An intense debate threatens to derail a high-stakes project meeting. How do you respond?
-        </div>
-
-        <!-- Master spacy workspace grid matrix [cite: image_b162e2.png] -->
-        <div class="workspace-matrix">
+        <div class="hangar-deck-workspace">
             
-            <!-- Lateral Vertical Node Dock Control Track [cite: image_b162e2.png] -->
-            <div class="tabs-sidebar">
-                <!-- 10 Minutes Node -->
-                <div class="temporal-node active-stage" id="node-0" onclick="switchTemporalStage(0)">
-                    <div class="node-circle-badged">
-                        10<span>M</span>
-                    </div>
-                    <div class="node-label-block">
-                        <span class="node-title-lbl">10 Minutes</span>
-                        <span class="node-status-tag" id="badge-0">Active</span>
-                    </div>
+            <div class="door-bay-frame" id="left-bay-node" onclick="toggleHangarDoor('left')">
+                <div class="mechanical-door-shutter" id="left-door-shutter">
+                    <span class="door-graphics-icon">🚪🔒</span>
+                    <h2 class="door-shutter-title">One-Way Doors</h2>
+                    <span class="door-shutter-prompt">Analyze Shutter</span>
                 </div>
-                <!-- 10 Months Node -->
-                <div class="temporal-node" id="node-1" onclick="switchTemporalStage(1)">
-                    <div class="node-circle-badged">
-                        10<span>MO</span>
-                    </div>
-                    <div class="node-label-block">
-                        <span class="node-title-lbl">10 Months</span>
-                        <span class="node-status-tag" id="badge-1">Pending</span>
-                    </div>
-                </div>
-                <!-- 10 Years Node -->
-                <div class="temporal-node" id="node-2" onclick="switchTemporalStage(2)">
-                    <div class="node-circle-badged">
-                        10<span>Y</span>
-                    </div>
-                    <div class="node-label-block">
-                        <span class="node-title-lbl">10 Years</span>
-                        <span class="node-status-tag" id="badge-2">Pending</span>
-                    </div>
+                <div class="internal-data-terminal" id="left-terminal">
+                    <h2 class="terminal-heading">One-Way Doors</h2>
+                    <ul class="terminal-bullet-list">
+                        <li class="terminal-bullet-node">Irreversible or extremely costly to undo</li>
+                        <li class="terminal-bullet-node">Require thorough analysis and deliberation</li>
+                        <li class="terminal-bullet-node">Examples: selling a business, major relocations</li>
+                        <li class="terminal-bullet-node">Deserve more time and consultation</li>
+                        <li class="terminal-bullet-node">About 10% of your decisions</li>
+                    </ul>
                 </div>
             </div>
 
-            <!-- Central Content Display Terminal Deck [cite: image_b162e2.png] -->
-            <div class="playbook-cockpit" id="arena-card">
-                
-                <!-- Individual Diagnostic Results Arena Section
-                     Stacks question and choices list naturally. Content never overlaps.
-                -->
-                <div class="diagnostic-arena" id="interactive-loop">
-                    <div class="temporal-tag-heading" id="arena-stage-title">Temporal Horizon 1 of 3</div>
-                    <div class="question-brief-box" id="arena-brief-text">
-                        Framework Question: How will I feel about this decision ten minutes from now?
-                    </div>
-                    
-                    <!-- options row buttons stack natively separately from scenario boundaries [cite: image_b162e2.png] -->
-                    <div class="choices-stack-pipeline" id="arena-options-container">
-                        <!-- Loaded programmatically via script loops -->
-                    </div>
+            <div class="door-bay-frame" id="right-bay-node" onclick="toggleHangarDoor('right')">
+                <div class="mechanical-door-shutter" id="right-door-shutter">
+                    <span class="door-graphics-icon">🚪🔄</span>
+                    <h2 class="door-shutter-title">Two-Way Doors</h2>
+                    <span class="door-shutter-prompt">Analyze Shutter</span>
                 </div>
-
-                <!-- Step Success Inner Overlay Component Sheet -->
-                <div class="success-overlay-panel" id="victory-card">
-                    <span style="font-size: 4rem;">🎯⚙️</span>
-                    <p class="success-heading-text">Horizon Matrix Aligned!</p>
-                    <p style="color: #6a6a6a; font-size: 13px; margin: 0;">Click an uncompleted temporal node from the left sidebar dock track to continue your decision trajectory.</p>
+                <div class="internal-data-terminal" id="right-terminal">
+                    <h2 class="terminal-heading">Two-Way Doors</h2>
+                    <ul class="terminal-bullet-list">
+                        <li class="terminal-bullet-node">Easily reversible with low cost</li>
+                        <li class="terminal-bullet-node">Should be made quickly and iterated on</li>
+                        <li class="terminal-bullet-node">Examples: testing a new tool, trying a process</li>
+                        <li class="terminal-bullet-node">Overthinking these wastes time and energy</li>
+                        <li class="terminal-bullet-node">About 90% of your decisions</li>
+                    </ul>
                 </div>
-
-                <!-- Simulation Master success Panel Screen sheet -->
-                <div class="clear-total-victory" id="campaign-clear-panel">
-                    <span style="font-size: 5rem;">👑</span>
-                    <h2 style="color: #8db568; font-size: 28px; font-weight: 800;">Strategic Excellence Achieved!</h2>
-                    <p style="color: #6a6a6a; font-size: 14px; font-weight: bold; max-width: 440px; line-height: 1.45; margin: 0;">You successfully applied the 10-10-10 Rule to cut through emotional fog. All three decision matrices are now fully synchronized.</p>
-                </div>
-
             </div>
+
         </div>
 
-        <!-- Overall Progress Utilities Status Bar Row [cite: image_b162e2.png] -->
+        <div class="insight-banner-row">
+            💡 <strong>Strategic Framework Alignment:</strong> Knowing the difference prevents organizational friction. Guard one-way doors with deep consensus metrics, while running two-way decisions as rapid testing loops.
+        </div>
+
         <div class="footer-bar">
-            <div class="score-tracker-badge">Overall Milestones Met: <span id="progress-val">0</span> / 3</div>
-            <div class="instruction-tag">Ask yourself three diagnostic questions to cut through emotional fog and secure clear strategic perspectives.</div>
+            <div class="instruction-tag">Click either architectural door panel block directly to independently swing the shutter open and audit decision classification metrics.</div>
         </div>
     </div>
 
     <script>
-        // High fidelity L3 custom situation parameters built directly around textbook variables [cite: image_b1601d.png, image_b162e2.png]
-        const simulationMatrix = [
-            {
-                brief: "Framework Question: How will I feel about this decision ten minutes from now? [cite: image_b1601d.png]",
-                choices: [
-                    { text: "React defensively on the spot to assert your position. [cite: image_b162e2.png]", correct: false },
-                    { text: "Enforce a strategic operational pause to cool down immediate adrenaline spikes before deciding. [cite: image_b162e2.png]", correct: true }
-                ]
-            },
-            {
-                brief: "Framework Question: How will I feel about it ten months from now? [cite: image_b1601d.png]",
-                choices: [
-                    { text: "Still regret damaging relationships from a heated argument. [cite: 0]", correct: false },
-                    { text: "Be glad I prioritized a stable solution over personal victory. [cite: 0]", correct: true }
-                ]
-            },
-            {
-                brief: "Framework Question: How will I feel about it ten years from now? [cite: image_b1601d.png]",
-                choices: [
-                    { text: "Have forgotten the conflict entirely, but regret the lost opportunity for collaboration. [cite: 0]", correct: false },
-                    { text: "Appreciate that I took a moment to think and built a stronger, long-term team relationship. [cite: 0]", correct: true }
-                ]
-            }
-        ];
-
-        let activeStageIdx = 0;
-        let solvedCount = 0;
-        let masteredStateMap = { 0: false, 1: false, 2: false };
-
-        function loadSimulationStage() {
-            const interactiveBlock = document.getElementById("interactive-loop");
-            const victoryCard = document.getElementById("victory-card");
-            const optionsContainer = document.getElementById("arena-options-container");
-            
-            if (masteredStateMap[activeStageIdx]) {
-                interactiveBlock.style.display = "none";
-                victoryCard.style.display = "flex";
-                return;
-            }
-
-            interactiveBlock.style.display = "flex";
-            victoryCard.style.display = "none";
-
-            const data = simulationMatrix[activeStageIdx];
-            document.getElementById("arena-stage-title").innerText = `Temporal Horizon ${activeStageIdx + 1} of 3`;
-            document.getElementById("arena-brief-text").innerText = data.brief;
-
-            // Generate option action cards inside the right container stack safely
-            optionsContainer.innerHTML = "";
-            data.choices.forEach(choice => {
-                const btn = document.createElement("button");
-                btn.className = "choice-interaction-card";
-                btn.innerText = choice.text;
-                btn.onclick = () => evaluateChoiceInput(choice.correct);
-                optionsContainer.appendChild(btn);
-            });
-        }
-
-        function switchTemporalStage(targetIdx) {
-            if (targetIdx === activeStageIdx) return;
-
-            // Remove highlighted active class from preceding element node
-            document.getElementById(`node-${activeStageIdx}`).classList.remove("active-stage");
-            document.getElementById(`badge-${activeStageIdx}`).innerText = masteredStateMap[activeStageIdx] ? "Mastered" : "Pending";
-            
-            // Re-route operational index pointers
-            activeStageIdx = targetIdx;
-            document.getElementById(`node-${activeStageIdx}`).classList.add("active-stage");
-            document.getElementById(`badge-${activeStageIdx}`).innerText = masteredStateMap[activeStageIdx] ? "Mastered" : "Active";
-
-            const totalClearsCount = Object.values(masteredStateMap).filter(Boolean).length;
-            if (totalClearsCount === 3) {
-                document.getElementById("interactive-loop").style.display = "none";
-                document.getElementById("victory-card").style.display = "none";
-                document.getElementById("campaign-clear-panel").style.display = "flex";
-                return;
-            }
-
-            loadSimulationStage();
-        }
-
-        function evaluateChoiceInput(isCorrectChoicePath) {
-            if (isCorrectChoicePath) {
-                masteredStateMap[activeStageIdx] = true;
-                solvedCount++;
-                document.getElementById("progress-val").innerText = solvedCount;
-
-                // Adjust horizontal selector ribbon cards complete states properties
-                document.getElementById(`node-${activeStageIdx}`).classList.add("complete-stage");
-                document.getElementById(`badge-${activeStageIdx}`).innerText = "Mastered";
-
-                const totalClearsCount = Object.values(masteredStateMap).filter(Boolean).length;
-                document.getElementById("interactive-loop").style.display = "none";
-
-                if (totalClearsCount === 3) {
-                    document.getElementById("campaign-clear-panel").style.display = "flex";
-                } else {
-                    document.getElementById("victory-card").style.display = "flex";
-                }
-            } else {
-                // Instantly flash bounding card background red to report a decision deviation match error
-                const windowBoard = document.getElementById("arena-card");
-                windowBoard.style.backgroundColor = "#faeae1";
-                setTimeout(() => windowBoard.style.backgroundColor = "#ffffff", 350);
+        /**
+         * Dynamic Hangar Toggle Engine
+         * Evaluates targeted string keys to trigger mechanical rotation state classes independently.
+         */
+        function toggleHangarDoor(targetSideKey) {
+            if (targetSideKey === 'left') {
+                const leftBay = document.getElementById("left-bay-node");
+                leftBay.classList.toggle("left-open");
+            } 
+            else if (targetSideKey === 'right') {
+                const rightBay = document.getElementById("right-bay-node");
+                rightBay.classList.toggle("right-open");
             }
         }
-
-        // Initialize setup on run load mount configurations
-        loadSimulationStage();
     </script>
 </body>
 </html>
