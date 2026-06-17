@@ -3,112 +3,81 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Five Pillars of Digital Transformation - Fixed Canvas</title>
+    <title>Five Pillars of Digital Transformation - IB Group</title>
     <style>
-        * {
-            box-sizing: border-box;
+        /* FORCE CONTRAINT BOXES TO REMAIN 100% OPEN INSIDE ALL WEB OBJECT IFRAMES */
+        html, body {
             margin: 0;
             padding: 0;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-
-        body {
+            width: 100%;
+            height: 100%;
             background-color: #fcf8f2;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            width: 100vw;
-            height: 100vh;
+            font-family: 'Segoe UI', Arial, sans-serif;
             overflow: hidden;
         }
 
-        /* HARD-LOCKED 16:9 STORYLINE PRESENTATION VIEWPORT 
-           Enforces a strict 1280x720 container footprint to permanently prevent 
-           vertical layout bleed, text box collisions, or scrollbar cutting.
-        */
+        /* 16:9 Aspect Ratio Safety Wrapper Layer */
         .slide-wrapper {
             width: 100%;
             height: 100%;
-            max-width: 1280px;
-            max-height: 720px;
-            aspect-ratio: 16 / 9;
-            padding: 2.2rem 3.5rem 1.5rem 3.5rem;
-            background-color: #fdfaf6;
+            padding: 30px 45px;
+            box-sizing: border-box;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
-            box-sizing: border-box;
         }
 
-        /* Slide Top Title */
+        /* Top Header Component */
         .header-section {
-            margin-bottom: 0.5rem;
+            border-bottom: 2px solid #e2dbd5;
+            padding-bottom: 8px;
+            margin-bottom: 15px;
             flex-shrink: 0;
         }
 
         .main-title {
-            font-size: 2.6rem;
+            font-size: 38px;
             color: #3d2314;
             font-weight: 800;
-            line-height: 1.1;
-            position: relative;
-            padding-bottom: 0.4rem;
+            margin: 0;
+            display: inline-block;
+            letter-spacing: -0.5px;
         }
 
-        .main-title::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 140px;
-            height: 4px;
-            background-color: #cd674c;
-            border-radius: 2px;
-        }
-
-        /* Stable Workspace Matrix Track */
-        .workspace-matrix {
-            display: flex;
-            flex-direction: column;
-            flex-grow: 1;
-            min-height: 0; /* Dynamic inner height constraint protecting Storyline canvas limits */
-            margin: 0.6rem 0;
-        }
-
-        /* Horizontal Menu Tabs Track Strip */
-        .tab-navigation-strip {
+        /* Horizontal Ribbon Navigation Strip Layout */
+        .ribbon-navigation-track {
             display: grid;
             grid-template-columns: repeat(5, 1fr);
-            gap: 0.4rem;
+            gap: 10px;
             width: 100%;
             flex-shrink: 0;
+            margin-bottom: 12px;
         }
 
-        .pillar-tab-btn {
+        .pillar-nav-btn {
             background-color: #e2dbd5;
             border: 1px solid rgba(61, 35, 20, 0.08);
-            border-bottom: none;
-            padding: 0.75rem 0.5rem;
-            border-top-left-radius: 8px;
-            border-top-right-radius: 8px;
+            border-radius: 6px;
+            padding: 12px 8px;
             cursor: pointer;
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 0.15rem;
+            justify-content: center;
+            gap: 2px;
             transition: all 0.2s ease;
         }
 
-        .tab-index-lbl {
-            font-size: 0.72rem;
+        .pillar-index-lbl {
+            font-size: 11px;
             font-weight: 800;
             color: #8d7d74;
             text-transform: uppercase;
             letter-spacing: 0.5px;
         }
 
-        .tab-title-lbl {
-            font-size: 0.95rem;
+        .pillar-title-lbl {
+            font-size: 14px;
             font-weight: 700;
             color: #4a382c;
             white-space: nowrap;
@@ -118,60 +87,53 @@
             text-align: center;
         }
 
-        /* Active Navigation Node Highlight States */
-        .pillar-tab-btn.active-tab {
+        /* Active Selected Tab Layout Highlight Mods */
+        .pillar-nav-btn.active-tab {
             background-color: #ffffff;
-            padding-top: 0.9rem;
-            margin-top: -0.15rem;
-            box-shadow: 0 -4px 10px rgba(61, 35, 20, 0.03);
-            z-index: 2;
+            border-color: #cd674c;
+            box-shadow: 0 4px 12px rgba(205, 103, 76, 0.06);
         }
-        .pillar-tab-btn[data-id="1"].active-tab, .pillar-tab-btn[data-id="3"].active-tab, .pillar-tab-btn[data-id="5"].active-tab { border-top: 4px solid #cd674c; }
-        .pillar-tab-btn[data-id="2"].active-tab, .pillar-tab-btn[data-id="4"].active-tab { border-top: 4px solid #7b9583; }
+        .pillar-nav-btn.active-tab .pillar-title-lbl { color: #cd674c; }
+        .pillar-nav-btn.active-tab .pillar-index-lbl { color: #cd674c; }
 
-        .pillar-tab-btn.active-tab .tab-title-lbl { color: #cd674c; }
-        .pillar-tab-btn.active-tab[data-id="2"] .tab-title-lbl, .pillar-tab-btn.active-tab[data-id="4"] .tab-title-lbl { color: #5c7564; }
-
-        /* Mastered Level Node State */
-        .pillar-tab-btn.mastered-tab {
-            border-top: 4px solid #2a9d8f !important;
-            background-color: rgba(42, 157, 143, 0.03);
+        /* Mastered Level Node State Complete Modifiers */
+        .pillar-nav-btn.mastered-tab {
+            border-color: #2a9d8f !important;
+            background-color: rgba(42, 157, 143, 0.04);
         }
-        .pillar-tab-btn.mastered-tab .tab-title-lbl {
+        .pillar-nav-btn.mastered-tab .pillar-title-lbl {
             color: #2a9d8f;
             text-decoration: line-through;
-            opacity: 0.6;
+            opacity: 0.7;
+        }
+        .pillar-nav-btn.mastered-tab .pillar-index-lbl { color: #2a9d8f; }
+
+        /* Gated Locked State */
+        .pillar-nav-btn.gated-locked {
+            opacity: 0.4;
+            cursor: not-allowed;
+            background-color: #ebdcd1;
         }
 
-        /* SINGLE UN-OVERLAPPING SIMULATOR CARDBODY
-           By splitting layout contents left-to-right rather than vertically, 
-           elements expand safely without running out of screen bounds.
-        */
+        /* CENTRAL SIDE-BY-SIDE TRANSFORMATION ARENA */
         .unified-arena-card {
             background-color: #ffffff;
             border: 1px solid rgba(61, 35, 20, 0.08);
-            border-bottom-left-radius: 12px;
-            border-bottom-right-radius: 12px;
-            border-top-right-radius: 12px;
+            border-radius: 12px;
             box-shadow: 0 6px 20px rgba(0, 0, 0, 0.02);
-            padding: 2rem 2.2rem;
+            padding: 30px;
             flex-grow: 1;
             min-height: 0;
             display: flex;
             flex-direction: column;
             justify-content: center;
-            position: relative;
-            top: -1px;
-            z-index: 1;
         }
 
-        /* Horizontal Split Presentation Grid Viewports */
         .arena-split-view {
             display: none; 
-            grid-template-columns: 0.95fr 1.05fr;
-            gap: 2.5rem;
+            grid-template-columns: 1fr 1fr; /* 50/50 split system layout */
+            gap: 40px;
             align-items: center;
-            height: 100%;
             width: 100%;
         }
 
@@ -179,76 +141,71 @@
             display: grid;
         }
 
-        /* Left Side: Context Column */
+        /* Left Side Context Column Box */
         .arena-brief-column {
             display: flex;
             flex-direction: column;
-            gap: 1rem;
+            gap: 15px;
         }
 
-        .arena-tag-heading {
-            font-size: 0.85rem;
+        .domain-tag-heading {
+            font-size: 13px;
             font-weight: 700;
             color: #cd674c;
             text-transform: uppercase;
             letter-spacing: 0.5px;
         }
-        .panel-data-green .arena-tag-heading { color: #5c7564; }
 
-        .metric-banner-box {
-            font-size: 1rem;
+        .market-metric-box {
+            font-size: 15px;
             font-weight: 600;
-            color: #5c4b3f;
+            color: #6e5d53;
             background-color: #fdfbf9;
-            padding: 0.75rem 1.2rem;
+            padding: 12px 18px;
             border-left: 4px solid #cd674c;
             border-radius: 4px;
-            line-height: 1.4;
-        }
-        .panel-data-green .metric-banner-box { border-left-color: #7b9583; }
-
-        .challenge-statement-text {
-            font-size: 1.25rem;
-            font-weight: 700;
-            color: #3d2314;
             line-height: 1.45;
         }
 
-        /* Right Side: Choice Options Stack Pipeline */
+        .challenge-statement-text {
+            font-size: 20px;
+            font-weight: 700;
+            color: #3d2314;
+            line-height: 1.4;
+        }
+
+        /* Right Side Choice Input Column Box */
         .arena-input-column {
             display: flex;
             flex-direction: column;
-            gap: 0.8rem;
             width: 100%;
         }
 
-        .choice-interaction-card {
+        /* Targeted Single-Choice Interactive Target Button */
+        .single-action-card {
             background-color: #ffffff;
             border: 1px solid #cbd5e1;
-            padding: 1.1rem 1.3rem;
-            border-radius: 6px;
-            font-size: 0.92rem;
+            padding: 24px 28px;
+            border-radius: 8px;
+            font-size: 16px;
             font-weight: 600;
-            color: #475569;
+            color: #334155;
             cursor: pointer;
             text-align: left;
-            line-height: 1.4;
-            transition: all 0.2s ease;
+            line-height: 1.5;
+            transition: all 0.25s cubic-bezier(0.165, 0.84, 0.44, 1);
             width: 100%;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.01);
         }
 
-        .choice-interaction-card:hover {
-            background-color: #fffdfb;
+        .single-action-card:hover {
+            background-color: #fffbf7;
             border-color: #cd674c;
             color: #cd674c;
-            transform: translateX(3px);
-        }
-        .panel-data-green .choice-interaction-card:hover {
-            border-color: #7b9583;
-            color: #5c7564;
+            transform: translateX(4px);
         }
 
-        /* Stage Clean Success Overlay Screen */
+        /* Mid-Stage Completed View Component Layer */
         .stage-success-overlay {
             display: none;
             flex-direction: column;
@@ -257,42 +214,50 @@
             text-align: center;
             width: 100%;
             height: 100%;
-            gap: 0.8rem;
-        }
-
-        .stage-success-overlay.visible-success {
-            display: flex;
+            gap: 12px;
         }
 
         .success-heading-text {
-            font-size: 1.4rem;
+            font-size: 24px;
             font-weight: 800;
             color: #2a9d8f;
         }
 
-        /* Bottom Fixed Corporate Metrics Row Status bar */
+        /* Grand Total Campaign Clear Screen Overrides */
+        .campaign-clear-panel {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            height: 100%;
+            gap: 15px;
+        }
+
+        /* Bottom Fixed Corporate Metrics Row Status Bar */
         .footer-bar {
             display: flex;
             justify-content: space-between;
             align-items: center;
             flex-shrink: 0;
             border-top: 1px solid rgba(61, 35, 20, 0.08);
-            padding-top: 0.6rem;
+            padding-top: 12px;
+            margin-top: 5px;
         }
 
         .score-tracker-badge {
-            font-size: 0.85rem;
+            font-size: 13px;
             font-weight: 700;
             color: #3d2314;
             background-color: #fff8eb;
-            padding: 0.25rem 0.8rem;
+            padding: 5px 16px;
             border-radius: 20px;
             border: 1px solid #f4a261;
             font-variant-numeric: tabular-nums;
         }
 
         .instruction-tag {
-            font-size: 0.85rem;
+            font-size: 13px;
             color: #a39389;
             font-style: italic;
         }
@@ -301,41 +266,207 @@
 <body>
 
     <div class="slide-wrapper">
+        <!-- Slide Header Title Block -->
         <div class="header-section">
             <h1 class="main-title">Five Pillars of Digital Transformation</h1>
         </div>
 
+        <!-- Master Work Matrix pipeline Area -->
         <div class="workspace-matrix">
-            <div class="tab-navigation-strip">
-                <button class="pillar-tab-btn active-tab" data-id="1" id="tab-0" onclick="switchTab(0)">
-                    <span class="tab-index-lbl">Pillar 1</span>
-                    <span class="tab-title-lbl">Cloud & Infra</span>
+            
+            <!-- Horizontal Folder Tab Ribbon Track -->
+            <div class="ribbon-navigation-track">
+                <!-- Pillar 1 -->
+                <button class="pillar-nav-btn active-tab" id="tab-0" onclick="switchTransformationTab(0)">
+                    <span class="pillar-index-lbl">Pillar 1</span>
+                    <span class="pillar-title-lbl">Cloud & Infra</span>
                 </button>
-                <button class="pillar-tab-btn" data-id="2" id="tab-1" onclick="switchTab(1)">
-                    <span class="tab-index-lbl">Pillar 2</span>
-                    <span class="tab-title-lbl">Data & AI</span>
+                <!-- Pillar 2 -->
+                <button class="pillar-nav-btn gated-locked" id="tab-1" onclick="switchTransformationTab(1)">
+                    <span class="pillar-index-lbl">Pillar 2</span>
+                    <span class="pillar-title-lbl">Data & AI</span>
                 </button>
-                <button class="pillar-tab-btn" data-id="3" id="tab-2" onclick="switchTab(2)">
-                    <span class="tab-index-lbl">Pillar 3</span>
-                    <span class="tab-title-lbl">Automation</span>
+                <!-- Pillar 3 -->
+                <button class="pillar-nav-btn gated-locked" id="tab-2" onclick="switchTransformationTab(2)">
+                    <span class="pillar-index-lbl">Pillar 3</span>
+                    <span class="pillar-title-lbl">Automation</span>
                 </button>
-                <button class="pillar-tab-btn" data-id="4" id="tab-3" onclick="switchTab(3)">
-                    <span class="tab-index-lbl">Pillar 4</span>
-                    <span class="tab-title-lbl">Customer Exp</span>
+                <!-- Pillar 4 -->
+                <button class="pillar-nav-btn gated-locked" id="tab-3" onclick="switchTransformationTab(3)">
+                    <span class="pillar-index-lbl">Pillar 4</span>
+                    <span class="pillar-title-lbl">Customer Exp</span>
                 </button>
-                <button class="pillar-tab-btn" data-id="5" id="tab-4" onclick="switchTab(4)">
-                    <span class="tab-index-lbl">Pillar 5</span>
-                    <span class="tab-title-lbl">Cybersecurity</span>
+                <!-- Pillar 5 -->
+                <button class="pillar-nav-btn gated-locked" id="tab-4" onclick="switchTransformationTab(4)">
+                    <span class="pillar-index-lbl">Pillar 5</span>
+                    <span class="pillar-title-lbl">Cybersecurity</span>
                 </button>
             </div>
 
+            <!-- Central Content Display Terminal Panel Card -->
             <div class="unified-arena-card" id="sandbox-container">
                 
+                <!-- Pillar 1 Scenario Panel View: Cloud & Infra (Broiler Integration) -->
                 <div class="arena-split-view visible-view" id="view-0">
                     <div class="arena-brief-column">
-                        <div class="arena-tag-heading">Transformation Domain 1 of 5</div>
-                        <div class="metric-banner-box">Market Metric: 85% of enterprises adopt cloud-first by 2026</div>
-                        <h2 class="challenge-statement-text">Scenario Challenge: Your organization needs to deploy an expansion stack across multiple geographic nodes. What architecture approach do you choose?</h2>
+                        <div class="domain-tag-heading">Transformation Domain 1 of 5</div>
+                        <div class="market-metric-box">Broiler Integration Parameter: 85% of contract farming nodes migrate to real-time IoT scale telemetry tracking.</div>
+                        <h2 class="challenge-statement-text">Scenario Challenge: Your organization needs to sync remote poultry house clusters across multiple states. What architecture approach do you choose?</h2>
                     </div>
                     <div class="arena-input-column">
-                        <button class="choice-interaction-card" onclick="submitDecision(0, true)">Adopt a distributed cloud-first container model with elastic autos
+                        <button class="single-action-card" onclick="commitPillarOptimization(0)">Adopt a distributed cloud-first container model with elastic auto-scaling infrastructure.</button>
+                    </div>
+                </div>
+
+                <!-- Pillar 2 Scenario Panel View: Data & AI (Fish & Shrimp Feed Plant) -->
+                <div class="arena-split-view" id="view-1">
+                    <div class="arena-brief-column">
+                        <div class="domain-tag-heading">Transformation Domain 2 of 5</div>
+                        <div class="market-metric-box">Feed Plant Parameter: Smart manufacturing utilizes predictive recipe modeling variables to optimize production lines.</div>
+                        <h2 class="challenge-statement-text">Scenario Challenge: The raw material intake line registers moisture shifts in fish and shrimp feed batches. What data mechanism corrects this?</h2>
+                    </div>
+                    <div class="arena-input-column">
+                        <button class="single-action-card" onclick="commitPillarOptimization(1)">Deploy AI predictive diagnostic loops to dynamically adjust mill extrusion temperatures.</button>
+                    </div>
+                </div>
+
+                <!-- Pillar 3 Scenario Panel View: Automation (HR Digital Portal) -->
+                <div class="arena-split-view" id="view-2">
+                    <div class="arena-brief-column">
+                        <div class="domain-tag-heading">Transformation Domain 3 of 5</div>
+                        <div class="market-metric-box">HR Operations Parameter: Transitioning manual workflows to automated employee lifecycle pipelines.</div>
+                        <h2 class="challenge-statement-text">Scenario Challenge: Processing onboarding documentation across multiple global offices manually causes significant bottleneck loops. What strategy is deployed?</h2>
+                    </div>
+                    <div class="arena-input-column">
+                        <button class="single-action-card" onclick="commitPillarOptimization(2)">Implement centralized automated workflow routing engines to dispatch credential provisioning packages.</button>
+                    </div>
+                </div>
+
+                <!-- Pillar 4 Scenario Panel View: Customer Exp (Chicken Retail Shop) -->
+                <div class="arena-split-view" id="view-3">
+                    <div class="arena-brief-column">
+                        <div class="domain-tag-heading">Transformation Domain 4 of 5</div>
+                        <div class="market-metric-box">Retail Point-of-Sale Parameter: Omnichannel order visibility maximizes retail conversion speed metrics.</div>
+                        <h2 class="challenge-statement-text">Scenario Challenge: Walk-in customers at local chicken fresh retail shops experience checkout delays during peak hours. What solution path is launched?</h2>
+                    </div>
+                    <div class="arena-input-column">
+                        <button class="single-action-card" onclick="commitPillarOptimization(3)">Deploy cloud-linked POS cash terminals with automated inventory sync pipelines.</button>
+                    </div>
+                </div>
+
+                <!-- Pillar 5 Scenario Panel View: Cybersecurity (Unified Corporate Network) -->
+                <div class="arena-split-view" id="view-4">
+                    <div class="arena-brief-column">
+                        <div class="domain-tag-heading">Transformation Domain 5 of 5</div>
+                        <div class="market-metric-box">Enterprise Defense Parameter: Implementing absolute identity verification criteria across corporate endpoints.</div>
+                        <h2 class="challenge-statement-text">Scenario Challenge: Sensitive logistical transaction logs must be access-shielded from unauthorized external vector links. What architecture is standard?</h2>
+                    </div>
+                    <div class="arena-input-column">
+                        <button class="single-action-card" onclick="commitPillarOptimization(4)">Establish a zero-trust network infrastructure protocol with hardware-enforced token criteria.</button>
+                    </div>
+                </div>
+
+                <!-- Step Success Overlay Component -->
+                <div class="stage-success-overlay" id="victory-overlay-panel">
+                    <span style="font-size: 40px;">🎯</span>
+                    <p class="success-heading-text">Transformation Pillar Optimized!</p>
+                    <p style="color: #6e5d53; font-size: 14px; margin: 0;">The next tactical blueprint sector has been successfully unlocked on the top navigation tracking ribbon.</p>
+                </div>
+
+                <!-- Grand Campaign Clear Screen Panel -->
+                <div class="stage-success-overlay" id="campaign-clear-panel">
+                    <span style="font-size: 50px;">👑</span>
+                    <h2 style="color: #2a9d8f; font-size: 24px; font-weight: 800; margin: 10px 0 5px 0;">Digital Architecture Synchronized!</h2>
+                    <p style="color: #4a382c; font-size: 14px; font-weight: 600; margin: 0;">All infrastructure matrices have been fully optimized under standard digital transformation criteria.</p>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Progress Tracking Status Footer Bar Row -->
+        <div class="footer-bar">
+            <div class="score-tracker-badge">Pillars Integrated: <span id="progress-val">0</span> / 5</div>
+            <div class="instruction-tag">Click on the active action target button to deploy enterprise architecture blueprints.</div>
+        </div>
+    </div>
+
+    <script>
+        let activeStageIdx = 0;
+        let verifiedPillarsCount = 0;
+        let masteredStateMap = { 0: false, 1: false, 2: false, 3: false, 4: false };
+
+        function loadSimulationStage() {
+            const splitView = document.getElementById(`view-${activeStageIdx}`);
+            const victoryPanel = document.getElementById("victory-overlay-panel");
+            const clearPanel = document.getElementById("campaign-clear-panel");
+
+            if (masteredStateMap[activeStageIdx]) {
+                if (splitView) splitView.classList.remove("visible-view");
+                victoryPanel.style.display = "flex";
+                clearPanel.style.display = "none";
+                return;
+            }
+
+            victoryPanel.style.display = "none";
+            clearPanel.style.display = "none";
+            
+            // Loop through views to hide inactive panels safely
+            for (let i = 0; i < 5; i++) {
+                const targetView = document.getElementById(`view-${i}`);
+                if (targetView) {
+                    if (i === activeStageIdx) {
+                        targetView.classList.add("visible-view");
+                    } else {
+                        targetView.classList.remove("visible-view");
+                    }
+                }
+            }
+        }
+
+        function switchTransformationTab(targetIdx) {
+            const targetedTabBtn = document.getElementById(`tab-${targetIdx}`);
+            
+            // Protect locked workflow blocks from unauthorized click paths
+            if (targetedTabBtn.classList.contains("gated-locked")) return;
+
+            document.getElementById(`tab-${activeStageIdx}`).classList.remove("active-tab");
+            activeStageIdx = targetIdx;
+            targetedTabBtn.classList.add("active-tab");
+
+            const totalMasteryCount = Object.values(masteredStateMap).filter(Boolean).length;
+            if (totalMasteryCount === 5) {
+                document.getElementById(`view-${targetIdx}`).classList.remove("visible-view");
+                document.getElementById("victory-overlay-panel").style.display = "none";
+                document.getElementById("campaign-clear-panel").style.display = "flex";
+                return;
+            }
+
+            loadSimulationStage();
+        }
+
+        function commitPillarOptimization(pillarIdx) {
+            masteredStateMap[pillarIdx] = true;
+            verifiedPillarsCount = Object.values(masteredStateMap).filter(Boolean).length;
+            document.getElementById("progress-val").innerText = verifiedPillarsCount;
+
+            // Update tab ribbon interface configurations natively
+            const activeTab = document.getElementById(`tab-${pillarIdx}`);
+            activeTab.classList.add("mastered-tab");
+
+            // Unlock next subsequent tracking node downstream safely
+            const subsequentTab = document.getElementById(`tab-${pillarIdx + 1}`);
+            if (subsequentTab) {
+                subsequentTab.classList.remove("gated-locked");
+            }
+
+            // Route view displays based on final clear indices variables
+            document.getElementById(`view-${pillarIdx}`).classList.remove("visible-view");
+            if (verifiedPillarsCount === 5) {
+                document.getElementById("campaign-clear-panel").style.display = "flex";
+            } else {
+                document.getElementById("victory-overlay-panel").style.display = "flex";
+            }
+        }
+    </script>
+</body>
+</html>
