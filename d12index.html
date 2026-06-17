@@ -3,28 +3,25 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Communicating Decisions Effectively - Stable Canvas</title>
+    <title>Communicating Decisions Effectively - Interactive Deck</title>
     <style>
-        * {
-            box-sizing: border-box;
+        /* BASE RESET & ANTI-COLLAPSE RESTRAINT ENGINE
+           Locks the parent iframe view to 100% bounds to ensure elements 
+           never drop out or render as a blank container inside Storyline objects.
+        */
+        html, body {
             margin: 0;
             padding: 0;
-            font-family: 'Courier New', Courier, monospace, sans-serif;
-        }
-
-        body {
-            background-color: #0d1117;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            width: 100vw;
-            height: 100vh;
+            width: 100%;
+            height: 100%;
+            background-color: #fdfaf6; /* Classic cream background matching image_a602b1.png */
+            font-family: 'Georgia', 'Times New Roman', Times, serif;
             overflow: hidden;
         }
 
-        /* HARD-LOCKED 16:9 PRESENTATION CANVAS
-           Enforces a strict 1280x720 barrier footprint to completely eliminate 
-           vertical bleed, clashing text boxes, or footer overlap.
+        /* 16:9 ASPECT RATIO CONTAINER CANOPY
+           Locks canvas metrics to standard player slide layout bounds to fully 
+           neutralize lower margin text bleeding or footer item regressions.
         */
         .slide-wrapper {
             width: 100%;
@@ -32,10 +29,8 @@
             max-width: 1280px;
             max-height: 720px;
             aspect-ratio: 16 / 9;
-            padding: 2rem 3rem 1.2rem 3rem;
-            background-color: #161b22;
-            border: 2px solid #30363d;
-            box-shadow: inset 0 0 30px rgba(0, 0, 0, 0.7);
+            padding: 3rem 4rem 2rem 4rem;
+            background-color: #fdfaf6;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
@@ -43,452 +38,241 @@
             position: relative;
         }
 
-        /* Top Branded Gaming HUD Header */
+        /* Slide Top Title Header */
         .header-section {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-bottom: 2px solid #30363d;
-            padding-bottom: 0.5rem;
+            border-bottom: 2px solid #e2dbd5;
+            padding-bottom: 0.8rem;
+            margin-bottom: 1.5rem;
             flex-shrink: 0;
         }
 
         .main-title {
-            font-size: 2.2rem;
-            color: #f0f6fc;
-            font-weight: 800;
+            font-size: 2.8rem;
+            color: #2c3e34; /* Elegant deep charcoal tone */
+            font-weight: 700;
+            margin: 0;
             letter-spacing: -0.5px;
         }
 
-        .hud-status-badge {
-            font-size: 0.95rem;
-            font-weight: 700;
-            color: #58a6ff;
-            background-color: #0d1117;
-            padding: 0.3rem 0.8rem;
-            border: 1px solid #30363d;
-            border-radius: 4px;
-            letter-spacing: 1px;
-        }
-
-        /* Horizontal Timeline Track Pipeline */
-        .timeline-ribbon {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 0.8rem;
-            width: 100%;
-            flex-shrink: 0;
-            margin: 1rem 0;
-        }
-
-        .timeline-node-btn {
-            background-color: #0d1117;
-            border: 1px solid #30363d;
-            border-radius: 6px;
-            padding: 0.65rem 0.85rem;
+        /* HORIZONTAL METRIC STEP RIBBON TRACK
+           Distributes step indicators cleanly across layout lanes.
+        */
+        .ribbon-navigation-track {
             display: flex;
+            justify-content: space-between;
             align-items: center;
-            gap: 0.8rem;
-            cursor: pointer;
-            transition: all 0.2s ease;
+            width: 100%;
+            max-width: 900px;
+            margin: 0 auto 2rem auto;
+            position: relative;
+            flex-shrink: 0;
         }
 
-        .timeline-node-btn:hover {
-            border-color: #8b949e;
-            background-color: #1f242c;
+        /* Connecting timeline vector lines linking the steps together */
+        .ribbon-navigation-track::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background-color: #7b9583; /* Green connector tone */
+            transform: translateY(-50%);
+            z-index: 1;
         }
 
-        .node-avatar-circle {
-            width: 30px;
-            height: 30px;
+        .step-nav-node {
+            width: 70px;
+            height: 70px;
             border-radius: 50%;
-            background-color: #30363d;
-            color: #8b949e;
-            font-size: 1rem;
-            font-weight: 900;
+            background-color: #3d4b41; /* Dark slate-green circle */
+            color: #ffffff;
+            font-size: 1.6rem;
+            font-weight: 700;
             display: flex;
             justify-content: center;
             align-items: center;
-            flex-shrink: 0;
+            cursor: pointer;
+            position: relative;
+            z-index: 5;
+            border: 4px solid #fdfaf6;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+            transition: all 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
 
-        .node-label-stack {
-            display: flex;
-            flex-direction: column;
-            text-align: left;
-            min-width: 0;
+        .step-nav-node:hover {
+            transform: scale(1.1);
+            background-color: #2c3e34;
         }
 
-        .node-title-lbl {
-            font-size: 0.95rem;
-            font-weight: 700;
-            color: #c9d1d9;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
+        /* Active Navigation Tab Highlight States Modifiers */
+        .step-nav-node.active-node {
+            background-color: #ffffff;
+            color: #2c3e34;
+            border-color: #2c3e34;
+            box-shadow: 0 6px 15px rgba(44, 62, 52, 0.2);
         }
 
-        .node-state-tag {
-            font-size: 0.65rem;
-            font-weight: bold;
-            color: #484f58;
-            text-transform: uppercase;
-        }
-
-        /* High-Visibility State Highlight Modifiers */
-        .timeline-node-btn.active-level {
-            background-color: #1f242c;
-            border-color: #58a6ff;
-            box-shadow: 0 0 12px rgba(88, 166, 255, 0.15);
-        }
-        .timeline-node-btn.active-level .node-avatar-circle { background-color: #58a6ff; color: #0d1117; }
-        .timeline-node-btn.active-level .node-title-lbl { color: #ffffff; }
-        .timeline-node-btn.active-level .node-state-tag { color: #58a6ff; }
-
-        .timeline-node-btn.cleared-level {
-            border-color: #2ea043;
-            background-color: rgba(46, 160, 67, 0.05);
-        }
-        .timeline-node-btn.cleared-level .node-avatar-circle { background-color: #2ea043; color: #ffffff; }
-        .timeline-node-btn.cleared-level .node-title-lbl { color: #2ea043; opacity: 0.7; text-decoration: line-through; }
-        .timeline-node-btn.cleared-level .node-state-tag { color: #2ea043; }
-
-        /* THE ANTI-OVERLAP WORKSPACE DESK
-           Uses a responsive vertical workflow with internal scrolling protection.
+        /* CENTRAL STRATEGIC CONSOLE DECK CONTAINER
+           Holds the presentation view steady with zero height collapse risks.
         */
-        .cockpit-arena-card {
-            background-color: #0d1117;
-            border: 1px solid #30363d;
-            border-radius: 8px;
-            padding: 1.5rem;
-            flex-grow: 1;
-            min-height: 0; /* Strict vertical containment shield */
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-        }
-
-        /* Vertically isolated scrollable terminal module */
-        .terminal-scroll-sandbox {
+        .unified-arena-card {
+            background-color: #ffffff;
+            border: 1px solid rgba(61, 35, 20, 0.06);
+            border-radius: 12px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.02);
+            padding: 3rem 4rem;
             flex-grow: 1;
             min-height: 0;
-            overflow-y: auto;
-            padding-right: 0.5rem;
             display: flex;
             flex-direction: column;
-            gap: 1rem;
+            justify-content: center;
         }
 
-        /* Scrollbar styling to maintain dark game theme */
-        .terminal-scroll-sandbox::-webkit-scrollbar {
-            width: 6px;
-        }
-        .terminal-scroll-sandbox::-webkit-scrollbar-track {
-            background: #0d1117;
-        }
-        .terminal-scroll-sandbox::-webkit-scrollbar-thumb {
-            background: #30363d;
-            border-radius: 3px;
-        }
-
-        .blueprint-header-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-bottom: 1px dashed #30363d;
-            padding-bottom: 0.4rem;
-        }
-
-        .blueprint-tag-lbl {
-            font-size: 0.8rem;
-            font-weight: bold;
-            color: #58a6ff;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        .blueprint-source-brief {
-            font-size: 1rem;
-            color: #8b949e;
-            line-height: 1.4;
-            background-color: #161b22;
-            padding: 0.6rem 1rem;
-            border-left: 4px solid #58a6ff;
-            border-radius: 4px;
-        }
-
-        .blueprint-challenge-text {
-            font-size: 1.15rem;
-            font-weight: 700;
-            color: #f0f6fc;
-            line-height: 1.45;
-        }
-
-        /* Stacking Options Pipeline Container */
-        .choices-stack-pipeline {
-            display: flex;
-            flex-direction: column;
-            gap: 0.5rem;
-            margin-top: auto;
-            padding-top: 1rem;
-            flex-shrink: 0;
-        }
-
-        .choice-btn-node {
-            background-color: #161b22;
-            border: 1px solid #30363d;
-            padding: 0.85rem 1.2rem;
-            border-radius: 6px;
-            font-size: 0.9rem;
-            font-weight: 600;
-            color: #c9d1d9;
-            cursor: pointer;
-            text-align: left;
-            line-height: 1.4;
-            transition: all 0.2s ease;
-            width: 100%;
-        }
-
-        .choice-btn-node:hover {
-            background-color: #21262d;
-            border-color: #58a6ff;
-            color: #ffffff;
-            transform: translateX(3px);
-        }
-
-        /* Isolated Mid-Stage Complete Screen Panel */
-        .stage-victory-overlay {
+        /* Inner Content Reveal Presentation Panels */
+        .reveal-data-panel {
             display: none;
             flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-            width: 100%;
-            height: 100%;
-            gap: 0.6rem;
+            gap: 1.2rem;
+            animation: panelFadeIn 0.35s cubic-bezier(0.165, 0.84, 0.44, 1) forwards;
+            max-height: 320px;
+            overflow-y: auto;
+            padding-right: 0.5rem;
         }
 
-        .victory-heading-lbl {
-            font-size: 1.3rem;
-            font-weight: 800;
-            color: #2ea043;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        /* Lower Progress Utilities Footer Bar Row */
-        .footer-bar {
+        .reveal-data-panel.panel-visible {
             display: flex;
-            justify-content: flex-end;
-            align-items: center;
+        }
+
+        /* Clean system scroll tracks for inner panels */
+        .reveal-data-panel::-webkit-scrollbar { width: 4px; }
+        .reveal-data-panel::-webkit-scrollbar-thumb { background: #e2dbd5; border-radius: 2px; }
+
+        @keyframes panelFadeIn {
+            from { opacity: 0; transform: translateY(8px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .panel-header-badge {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            font-size: 0.85rem;
+            font-weight: 800;
+            color: #7b9583;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+        }
+
+        .panel-heading-text {
+            font-size: 2.4rem;
+            font-weight: 700;
+            color: #2c3e34;
+            line-height: 1.15;
+            margin: 0;
+        }
+
+        .panel-description-text {
+            font-size: 1.4rem;
+            color: #4a382c;
+            line-height: 1.6;
+            background-color: #fdfbf9;
+            padding: 1.5rem 2rem;
+            border-left: 5px solid #2c3e34;
+            border-radius: 4px;
+            margin: 0;
+            font-weight: 500;
+        }
+
+        /* Bottom Fixed Structural Prompt Bar Strip Row */
+        .footer-bar {
+            border-top: 1px solid #e2dbd5;
+            padding-top: 0.8rem;
+            margin-top: 1rem;
             flex-shrink: 0;
-            border-top: 1px solid #30363d;
-            padding-top: 0.6rem;
-            margin-top: 0.4rem;
         }
 
         .instruction-tag {
-            font-size: 0.82rem;
-            color: #484f58;
+            font-family: 'Segoe UI', Arial, sans-serif;
+            font-size: 0.88rem;
+            color: #a39389;
             font-style: italic;
-            letter-spacing: 0.5px;
+            text-align: right;
+            display: block;
         }
     </style>
 </head>
 <body>
 
     <div class="slide-wrapper">
-        <!-- Game Header -->
+        <!-- Interactive Frame Main Header -->
         <div class="header-section">
             <h1 class="main-title">Communicating Decisions Effectively</h1>
-            <div class="hud-status-badge">DECK SYNC: <span id="progress-val">0</span> / 4</div>
         </div>
 
-        <!-- Horizontal Ribbon Progress Track -->
-        <div class="timeline-ribbon">
-            <!-- Level 1 -->
-            <button class="timeline-node-btn active-level" id="tab-0" onclick="switchMissionLevel(0)">
-                <div class="node-avatar-circle">1</div>
-                <div class="node-label-stack">
-                    <span class="node-title-lbl">State the Decision</span>
-                    <span class="node-state-tag" id="badge-0">Active</span>
-                </div>
-            </button>
-            <!-- Level 2 -->
-            <button class="timeline-node-btn" id="tab-1" onclick="switchMissionLevel(1)">
-                <div class="node-avatar-circle">2</div>
-                <div class="node-label-stack">
-                    <span class="node-title-lbl">Share the Why</span>
-                    <span class="node-state-tag" id="badge-1">Ready</span>
-                </div>
-            </button>
-            <!-- Level 3 -->
-            <button class="timeline-node-btn" id="tab-2" onclick="switchMissionLevel(2)">
-                <div class="node-avatar-circle">3</div>
-                <div class="node-label-stack">
-                    <span class="node-title-lbl">Acknowledge Trade-offs</span>
-                    <span class="node-state-tag" id="badge-2">Ready</span>
-                </div>
-            </button>
-            <!-- Level 4 -->
-            <button class="timeline-node-btn" id="tab-3" onclick="switchMissionLevel(3)">
-                <div class="node-avatar-circle">4</div>
-                <div class="node-label-stack">
-                    <span class="node-title-lbl">Invite Questions</span>
-                    <span class="node-state-tag" id="badge-3">Ready</span>
-                </div>
-            </button>
+        <!-- Horizontal Step Progress Badge Ribbon -->
+        <div class="ribbon-navigation-track">
+            <div class="step-nav-node active-node" id="node-0" onclick="revealDecisionStage(0)">1</div>
+            <div class="step-nav-node" id="node-1" onclick="revealDecisionStage(1)">2</div>
+            <div class="step-nav-node" id="node-2" onclick="revealDecisionStage(2)">3</div>
+            <div class="step-nav-node" id="node-3" onclick="revealDecisionStage(3)">4</div>
         </div>
 
-        <!-- Balanced Arena Card Box -->
-        <div class="cockpit-arena-card" id="sandbox-card-window">
+        <!-- Master Presentation Deck Display Terminal Panel Card -->
+        <div class="unified-arena-card" id="sandbox-container">
             
-            <!-- Protected Stack Sandbox Terminal (Separates text from choices cleanly) -->
-            <div class="terminal-scroll-sandbox" id="interactive-view-block">
-                <div class="blueprint-header-row">
-                    <div class="blueprint-tag-lbl" id="arena-stage-title">Tactical Phase 01</div>
-                </div>
-                
-                <div class="blueprint-source-brief" id="arena-brief-text">
-                    Strategic Blueprint: Lead with the conclusion — don't bury it in context
-                </div>
-                
-                <h2 class="blueprint-challenge-text" id="arena-challenge-text">
-                    Mission Dilemma: You must announce an emergency platform system switchover window across all division workspaces. What is your opening execution play?
-                </h2>
+            <!-- Panel View 1: State the Decision -->
+            <div class="reveal-data-panel panel-visible" id="view-panel-0">
+                <span class="panel-header-badge">Step One Framework Criteria</span>
+                <h2 class="panel-heading-text">State the Decision</h2>
+                <p class="panel-description-text">Lead with the conclusion — don't bury it in context.</p>
             </div>
 
-            <!-- Choices Stack (Anchored safely at the bottom, separate from scenario height expansion) -->
-            <div class="choices-stack-pipeline" id="arena-options-container">
-                <!-- Loaded dynamically via JavaScript loop -->
+            <!-- Panel View 2: Share the Why -->
+            <div class="reveal-data-panel" id="view-panel-1">
+                <span class="panel-header-badge">Step Two Framework Criteria</span>
+                <h2 class="panel-heading-text">Share the Why</h2>
+                <p class="panel-description-text">Explain the key factors that drove your choice.</p>
             </div>
 
-            <!-- In-Card Phase Cleared Success Overlay Component -->
-            <div class="stage-success-overlay" id="victory-overlay-panel">
-                <span style="font-size: 2.2rem;">⚡ DATA TRANSMISSION ALIGNED</span>
-                <p class="victory-heading-lbl">Pattern Resolved!</p>
-                <p style="color: #8b949e; font-size: 0.9rem;">Select an uncompleted mission index node from the top timeline ribbons track to sync the next data sector.</p>
+            <!-- Panel View 3: Acknowledge Trade-offs -->
+            <div class="reveal-data-panel" id="view-panel-2">
+                <span class="panel-header-badge">Step Three Framework Criteria</span>
+                <h2 class="panel-heading-text">Acknowledge Trade-offs</h2>
+                <p class="panel-description-text">Name what you're giving up — it shows thoughtfulness.</p>
+            </div>
+
+            <!-- Panel View 4: Invite Questions -->
+            <div class="reveal-data-panel" id="view-panel-3">
+                <span class="panel-header-badge">Step Four Framework Criteria</span>
+                <h2 class="panel-heading-text">Invite Questions</h2>
+                <p class="panel-description-text">Create space for concerns without reopening the decision.</p>
             </div>
 
         </div>
 
         <!-- Lower Prompting Guideline Row Strip -->
         <div class="footer-bar">
-            <div class="instruction-tag">Select a timeline phase from the ribbon header track, analyze the tactical blueprint, and choose the correct option vector.</div>
+            <span class="instruction-tag">Select individual numbered process nodes above to cycle between core communication principles.</span>
         </div>
     </div>
 
     <script>
-        // Data matrix compiled exactly from textbook variables in image_a16ee5.png
-        const communicationSimulationMatrix = [
-            {
-                brief: "Strategic Blueprint: Lead with the conclusion — don't bury it in context",
-                question: "Mission Dilemma: You must announce an emergency platform system switchover window across all division workspaces. What is your opening execution play?",
-                choices: [
-                    { text: "Launch the email broadcast with a bold, upfront title stating the exact downtime window parameters immediately.", correct: true },
-                    { text: "Write a historical summary detailing cloud microservice metrics before introducing downtime variables on page 3.", correct: false }
-                ]
-            },
-            {
-                brief: "Strategic Blueprint: Explain the key factors that drove your choice",
-                question: "Mission Dilemma: The engineering branch questions why you prioritized backend engine optimization over minor cosmetic layout corrections. How do you respond?",
-                choices: [
-                    { text: "State that parameters were decided by executive managers and cannot be modified.", correct: false },
-                    { text: "Present metrics tracking data demonstrating that backend optimization saves 12 hours of weekly operational debt loops.", correct: true }
-                ]
-            },
-            {
-                brief: "Strategic Blueprint: Name what you're giving up — it shows thoughtfulness",
-                question: "Mission Dilemma: Launching an automated resource assignment script simplifies tracking but cuts manual user formatting preferences. How do you guide team alignment?",
-                choices: [
-                    { text: "Acknowledge that custom manual layout options drop, but outline that structural pipeline processing errors drop as well.", correct: true },
-                    { text: "Assure stakeholders that the software transition behaves identically across all workflows with zero behavioral shifts.", correct: false }
-                ]
-            },
-            {
-                brief: "Strategic Blueprint: Create space for concerns without reopening the decision",
-                question: "Mission Dilemma: Following a software deployment announcement, an auxiliary team requests a complete pause to re-vote on strategy metrics. What is your push?",
-                choices: [
-                    { text: "Halt all rollout sprint tracks immediately to schedule another round of cross-department scoping workshops.", correct: false },
-                    { text: "Confirm that the deployment trajectory remains locked down, but host an explicit feedback clinic to optimize onboarding.", correct: true }
-                ]
-            }
-        ];
+        let sequentialActiveIdx = 0;
 
-        let activeLevelIdx = 0;
-        let masteredStateMap = { 0: false, 1: false, 2: false, 3: false };
+        function revealDecisionStage(targetIdx) {
+            if (targetIdx === sequentialActiveIdx) return;
 
-        function loadSimulationStage() {
-            const data = communicationSimulationMatrix[activeLevelIdx];
-            const scrollSandbox = document.getElementById("interactive-view-block");
-            const victoryPanel = document.getElementById("victory-overlay-panel");
-            const optionsContainer = document.getElementById("arena-options-container");
-            
-            if (masteredStateMap[activeLevelIdx]) {
-                scrollSandbox.style.display = "none";
-                optionsContainer.style.display = "none";
-                victoryPanel.style.display = "flex";
-                return;
-            }
+            // Clear current highlight classes from the previous step indicator node
+            document.getElementById(`node-${sequentialActiveIdx}`).classList.remove("active-node");
+            // Turn off visibility for the previous layout brief text panel
+            document.getElementById(`view-panel-${sequentialActiveIdx}`).classList.remove("panel-visible");
 
-            scrollSandbox.style.display = "flex";
-            optionsContainer.style.display = "flex";
-            victoryPanel.style.display = "none";
+            // Assign newly targeted layout index
+            sequentialActiveIdx = targetIdx;
 
-            document.getElementById("arena-stage-title").innerText = `Tactical Phase 0${activeLevelIdx + 1}`;
-            document.getElementById("arena-brief-text").innerText = data.brief;
-            document.getElementById("arena-challenge-text").innerText = data.question;
-
-            // Render option buttons securely inside their distinct lower container
-            optionsContainer.innerHTML = "";
-            data.choices.forEach(choice => {
-                const btn = document.createElement("button");
-                btn.className = "choice-btn-node";
-                btn.innerText = choice.text;
-                btn.onclick = () => evaluateChoiceInput(choice.correct);
-                optionsContainer.appendChild(btn);
-            });
-
-            // Auto reset terminal scroll baseline to the top upon changing tabs
-            scrollSandbox.scrollTop = 0;
+            // Activate and display the selected framework step
+            document.getElementById(`node-${sequentialActiveIdx}`).classList.add("active-node");
+            document.getElementById(`view-panel-${sequentialActiveIdx}`).classList.add("panel-visible");
         }
-
-        function switchMissionLevel(targetIdx) {
-            if (targetIdx === activeLevelIdx) return;
-
-            document.getElementById(`tab-${activeLevelIdx}`).classList.remove("active-level");
-            
-            activeLevelIdx = targetIdx;
-            document.getElementById(`tab-${activeLevelIdx}`).classList.add("active-level");
-
-            loadSimulationStage();
-        }
-
-        function evaluateChoiceInput(isCorrectChoicePath) {
-            if (isCorrectChoicePath) {
-                masteredStateMap[activeLevelIdx] = true;
-
-                const activeTabBtn = document.getElementById(`tab-${activeLevelIdx}`);
-                activeTabBtn.classList.add("cleared-level");
-                document.getElementById(`badge-${activeLevelIdx}`).innerText = "Synced";
-
-                recalculateScoreMetrics();
-                loadSimulationStage(); 
-            } else {
-                // Flash console border red to report a compliance deviation match error
-                const windowBoard = document.getElementById("sandbox-card-window");
-                windowBoard.style.borderColor = "#f85149";
-                setTimeout(() => windowBoard.style.borderColor = "#30363d", 350);
-            }
-        }
-
-        function recalculateScoreMetrics() {
-            const currentTotalScore = Object.values(masteredStateMap).filter(Boolean).length;
-            document.getElementById("progress-val").innerText = currentTotalScore;
-        }
-
-        // Initialize engine layout maps
-        loadSimulationStage();
     </script>
 </body>
 </html>
