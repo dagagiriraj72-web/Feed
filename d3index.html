@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cognitive Biases Dashboard</title>
+    <title>Cognitive Biases - Interactive 16:9 Slide</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -12,59 +12,66 @@
         
         <header class="slide-header">
             <h1 class="main-title">Cognitive Biases That Derail Decisions</h1>
-            <span class="group-badge">IB GROUP</span>
+            <p class="subtitle">Identify internal psychological traps to optimize objective leadership outcomes.</p>
         </header>
 
-        <div class="dashboard-grid">
+        <div class="cards-grid">
             
-            <nav class="sidebar-tabs">
-                
-                <div class="tab-card active" data-bias="anchoring">
-                    <div class="icon-circle anchor-icon">⚓</div>
-                    <div class="tab-info">
-                        <h3>Anchoring</h3>
-                        <span class="status-label">ACTIVE CHALLENGE</span>
+            <div class="flip-card" onclick="this.classList.toggle('flipped')">
+                <div class="card-inner">
+                    <div class="card-front">
+                        <div class="icon-circle">⚓</div>
+                        <h2>Anchoring</h2>
+                        <p class="preview-text">The first piece of information we encounter disproportionately shapes our judgment, even if it's irrelevant.</p>
+                        <span class="flip-hint">Click to Flip</span>
+                    </div>
+                    <div class="card-back anchoring-back">
+                        <h3>Strategy: Anchor Shifting</h3>
+                        <p class="strategy-text">Purposely seek alternative baselines and gather completely independent secondary data streams before allowing your team to anchor on an initial projection or quote.</p>
+                        <span class="return-hint">Click to Flip Back</span>
                     </div>
                 </div>
+            </div>
 
-                <div class="tab-card" data-bias="confirmation">
-                    <div class="icon-circle check-icon">✓</div>
-                    <div class="tab-info">
-                        <h3>Confirmation Bias</h3>
-                        <span class="status-label">PENDING</span>
+            <div class="flip-card" onclick="this.classList.toggle('flipped')">
+                <div class="card-inner">
+                    <div class="card-front">
+                        <div class="icon-circle">✓</div>
+                        <h2>Confirmation Bias</h2>
+                        <p class="preview-text">We seek information that supports what we already believe, ignoring evidence to the contrary.</p>
+                        <span class="flip-hint">Click to Flip</span>
+                    </div>
+                    <div class="card-back confirmation-back">
+                        <h3>Strategy: Devil's Advocate</h3>
+                        <p class="strategy-text">Appoint a specific team member to act as a formal challenger. Task them explicitly with accumulating factual proof that directly disproves your preferred choice trajectory.</p>
+                        <span class="return-hint">Click to Flip Back</span>
                     </div>
                 </div>
+            </div>
 
-                <div class="tab-card" data-bias="availability">
-                    <div class="icon-circle star-icon">★</div>
-                    <div class="tab-info">
-                        <h3>Availability Bias</h3>
-                        <span class="status-label">PENDING</span>
+            <div class="flip-card" onclick="this.classList.toggle('flipped')">
+                <div class="card-inner">
+                    <div class="card-front">
+                        <div class="icon-circle">★</div>
+                        <h2>Availability Bias</h2>
+                        <p class="preview-text">Recent or vivid events dominate our thinking, making rare risks feel common and likely.</p>
+                        <span class="flip-hint">Click to Flip</span>
+                    </div>
+                    <div class="card-back availability-back">
+                        <h3>Strategy: Macro Auditing</h3>
+                        <p class="strategy-text">Force decision-making to rely entirely on aggregate, historical rolling data points rather than highly memorable anecdotes or localized system crises.</p>
+                        <span class="return-hint">Click to Flip Back</span>
                     </div>
                 </div>
-
-            </nav>
-
-            <main class="display-panel" id="displayPanel">
-                <div class="panel-content">
-                    <h2 id="panelTitle">Anchoring Bias</h2>
-                    <span class="challenge-tag">Scenario Challenge</span>
-                    <p id="panelDescription">The team relies too heavily on the first piece of information encountered when making decisions, even if it is completely irrelevant to the actual market reality.</p>
-                    
-                    <div class="action-box">
-                        <strong>Mitigation Strategy:</strong> Seek out objective, baseline data points from independent secondary sources before opening team deliberations.
-                    </div>
-                </div>
-            </main>
+            </div>
 
         </div>
 
         <footer class="slide-footer">
-            <p>Click on individual roadmap goals across any week section to build your initiative tracking logs.</p>
+            <p>Click on any individual cognitive block profile above to pivot to its associated workplace counter-mitigation blueprint strategy.</p>
         </footer>
 
     </div>
 
-    <script src="script.js"></script>
 </body>
 </html>
