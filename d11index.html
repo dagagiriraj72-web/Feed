@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Leading with Decisiveness Dashboard</title>
+    <title>Leading with Decisiveness - Interactive Slide</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -12,72 +12,107 @@
         
         <header class="slide-header">
             <h1 class="main-title">Leading with Decisiveness</h1>
+            <p class="subtitle">Master the four pillars of high-velocity organizational leadership.</p>
         </header>
 
-        <nav class="ribbon-menu">
-            <div class="tab-item pending">
-                <span class="icon">▶</span>
-                <div class="tab-text">
-                    <h3>Communicate Clearly</h3>
-                    <span class="status">PENDING</span>
+        <div class="competency-grid">
+            
+            <div class="competency-card active" data-target="content-communicate">
+                <div class="card-top">
+                    <div class="icon-circle">▶</div>
+                    <h2>Communicate Clearly</h2>
                 </div>
-            </div>
-            <div class="tab-item pending">
-                <span class="icon">🏳</span>
-                <div class="tab-text">
-                    <h3>Own the Outcome</h3>
-                    <span class="status">PENDING</span>
-                </div>
-            </div>
-            <div class="tab-item pending">
-                <span class="icon">↔</span>
-                <div class="tab-text">
-                    <h3>Invite Input, Not Votes</h3>
-                    <span class="status">PENDING</span>
-                </div>
-            </div>
-            <div class="tab-item active">
-                <span class="icon">↻</span>
-                <div class="tab-text">
-                    <h3>Course-Correct Publicly</h3>
-                    <span class="status">ACTIVE</span>
-                </div>
-            </div>
-        </nav>
-
-        <main class="scenario-panel">
-            <div class="scenario-meta">
-                <span class="meta-tag">COMMAND SCENARIO 4 OF 4</span>
-                <span class="tracker-badge">Traits Mastered: 0 / 4</span>
+                <p class="card-preview-text">State the decision, the reasoning, and the expected outcome.</p>
+                <span class="action-hint">Click to Review Framework</span>
             </div>
 
-            <div class="panel-grid">
-                <div class="challenge-side">
-                    <div class="quote-callout">
-                        <p>When a decision needs changing, say so openly. This normalizes adaptive leadership.</p>
+            <div class="competency-card" data-target="content-own">
+                <div class="card-top">
+                    <div class="icon-circle">🏳</div>
+                    <h2>Own the Outcome</h2>
+                </div>
+                <p class="card-preview-text">Take responsibility regardless of results to build authentic trust.</p>
+                <span class="action-hint">Click to Review Framework</span>
+            </div>
+
+            <div class="competency-card" data-target="content-invite">
+                <div class="card-top">
+                    <div class="icon-circle">↔</div>
+                    <h2>Invite Input, Not Votes</h2>
+                </div>
+                <p class="card-preview-text">Seek diverse perspectives without creating committee paralysis.</p>
+                <span class="action-hint">Click to Review Framework</span>
+            </div>
+
+            <div class="competency-card" data-target="content-correct">
+                <div class="card-top">
+                    <div class="icon-circle">↻</div>
+                    <h2>Course-Correct Publicly</h2>
+                </div>
+                <p class="card-preview-text">When decisions need changing, say so openly to normalize agility.</p>
+                <span class="action-hint">Click to Review Framework</span>
+            </div>
+
+        </div>
+
+        <main class="details-panel">
+            
+            <div class="vault-content active" id="content-communicate">
+                <div class="pane-split">
+                    <div class="theory-side">
+                        <h3>The Core Principle</h3>
+                        <p>Ambiguity breeds confusion, anxiety, and ultimate execution failure. Decisive leaders strip away nuance when presenting a finalized operational direction.</p>
                     </div>
-                    <div class="challenge-text">
-                        <h2>Scenario Challenge:</h2>
-                        <p>Live performance logs indicate that a previously selected transport lane choice increases broiler mortality by 3%. What route do you execute?</p>
+                    <div class="execution-side">
+                        <div class="exec-box do"><strong>The Action:</strong> Outline the "Why" immediately alongside the "What" to capture team buy-in.</div>
+                        <div class="exec-box dont"><strong>The Trap:</strong> Leaving room for interpretation to avoid initial pushback.</div>
                     </div>
                 </div>
+            </div>
 
-                <div class="options-side">
-                    <button class="option-card correct">
-                        <p>Acknowledge the routing deviation openly during the morning briefing and switch lanes immediately.</p>
-                    </button>
-                    <button class="option-card">
-                        <p>Gradually alter shipment distribution volumes over two weeks to hide preceding routing misalignments.</p>
-                    </button>
+            <div class="vault-content" id="content-own">
+                <div class="pane-split">
+                    <div class="theory-side">
+                        <h3>The Core Principle</h3>
+                        <p>Taking total responsibility regardless of results builds absolute credibility and psychological safety with your operational teams.</p>
+                    </div>
+                    <div class="execution-side">
+                        <div class="exec-box do"><strong>The Action:</strong> Publicly shield your team from external fallout if a calculated risk fails.</div>
+                        <div class="exec-box dont"><strong>The Trap:</strong> Deflecting blame down the chain of command to protect your personal record.</div>
+                    </div>
                 </div>
             </div>
+
+            <div class="vault-content" id="content-invite">
+                <div class="pane-split">
+                    <div class="theory-side">
+                        <h3>The Core Principle</h3>
+                        <p>Gathering data points is collaborative; making the final call is singular. Do not transform every critical operational junction into a standard consensus vote.</p>
+                    </div>
+                    <div class="execution-side">
+                        <div class="exec-box do"><strong>The Action:</strong> Set explicit expectations that you are listening to input, but hold the final decision authority.</div>
+                        <div class="exec-box dont"><strong>The Trap:</strong> Defaulting to a majority vote just to share the burden of accountability.</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="vault-content" id="content-correct">
+                <div class="pane-split">
+                    <div class="theory-side">
+                        <h3>The Core Principle</h3>
+                        <p>Sticking to a broken strategy out of pride is organizational suicide. Admitting a mistake openly normalizes adaptive, high-velocity leadership paradigms.</p>
+                    </div>
+                    <div class="execution-side">
+                        <div class="exec-box do"><strong>The Action:</strong> State the change cleanly: "New data indicates our previous direction is suboptimal; we are shifting lanes today."</div>
+                        <div class="exec-box dont"><strong>The Trap:</strong> Sneaking updates into workflows quietly to pretend the original plan was perfect.</div>
+                    </div>
+                </div>
+            </div>
+
         </main>
-
-        <footer class="slide-footer">
-            <p>Isolate leadership competencies across the ribbon menu above to resolve scenario dilemmas.</p>
-        </footer>
 
     </div>
 
+    <script src="script.js"></script>
 </body>
 </html>
