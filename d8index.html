@@ -3,322 +3,40 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Two-Way Door Decisions - Fully Functional Hangar</title>
-    <style>
-        /* FORCE CONTAINERS TO FILL WINDOW TO PREVENT COLLAPSE IN STORYLINE IFRAMES */
-        html, body {
-            margin: 0;
-            padding: 0;
-            width: 100%;
-            height: 100%;
-            background-color: #fcf8f2;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            overflow: hidden;
-        }
-
-        /* HARD-LOCKED 16:9 VIEWPORT 
-           Locks bounds strictly at 1280x720 to protect elements from text box 
-           clashing, vertical margin bleed, or layout distortions.
-        */
-        .slide-wrapper {
-            width: 100%;
-            height: 100%;
-            max-width: 1280px;
-            max-height: 720px;
-            aspect-ratio: 16 / 9;
-            padding: 2.2rem 3.5rem 1.5rem 3.5rem;
-            background-color: #fdfaf6;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            box-sizing: border-box;
-            position: relative;
-        }
-
-        /* Title Header */
-        .header-section {
-            margin-bottom: 0.5rem;
-            flex-shrink: 0;
-        }
-
-        .main-title {
-            font-size: 2.6rem;
-            color: #3d2314;
-            font-weight: 800;
-            line-height: 1.1;
-            position: relative;
-            padding-bottom: 0.4rem;
-        }
-
-        .main-title::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 140px;
-            height: 4px;
-            background-color: #4a584d;
-            border-radius: 2px;
-        }
-
-        /* TWIN-COLUMN COCKPIT GRID MATRIX
-           Gives both bays equal horizontal clearance so text payloads never overlap.
-        */
-        .hangar-deck-workspace {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 3rem;
-            flex-grow: 1;
-            min-height: 0; /* Dynamic height buffer safety guardrail */
-            margin: 1.5rem 0;
-            align-items: stretch;
-        }
-
-        /* Interactive Hangar Frame Box */
-        .door-bay-frame {
-            background-color: #f1ede9;
-            border-radius: 12px;
-            border: 1px solid rgba(61, 35, 20, 0.06);
-            position: relative;
-            perspective: 1200px; /* Triggers hardware-accelerated 3D swinging depths */
-            cursor: pointer;
-            height: 100%;
-        }
-
-        /* BASE TEXT DATA TERMINALS (Hidden behind covers natively) */
-        .internal-data-terminal {
-            padding: 2rem 2.2rem;
-            display: flex;
-            flex-direction: column;
-            gap: 1rem;
-            height: 100%;
-            justify-content: center;
-            opacity: 0;
-            transform: scale(0.95);
-            transition: opacity 0.4s ease, transform 0.4s ease;
-            pointer-events: none; /* Disables click hijacking while covered */
-        }
-
-        .terminal-heading {
-            font-size: 1.6rem;
-            font-weight: 800;
-            color: #3d2314;
-            border-bottom: 2px solid rgba(61, 35, 20, 0.08);
-            padding-bottom: 0.4rem;
-            margin: 0;
-        }
-
-        .terminal-bullet-list {
-            list-style: none;
-            display: flex;
-            flex-direction: column;
-            gap: 0.6rem;
-            margin: 0;
-            padding: 0;
-        }
-
-        .terminal-bullet-node {
-            font-size: 1.05rem;
-            color: #4a382c;
-            font-weight: 600;
-            line-height: 1.45;
-            position: relative;
-            padding-left: 1.4rem;
-        }
-
-        .terminal-bullet-node::before {
-            content: "•";
-            color: #4a584d;
-            font-weight: bold;
-            font-size: 1.4rem;
-            position: absolute;
-            left: 2px;
-            top: -2px;
-        }
-
-        /* 3D MECHANICAL OVERLAY COVER SHUTTERS (THE DOORS) */
-        .mechanical-door-shutter {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            color: #ffffff;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            padding: 2rem;
-            z-index: 10;
-            box-shadow: 0 8px 25px rgba(0,0,0,0.05);
-            transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.4s ease, filter 0.2s ease;
-            backface-visibility: hidden;
-            box-sizing: border-box;
-        }
-
-        /* Symmetrical Swing Hinge Roots */
-        #left-door-shutter {
-            border-radius: 11px;
-            transform-origin: left center; /* Hinges One-Way door left */
-            background-image: linear-gradient(135deg, #3a443d 0%, #2f3832 100%);
-            border-right: 3px solid rgba(255,255,255,0.08);
-        }
-
-        #right-door-shutter {
-            border-radius: 11px;
-            transform-origin: right center; /* Hinges Two-Way door right */
-            background-image: linear-gradient(225deg, #4c5a4f 0%, #3a443d 100%);
-            border-left: 3px solid rgba(255,255,255,0.08);
-        }
-
-        .door-bay-frame:hover .mechanical-door-shutter {
-            filter: brightness(1.08);
-        }
-
-        .door-graphics-icon {
-            font-size: 3.2rem;
-            margin-bottom: 0.5rem;
-        }
-
-        .door-shutter-title {
-            font-size: 1.8rem;
-            font-weight: 800;
-            letter-spacing: 0.5px;
-            margin-bottom: 0.4rem;
-            color: #ffffff;
-        }
-
-        .door-shutter-prompt {
-            font-size: 0.85rem;
-            font-weight: 700;
-            color: #a9bfae;
-            text-transform: uppercase;
-            letter-spacing: 1.5px;
-            border: 1px solid rgba(255,255,255,0.2);
-            padding: 0.25rem 0.8rem;
-            border-radius: 4px;
-            background-color: rgba(0,0,0,0.1);
-        }
-
-        /* INDEPENDENT SYMMETRICAL MECHANICAL SWING TRIGGERS */
-        .door-bay-frame.left-open #left-door-shutter {
-            transform: rotateY(-115deg);
-            opacity: 0;
-        }
-
-        .door-bay-frame.right-open #right-door-shutter {
-            transform: rotateY(115deg);
-            opacity: 0;
-        }
-
-        .door-bay-frame.left-open #left-terminal,
-        .door-bay-frame.right-open #right-terminal {
-            opacity: 1;
-            transform: scale(1);
-            pointer-events: auto; /* Restores copy/highlight tracking functionality once open */
-        }
-
-        /* Shared Baseline Static Context Box */
-        .insight-banner-row {
-            background-color: #fff8eb;
-            border: 1px solid #f4a261;
-            border-left: 4px solid #f4a261;
-            padding: 0.6rem 1.2rem;
-            border-radius: 6px;
-            font-size: 0.92rem;
-            color: #3d2314;
-            line-height: 1.4;
-            flex-shrink: 0;
-            margin-top: 0.4rem;
-        }
-
-        /* Bottom Guidance Strip Line */
-        .footer-bar {
-            display: flex;
-            justify-content: flex-end;
-            align-items: center;
-            flex-shrink: 0;
-            margin-top: 0.2rem;
-        }
-
-        .instruction-tag {
-            font-size: 0.85rem;
-            color: #a39389;
-            font-style: italic;
-        }
-    </style>
+    <title>Decision Framework</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-    <div class="slide-wrapper">
-        <div class="header-section">
-            <h1 class="main-title">Two-Way Door Decisions</h1>
+    <main class="container">
+        <h1 class="main-title">Two-Way Door Decisions</h1>
+        
+        <div class="card-wrapper">
+            <section class="card">
+                <h2>One-Way Doors</h2>
+                <hr class="divider">
+                <ul class="list">
+                    <li>Irreversible or extremely costly to undo</li>
+                    <li>Require thorough analysis and deliberation</li>
+                    <li><strong>Examples:</strong> selling a business, major relocations</li>
+                    <li>Deserve more time and consultation</li>
+                    <li class="footer-text">About 10% of your decisions</li>
+                </ul>
+            </section>
+
+            <section class="card">
+                <h2>Two-Way Doors</h2>
+                <hr class="divider">
+                <ul class="list">
+                    <li>Easily reversible with low cost</li>
+                    <li>Should be made quickly and iterated on</li>
+                    <li><strong>Examples:</strong> testing a new tool, trying a process</li>
+                    <li>Overthinking these wastes time and energy</li>
+                    <li class="footer-text">About 90% of your decisions</li>
+                </ul>
+            </section>
         </div>
+    </main>
 
-        <div class="hangar-deck-workspace">
-            
-            <div class="door-bay-frame" id="left-bay-node" onclick="toggleHangarDoor('left')">
-                <div class="mechanical-door-shutter" id="left-door-shutter">
-                    <span class="door-graphics-icon">🚪🔒</span>
-                    <h2 class="door-shutter-title">One-Way Doors</h2>
-                    <span class="door-shutter-prompt">Analyze Shutter</span>
-                </div>
-                <div class="internal-data-terminal" id="left-terminal">
-                    <h2 class="terminal-heading">One-Way Doors</h2>
-                    <ul class="terminal-bullet-list">
-                        <li class="terminal-bullet-node">Irreversible or extremely costly to undo</li>
-                        <li class="terminal-bullet-node">Require thorough analysis and deliberation</li>
-                        <li class="terminal-bullet-node">Examples: selling a business, major relocations</li>
-                        <li class="terminal-bullet-node">Deserve more time and consultation</li>
-                        <li class="terminal-bullet-node">About 10% of your decisions</li>
-                    </ul>
-                </div>
-            </div>
-
-            <div class="door-bay-frame" id="right-bay-node" onclick="toggleHangarDoor('right')">
-                <div class="mechanical-door-shutter" id="right-door-shutter">
-                    <span class="door-graphics-icon">🚪🔄</span>
-                    <h2 class="door-shutter-title">Two-Way Doors</h2>
-                    <span class="door-shutter-prompt">Analyze Shutter</span>
-                </div>
-                <div class="internal-data-terminal" id="right-terminal">
-                    <h2 class="terminal-heading">Two-Way Doors</h2>
-                    <ul class="terminal-bullet-list">
-                        <li class="terminal-bullet-node">Easily reversible with low cost</li>
-                        <li class="terminal-bullet-node">Should be made quickly and iterated on</li>
-                        <li class="terminal-bullet-node">Examples: testing a new tool, trying a process</li>
-                        <li class="terminal-bullet-node">Overthinking these wastes time and energy</li>
-                        <li class="terminal-bullet-node">About 90% of your decisions</li>
-                    </ul>
-                </div>
-            </div>
-
-        </div>
-
-        <div class="insight-banner-row">
-            💡 <strong>Strategic Framework Alignment:</strong> Knowing the difference prevents organizational friction. Guard one-way doors with deep consensus metrics, while running two-way decisions as rapid testing loops.
-        </div>
-
-        <div class="footer-bar">
-            <div class="instruction-tag">Click either architectural door panel block directly to independently swing the shutter open and audit decision classification metrics.</div>
-        </div>
-    </div>
-
-    <script>
-        /**
-         * Dynamic Hangar Toggle Engine
-         * Evaluates targeted string keys to trigger mechanical rotation state classes independently.
-         */
-        function toggleHangarDoor(targetSideKey) {
-            if (targetSideKey === 'left') {
-                const leftBay = document.getElementById("left-bay-node");
-                leftBay.classList.toggle("left-open");
-            } 
-            else if (targetSideKey === 'right') {
-                const rightBay = document.getElementById("right-bay-node");
-                rightBay.classList.toggle("right-open");
-            }
-        }
-    </script>
 </body>
 </html>
