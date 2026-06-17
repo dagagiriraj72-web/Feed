@@ -3,28 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Leading with Decisiveness - Stable Command Console</title>
+    <title>Two-Way Door Decisions - Fully Functional Hangar</title>
     <style>
-        * {
-            box-sizing: border-box;
+        /* FORCE CONTAINERS TO FILL WINDOW TO PREVENT COLLAPSE IN STORYLINE IFRAMES */
+        html, body {
             margin: 0;
             padding: 0;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-
-        body {
+            width: 100%;
+            height: 100%;
             background-color: #fcf8f2;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            width: 100vw;
-            height: 100vh;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             overflow: hidden;
         }
 
-        /* HARD-LOCKED STORYLINE 16:9 CANVASS CONTRAINT 
-           Enforces a strict 1280x720 barrier footprint to systematically 
-           prevent vertical layout bleed, text clipping, or footer collisions.
+        /* HARD-LOCKED 16:9 VIEWPORT 
+           Locks bounds strictly at 1280x720 to protect elements from text box 
+           clashing, vertical margin bleed, or layout distortions.
         */
         .slide-wrapper {
             width: 100%;
@@ -32,7 +26,7 @@
             max-width: 1280px;
             max-height: 720px;
             aspect-ratio: 16 / 9;
-            padding: 2rem 3.5rem 1.2rem 3.5rem;
+            padding: 2.2rem 3.5rem 1.5rem 3.5rem;
             background-color: #fdfaf6;
             display: flex;
             flex-direction: column;
@@ -41,14 +35,14 @@
             position: relative;
         }
 
-        /* Top Header Area */
+        /* Title Header */
         .header-section {
-            margin-bottom: 0.4rem;
+            margin-bottom: 0.5rem;
             flex-shrink: 0;
         }
 
         .main-title {
-            font-size: 2.5rem;
+            font-size: 2.6rem;
             color: #3d2314;
             font-weight: 800;
             line-height: 1.1;
@@ -63,239 +57,188 @@
             left: 0;
             width: 140px;
             height: 4px;
-            background-color: #7b9583;
+            background-color: #4a584d;
             border-radius: 2px;
         }
 
-        /* MAIN WORKSPACE ARCHITECTURE GRID
-           Builds a multi-tiered structural system where sections are completely isolated.
+        /* TWIN-COLUMN COCKPIT GRID MATRIX
+           Gives both bays equal horizontal clearance so text payloads never overlap.
         */
-        .workspace-pipeline {
+        .hangar-deck-workspace {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            flex-grow: 1;
+            min-height: 0; /* Dynamic height buffer safety guardrail */
+            margin: 1.5rem 0;
+            align-items: stretch;
+        }
+
+        /* Interactive Hangar Frame Box */
+        .door-bay-frame {
+            background-color: #f1ede9;
+            border-radius: 12px;
+            border: 1px solid rgba(61, 35, 20, 0.06);
+            position: relative;
+            perspective: 1200px; /* Triggers hardware-accelerated 3D swinging depths */
+            cursor: pointer;
+            height: 100%;
+        }
+
+        /* BASE TEXT DATA TERMINALS (Hidden behind covers natively) */
+        .internal-data-terminal {
+            padding: 2rem 2.2rem;
             display: flex;
             flex-direction: column;
-            flex-grow: 1;
-            min-height: 0; /* Clear overflow containment shield */
-            margin: 0.6rem 0;
+            gap: 1rem;
+            height: 100%;
+            justify-content: center;
+            opacity: 0;
+            transform: scale(0.95);
+            transition: opacity 0.4s ease, transform 0.4s ease;
+            pointer-events: none; /* Disables click hijacking while covered */
         }
 
-        /* Horizontal Menu Ribbon (Re-oriented from the crowded 2x2 grid) */
-        .top-navigation-ribbon {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 0.6rem;
-            width: 100%;
-            flex-shrink: 0;
-            margin-bottom: 1rem;
+        .terminal-heading {
+            font-size: 1.6rem;
+            font-weight: 800;
+            color: #3d2314;
+            border-bottom: 2px solid rgba(61, 35, 20, 0.08);
+            padding-bottom: 0.4rem;
+            margin: 0;
         }
 
-        .ribbon-selector-btn {
-            background-color: #e2dbd5;
-            border: 1px solid rgba(61, 35, 20, 0.08);
-            border-radius: 8px;
-            padding: 0.7rem 0.9rem;
-            cursor: pointer;
+        .terminal-bullet-list {
+            list-style: none;
             display: flex;
-            align-items: center;
-            gap: 0.8rem;
-            transition: all 0.2s cubic-bezier(0.165, 0.84, 0.44, 1);
+            flex-direction: column;
+            gap: 0.6rem;
+            margin: 0;
+            padding: 0;
         }
 
-        .ribbon-selector-btn:hover {
-            background-color: #ebdcd1;
-            transform: translateY(-1px);
+        .terminal-bullet-node {
+            font-size: 1.05rem;
+            color: #4a382c;
+            font-weight: 600;
+            line-height: 1.45;
+            position: relative;
+            padding-left: 1.4rem;
         }
 
-        .btn-symbol-circle {
-            width: 32px;
-            height: 32px;
-            border-radius: 50%;
-            background-color: #7b9583;
+        .terminal-bullet-node::before {
+            content: "•";
+            color: #4a584d;
+            font-weight: bold;
+            font-size: 1.4rem;
+            position: absolute;
+            left: 2px;
+            top: -2px;
+        }
+
+        /* 3D MECHANICAL OVERLAY COVER SHUTTERS (THE DOORS) */
+        .mechanical-door-shutter {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
             color: #ffffff;
             display: flex;
+            flex-direction: column;
             justify-content: center;
             align-items: center;
-            font-size: 0.95rem;
-            font-weight: bold;
-            flex-shrink: 0;
+            padding: 2rem;
+            z-index: 10;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.05);
+            transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.4s ease, filter 0.2s ease;
+            backface-visibility: hidden;
+            box-sizing: border-box;
         }
 
-        .btn-label-stack {
-            display: flex;
-            flex-direction: column;
-            text-align: left;
-            min-width: 0;
+        /* Symmetrical Swing Hinge Roots */
+        #left-door-shutter {
+            border-radius: 11px;
+            transform-origin: left center; /* Hinges One-Way door left */
+            background-image: linear-gradient(135deg, #3a443d 0%, #2f3832 100%);
+            border-right: 3px solid rgba(255,255,255,0.08);
         }
 
-        .btn-title-lbl {
-            font-size: 1.05rem;
-            font-weight: 700;
-            color: #3d2314;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
+        #right-door-shutter {
+            border-radius: 11px;
+            transform-origin: right center; /* Hinges Two-Way door right */
+            background-image: linear-gradient(225deg, #4c5a4f 0%, #3a443d 100%);
+            border-left: 3px solid rgba(255,255,255,0.08);
         }
 
-        .btn-status-lbl {
-            font-size: 0.68rem;
+        .door-bay-frame:hover .mechanical-door-shutter {
+            filter: brightness(1.08);
+        }
+
+        .door-graphics-icon {
+            font-size: 3.2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .door-shutter-title {
+            font-size: 1.8rem;
             font-weight: 800;
-            color: #8d7d74;
-            text-transform: uppercase;
             letter-spacing: 0.5px;
+            margin-bottom: 0.4rem;
+            color: #ffffff;
         }
 
-        /* Navigation Interactive State Modifiers */
-        .ribbon-selector-btn.active-node {
-            background-color: #ffffff;
-            border-color: #7b9583;
-            box-shadow: 0 4px 12px rgba(123, 149, 131, 0.08);
-            transform: translateY(-1px);
-        }
-        .ribbon-selector-btn.active-node .btn-title-lbl { color: #5c7564; }
-
-        .ribbon-selector-btn.mastered-node {
-            border-color: #2a9d8f;
-            background-color: rgba(42, 157, 143, 0.03);
-        }
-        .ribbon-selector-btn.mastered-node .btn-title-lbl {
-            color: #2a9d8f;
-            text-decoration: line-through;
-            opacity: 0.6;
-        }
-        .ribbon-selector-btn.mastered-node .btn-symbol-circle { background-color: #2a9d8f; }
-
-        /* HORIZONTAL SIDE-BY-SIDE SIMULATOR CONSOLE CARD
-           Splits content elements laterally so large text structures never overlap.
-        */
-        .unified-arena-card {
-            background-color: #ffffff;
-            border: 1px solid rgba(61, 35, 20, 0.08);
-            border-radius: 12px;
-            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.02);
-            padding: 1.8rem 2.2rem;
-            flex-grow: 1;
-            min-height: 0;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-        }
-
-        .arena-split-view {
-            display: none; 
-            grid-template-columns: 0.95fr 1.05fr;
-            gap: 2.5rem;
-            align-items: center;
-            height: 100%;
-            width: 100%;
-        }
-
-        .arena-split-view.visible-view {
-            display: grid;
-        }
-
-        /* Left Split Column: Blueprint Prompt Data */
-        .arena-brief-column {
-            display: flex;
-            flex-direction: column;
-            gap: 0.8rem;
-        }
-
-        .arena-tag-heading {
-            font-size: 0.82rem;
-            font-weight: 700;
-            color: #7b9583;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        .metric-banner-box {
-            font-size: 0.96rem;
-            font-weight: 600;
-            color: #6e5d53;
-            background-color: #fdfbf9;
-            padding: 0.65rem 1rem;
-            border-left: 4px solid #7b9583;
-            border-radius: 4px;
-            line-height: 1.45;
-        }
-
-        .challenge-statement-text {
-            font-size: 1.2rem;
-            font-weight: 700;
-            color: #3d2314;
-            line-height: 1.42;
-        }
-
-        /* Right Split Column: Choices Action Inputs Stack Pipeline */
-        .arena-input-column {
-            display: flex;
-            flex-direction: column;
-            gap: 0.7rem;
-            width: 100%;
-        }
-
-        .choice-interaction-card {
-            background-color: #ffffff;
-            border: 1px solid #cbd5e1;
-            padding: 1.1rem 1.3rem;
-            border-radius: 6px;
-            font-size: 0.9rem;
-            font-weight: 600;
-            color: #475569;
-            cursor: pointer;
-            text-align: left;
-            line-height: 1.45;
-            transition: all 0.2s ease;
-            width: 100%;
-        }
-
-        .choice-interaction-card:hover {
-            background-color: #fffdfb;
-            border-color: #7b9583;
-            color: #5c7564;
-            transform: translateX(3px);
-        }
-
-        /* Step Complete Success Inner Overlay Card Component */
-        .stage-success-overlay {
-            display: none;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-            width: 100%;
-            height: 100%;
-            gap: 0.6rem;
-        }
-
-        .stage-success-overlay.visible-success {
-            display: flex;
-        }
-
-        .success-heading-text {
-            font-size: 1.35rem;
-            font-weight: 800;
-            color: #2a9d8f;
-        }
-
-        /* Bottom Fixed Corporate Metrics Row Status Bar */
-        .footer-bar {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-shrink: 0;
-            border-top: 1px solid rgba(61, 35, 20, 0.08);
-            padding-top: 0.6rem;
-        }
-
-        .score-tracker-badge {
+        .door-shutter-prompt {
             font-size: 0.85rem;
             font-weight: 700;
-            color: #3d2314;
-            background-color: #fff8eb;
+            color: #a9bfae;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            border: 1px solid rgba(255,255,255,0.2);
             padding: 0.25rem 0.8rem;
-            border-radius: 20px;
+            border-radius: 4px;
+            background-color: rgba(0,0,0,0.1);
+        }
+
+        /* INDEPENDENT SYMMETRICAL MECHANICAL SWING TRIGGERS */
+        .door-bay-frame.left-open #left-door-shutter {
+            transform: rotateY(-115deg);
+            opacity: 0;
+        }
+
+        .door-bay-frame.right-open #right-door-shutter {
+            transform: rotateY(115deg);
+            opacity: 0;
+        }
+
+        .door-bay-frame.left-open #left-terminal,
+        .door-bay-frame.right-open #right-terminal {
+            opacity: 1;
+            transform: scale(1);
+            pointer-events: auto; /* Restores copy/highlight tracking functionality once open */
+        }
+
+        /* Shared Baseline Static Context Box */
+        .insight-banner-row {
+            background-color: #fff8eb;
             border: 1px solid #f4a261;
-            font-variant-numeric: tabular-nums;
+            border-left: 4px solid #f4a261;
+            padding: 0.6rem 1.2rem;
+            border-radius: 6px;
+            font-size: 0.92rem;
+            color: #3d2314;
+            line-height: 1.4;
+            flex-shrink: 0;
+            margin-top: 0.4rem;
+        }
+
+        /* Bottom Guidance Strip Line */
+        .footer-bar {
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            flex-shrink: 0;
+            margin-top: 0.2rem;
         }
 
         .instruction-tag {
@@ -308,179 +251,73 @@
 <body>
 
     <div class="slide-wrapper">
-        <!-- Banner Title Header Block -->
         <div class="header-section">
-            <h1 class="main-title">Leading with Decisiveness</h1>
+            <h1 class="main-title">Two-Way Door Decisions</h1>
         </div>
 
-        <!-- Bounded Framework Workspace Layout -->
-        <div class="workspace-pipeline">
+        <div class="hangar-deck-workspace">
             
-            <!-- Horizontal Selection ribbon (Refactored directly to stop button crushing) -->
-            <div class="top-navigation-ribbon">
-                <!-- Module 1 -->
-                <button class="ribbon-selector-btn active-node" id="tab-0" onclick="switchCommandTab(0)">
-                    <div class="btn-symbol-circle">▶</div>
-                    <div class="btn-label-stack">
-                        <span class="btn-title-lbl">Communicate Clearly</span>
-                        <span class="btn-status-lbl" id="badge-0">Active</span>
-                    </div>
-                </button>
-                <!-- Module 2 -->
-                <button class="ribbon-selector-btn" id="tab-1" onclick="switchCommandTab(1)">
-                    <div class="btn-symbol-circle">⚑</div>
-                    <div class="btn-label-stack">
-                        <span class="btn-title-lbl">Own the Outcome</span>
-                        <span class="btn-status-lbl" id="badge-1">Pending</span>
-                    </div>
-                </button>
-                <!-- Module 3 -->
-                <button class="ribbon-selector-btn" id="tab-2" onclick="switchCommandTab(2)">
-                    <div class="btn-symbol-circle">⬌</div>
-                    <div class="btn-label-stack">
-                        <span class="btn-title-lbl">Invite Input, Not Votes</span>
-                        <span class="btn-status-lbl" id="badge-2">Pending</span>
-                    </div>
-                </button>
-                <!-- Module 4 -->
-                <button class="ribbon-selector-btn" id="tab-3" onclick="switchCommandTab(3)">
-                    <div class="btn-symbol-circle">⟳</div>
-                    <div class="btn-label-stack">
-                        <span class="btn-title-lbl">Course-Correct Publicly</span>
-                        <span class="btn-status-lbl" id="badge-3">Pending</span>
-                    </div>
-                </button>
+            <div class="door-bay-frame" id="left-bay-node" onclick="toggleHangarDoor('left')">
+                <div class="mechanical-door-shutter" id="left-door-shutter">
+                    <span class="door-graphics-icon">🚪🔒</span>
+                    <h2 class="door-shutter-title">One-Way Doors</h2>
+                    <span class="door-shutter-prompt">Analyze Shutter</span>
+                </div>
+                <div class="internal-data-terminal" id="left-terminal">
+                    <h2 class="terminal-heading">One-Way Doors</h2>
+                    <ul class="terminal-bullet-list">
+                        <li class="terminal-bullet-node">Irreversible or extremely costly to undo</li>
+                        <li class="terminal-bullet-node">Require thorough analysis and deliberation</li>
+                        <li class="terminal-bullet-node">Examples: selling a business, major relocations</li>
+                        <li class="terminal-bullet-node">Deserve more time and consultation</li>
+                        <li class="terminal-bullet-node">About 10% of your decisions</li>
+                    </ul>
+                </div>
             </div>
 
-            <!-- Master Playground Display Arena Card Box -->
-            <div class="unified-arena-card" id="sandbox-container">
-                
-                <!-- Command Stage 1 View (Verbatim Text mappings from image_a1c445.png layouts) -->
-                <div class="arena-split-view visible-view" id="view-0">
-                    <div class="arena-brief-column">
-                        <div class="arena-tag-heading">Command Scenario 1 of 4</div>
-                        <div class="metric-banner-box">State the decision, the reasoning, and the expected outcome. Ambiguity breeds confusion.</div>
-                        <h2 class="challenge-statement-text">Scenario Challenge: An upcoming plant migration schedule causes minor productivity logs among floor supervisors. How do you anchor authority vectors?</h2>
-                    </div>
-                    <div class="arena-input-column">
-                        <button class="choice-interaction-card" onclick="submitDecision(0, true)">Publish an absolute directive detailing the schedule, the technical rationale, and target timelines directly.</button>
-                        <button class="choice-interaction-card" onclick="submitDecision(0, false)">Issue generic reassurance memos and allow regional team supervisors to navigate individual rollout windows.</button>
-                    </div>
+            <div class="door-bay-frame" id="right-bay-node" onclick="toggleHangarDoor('right')">
+                <div class="mechanical-door-shutter" id="right-door-shutter">
+                    <span class="door-graphics-icon">🚪🔄</span>
+                    <h2 class="door-shutter-title">Two-Way Doors</h2>
+                    <span class="door-shutter-prompt">Analyze Shutter</span>
                 </div>
-
-                <!-- Command Stage 2 View -->
-                <div class="arena-split-view" id="view-1">
-                    <div class="arena-brief-column">
-                        <div class="arena-tag-heading">Command Scenario 2 of 4</div>
-                        <div class="metric-banner-box">Take responsibility regardless of results. This builds credibility and trust with your team.</div>
-                        <h2 class="challenge-statement-text">Scenario Challenge: A newly authorized logistics software update results in an unexpected regional delivery delay log. How do you respond?</h2>
-                    </div>
-                    <div class="arena-input-column">
-                        <button class="choice-interaction-card" onclick="submitDecision(1, true)">Publicly assume complete administrative accountability for the transition while engineers issue tracking hotfixes.</button>
-                        <button class="choice-interaction-card" onclick="submitDecision(1, false)">Launch an internal diagnostic inquiry investigation to publicly isolate developer coding discrepancies.</button>
-                    </div>
+                <div class="internal-data-terminal" id="right-terminal">
+                    <h2 class="terminal-heading">Two-Way Doors</h2>
+                    <ul class="terminal-bullet-list">
+                        <li class="terminal-bullet-node">Easily reversible with low cost</li>
+                        <li class="terminal-bullet-node">Should be made quickly and iterated on</li>
+                        <li class="terminal-bullet-node">Examples: testing a new tool, trying a process</li>
+                        <li class="terminal-bullet-node">Overthinking these wastes time and energy</li>
+                        <li class="terminal-bullet-node">About 90% of your decisions</li>
+                    </ul>
                 </div>
-
-                <!-- Command Stage 3 View -->
-                <div class="arena-split-view" id="view-2">
-                    <div class="arena-brief-column">
-                        <div class="arena-tag-heading">Command Scenario 3 of 4</div>
-                        <div class="metric-banner-box">Seek perspectives before deciding, but don't turn every choice into a committee decision.</div>
-                        <h2 class="challenge-statement-text">Scenario Challenge: A priority vendor alignment parameter needs verification, but internal focus team opinions remain split down the middle. What do you run?</h2>
-                    </div>
-                    <div class="arena-input-column">
-                        <button class="choice-interaction-card" onclick="submitDecision(2, true)">Convene an absolute focus board session to log employee feedback data, then independently announce the final vendor selection.</button>
-                        <button class="choice-interaction-card" onclick="submitDecision(2, false)">Extend committee analysis workshops into next month to secure unanimous internal votes across all departments.</button>
-                    </div>
-                </div>
-
-                <!-- Command Stage 4 View -->
-                <div class="arena-split-view" id="view-3">
-                    <div class="arena-brief-column">
-                        <div class="arena-tag-heading">Command Scenario 4 of 4</div>
-                        <div class="metric-banner-box">When a decision needs changing, say so openly. This normalizes adaptive leadership.</div>
-                        <h2 class="challenge-statement-text">Scenario Challenge: Real-time telemetry data confirms that a platform infrastructure tool rolled out last month is restricting throughput volumes. What do you do?</h2>
-                    </div>
-                    <div class="arena-input-column">
-                        <button class="choice-interaction-card" onclick="submitDecision(3, false)">Maintain the system branch rollout to protect initial executive forecasting frameworks and avoid visibility disruptions.</button>
-                        <button class="choice-interaction-card" onclick="submitDecision(3, true)">Openly address the performance drops with stakeholders, halt the branch parameters, and shift back to optimized baselines.</button>
-                    </div>
-                </div>
-
-                <!-- Shared In-Card Complete Success Overlay Panel Component -->
-                <div class="stage-success-overlay" id="victory-panel">
-                    <span style="font-size: 2.5rem;">⚙️🛡️</span>
-                    <p class="success-heading-text">Leadership Protocol Aligned!</p>
-                    <p style="color: #6e5d53; font-size: 0.92rem;">Select an uncompleted focus module from the top navigation menu ribbon to continue processing decision models.</p>
-                </div>
-
             </div>
+
         </div>
 
-        <!-- Fixed Corporate Metrics Footer Strip -->
+        <div class="insight-banner-row">
+            💡 <strong>Strategic Framework Alignment:</strong> Knowing the difference prevents organizational friction. Guard one-way doors with deep consensus metrics, while running two-way decisions as rapid testing loops.
+        </div>
+
         <div class="footer-bar">
-            <div class="score-tracker-badge">Traits Mastered: <span id="progress-val">0</span> / 4</div>
-            <div class="instruction-tag">Isolate leadership competencies across the ribbon menu above to resolve scenario dilemmas.</div>
+            <div class="instruction-tag">Click either architectural door panel block directly to independently swing the shutter open and audit decision classification metrics.</div>
         </div>
     </div>
 
     <script>
-        let currentActiveIdx = 0;
-        let masteredStateMap = { 0: false, 1: false, 2: false, 3: false };
-
-        function switchCommandTab(targetIdx) {
-            if (targetIdx === currentActiveIdx) return;
-
-            // Clear legacy highlight markers from preceding ribbon element natively
-            document.getElementById(`tab-${currentActiveIdx}`).classList.remove("active-node");
-            document.getElementById(`badge-${currentActiveIdx}`).innerText = masteredStateMap[currentActiveIdx] ? "Mastered" : "Pending";
-            
-            // Hide previous scenario content view split panels
-            const activeView = document.getElementById(`view-${currentActiveIdx}`);
-            if (activeView) activeView.classList.remove("visible-view");
-
-            // Re-route target pointers configurations
-            currentActiveIdx = targetIdx;
-            document.getElementById(`tab-${currentActiveIdx}`).classList.add("active-node");
-            document.getElementById(`badge-${currentActiveIdx}`).innerText = masteredStateMap[currentActiveIdx] ? "Mastered" : "Active";
-
-            // Switch views depending on matrix state memory mappings
-            const victoryPanel = document.getElementById("victory-panel");
-            if (masteredStateMap[currentActiveIdx]) {
-                victoryPanel.classList.add("visible-success");
-            } else {
-                victoryPanel.classList.remove("visible-success");
-                document.getElementById(`view-${currentActiveIdx}`).classList.add("visible-view");
+        /**
+         * Dynamic Hangar Toggle Engine
+         * Evaluates targeted string keys to trigger mechanical rotation state classes independently.
+         */
+        function toggleHangarDoor(targetSideKey) {
+            if (targetSideKey === 'left') {
+                const leftBay = document.getElementById("left-bay-node");
+                leftBay.classList.toggle("left-open");
+            } 
+            else if (targetSideKey === 'right') {
+                const rightBay = document.getElementById("right-bay-node");
+                rightBay.classList.toggle("right-open");
             }
-        }
-
-        function submitDecision(compIdx, isCorrectChoice) {
-            if (isCorrectChoice) {
-                masteredStateMap[compIdx] = true;
-
-                // Adjust horizontal selection ribbon nodes status properties
-                const ribbonBtn = document.getElementById(`tab-${compIdx}`);
-                ribbonBtn.classList.add("mastered-node");
-                document.getElementById(`badge-${compIdx}`).innerText = "Mastered";
-
-                // Swap out content panel displays inside sandbox container boundaries
-                document.getElementById(`view-${compIdx}`).classList.remove("visible-view");
-                document.getElementById("victory-panel").classList.add("visible-success");
-
-                updateGlobalMetricsTracker();
-            } else {
-                // Instantly flash bounding card background red to signal an invalid tactical choice input path
-                const containerBox = document.getElementById("sandbox-container");
-                containerBox.style.backgroundColor = "#faeae1";
-                setTimeout(() => {
-                    containerBox.style.backgroundColor = "#ffffff";
-                }, 350);
-            }
-        }
-
-        function updateGlobalMetricsTracker() {
-            const sumCleared = Object.values(masteredStateMap).filter(Boolean).length;
-            document.getElementById("progress-val").innerText = sumCleared;
         }
     </script>
 </body>
