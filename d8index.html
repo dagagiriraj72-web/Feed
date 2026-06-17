@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Two-Way Door Decisions - Interactive 16:9 Slide</title>
+    <title>Decision Framework - Vertical Tab Slide</title>
     
     <style>
         /* ==========================================================================
-           1. Core Structural Reset & Base Presentation Styles
+           1. Core Reset & Presentation Canvas Foundations
            ========================================================================== */
         * {
             box-sizing: border-box;
@@ -26,7 +26,7 @@
             padding: 20px;
         }
 
-        /* Fixed 16:9 Presentation Slide Framework Bounding Box */
+        /* Fixed 16:9 Slide Canvas Layout (Guarantees NO scrollbars in Storyline) */
         .slide-container {
             background-color: #faf8f5;
             width: 1280px;
@@ -37,204 +37,196 @@
             display: flex;
             flex-direction: column;
             justify-content: space-between;
-            overflow: hidden;
+            overflow: hidden; /* Hard safety gate prevents overflow bleed */
         }
 
         /* ==========================================================================
            2. Slide Header Component
            ========================================================================== */
         .slide-header {
-            margin-bottom: 20px;
+            margin-bottom: 10px;
         }
 
         .main-title {
-            font-size: 2.6rem;
+            font-size: 2.5rem;
             font-weight: 800;
             color: #2b1b0d;
             position: relative;
             display: inline-block;
         }
 
-        /* Accent underline matching your brand graphics */
         .main-title::after {
             content: '';
             position: absolute;
             left: 0;
             bottom: -6px;
-            width: 120px;
+            width: 100px;
             height: 4px;
             background-color: #58694d;
         }
 
         /* ==========================================================================
-           3. Master Split Workspace Layout
+           3. Horizontal Divided Workspace (Sidebar + Details Pane)
            ========================================================================== */
-        .workspace-layout {
+        .workspace-grid {
             display: flex;
-            gap: 35px;
+            gap: 40px;
             flex: 1;
-            margin: 25px 0;
-            align-items: stretch; /* Cards and display box maintain identical height metrics */
+            margin: 35px 0;
+            align-items: stretch; /* Forces both columns to stay perfectly aligned vertically */
+            height: calc(100% - 140px); /* Strict height containment math */
         }
 
-        /* Left Side Menu Component (Door Targets) */
-        .doors-sidebar {
-            flex: 1;
+        /* Left Side Menu Component (Stacked Vertical Cards) */
+        .tabs-sidebar {
+            flex: 0.8;
             display: flex;
             flex-direction: column;
-            gap: 18px;
+            gap: 20px;
             justify-content: center;
         }
 
         /* ==========================================================================
-           4. Interactive "Door Style" Component Mechanics
+           4. Vertical Tab Controls (Matching Image Formatting)
            ========================================================================== */
-        .door-button {
+        .vertical-tab {
             background-color: #efeae2;
-            border: 2px solid #e0d9cd;
+            border: 2px solid transparent;
             border-radius: 12px;
-            padding: 25px 30px;
+            padding: 24px 30px;
+            cursor: pointer;
             display: flex;
             align-items: center;
             justify-content: space-between;
-            cursor: pointer;
             position: relative;
-            overflow: hidden;
-            transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.02);
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
-        .door-button:hover {
+        .vertical-tab:hover {
             background-color: #e6dfd5;
-            border-color: #baa18d;
             transform: translateX(4px);
         }
 
-        /* Active highlight door profile matching your exact visual guidelines */
-        .door-button.active {
+        /* Active highlight tab parameters mimicking your precise border/shadow lines */
+        .vertical-tab.active {
             background-color: #ffffff;
             border-color: #58694d;
-            box-shadow: 0 10px 25px rgba(88, 105, 77, 0.1);
+            box-shadow: 0 10px 25px rgba(88, 105, 77, 0.08);
         }
 
-        /* Dynamic Visual "Door Hinge Edge Indicator" */
-        .door-hinge-edge {
+        /* Left Edge Accent Bar Indicator */
+        .tab-accent-edge {
             position: absolute;
             left: 0;
             top: 0;
             width: 8px;
             height: 100%;
             background-color: #baa18d;
-            transition: background-color 0.3s;
+            border-radius: 12px 0 0 12px;
+            opacity: 0.4;
+            transition: all 0.3s;
         }
 
-        .door-button.active .door-hinge-edge {
+        .vertical-tab.active .tab-accent-edge {
             background-color: #58694d;
+            opacity: 1;
         }
 
-        /* Door Core Typography Parameters */
-        .door-info-wrapper {
-            padding-left: 10px;
+        .tab-info-block {
             text-align: left;
         }
 
-        .door-info-wrapper h2 {
+        .tab-info-block h2 {
             font-size: 1.5rem;
             font-weight: 700;
             color: #2b1b0d;
             margin-bottom: 4px;
         }
 
-        .door-percentage {
-            font-size: 0.85rem;
+        .tab-percentage-text {
+            font-size: 0.8rem;
             font-weight: 700;
             color: #8c8275;
             text-transform: uppercase;
             letter-spacing: 0.5px;
         }
 
-        .door-button.active .door-percentage {
-            color: #58694d;
+        /* Custom Vector Door Mini Asset Block */
+        .mini-door-asset {
+            font-size: 1.3rem;
+            opacity: 0.6;
+            transition: opacity 0.3s;
         }
 
-        /* Door Handle Icon Marker Component */
-        .door-handle-icon {
-            font-size: 1.4rem;
-            color: #baa18d;
-            transition: transform 0.4s ease;
-        }
-
-        .door-button.active .door-handle-icon {
-            color: #58694d;
-            transform: rotate(-90deg); /* Mimics turning a door handle */
+        .vertical-tab.active .mini-door-asset {
+            opacity: 1;
         }
 
         /* ==========================================================================
-           5. Right Side Content Panel Module (Guarantees zero overlap)
+           5. Right Side Focus Display Pane (No-Scroll Context Area)
            ========================================================================== */
-        .content-display-vault {
+        .details-display-panel {
             flex: 1.4;
             background-color: #f1ede7;
             border-radius: 16px;
-            padding: 40px;
+            padding: 45px;
             display: flex;
-            align-items: flex-start;
-            position: relative;
+            flex-direction: column;
+            justify-content: center;
+            overflow: hidden; /* Guarantees child layout items never build scrolls */
         }
 
-        .vault-pane {
+        .framework-pane {
             display: none;
             flex-direction: column;
             width: 100%;
-            height: 100%;
-            animation: doorOpenAnimation 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+            animation: paneFadeShiftIn 0.4s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
-        .vault-pane.active {
+        .framework-pane.active {
             display: flex;
         }
 
-        /* Subheadings and tags inside the content pane */
-        .pane-tag {
-            font-size: 0.8rem;
+        /* Dynamic Blue/Orange Status Badging */
+        .type-badge {
+            align-self: flex-start;
+            font-size: 0.75rem;
             font-weight: 800;
-            letter-spacing: 1px;
+            letter-spacing: 1.5px;
             text-transform: uppercase;
-            margin-bottom: 12px;
-            display: inline-block;
-            padding: 4px 10px;
+            padding: 5px 12px;
             border-radius: 4px;
+            margin-bottom: 15px;
         }
 
-        .vault-pane.one-way-pane .pane-tag { background-color: #f7e9e4; color: #b54a24; }
-        .vault-pane.two-way-pane .pane-tag { background-color: #e4edf7; color: #246fb5; }
+        .one-way-pane .type-badge { background-color: #f7e9e4; color: #b54a24; }
+        .two-way-pane .type-badge { background-color: #e4edf7; color: #246fb5; }
 
-        .pane-title {
-            font-size: 2rem;
+        .pane-heading {
+            font-size: 2.2rem;
             font-weight: 700;
-            color: #2b1b0d;
-            border-bottom: 1px solid rgba(61, 38, 18, 0.12);
-            padding-bottom: 15px;
-            margin-bottom: 25px;
+            color: #1f1208;
+            margin-bottom: 30px;
         }
 
-        /* Bullet Data Points Formatting Framework */
-        .details-list {
-            list-style-type: none;
+        /* Structural Bullet Matrix Components */
+        .metrics-stack {
             display: flex;
             flex-direction: column;
-            gap: 16px;
+            gap: 22px;
         }
 
-        .details-list li {
+        .metric-row {
             font-size: 1.15rem;
             line-height: 1.5;
             color: #473a30;
             position: relative;
-            padding-left: 25px;
+            padding-left: 28px;
         }
 
-        /* Muted green square list bullet markers matching branding rules */
-        .details-list li::before {
+        /* Solid branding square list bullets matching your template snapshot */
+        .metric-row::before {
             content: "■";
             color: #58694d;
             font-size: 0.85rem;
@@ -244,7 +236,7 @@
         }
 
         /* ==========================================================================
-           6. Presentation Slide Footer
+           6. Slide Footer Component
            ========================================================================== */
         .slide-footer {
             border-top: 1px solid #ebdcd0;
@@ -259,16 +251,16 @@
         }
 
         /* ==========================================================================
-           7. CSS Animations
+           7. Keyframe Entry Animations
            ========================================================================== */
-        @keyframes doorOpenAnimation {
+        @keyframes paneFadeShiftIn {
             from {
                 opacity: 0;
-                transform: perspective(1200px) rotateY(15deg);
+                transform: translateY(8px);
             }
             to {
                 opacity: 1;
-                transform: perspective(1200px) rotateY(0deg);
+                transform: translateY(0);
             }
         }
     </style>
@@ -278,55 +270,53 @@
     <div class="slide-container">
         
         <header class="slide-header">
-            <h1 class="main-title">Two-Way Door Decisions</h1>
+            <h1 class="main-title">Decision Frameworks</h1>
         </header>
 
-        <div class="workspace-layout">
+        <div class="workspace-grid">
             
-            <nav class="doors-sidebar">
+            <nav class="tabs-sidebar">
                 
-                <button class="door-button active" data-target="one-way">
-                    <div class="door-hinge-edge"></div>
-                    <div class="door-info-wrapper">
+                <button class="vertical-tab" data-target="pane-oneway">
+                    <div class="tab-accent-edge"></div>
+                    <div class="tab-info-block">
                         <h2>One-Way Doors</h2>
-                        <span class="door-percentage">About 10% of your decisions</span>
+                        <span class="tab-percentage-text">About 10% of your decisions</span>
                     </div>
-                    <span class="door-handle-icon">🚪</span>
+                    <span class="mini-door-asset">🚪</span>
                 </button>
 
-                <button class="door-button" data-target="two-way">
-                    <div class="door-hinge-edge"></div>
-                    <div class="door-info-wrapper">
+                <button class="vertical-tab active" data-target="pane-twoway">
+                    <div class="tab-accent-edge"></div>
+                    <div class="tab-info-block">
                         <h2>Two-Way Doors</h2>
-                        <span class="door-percentage">About 90% of your decisions</span>
+                        <span class="tab-percentage-text">About 90% of your decisions</span>
                     </div>
-                    <span class="door-handle-icon">🚪</span>
+                    <span class="mini-door-asset">🚪</span>
                 </button>
 
             </nav>
 
-            <main class="content-display-vault">
+            <main class="details-display-panel">
                 
-                <div class="vault-pane one-way-pane active" id="one-way">
-                    <span class="pane-tag">Type 1 Decision</span>
-                    <h3 class="pane-title">Irreversible Strategic Framework</h3>
-                    <ul class="details-list">
-                        <li><strong>Reversibility:</strong> Irreversible or extremely costly to undo.</li>
-                        <li><strong>Analysis Requirements:</strong> Require thorough, rigorous analysis and deep deliberation.</li>
-                        <li><strong>Real-World Examples:</strong> Selling a business unit, executing major geographic relocations.</li>
-                        <li><strong>Execution Velocity:</strong> Deserve more time, collaborative consultation, and conservative fallback plans.</li>
-                    </ul>
+                <div class="framework-pane one-way-pane" id="pane-oneway">
+                    <span class="type-badge">Type 1 Decision</span>
+                    <h2 class="pane-heading">Heavy-Deliberation Strategic Framework</h2>
+                    <div class="metrics-stack">
+                        <p class="metric-row"><strong>Reversibility:</strong> Irreversible or extremely costly to undo once committed.</p>
+                        <p class="metric-row"><strong>Analysis Requirements:</strong> Require thorough, rigorous market analysis and extended cross-functional deliberation.</p>
+                        <p class="metric-row"><strong>Real-World Examples:</strong> Selling an enterprise business unit, corporate infrastructure relocations.</p>
+                    </div>
                 </div>
 
-                <div class="vault-pane two-way-pane" id="two-way">
-                    <span class="pane-tag">Type 2 Decision</span>
-                    <h3 class="pane-title">High-Velocity Operational Framework</h3>
-                    <ul class="details-list">
-                        <li><strong>Reversibility:</strong> Easily reversible with exceptionally low real-world costs.</li>
-                        <li><strong>Analysis Requirements:</strong> Should be made quickly, autonomously, and immediately iterated on.</li>
-                        <li><strong>Real-World Examples:</strong> Testing an internal software tool, trying a experimental workflow process.</li>
-                        <li><strong>Execution Velocity:</strong> Overthinking these lightweight operational parameters wastes vital team time and energy.</li>
-                    </ul>
+                <div class="framework-pane two-way-pane active" id="pane-twoway">
+                    <span class="type-badge">Type 2 Decision</span>
+                    <h2 class="pane-heading">High-Velocity Operational Framework</h2>
+                    <div class="metrics-stack">
+                        <p class="metric-row"><strong>Reversibility:</strong> Easily reversible with exceptionally low real-world resource costs.</p>
+                        <p class="metric-row"><strong>Analysis Requirements:</strong> Should be made quickly, autonomously, and immediately iterated on in-field.</p>
+                        <p class="metric-row"><strong>Real-World Examples:</strong> Testing an internal software tool, trying an experimental workflow variation.</p>
+                    </div>
                 </div>
 
             </main>
@@ -334,29 +324,29 @@
         </div>
 
         <footer class="slide-footer">
-            <p class="footer-hint">Select a decision door profile component on the left ribbon menu to open and analyze its strategic blueprint properties.</p>
+            <p>Select either individual framework profile card profile on the left column sidebar to instantly inspect its decision criteria metadata.</p>
         </footer>
 
     </div>
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            const doorButtons = document.querySelectorAll('.door-button');
-            const vaultPanes = document.querySelectorAll('.vault-pane');
+            const tabs = document.querySelectorAll('.vertical-tab');
+            const panes = document.querySelectorAll('.framework-pane');
 
-            doorButtons.forEach(button => {
-                button.addEventListener('click', () => {
-                    // 1. Remove active state properties from all door buttons
-                    doorButtons.forEach(btn => btn.classList.remove('active'));
+            tabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    // Remove dynamic active states across the selector cards list items
+                    tabs.forEach(t => t.classList.remove('active'));
                     
-                    // 2. Hide all content vault pane options
-                    vaultPanes.forEach(pane => pane.classList.remove('active'));
+                    // Kill clear visibility values across target content pane profiles
+                    panes.forEach(p => p.classList.remove('active'));
 
-                    // 3. Apply active styling parameters to the selected target door element
-                    button.classList.add('active');
+                    // Append highlighting layout state vectors to clicked target tab card
+                    tab.classList.add('active');
 
-                    // 4. Map the dataset identifier string to open the target display pane
-                    const targetId = button.getAttribute('data-target');
+                    // Pull dataset structural token key to display core information pane matching the selection choice
+                    const targetId = tab.getAttribute('data-target');
                     const targetPane = document.getElementById(targetId);
                     
                     if (targetPane) {
