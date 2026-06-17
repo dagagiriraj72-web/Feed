@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Decisiveness vs. Impulsiveness - No-Scroll Slide</title>
+    <title>Leadership Sorting Challenge</title>
     
     <style>
         /* ==========================================================================
-           1. Structural Reset & Fixed Dimensions (Prevents All Scrollbars)
+           1. Core Reset & Fixed Canvas Dimensions (Absolute No-Scroll)
            ========================================================================== */
         * {
             box-sizing: border-box;
@@ -16,188 +16,190 @@
         }
 
         body {
-            font-family: 'Georgia', serif; /* Keeps the premium typography of image_968e3a.png */
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
             background-color: #dfdad1;
             color: #2b1b0f;
             display: flex;
             justify-content: center;
             align-items: center;
             min-height: 100vh;
-            overflow: hidden; /* Prevent body scroll browser-side */
+            overflow: hidden;
             padding: 10px;
         }
 
-        /* Fixed 16:9 Slide Framework - Strict dimensions ensure zero scrolling */
-        .slide-container {
+        /* Fixed 16:9 Slide Canvas Framework */
+        .game-slide-container {
             background-color: #faf8f5;
             width: 1280px;
             height: 720px;
-            padding: 40px 50px 30px 50px; /* Optimized padding to reclaim vertical space */
+            padding: 40px 50px;
             border-radius: 8px;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.12);
+            box-shadow: 0 25px 55px rgba(0,0,0,0.15);
             display: flex;
             flex-direction: column;
             justify-content: space-between;
-            overflow: hidden; /* Hard lock safety gate */
+            overflow: hidden;
         }
 
         /* ==========================================================================
-           2. Slide Header Component
+           2. Top Menu Dashboard / HUD Tracker
            ========================================================================== */
-        .slide-header {
-            margin-bottom: 5px;
+        .game-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px solid #e8e2d7;
+            padding-bottom: 15px;
         }
 
-        .main-title {
-            font-size: 2.6rem;
+        .game-title {
+            font-family: 'Georgia', serif;
+            font-size: 2rem;
             font-weight: 700;
             color: #262626;
-            line-height: 1.1;
+        }
+
+        .hud-metrics {
+            display: flex;
+            gap: 15px;
+        }
+
+        .metric-pill {
+            background-color: #efeae2;
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: #5c5247;
+            border: 1px solid #e0d9cd;
         }
 
         /* ==========================================================================
-           3. Layout Grid Matrix
+           3. Active Deal Deck Arena (Top Half)
            ========================================================================== */
-        .comparison-grid {
+        .deck-arena {
+            height: 180px;
             display: flex;
-            gap: 25px;
-            flex: 1;
-            margin: 25px 0 20px 0; /* Reduced margins to prevent pushing content down */
-            align-items: stretch;
-            height: calc(100% - 130px);
+            justify-content: center;
+            align-items: center;
+            margin: 20px 0;
         }
 
-        /* Interactive Profile Column Card */
-        .profile-card {
+        .action-card {
+            background-color: #ffffff;
+            border: 2px dashed #baa18d;
+            border-radius: 12px;
+            width: 550px;
+            height: 120px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 20px 30px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.03);
+            position: relative;
+        }
+
+        .action-card p {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #3d2612;
+            line-height: 1.4;
+        }
+
+        /* End game card override styling */
+        .action-card.completed {
+            border-style: solid;
+            border-color: #58694d;
+            background-color: #f4f8f1;
+        }
+
+        /* ==========================================================================
+           4. Sorting Buckets / Drop Zones (Bottom Half Grid)
+           ========================================================================== */
+        .sorting-zones-grid {
+            display: flex;
+            gap: 30px;
+            height: 280px;
+            align-items: stretch;
+        }
+
+        .bucket-zone {
             flex: 1;
             background-color: #f2eee7;
             border: 2px solid transparent;
-            border-radius: 14px;
-            padding: 30px 35px; /* Streamlined inner padding */
-            cursor: pointer;
+            border-radius: 12px;
+            padding: 25px;
             display: flex;
             flex-direction: column;
-            justify-content: flex-start;
-            transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+            align-items: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
         }
 
-        .profile-card:hover {
-            background-color: #e8e2d7;
+        .bucket-zone:hover {
             transform: translateY(-2px);
         }
 
-        /* Active highlight status matching image_968e3a.png */
-        .profile-card.active {
-            background-color: #ffffff;
-            box-shadow: 0 10px 30px rgba(63, 75, 62, 0.06);
-        }
-        
-        .profile-card.active.decisiveness-theme {
+        .bucket-zone.decisive-zone:hover {
             border-color: #58694d;
+            background-color: #f8f6f2;
         }
 
-        .profile-card.active.impulsiveness-theme {
+        .bucket-zone.impulsive-zone:hover {
             border-color: #baa18d;
+            background-color: #fdfcfb;
         }
 
-        /* Card Header Block */
-        .card-header-block {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-bottom: 20px;
-            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
-            padding-bottom: 10px;
+        .bucket-zone h2 {
+            font-family: 'Georgia', serif;
+            font-size: 1.6rem;
+            margin-bottom: 15px;
+            color: #262626;
         }
 
-        .card-header-block h2 {
-            font-size: 1.8rem;
+        /* Click Trigger Sorting Arrow Controls */
+        .sort-action-btn {
+            background-color: #3f4b3e;
+            color: #ffffff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            font-size: 0.9rem;
             font-weight: 700;
-            color: #2c3e2b;
-        }
-        
-        .impulsiveness-theme .card-header-block h2 {
-            color: #4a3e3d;
-        }
-
-        /* Refined Pill Badges matching the snapshot */
-        .status-badge {
-            font-family: 'Segoe UI', system-ui, sans-serif;
-            font-size: 0.72rem;
-            font-weight: 800;
-            letter-spacing: 0.5px;
             text-transform: uppercase;
-            padding: 4px 8px;
-            border-radius: 4px;
-            color: #8a7e71;
-            background-color: rgba(0, 0, 0, 0.04);
-            transition: all 0.2s;
-            white-space: nowrap;
+            letter-spacing: 0.5px;
+            margin-top: auto;
+            pointer-events: none; /* Let the parent bucket handle click events */
+            transition: background-color 0.2s;
         }
 
-        .decisiveness-theme.active .status-badge {
-            background-color: #e4edf7;
-            color: #246fb5;
-        }
+        .decisive-zone .sort-action-btn { background-color: #58694d; }
+        .impulsive-zone .sort-action-btn { background-color: #baa18d; }
 
-        .impulsiveness-theme.active .status-badge {
-            background-color: #f7e9e4;
-            color: #b54a24;
-        }
-
-        /* Behavior List Matrix Layout */
-        .behavior-list {
-            list-style-type: none;
-            display: flex;
-            flex-direction: column;
-            gap: 12px; /* Balanced spacing keeps text tightly managed inside the box dimensions */
-        }
-
-        .behavior-list li {
-            font-family: 'Segoe UI', system-ui, sans-serif;
-            font-size: 1rem;
-            line-height: 1.4;
-            color: #473a30;
-            position: relative;
-            padding-left: 20px;
-            opacity: 0.8;
+        /* Real-Time Feedback Pop Alerts underneath buttons */
+        .feedback-message {
+            margin-top: 10px;
+            font-size: 0.9rem;
+            font-weight: 700;
+            min-height: 20px;
+            opacity: 0;
             transition: opacity 0.2s;
         }
 
-        /* Clean list dot accent rules */
-        .behavior-list li::before {
-            content: "•";
-            position: absolute;
-            left: 0;
-            top: -2px;
-            font-size: 1.3rem;
-            color: #9e9587;
-        }
-
-        .profile-card.active .behavior-list li {
-            opacity: 1;
-        }
-
-        .profile-card.active.decisiveness-theme .behavior-list li::before {
-            color: #58694d;
-        }
-
-        .profile-card.active.impulsiveness-theme .behavior-list li::before {
-            color: #baa18d;
-        }
-
         /* ==========================================================================
-           4. Slide Footer Component
+           5. Slide Footer
            ========================================================================== */
-        .slide-footer {
+        .game-footer {
             border-top: 1px solid #ebdcd0;
-            padding-top: 12px;
+            padding-top: 15px;
             text-align: center;
         }
 
-        .slide-footer p {
-            font-family: 'Segoe UI', system-ui, sans-serif;
-            font-size: 0.85rem;
+        .game-footer p {
+            font-size: 0.88rem;
             color: #9c9184;
             font-style: italic;
         }
@@ -205,70 +207,132 @@
 </head>
 <body>
 
-    <div class="slide-container">
+    <div class="game-slide-container">
         
-        <!-- Header Section -->
-        <header class="slide-header">
-            <h1 class="main-title">Decisiveness vs. Impulsiveness</h1>
+        <!-- Top HUD Panel Row -->
+        <header class="game-header">
+            <h1 class="game-title">Behavior Categorization Challenge</h1>
+            <div class="hud-metrics">
+                <div class="metric-pill">Remaining: <span id="cards-left">5</span></div>
+                <div class="metric-pill">Correct: <span id="correct-score" style="color: #58694d;">0</span></div>
+            </div>
         </header>
 
-        <!-- Main Workspace Grid Layout Matrix -->
-        <div class="comparison-grid">
+        <!-- Top Active Dealing Card Deck Container Frame -->
+        <div class="deck-arena">
+            <div class="action-card" id="active-trait-card">
+                <p id="trait-text">Considers key information before acting</p>
+            </div>
+        </div>
+
+        <!-- Sorting Targets Drop Zone Grid Map -->
+        <div class="sorting-zones-grid">
             
-            <!-- Profile Card: Decisiveness -->
-            <div class="profile-card decisiveness-theme active" id="card-decisiveness">
-                <div class="card-header-block">
-                    <h2>Decisiveness</h2>
-                    <span class="status-badge">Strategic Path</span>
-                </div>
-                <ul class="behavior-list">
-                    <li>Considers key information before acting</li>
-                    <li>Accepts reasonable risk deliberately</li>
-                    <li>Commits with awareness of trade-offs</li>
-                    <li>Reflects briefly, then moves forward</li>
-                    <li>Takes ownership of the outcome</li>
-                </ul>
+            <!-- Category Target Bucket 1: Decisiveness -->
+            <div class="bucket-zone decisive-zone" onclick="submitSort('decisive')">
+                <h2>Decisiveness</h2>
+                <button class="sort-action-btn">Sort Left ◀</button>
+                <div class="feedback-message" id="decisive-feedback"></div>
             </div>
 
-            <!-- Profile Card: Impulsiveness -->
-            <div class="profile-card impulsiveness-theme" id="card-impulsiveness">
-                <div class="card-header-block">
-                    <h2>Impulsiveness</h2>
-                    <span class="status-badge">Reactive Path</span>
-                </div>
-                <ul class="behavior-list">
-                    <li>Reacts before gathering relevant facts</li>
-                    <li>Ignores risk or consequences entirely</li>
-                    <li>Chooses to avoid discomfort, not to solve</li>
-                    <li>Skips reflection, regrets later</li>
-                    <li>Blames circumstances for poor results</li>
-                </ul>
+            <!-- Category Target Bucket 2: Impulsiveness -->
+            <div class="bucket-zone impulsive-zone" onclick="submitSort('impulsive')">
+                <h2>Impulsiveness</h2>
+                <button class="sort-action-btn">Sort Right ▶</button>
+                <div class="feedback-message" id="impulsive-feedback"></div>
             </div>
 
         </div>
 
-        <!-- Footnote Help Row -->
+        <!-- Instructions Slide Footnote Line Component -->
         <footer class="slide-footer">
-            <p>Click or select either behavioral container block profile above to analyze its tactical indicators and operational outcomes.</p>
+            <p>Click directly on either the Decisiveness or Impulsiveness drop bucket grid row boxes below to sort the active center text block profile card trait.</p>
         </footer>
 
     </div>
 
-    <!-- Interactive Event Handlers -->
+    <!-- ==========================================================================
+       6. Sorting Application Engine Script Matrix
+       ========================================================================== -->
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const profiles = document.querySelectorAll('.profile-card');
+        // Data stack pool housing behaviors sourced straight from image layouts
+        const behaviorDeck = [
+            { text: "Considers key information before acting", category: "decisive" },
+            { text: "Reacts before gathering relevant facts", category: "impulsive" },
+            { text: "Accepts reasonable risk deliberately", category: "decisive" },
+            { text: "Ignores risk or consequences entirely", category: "impulsive" },
+            { text: "Commits with awareness of trade-offs", category: "decisive" },
+            { text: "Chooses to avoid discomfort, not to solve", category: "impulsive" },
+            { text: "Reflects briefly, then moves forward", category: "decisive" },
+            { text: "Skips reflection, regrets later", category: "impulsive" },
+            { text: "Takes ownership of the outcome", category: "decisive" },
+            { text: "Blames circumstances for poor results", category: "impulsive" }
+        ];
 
-            profiles.forEach(card => {
-                card.addEventListener('click', () => {
-                    // Reset active highlighting parameters
-                    profiles.forEach(p => p.classList.remove('active'));
+        let currentCardIndex = 0;
+        let correctMatches = 0;
 
-                    // Inject active attribute to chosen target
-                    card.classList.add('active');
-                });
-            });
-        });
+        function submitSort(userChoice) {
+            // Stop logic evaluation if the stack runs out of cards
+            if (currentCardIndex >= behaviorDeck.length) return;
+
+            const activeItem = behaviorDeck[currentCardIndex];
+            const decisiveFeedback = document.getElementById('decisive-feedback');
+            const impulsiveFeedback = document.getElementById('impulsive-feedback');
+            
+            // Clean slate alert view models
+            decisiveFeedback.style.opacity = '0';
+            impulsiveFeedback.style.opacity = '0';
+
+            // Match confirmation checking routing parameters
+            if (userChoice === activeItem.category) {
+                correctMatches++;
+                document.getElementById('correct-score').textContent = correctMatches;
+                
+                // Fire dynamic pop alert responses based on target drop zone
+                if (userChoice === 'decisive') {
+                    showFeedback(decisiveFeedback, "✓ Correct Category", "#58694d");
+                } else {
+                    showFeedback(impulsiveFeedback, "✓ Correct Category", "#baa18d");
+                }
+            } else {
+                if (userChoice === 'decisive') {
+                    showFeedback(decisiveFeedback, "✗ Incorrect Path", "#b54a24");
+                } else {
+                    showFeedback(impulsiveFeedback, "✗ Incorrect Path", "#b54a24");
+                }
+            }
+
+            // Move to next card object profile inside the data matrix arrays
+            currentCardIndex++;
+            updateCardDisplay();
+        }
+
+        function showFeedback(element, message, color) {
+            element.textContent = message;
+            element.style.color = color;
+            element.style.opacity = '1';
+            setTimeout(() => { element.style.opacity = '0'; }, 1200);
+        }
+
+        function updateCardDisplay() {
+            const remainingCount = behaviorDeck.length - currentCardIndex;
+            document.getElementById('cards-left').textContent = remainingCount;
+
+            const cardEl = document.getElementById('active-trait-card');
+            const textEl = document.getElementById('trait-text');
+
+            if (currentCardIndex < behaviorDeck.length) {
+                textEl.textContent = behaviorDeck[currentCardIndex].text;
+            } else {
+                // Render finished dashboard summary stage state view
+                cardEl.classList.add('completed');
+                textEl.innerHTML = `<strong>Challenge Complete!</strong><br>Final Score: ${correctMatches} out of ${behaviorDeck.length} Matches Correct.`;
+            }
+        }
+
+        // Initialize state markers on initial presentation execution lifecycle
+        document.getElementById('cards-left').textContent = behaviorDeck.length;
     </script>
 </body>
 </html>
