@@ -3,8 +3,224 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Communicating Decisions Effectively</title>
-    <link rel="stylesheet" href="style.css">
+    <title>Communicating Decisions Effectively - Interactive Slide</title>
+    
+    <style>
+        /* ==========================================================================
+           1. Core Reset & Presentation Foundations
+           ========================================================================== */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Georgia', serif; /* Matching the elegant serif style of your header */
+            background-color: #dcd7ce;
+            color: #2b1b0d;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        /* Enforced 16:9 Aspect Ratio Container Slide Bounding Box */
+        .slide-container {
+            background-color: #faf8f5;
+            width: 1280px;
+            height: 720px;
+            padding: 55px 65px;
+            border-radius: 8px;
+            box-shadow: 0 20px 45px rgba(0,0,0,0.12);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            overflow: hidden;
+        }
+
+        /* ==========================================================================
+           2. Slide Header Component
+           ========================================================================== */
+        .slide-header {
+            margin-bottom: 10px;
+        }
+
+        .main-title {
+            font-size: 2.8rem;
+            font-weight: 700;
+            color: #262626;
+            line-height: 1.2;
+        }
+
+        /* ==========================================================================
+           3. Horizontal Timeline Stepper Engine
+           ========================================================================== */
+        .timeline-stepper {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: relative;
+            margin: 50px auto;
+            width: 95%;
+            max-width: 1050px;
+        }
+
+        /* Static Background Connector Path Line */
+        .connecting-line {
+            position: absolute;
+            top: 32px;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background-color: #72846d;
+            opacity: 0.3;
+            z-index: 1;
+        }
+
+        /* Interactive Process Node Targets */
+        .node-button {
+            background-color: #3f4b3e; /* Branding solid forest green color */
+            color: #ffffff;
+            border: 3px solid transparent;
+            width: 64px;
+            height: 64px;
+            border-radius: 50%;
+            font-size: 1.3rem;
+            font-weight: 700;
+            font-family: 'Georgia', serif;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            z-index: 2;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+            transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+        }
+
+        .node-button:hover {
+            transform: scale(1.05);
+            background-color: #4a5849;
+        }
+
+        /* Active Selected State Design */
+        .node-button.active {
+            background-color: #ffffff;
+            color: #3f4b3e;
+            border-color: #3f4b3e;
+            transform: scale(1.12);
+            box-shadow: 0 6px 16px rgba(63, 75, 62, 0.15);
+        }
+
+        /* Permanent Descriptive Labels Attached to Nodes */
+        .node-metadata {
+            position: absolute;
+            top: 78px;
+            left: 50%;
+            transform: translateX(-50%);
+            text-align: center;
+            width: 220px;
+        }
+
+        .node-metadata h3 {
+            font-size: 1.05rem;
+            font-weight: 700;
+            color: #262626;
+            margin-bottom: 4px;
+            transition: color 0.3s;
+        }
+
+        .node-button.active .node-metadata h3 {
+            color: #3f4b3e;
+        }
+
+        .node-metadata p {
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            font-size: 0.82rem;
+            line-height: 1.3;
+            color: #7a7065;
+        }
+
+        /* ==========================================================================
+           4. Lower Focus Presentation Panel (Absolute Guard Against Overlaps)
+           ========================================================================== */
+        .content-vault-panel {
+            background-color: #f2eee7;
+            border-radius: 12px;
+            padding: 35px 50px;
+            height: 190px; /* Secure fixed footprint preserves widescreen alignment boundaries */
+            display: flex;
+            align-items: center;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.01);
+        }
+
+        .vault-pane {
+            display: none;
+            width: 100%;
+            animation: paneShiftIn 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .vault-pane.active {
+            display: block;
+        }
+
+        .pane-tag {
+            display: block;
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            font-size: 0.75rem;
+            font-weight: 800;
+            color: #72846d;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            margin-bottom: 8px;
+        }
+
+        .pane-title {
+            font-size: 1.6rem;
+            font-weight: 700;
+            color: #262626;
+            margin-bottom: 8px;
+        }
+
+        .pane-desc {
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            font-size: 1.05rem;
+            line-height: 1.5;
+            color: #4d4338;
+        }
+
+        /* ==========================================================================
+           5. Presentation Slide Footer
+           ========================================================================== */
+        .slide-footer {
+            border-top: 1px solid #ebdcd0;
+            padding-top: 15px;
+            text-align: center;
+        }
+
+        .slide-footer p {
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            font-size: 0.9rem;
+            color: #9c9184;
+            font-style: italic;
+        }
+
+        /* ==========================================================================
+           6. Structural Animations
+           ========================================================================== */
+        @keyframes paneShiftIn {
+            from {
+                opacity: 0;
+                transform: translateY(6px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
 </head>
 <body>
 
@@ -17,33 +233,65 @@
         <div class="timeline-stepper">
             <div class="connecting-line"></div>
             
-            <button class="node-circle active" data-step="1">
+            <button class="node-button active" data-target="pane-step1">
                 <span>1</span>
-                <span class="node-label">State the Decision</span>
+                <div class="node-metadata">
+                    <h3>State the Decision</h3>
+                    <p>Lead with the conclusion</p>
+                </div>
             </button>
             
-            <button class="node-circle" data-step="2">
+            <button class="node-button" data-target="pane-step2">
                 <span>2</span>
-                <span class="node-label">Share the Why</span>
+                <div class="node-metadata">
+                    <h3>Share the Why</h3>
+                    <p>Explain key core drivers</p>
+                </div>
             </button>
             
-            <button class="node-circle" data-step="3">
+            <button class="node-button" data-target="pane-step3">
                 <span>3</span>
-                <span class="node-label">Acknowledge Trade-offs</span>
+                <div class="node-metadata">
+                    <h3>Acknowledge Trade-offs</h3>
+                    <p>Name what you're giving up</p>
+                </div>
             </button>
             
-            <button class="node-circle" data-step="4">
+            <button class="node-button" data-target="pane-step4">
                 <span>4</span>
-                <span class="node-label">Invite Questions</span>
+                <div class="node-metadata">
+                    <h3>Invite Questions</h3>
+                    <p>Create clean feedback loops</p>
+                </div>
             </button>
         </div>
 
-        <main class="display-panel">
-            <div class="panel-inner" id="panelContent">
-                <span class="criteria-tag" id="stepTag">STEP ONE FRAMEWORK CRITERIA</span>
-                <h2 class="step-heading" id="stepTitle">State the Decision</h2>
-                <p class="step-description" id="stepDesc">Lead with the conclusion — don't bury it in context. Clear communication starts by delivering the core message immediately so your team isn't left guessing.</p>
+        <main class="content-vault-panel">
+            
+            <div class="vault-pane active" id="pane-step1">
+                <span class="pane-tag">Step One Focus Strategy</span>
+                <h2 class="pane-title">State the Decision Clearly</h2>
+                <p class="pane-desc">Lead with the conclusion — don't bury it in context. Clear communication starts by delivering the core message immediately so your team isn't left tracking background details to deduce the point.</p>
             </div>
+
+            <div class="vault-pane" id="pane-step2">
+                <span class="pane-tag">Step Two Focus Strategy</span>
+                <h2 class="pane-title">Share the Strategic Why</h2>
+                <p class="pane-desc">Explain the key factors and data matrix variables that drove your choice. Providing transparency context allows stakeholders to understand the structural logic, even if they initially hold a different perspective.</p>
+            </div>
+
+            <div class="vault-pane" id="pane-step3">
+                <span class="pane-tag">Step Three Focus Strategy</span>
+                <h2 class="pane-title">Acknowledge Material Trade-offs</h2>
+                <p class="pane-desc">Name explicitly what your direction is giving up — it demonstrates authentic, thorough leadership. Openly discussing alternative sacrifices builds trust and removes downstream team cynicism.</p>
+            </div>
+
+            <div class="vault-pane" id="pane-step4">
+                <span class="pane-tag">Step Four Focus Strategy</span>
+                <h2 class="pane-title">Invite Structured Questions</h2>
+                <p class="pane-desc">Create deliberate, safe space for implementation concerns without inadvertently reopening the core decision. Align execution mechanics effectively by pivoting questions entirely to next-step delivery tracks.</p>
+            </div>
+
         </main>
 
         <footer class="slide-footer">
@@ -52,6 +300,32 @@
 
     </div>
 
-    <script src="script.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const stepButtons = document.querySelectorAll('.node-button');
+            const visualPanes = document.querySelectorAll('.vault-pane');
+
+            stepButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    // 1. Terminate previous active configurations across the node menu lists
+                    stepButtons.forEach(btn => btn.classList.remove('active'));
+                    
+                    // 2. Clear view visibility properties from layout target panes
+                    visualPanes.forEach(pane => pane.classList.remove('active'));
+
+                    // 3. Bind active toggle properties to currently targeted node
+                    button.classList.add('active');
+
+                    // 4. Extract data-target element token and display content window cleanly
+                    const targetId = button.getAttribute('data-target');
+                    const targetPane = document.getElementById(targetId);
+                    
+                    if (targetPane) {
+                        targetPane.classList.add('active');
+                    }
+                });
+            });
+        });
+    </script>
 </body>
 </html>
