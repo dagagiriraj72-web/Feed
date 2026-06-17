@@ -4,7 +4,207 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cognitive Biases - Interactive 16:9 Slide</title>
-    <link rel="stylesheet" href="style.css">
+    
+    <style>
+        /* ==========================================================================
+           1. Core Structural Reset & Base Styles
+           ========================================================================== */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Georgia', serif; /* Matching the elegant serif headline style */
+            background-color: #dfdad1;
+            color: #2b1b0f;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        /* Master Slide Container (Forced 16:9 Presentation Boundary) */
+        .slide-container {
+            background-color: #faf8f5;
+            width: 1280px;
+            height: 720px;
+            padding: 55px;
+            border-radius: 6px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.1);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        /* ==========================================================================
+           2. Header Components
+           ========================================================================== */
+        .slide-header {
+            margin-bottom: 20px;
+        }
+
+        .main-title {
+            font-size: 2.7rem;
+            font-weight: 700;
+            color: #262626;
+            letter-spacing: -0.5px;
+        }
+
+        .subtitle {
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            font-size: 1rem;
+            color: #7a7065;
+            font-style: italic;
+            margin-top: 4px;
+        }
+
+        /* ==========================================================================
+           3. Flexbox Matrix Grid (Prevents Overlapping)
+           ========================================================================== */
+        .cards-grid {
+            display: flex;
+            gap: 25px;
+            flex: 1;
+            margin: 30px 0;
+            align-items: stretch;
+        }
+
+        /* ==========================================================================
+           4. Card Transform 3D Pivot Engine
+           ========================================================================== */
+        .flip-card {
+            flex: 1;
+            perspective: 1200px; /* Gives the card 3D spatial depth on rotation */
+            cursor: pointer;
+        }
+
+        .card-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            text-align: center;
+            transition: transform 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.1);
+            transform-style: preserve-3d;
+        }
+
+        /* Triggered via inline JavaScript toggle mapping */
+        .flip-card.flipped .card-inner {
+            transform: rotateY(180deg);
+        }
+
+        /* Shared attributes for Front & Back card interfaces */
+        .card-front, .card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden; /* Hides the inverted panel view */
+            border-radius: 12px;
+            padding: 40px 25px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.02);
+        }
+
+        /* ==========================================================================
+           5. Front Facade Styling
+           ========================================================================== */
+        .card-front {
+            background-color: #f2eee7;
+            border: 1px solid rgba(0,0,0,0.02);
+        }
+
+        .icon-circle {
+            width: 72px;
+            height: 72px;
+            background-color: #8c9c86; /* Leaf tone matching your graphic reference */
+            color: #ffffff;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 1.8rem;
+            font-family: 'Segoe UI', sans-serif;
+        }
+
+        .card-front h2 {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #262626;
+            margin: 20px 0 10px 0;
+        }
+
+        .preview-text {
+            font-size: 1.05rem;
+            line-height: 1.5;
+            color: #595045;
+        }
+
+        /* ==========================================================================
+           6. Rear Facade Design Components
+           ========================================================================== */
+        .card-back {
+            background-color: #ffffff;
+            transform: rotateY(180deg);
+        }
+
+        /* Individual accent borders based on your content choices */
+        .anchoring-back { border: 2px solid #7b8f9a; }
+        .confirmation-back { border: 2px solid #8c9c86; }
+        .availability-back { border: 2px solid #baa18d; }
+
+        .card-back h3 {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #262626;
+            border-bottom: 2px solid #f2eee7;
+            padding-bottom: 8px;
+            width: 100%;
+        }
+
+        .strategy-text {
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            font-size: 1rem;
+            line-height: 1.6;
+            color: #40362c;
+            text-align: left;
+            margin: auto 0;
+        }
+
+        /* Interactive Utility Help Hints */
+        .flip-hint, .return-hint {
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #a3998e;
+        }
+
+        .card-back .return-hint {
+            color: #8c9c86;
+        }
+
+        /* ==========================================================================
+           7. Footer Section
+           ========================================================================== */
+        .slide-footer {
+            border-top: 1px solid #ebdcd0;
+            padding-top: 15px;
+            text-align: center;
+        }
+
+        .slide-footer p {
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            font-size: 0.9rem;
+            color: #9c9184;
+            font-style: italic;
+        }
+    </style>
 </head>
 <body>
 
