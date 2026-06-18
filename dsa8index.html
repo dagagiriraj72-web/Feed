@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Decisive Leadership Case Studies - Interactive Widescreen Slide</title>
+    <title>Case Studies in Decisiveness - Storyline Safe Edition</title>
     
     <style>
         /* ==========================================================================
@@ -24,17 +24,17 @@
             align-items: center;
             min-height: 100vh;
             overflow: hidden;
-            padding: 10px;
+            padding: 4px;
         }
 
-        /* Fixed 16:9 Presentation Slide Canvas Box Container */
+        /* Fixed 16:9 Presentation Slide Canvas Box Container - Strict Height Cushioning */
         .slide-container {
             background-color: #fafcfe;
             width: 1280px;
             height: 720px;
-            padding: 45px 60px;
+            padding: 25px 45px 15px 45px; /* Highly defensive padding protects baseline from player cuts */
             border-radius: 8px;
-            box-shadow: 0 20px 50px rgba(18, 52, 86, 0.15);
+            box-shadow: 0 20px 50px rgba(18, 52, 86, 0.12);
             display: flex;
             flex-direction: column;
             justify-content: space-between;
@@ -46,73 +46,48 @@
            ========================================================================== */
         .slide-header {
             border-bottom: 2px solid #e1e8f0;
-            padding-bottom: 15px;
+            padding-bottom: 10px;
+            flex-shrink: 0;
         }
 
         .main-title {
-            font-size: 2.6rem;
+            font-size: 2.2rem; /* Scaled down slightly to reclaim high-value vertical real estate */
             font-weight: 800;
-            color: #123456; /* Deep blue corporate branding tone */
+            color: #123456;
             line-height: 1.1;
         }
 
-        .subtitle {
-            font-size: 1.05rem;
-            color: #6a7b8c;
-            margin-top: 5px;
-            font-weight: 500;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .subtitle::before {
-            content: "•";
-            color: #e67e22; /* Vivid orange accent dot indicator from layouts */
-            font-size: 1.5rem;
-        }
-
         /* ==========================================================================
-           3. Gameplay Split-Grid Workspace Arena (Zero Vertical Shifting)
+           3. Re-Architected Horizontal Menu (Drastically Frees Up Vertical Space)
            ========================================================================== */
-        .gameplay-arena {
+        .leader-horizontal-menu {
             display: flex;
-            gap: 35px;
-            flex: 1;
-            margin: 25px 0;
-            align-items: stretch;
-            height: calc(100% - 135px);
-        }
-
-        /* Left Side: Case Study Selector Sidebar */
-        .leader-sidebar {
-            flex: 0.8;
-            display: flex;
-            flex-direction: column;
-            gap: 14px;
-            justify-content: center;
+            gap: 12px;
+            margin-top: 15px;
+            flex-shrink: 0;
         }
 
         .leader-tab-btn {
+            flex: 1;
             background-color: #ffffff;
             border: 1px solid #e1e8f0;
-            border-radius: 8px;
-            padding: 20px;
+            border-radius: 6px;
+            padding: 10px 16px;
             font-family: inherit;
-            font-size: 1.1rem;
+            font-size: 1rem;
             font-weight: 700;
             color: #123456;
             text-align: left;
             cursor: pointer;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.01);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.01);
             display: flex;
             flex-direction: column;
-            gap: 4px;
-            transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+            gap: 2px;
+            transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
         .leader-tab-btn span {
-            font-size: 0.8rem;
+            font-size: 0.72rem;
             font-weight: 600;
             color: #6a7b8c;
             text-transform: uppercase;
@@ -122,90 +97,96 @@
         .leader-tab-btn:hover {
             background-color: #f7fafc;
             border-color: #3b75af;
-            transform: translateX(4px);
+            transform: translateY(-1px);
         }
 
         .leader-tab-btn.active {
             background-color: #123456;
             color: #ffffff;
             border-color: #123456;
-            box-shadow: 0 8px 20px rgba(18, 52, 86, 0.15);
-            transform: translateX(4px);
+            box-shadow: 0 4px 12px rgba(18, 52, 86, 0.15);
         }
 
         .leader-tab-btn.active span {
-            color: #e67e22;
+            color: #e67e22; /* Signature accent orange */
         }
 
-        /* Right Side: Case Study Dynamic Content Display Vault */
+        /* ==========================================================================
+           4. Main Content Frame Panel Vault (Guarded Proportions)
+           ========================================================================== */
         .case-vault-display {
-            flex: 1.8;
+            flex: 1;
             background-color: #ffffff;
             border: 1px solid #e1e8f0;
-            border-radius: 12px;
-            padding: 35px 40px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.02);
+            border-radius: 10px;
+            padding: 25px 35px;
+            margin: 15px 0;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.01);
             position: relative;
         }
 
         .case-pane {
             display: none;
-            grid-template-columns: 1.1fr 0.9fr;
-            gap: 35px;
+            grid-template-columns: 1.15fr 0.85fr;
+            gap: 40px;
             width: 100%;
             height: 100%;
             align-items: center;
-            animation: paneEntrance 0.4s ease-out forwards;
+            animation: paneEntrance 0.35s ease-out forwards;
         }
 
         .case-pane.active {
             display: grid;
         }
 
-        /* Left Side of Pane: Narrative */
+        /* Left Split: Narrative Context */
         .narrative-side h2 {
-            font-size: 1.6rem;
+            font-size: 1.45rem;
             font-weight: 700;
             color: #123456;
-            margin-bottom: 18px;
+            margin-bottom: 12px;
         }
 
         .narrative-side p {
-            font-size: 1.05rem;
-            line-height: 1.55;
+            font-size: 0.98rem;
+            line-height: 1.5;
             color: #334455;
-            margin-bottom: 15px;
+            margin-bottom: 10px;
+        }
+        
+        .narrative-side p:last-child {
+            margin-bottom: 0;
         }
 
-        /* Right Side of Pane: Visual Data Blocks */
+        /* Right Split: Visual Data Matrix Display */
         .data-side {
             height: 100%;
             display: flex;
             flex-direction: column;
             justify-content: center;
-            padding-left: 20px;
+            border-left: 2px solid #f0f4f8;
+            padding-left: 30px;
         }
 
-        /* Theme-specific formatting options matching reference image data structures */
-        
-        /* Iger Acquisition List View Styles */
+        /* Disney Acquisition List formatting */
         .acquisition-list {
             display: flex;
             flex-direction: column;
-            gap: 14px;
+            gap: 12px;
         }
 
         .acq-row {
             display: flex;
             align-items: center;
-            gap: 15px;
-            font-size: 1.05rem;
+            gap: 12px;
+            font-size: 0.95rem;
             color: #334455;
+            font-weight: 600;
         }
 
         .acq-dot {
-            width: 16px;
-            height: 16px;
+            width: 12px;
+            height: 12px;
             background-color: #e67e22;
             border-radius: 50%;
             flex-shrink: 0;
@@ -214,41 +195,36 @@
         .acq-year {
             font-weight: 800;
             color: #123456;
-            width: 50px;
+            width: 45px;
         }
 
-        /* Nooyi Blue Container List View Styles */
+        /* PepsiCo Slate Box List formatting */
         .lessons-box-navy {
             background-color: #1a365d;
-            border-radius: 8px;
-            padding: 25px;
+            border-radius: 6px;
+            padding: 20px;
             color: #ffffff;
-            height: 100%;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
         }
 
         .lessons-box-navy h3 {
-            font-size: 1.3rem;
-            margin-bottom: 16px;
+            font-size: 1.15rem;
+            margin-bottom: 12px;
             border-bottom: 1px solid rgba(255,255,255,0.15);
-            padding-bottom: 10px;
+            padding-bottom: 6px;
         }
 
         .lessons-list {
             list-style-type: none;
             display: flex;
             flex-direction: column;
-            gap: 12px;
+            gap: 10px;
         }
 
         .lessons-list li {
-            font-size: 0.95rem;
-            line-height: 1.45;
+            font-size: 0.88rem;
+            line-height: 1.4;
             position: relative;
-            padding-left: 18px;
-            opacity: 0.95;
+            padding-left: 15px;
         }
 
         .lessons-list li::before {
@@ -256,56 +232,57 @@
             position: absolute;
             left: 0;
             color: #e67e22;
-            font-size: 1.2rem;
-            top: -2px;
+            font-size: 1.1rem;
+            top: -1px;
         }
 
-        /* Barra Outsized Analytics Display View Styles */
+        /* General Motors Analytics formatting */
         .stats-column {
             display: flex;
             flex-direction: column;
-            gap: 20px;
+            gap: 16px;
         }
 
         .stat-block {
             display: flex;
             align-items: center;
-            gap: 20px;
+            gap: 15px;
         }
 
         .stat-value {
-            font-size: 2.3rem;
+            font-size: 2rem;
             font-weight: 800;
             color: #3b75af;
-            width: 140px;
+            width: 110px;
             flex-shrink: 0;
         }
 
         .stat-label {
-            font-size: 0.98rem;
-            line-height: 1.4;
+            font-size: 0.9rem;
+            line-height: 1.35;
             color: #4b5a6a;
+            font-weight: 600;
         }
 
         /* ==========================================================================
-           4. Slide Footer Component
+           5. Slide Footer Component
            ========================================================================== */
         .slide-footer {
             border-top: 1px solid #e1e8f0;
-            padding-top: 15px;
+            padding-top: 10px;
             text-align: center;
+            flex-shrink: 0;
         }
 
         .slide-footer p {
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             color: #6a7b8c;
             font-style: italic;
         }
 
-        /* Animation Entries */
         @keyframes paneEntrance {
-            from { opacity: 0; transform: translateX(8px); }
-            to { opacity: 1; transform: translateX(0); }
+            from { opacity: 0; transform: translateY(6px); }
+            to { opacity: 1; transform: translateY(0); }
         }
     </style>
 </head>
@@ -316,13 +293,9 @@
         <!-- Header Section -->
         <header class="slide-header">
             <h1 class="main-title">Case Studies in Decisiveness</h1>
-        </header>
-
-        <!-- Main Interactive Workspace Split Arena -->
-        <div class="gameplay-arena">
             
-            <!-- Left Sidebar Navigation Menu Tabs -->
-            <nav class="leader-sidebar">
+            <!-- Horizontal Navigation Menu (Reclaims space previously lost to sidebar) -->
+            <nav class="leader-horizontal-menu">
                 <button class="leader-tab-btn active" onclick="switchCaseStudy(0, this)">
                     <span>Disney's Transformation</span>
                     Bob Iger
@@ -336,90 +309,86 @@
                     Mary Barra
                 </button>
             </nav>
+        </header>
 
-            <!-- Right Side Dynamic Content Frame Panel Vault -->
-            <main class="case-vault-display">
-                
-                <!-- Pane 1: Bob Iger -->
-                <div class="case-pane active" id="pane-0">
-                    <div class="narrative-side">
-                        <h2>The Decisive Move</h2>
-                        <p>When Iger became Disney CEO in 2006, the animation studio was struggling. Rather than waiting for internal solutions, he made a bold call: acquire Pixar for $7.4 billion.</p>
-                        <p>This single decision launched a strategic transformation that would include Marvel, Lucasfilm, and 21st Century Fox — turning Disney into the world's content powerhouse.</p>
-                    </div>
-                    <div class="data-side">
-                        <h2 style="font-size:1.1rem; text-transform:uppercase; letter-spacing:0.5px; color:#6a7b8c; margin-bottom:15px;">Decisive Acquisitions</h2>
-                        <div class="acquisition-list">
-                            <div class="acq-row"><div class="acq-dot"></div><div class="acq-year">2006</div><div>Pixar — $7.4B</div></div>
-                            <div class="acq-row"><div class="acq-dot"></div><div class="acq-year">2009</div><div>Marvel — $4.0B</div></div>
-                            <div class="acq-row"><div class="acq-dot"></div><div class="acq-year">2012</div><div>Lucasfilm — $4.1B</div></div>
-                            <div class="acq-row"><div class="acq-dot"></div><div class="acq-year">2019</div><div>21st Century Fox — $71.3B</div></div>
-                        </div>
+        <!-- Main Content Area Display Panel -->
+        <main class="case-vault-display">
+            
+            <!-- Pane 1: Bob Iger -->
+            <div class="case-pane active" id="pane-0">
+                <div class="narrative-side">
+                    <h2>The Decisive Move</h2>
+                    <p>When Iger became Disney CEO in 2006, the animation studio was struggling. Rather than waiting for internal solutions, he made a bold call: acquire Pixar for $7.4 billion.</p>
+                    <p>This single decision launched a strategic transformation that would include Marvel, Lucasfilm, and 21st Century Fox — turning Disney into the world's content powerhouse.</p>
+                </div>
+                <div class="data-side">
+                    <h2 style="font-size:0.85rem; text-transform:uppercase; letter-spacing:1px; color:#6a7b8c; margin-bottom:12px;">Decisive Acquisitions</h2>
+                    <div class="acquisition-list">
+                        <div class="acq-row"><div class="acq-dot"></div><div class="acq-year">2006</div><div>Pixar — $7.4B</div></div>
+                        <div class="acq-row"><div class="acq-dot"></div><div class="acq-year">2009</div><div>Marvel — $4.0B</div></div>
+                        <div class="acq-row"><div class="acq-dot"></div><div class="acq-year">2012</div><div>Lucasfilm — $4.1B</div></div>
+                        <div class="acq-row"><div class="acq-dot"></div><div class="acq-year">2019</div><div>21st Century Fox — $71.3B</div></div>
                     </div>
                 </div>
+            </div>
 
-                <!-- Pane 2: Indra Nooyi -->
-                <div class="case-pane" id="pane-1">
-                    <div class="narrative-side">
-                        <h2>Against the Current</h2>
-                        <p>Nooyi shifted PepsiCo toward healthier offerings despite intense skepticism from industry analysts. She invested heavily in bottled water, baked snacks, and reduced-sugar products while competitors clung to traditional formulations.</p>
-                        <p>By her 2018 departure, PepsiCo was positioned ahead of market health trends — validating her decisive stance against conventional wisdom.</p>
-                    </div>
-                    <div class="data-side" style="padding-left:0;">
-                        <div class="lessons-box-navy">
-                            <h3>Lessons in Decisiveness</h3>
-                            <ul class="lessons-list">
-                                <li>Trust your conviction even when experts disagree</li>
-                                <li>Align decisions with long-term trends, not short-term pressure</li>
-                                <li>Invest through the skepticism — results validate the strategy</li>
-                                <li>Maintain decisive course despite quarterly pressures</li>
-                            </ul>
-                        </div>
+            <!-- Pane 2: Indra Nooyi -->
+            <div class="case-pane" id="pane-1">
+                <div class="narrative-side">
+                    <h2>Against the Current</h2>
+                    <p>Nooyi shifted PepsiCo toward healthier offerings despite intense skepticism from industry analysts. She invested heavily in bottled water, baked snacks, and reduced-sugar products while competitors clung to traditional formulations.</p>
+                    <p>By her 2018 departure, PepsiCo was positioned ahead of market health trends — validating her decisive stance against conventional wisdom.</p>
+                </div>
+                <div class="data-side" style="padding-left:0; border-left:none;">
+                    <div class="lessons-box-navy">
+                        <h3>Lessons in Decisiveness</h3>
+                        <ul class="lessons-list">
+                            <li>Trust your conviction even when experts disagree</li>
+                            <li>Align decisions with long-term trends, not short-term pressure</li>
+                            <li>Invest through the skepticism — results validate the strategy</li>
+                            <li>Maintain decisive course despite quarterly pressures</li>
+                        </ul>
                     </div>
                 </div>
+            </div>
 
-                <!-- Pane 3: Mary Barra -->
-                <div class="case-pane" id="pane-2">
-                    <div class="narrative-side">
-                        <h2>Decisive Crisis Management</h2>
-                        <p>When GM faced a deadly ignition switch defect, Barra didn't hesitate or deflect. She immediately acknowledged the company's failures, initiated a transparent investigation, and allocated $900 million for claims.</p>
-                        <p>This decisive response restored public confidence in GM's integrity and set the foundation for her equally bold pivot toward electric vehicles.</p>
-                    </div>
-                    <div class="data-side">
-                        <h2 style="font-size:1.1rem; text-transform:uppercase; letter-spacing:0.5px; color:#6a7b8c; margin-bottom:20px;">Bold Outcomes</h2>
-                        <div class="stats-column">
-                            <div class="stat-block"><div class="stat-value">$900M</div><div class="stat-label">Allocated for claims</div></div>
-                            <div class="stat-block"><div class="stat-value">$35B</div><div class="stat-label">EV investment commitment</div></div>
-                            <div class="stat-block"><div class="stat-value">30+</div><div class="stat-label">New EV models planned</div></div>
-                        </div>
+            <!-- Pane 3: Mary Barra -->
+            <div class="case-pane" id="pane-2">
+                <div class="narrative-side">
+                    <h2>Decisive Crisis Management</h2>
+                    <p>When GM faced a deadly ignition switch defect, Barra didn't hesitate or deflect. She immediately acknowledged the company's failures, initiated a transparent investigation, and allocated $900 million for claims.</p>
+                    <p>This decisive response restored public confidence in GM's integrity and set the foundation for her equally bold pivot toward electric vehicles.</p>
+                </div>
+                <div class="data-side">
+                    <h2 style="font-size:0.85rem; text-transform:uppercase; letter-spacing:1px; color:#6a7b8c; margin-bottom:15px;">Bold Outcomes</h2>
+                    <div class="stats-column">
+                        <div class="stat-block"><div class="stat-value">$900M</div><div class="stat-label">Allocated for claims</div></div>
+                        <div class="stat-block"><div class="stat-value">$35B</div><div class="stat-label">EV investment commitment</div></div>
+                        <div class="stat-block"><div class="stat-value">30+</div><div class="stat-label">New EV models planned</div></div>
                     </div>
                 </div>
+            </div>
 
-            </main>
+        </main>
 
-        </div>
-
-        <!-- Instructions Slide Footer Help Line -->
+        <!-- Instructions Footer Line -->
         <footer class="slide-footer">
-            <p>Select individual executive leadership tabs on the left menu column to cycle through historical corporate case studies.</p>
+            <p>Select an executive leadership tab above to review their strategic case profile snapshot variables.</p>
         </footer>
 
     </div>
 
     <!-- ==========================================================================
-       5. Interactive Navigation Router Engine Script
+       6. Interactive Navigation Router Engine Script
        ========================================================================== -->
     <script>
         function switchCaseStudy(paneIndex, tabElement) {
-            // Remove active highlight state parameters across tabs list
             const tabs = document.querySelectorAll('.leader-tab-btn');
             tabs.forEach(t => t.classList.remove('active'));
 
-            // Hide all case data pane views
             const panes = document.querySelectorAll('.case-pane');
             panes.forEach(p => p.classList.remove('active'));
 
-            // Toggle selected states
             tabElement.classList.add('active');
             document.getElementById(`pane-${paneIndex}`).classList.add('active');
         }
