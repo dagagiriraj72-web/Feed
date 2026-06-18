@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Choosing the Right Framework - Interactive 16:9 Slide</title>
+    <title>Choosing the Right Framework - Storyline Guarded Edition</title>
     
     <style>
         /* ==========================================================================
-           1. Core Reset & Fixed 16:9 Canvas Constraints (Absolute No-Scroll Gate)
+           1. Core Reset & Fixed Canvas Dimensions (Absolute No-Scroll Gate)
            ========================================================================== */
         * {
             box-sizing: border-box;
@@ -24,7 +24,7 @@
             align-items: center;
             min-height: 100vh;
             overflow: hidden;
-            padding: 10px;
+            padding: 5px;
         }
 
         /* Fixed 16:9 Presentation Slide Frame Canvas Box Container */
@@ -32,7 +32,7 @@
             background-color: #fafcfe;
             width: 1280px;
             height: 720px;
-            padding: 45px 60px;
+            padding: 30px 45px 20px 45px; /* Compressed padding protects baseline from player cuts */
             border-radius: 8px;
             box-shadow: 0 20px 50px rgba(18, 52, 86, 0.12);
             display: flex;
@@ -49,7 +49,8 @@
             justify-content: space-between;
             align-items: flex-start;
             border-bottom: 2px solid #e1e8f0;
-            padding-bottom: 12px;
+            padding-bottom: 10px;
+            flex-shrink: 0;
         }
 
         .title-group {
@@ -57,38 +58,38 @@
         }
 
         .main-title {
-            font-size: 2.6rem;
+            font-size: 2.4rem;
             font-weight: 800;
-            color: #123456; /* Deep blue corporate branding tone from image_ffc0fc.png */
+            color: #123456;
             line-height: 1.1;
         }
 
         .subtitle {
-            font-size: 1.05rem;
+            font-size: 0.95rem;
             color: #6a7b8c;
-            margin-top: 5px;
+            margin-top: 3px;
             font-weight: 500;
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 6px;
         }
 
         .subtitle::before {
             content: "•";
-            color: #e67e22; /* Vivid orange accent dot indicator from your layout graphic */
-            font-size: 1.5rem;
+            color: #e67e22;
+            font-size: 1.4rem;
         }
 
         .hud-metrics {
             display: flex;
-            gap: 15px;
+            gap: 12px;
         }
 
         .metric-pill {
             background-color: #eaf1f8;
-            padding: 8px 16px;
+            padding: 6px 14px;
             border-radius: 6px;
-            font-size: 0.85rem;
+            font-size: 0.8rem;
             font-weight: 700;
             text-transform: uppercase;
             letter-spacing: 0.5px;
@@ -97,87 +98,86 @@
         }
 
         /* ==========================================================================
-           3. Core Interactive Gameplay Split Arena
+           3. Restructured Side-by-Side Arena Layout (Zero Vertical Shifts)
            ========================================================================== */
         .gameplay-arena {
             display: flex;
-            flex-direction: column;
-            gap: 20px;
+            gap: 30px;
             flex: 1;
-            margin: 25px 0;
-            height: calc(100% - 145px);
+            margin: 20px 0 15px 0;
+            align-items: stretch;
+            height: calc(100% - 135px);
         }
 
-        /* Upper Focus: Case Diagnostics Box Window */
-        .case-diagnostic-box {
-            background-color: #ffffff;
-            border: 2px dashed #ccdbe8;
-            border-radius: 12px;
-            padding: 22px 30px;
-            min-height: 105px;
+        /* Left Split: Live Scenario Diagnostic Monitor Column */
+        .sidebar-diagnostic-panel {
+            flex: 0.8;
+            background-color: #123456;
+            border-radius: 8px;
+            padding: 25px;
+            color: #ffffff;
             display: flex;
             flex-direction: column;
             justify-content: center;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.01);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
         }
 
-        .case-diagnostic-box h3 {
-            font-size: 0.78rem;
+        .sidebar-diagnostic-panel h3 {
+            font-size: 0.75rem;
             text-transform: uppercase;
             letter-spacing: 1.5px;
             color: #e67e22;
-            margin-bottom: 4px;
+            margin-bottom: 6px;
         }
 
-        .case-diagnostic-box p {
-            font-size: 1.15rem;
-            line-height: 1.45;
-            color: #2c3e50;
+        .sidebar-diagnostic-panel p {
+            font-size: 1.1rem;
+            line-height: 1.5;
+            color: #ffffff;
             font-weight: 600;
         }
 
-        /* Lower Frameworks Choice Grid (Matches image_ffc0fc.png structure exactly) */
+        /* Right Split: Parallel Framework Targets Grid */
         .frameworks-choice-grid {
+            flex: 1.2;
             display: flex;
-            gap: 24px;
-            flex: 1;
+            gap: 16px;
             align-items: stretch;
         }
 
         .framework-target-card {
             flex: 1;
             background-color: #ffffff;
-            border-radius: 4px;
+            border-radius: 6px;
             border: 1px solid #e1e8f0;
-            box-shadow: 0 6px 15px rgba(0,0,0,0.02);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.01);
             display: flex;
             flex-direction: column;
             cursor: pointer;
             overflow: hidden;
-            transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+            transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
         .framework-target-card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 12px 25px rgba(18, 52, 86, 0.08);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(18, 52, 86, 0.08);
         }
 
-        /* Distinct Framework Banner Headers */
         .card-banner-header {
-            padding: 18px 30px;
-            font-size: 1.65rem;
+            padding: 14px 22px;
+            font-size: 1.4rem;
             font-weight: 700;
             color: #ffffff;
+            flex-shrink: 0;
         }
-        .ooda-theme .card-banner-header { background-color: #3b75af; } /* Sky Blue ribbon from image */
-        .rapid-theme .card-banner-header { background-color: #1a365d; } /* Deep Dark Navy ribbon from image */
+        .ooda-theme .card-banner-header { background-color: #3b75af; }
+        .rapid-theme .card-banner-header { background-color: #1a365d; }
 
-        /* Inner Bullet Criteria Modules */
         .card-inner-features {
-            padding: 30px;
+            padding: 20px 22px;
             display: flex;
             flex-direction: column;
-            justify-content: flex-start;
+            justify-content: space-between;
             flex: 1;
         }
 
@@ -185,30 +185,30 @@
             list-style-type: none;
             display: flex;
             flex-direction: column;
-            gap: 14px;
+            gap: 10px; /* Highly compact gap structure keeps rows safe */
         }
 
         .criteria-bullet-list li {
-            font-size: 0.98rem;
-            line-height: 1.45;
+            font-size: 0.88rem;
+            line-height: 1.35;
             color: #4b5a6a;
             position: relative;
-            padding-left: 24px;
+            padding-left: 20px;
             font-weight: 600;
-            opacity: 0.4; /* Hidden/dimmed until unlocked by active choices */
-            transition: opacity 0.3s ease, transform 0.3s ease;
+            opacity: 0.35; /* Dimmed down until unlocked via interactions */
+            transition: opacity 0.25s ease, transform 0.25s ease;
         }
 
         .criteria-bullet-list li::before {
             content: "•";
             position: absolute;
             left: 0;
-            font-size: 1.4rem;
+            font-size: 1.3rem;
             top: -2px;
             color: #9e9587;
         }
 
-        /* Highlights matching features once selected correctly */
+        /* Active highlight states for unlocked matches */
         .framework-target-card.highlight-mode .criteria-bullet-list li.matched-feature {
             opacity: 1;
             color: #123456;
@@ -217,30 +217,18 @@
         .ooda-theme.highlight-mode .criteria-bullet-list li.matched-feature::before { color: #3b75af; }
         .rapid-theme.highlight-mode .criteria-bullet-list li.matched-feature::before { color: #1a365d; }
 
-        /* Solved State styling locks */
-        .framework-target-card.solved-complete {
-            cursor: default;
-            pointer-events: none;
-            border-color: #ccdbe8;
-        }
-        .framework-target-card.solved-complete .criteria-bullet-list li {
-            opacity: 1 !important;
-            color: #2c3e50 !important;
-        }
-
         /* ==========================================================================
-           4. End-Game Macro Summary Infographic Layer (Fades In Smoothly)
+           4. Game End Unified Summary Framework Dashboard Overlay
            ========================================================================== */
         .mastery-dashboard-overlay {
             display: none;
             width: 100%;
             height: 100%;
-            gap: 24px;
-            animation: layoutEntrance 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
-            margin: 25px 0;
+            gap: 20px;
+            animation: layoutEntrance 0.4s ease-out both;
+            margin-top: 15px;
         }
 
-        /* Restores the exact layout parameters from image_ffc0fc.png */
         .mastery-dashboard-overlay .framework-target-card {
             cursor: default;
             pointer-events: none;
@@ -255,19 +243,19 @@
            ========================================================================== */
         .slide-footer {
             border-top: 1px solid #e1e8f0;
-            padding-top: 15px;
+            padding-top: 10px;
             text-align: center;
+            flex-shrink: 0;
         }
 
         .slide-footer p {
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             color: #6a7b8c;
             font-style: italic;
         }
 
-        /* Entry Motion Architectures */
         @keyframes layoutEntrance {
-            from { opacity: 0; transform: translateY(12px); }
+            from { opacity: 0; transform: translateY(10px); }
             to { opacity: 1; transform: translateY(0); }
         }
     </style>
@@ -276,7 +264,6 @@
 
     <div class="slide-container">
         
-        <!-- Header HUD Dashboard -->
         <header class="slide-header">
             <div class="title-group">
                 <h1 class="main-title" id="dynamic-title">Choosing the Right Framework</h1>
@@ -288,19 +275,15 @@
             </div>
         </header>
 
-        <!-- Main Dynamic Play Field Environment Arena -->
         <div class="gameplay-arena" id="main-play-arena">
             
-            <!-- Upper Live Example Diagnostic Window -->
-            <div class="case-diagnostic-box">
-                <h3>Live Operational Scenario</h3>
-                <p id="scenario-text">"A fast-moving competitor has launched an aggressive marketing response in our region; we need an immediate, agile counter-strategy."</p>
+            <div class="sidebar-diagnostic-panel">
+                <h3>Live Scenario Case</h3>
+                <p id="scenario-text">"Our regional competitor has launched an aggressive pricing shift; we require an instant market response framework."</p>
             </div>
 
-            <!-- Lower Framework Targets Grid mirroring image_ffc0fc.png components -->
             <div class="frameworks-choice-grid">
                 
-                <!-- Target Card 1: OODA Loop -->
                 <div class="framework-target-card ooda-theme" id="card-ooda" onclick="routeScenario('ooda')">
                     <div class="card-banner-header">OODA Loop</div>
                     <div class="card-inner-features">
@@ -313,7 +296,6 @@
                     </div>
                 </div>
 
-                <!-- Target Card 2: RAPID -->
                 <div class="framework-target-card rapid-theme" id="card-rapid" onclick="routeScenario('rapid')">
                     <div class="card-banner-header">RAPID</div>
                     <div class="card-inner-features">
@@ -330,7 +312,6 @@
 
         </div>
 
-        <!-- Hidden End-Game Master Infographic Dashboard Layer (Matches image_ffc0fc.png exactly upon finalization) -->
         <div class="mastery-dashboard-overlay" id="mastery-screen">
             
             <div class="framework-target-card ooda-theme">
@@ -359,18 +340,13 @@
 
         </div>
 
-        <!-- Instructions Slide Footer Help Line -->
         <footer class="slide-footer">
-            <p id="footer-text">Analyze the Live Operational Scenario case, then click on the proper framework card architecture block that matches the strategic criteria.</p>
+            <p id="footer-text">Analyze the Live Scenario Case inside the left monitor block, then click on the correct framework card block option on the right.</p>
         </footer>
 
     </div>
 
-    <!-- ==========================================================================
-       6. Interactive Dashboard Router Engine Script
-       ========================================================================== -->
     <script>
-        // Array matrix housing business case scenarios linked directly to criteria indices
         const challengeDeck = [
             { framework: "ooda", featureClass: "f-0", text: '"Our regional competitor has launched an aggressive pricing shift; we require an instant market response framework."' },
             { framework: "rapid", featureClass: "f-5", text: '"We are designing a new compliance integration protocol across multiple cross-functional departments and matrixed stakeholders."' },
@@ -387,23 +363,19 @@
             const oodaCard = document.getElementById('card-ooda');
             const rapidCard = document.getElementById('card-rapid');
 
-            // Clear intermediate hover highlight visibility indicators
             oodaCard.classList.remove('highlight-mode');
             rapidCard.classList.remove('highlight-mode');
             
             const targetActiveCard = (activeItem.framework === 'ooda') ? oodaCard : rapidCard;
 
             if (userCardChoice === activeItem.framework) {
-                // Correct match sequence
                 successfulRoutes++;
                 document.getElementById('routed-count').textContent = `${successfulRoutes} / 4`;
 
-                // Highlight the matched feature row explicitly within the target container card
                 targetActiveCard.classList.add('highlight-mode');
                 const matchedRow = targetActiveCard.querySelector(`.${activeItem.featureClass}`);
                 if (matchedRow) matchedRow.classList.add('matched-feature');
 
-                // Freeze interactive tracking brief moment to allow learner review
                 setTimeout(() => {
                     if (successfulRoutes < 4) {
                         activeCaseIndex++;
@@ -413,10 +385,9 @@
                     } else {
                         displayUnifiedSummaryDashboard();
                     }
-                }, 1400);
+                }, 1200);
 
             } else {
-                // Incorrect match penalty logic handling
                 routingMistakesCount++;
                 const ratingHUD = document.getElementById('precision-score');
                 if (routingMistakesCount === 1) {
@@ -430,20 +401,16 @@
         }
 
         function displayUnifiedSummaryDashboard() {
-            // Unmount runtime scenario components cleanly
             document.getElementById('main-play-arena').style.display = 'none';
             document.getElementById('game-hud').style.display = 'none';
 
-            // Swap slide headers descriptions
             document.getElementById('dynamic-title').textContent = "Choosing the Right Framework Mastered";
-            document.getElementById('dynamic-subtitle').textContent = "Unified Matrix Guide: Aligning organizational stakes and environments to correct decision models.";
+            document.getElementById('dynamic-subtitle').textContent = "Unified Matrix Guide: Aligning environments and operational constraints to proper decision models.";
 
-            // Render complete static framework mirroring image_ffc0fc.png specs perfectly
             document.getElementById('mastery-screen').style.display = 'flex';
-            document.getElementById('footer-text').textContent = "Course slide block finalized. You have successfully evaluated all live strategic examples across this framework.";
+            document.getElementById('footer-text').textContent = "Course module complete. All case variables mapped successfully. You can now pass forward safely.";
         }
 
-        // Initialize primary script state indicators on module boot load
         document.getElementById('scenario-text').textContent = challengeDeck[0].text;
     </script>
 </body>
