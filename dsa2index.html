@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>The Strategic Cost - Fixed Fit</title>
+    <title>Decision Debt - Storyline Guaranteed Fit</title>
     
     <style>
         /* ==========================================================================
@@ -25,14 +25,14 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            padding: 2px;
+            padding: 5px;
         }
 
         /* Fixed 16:9 Slide Canvas Main Chassis */
         .slide-container {
             width: 1280px;
             height: 720px;
-            padding: 25px 45px 15px 45px; /* Highly defensive layout cushioning handles player frames */
+            padding: 30px 45px 20px 45px; /* Highly defensive padding guards against timeline cuts */
             display: flex;
             flex-direction: column;
             justify-content: space-between;
@@ -44,180 +44,182 @@
            2. Low-Profile Header Area
            ========================================================================== */
         .slide-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-bottom: 2px solid #e1e8f0;
+            border-bottom: 2px solid #edf2f7;
             padding-bottom: 8px;
-            height: 65px;
+            height: 75px;
             flex-shrink: 0;
         }
 
         .main-title {
-            font-size: 2.2rem;
+            font-size: 2.3rem;
             font-weight: 800;
-            color: #123456; /* Core branding deep blue */
+            color: #1a365d; /* Brand deep blue from image_ef6e84.png */
+            line-height: 1.1;
         }
 
-        .hud-metrics {
-            display: flex;
-            gap: 10px;
-        }
-
-        .metric-pill {
-            background-color: #eaf1f8;
-            padding: 5px 12px;
-            border-radius: 4px;
-            font-size: 0.8rem;
-            font-weight: 700;
-            color: #123456;
-            border: 1px solid #ccdbe8;
+        .subtitle {
+            font-size: 0.95rem;
+            color: #6a7b8c;
+            margin-top: 2px;
+            font-weight: 500;
         }
 
         /* ==========================================================================
-           3. Horizontal Arena Workspace (Ensures zero baseline drops)
+           3. Horizontal Split Arena (Reclaims Vertical Space)
            ========================================================================== */
         .gameplay-arena {
+            display: grid;
+            grid-template-columns: 1.05fr 0.95fr;
+            gap: 30px;
+            flex: 1;
+            margin: 20px 0 15px 0;
+            min-height: 0; /* Keeps layout strictly bounded */
+        }
+
+        /* Left Split: Browser Tabs Simulator Card Platform */
+        .tabs-simulator-panel {
+            background-color: #1a365d;
+            border-radius: 8px;
+            padding: 25px 30px;
             display: flex;
             flex-direction: column;
-            gap: 15px;
-            flex: 1;
-            margin-top: 15px;
-            min-height: 0; /* Prevents overflow content stretch loops */
+            justify-content: space-between;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
         }
 
-        /* Horizontal Tabs Layer - Bypasses high-risk vertical line clipping entirely */
-        .horizontal-timeline {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 12px;
-            height: 50px;
-            flex-shrink: 0;
+        .panel-quote-heading {
+            font-family: 'Georgia', serif;
+            font-style: italic;
+            font-size: 1.65rem;
+            line-height: 1.35;
+            color: #ffffff;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+            padding-bottom: 12px;
         }
 
-        .timeline-tab {
+        /* Browser Tab Matrix Rows */
+        .tabs-vertical-chassis {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin: 15px 0;
+        }
+
+        .browser-tab-row {
+            background-color: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            color: #ffffff;
+            border-radius: 6px;
+            padding: 12px 16px;
+            font-family: inherit;
+            font-size: 0.9rem;
+            font-weight: 600;
+            text-align: left;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.2s ease;
+            height: 46px;
+        }
+
+        .browser-tab-row:hover {
+            background-color: rgba(255, 255, 255, 0.15);
+            transform: translateX(3px);
+        }
+
+        .browser-tab-row.tab-cleared {
+            background-color: rgba(46, 204, 113, 0.12);
+            border-color: #2ecc71;
+            color: #a3e2b7;
+            cursor: default;
+            pointer-events: none;
+            transform: none;
+        }
+
+        .tab-close-glyph {
+            font-size: 0.75rem;
+            background-color: rgba(255,255,255,0.12);
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .browser-tab-row.tab-cleared .tab-close-glyph {
+            background-color: #2ecc71;
+            color: #ffffff;
+        }
+
+        .panel-definition-text {
+            font-size: 0.88rem;
+            line-height: 1.4;
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        /* Right Split: The Compounding Effect Display Card Box */
+        .compounding-output-card {
             background-color: #ffffff;
             border: 1px solid #e1e8f0;
-            border-bottom: 4px solid #cbd5e1;
-            border-radius: 6px;
-            font-family: inherit;
-            font-size: 0.95rem;
-            font-weight: 700;
-            color: #4b5a6a;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            transition: all 0.2s ease;
-        }
-
-        /* Interactive State Classes */
-        .timeline-tab.active {
-            border-bottom-color: #e67e22; /* Active signature orange marker */
-            color: #e67e22;
-            background-color: #fffbf7;
-        }
-
-        .timeline-tab.reviewed {
-            border-bottom-color: #2ecc71; /* Completed crisp green marker */
-            color: #2ecc71;
-            background-color: #f4fbf7;
-        }
-
-        /* Fixed-Height Central Prompt Card */
-        .threat-card-display {
-            background-color: #ffffff;
-            border: 2px dashed #ccdbe8;
             border-radius: 8px;
-            padding: 20px 30px;
-            height: 180px; /* Locked height preserves perfect spacing properties */
+            padding: 35px;
             display: flex;
             flex-direction: column;
             justify-content: center;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.01);
-            flex-shrink: 0;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.01);
         }
 
-        .threat-card-display h3 {
-            font-size: 0.75rem;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            color: #e67e22;
-            margin-bottom: 4px;
-        }
-
-        .threat-card-display p {
-            font-size: 1.15rem;
-            line-height: 1.45;
-            color: #2c3e50;
-            font-weight: 600;
-        }
-
-        /* Lower Classification Options Row */
-        .classification-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 12px;
-            height: 60px;
-            flex-shrink: 0;
-        }
-
-        .bucket-btn {
-            background-color: #eaf1f8;
-            border: 1px solid transparent;
-            border-radius: 6px;
-            font-family: inherit;
-            font-size: 0.88rem;
+        .compounding-output-card h2 {
+            font-size: 1.6rem;
             font-weight: 700;
-            color: #123456;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.15s ease;
-            padding: 5px;
-            text-align: center;
+            color: #1a365d;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #f0f4f8;
+            padding-bottom: 8px;
         }
 
-        .bucket-btn:hover {
-            background-color: #ffffff;
-            border-color: #3b75af;
-            color: #3b75af;
+        .compounding-list-stack {
+            list-style-type: none;
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+
+        .compounding-list-stack li {
+            font-size: 1.05rem;
+            line-height: 1.4;
+            color: #334455;
+            position: relative;
+            padding-left: 24px;
+            font-weight: 600;
+            animation: listRowEntrance 0.3s ease-out both;
+        }
+
+        .compounding-list-stack li::before {
+            content: "•";
+            color: #3b75af; /* Sky blue branding accent bullet */
+            font-size: 1.4rem;
+            position: absolute;
+            left: 0;
+            top: -2px;
         }
 
         /* ==========================================================================
-           4. Final Summary Screen Matrix (Hidden by Default)
+           4. Game End Mastery Unified Viewport Dashboard Overlay
            ========================================================================== */
-        .summary-dashboard-screen {
-            display: none;
-            grid-template-columns: repeat(2, 1fr);
-            grid-template-rows: repeat(2, 1fr);
-            gap: 12px;
+        .mastery-dashboard-view {
+            display: none; /* Controlled strictly by state routines */
+            grid-template-columns: 1.05fr 0.95fr;
+            gap: 30px;
             flex: 1;
-            margin-top: 15px;
+            margin: 20px 0 15px 0;
+            animation: overlayEntrance 0.4s ease-out both;
         }
 
-        .summary-mini-card {
-            background-color: #ffffff;
-            border: 1px solid #e1e8f0;
-            border-radius: 8px;
-            padding: 15px 20px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-        }
-
-        .summary-mini-card h3 {
-            font-size: 1.05rem;
-            color: #123456;
-            font-weight: 700;
-            margin-bottom: 4px;
-        }
-
-        .summary-mini-card p {
-            font-size: 0.88rem;
-            line-height: 1.4;
-            color: #4b5a6a;
+        .mastery-dashboard-view .compounding-list-stack li {
+            animation: none;
         }
 
         /* ==========================================================================
@@ -225,16 +227,25 @@
            ========================================================================== */
         .slide-footer {
             border-top: 1px solid #e1e8f0;
-            padding-top: 8px;
+            padding-top: 10px;
             text-align: center;
-            height: 35px;
             flex-shrink: 0;
+            height: 35px;
         }
 
         .slide-footer p {
             font-size: 0.85rem;
             color: #6a7b8c;
             font-style: italic;
+        }
+
+        @keyframes listRowEntrance {
+            from { opacity: 0; transform: translateX(6px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+        @keyframes overlayEntrance {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
         }
     </style>
 </head>
@@ -243,29 +254,52 @@
     <div class="slide-container">
         
         <header class="slide-header">
-            <h1 class="main-title" id="dynamic-title">The Strategic Cost</h1>
-            <div class="hud-metrics" id="hud-deck">
-                <div class="metric-pill">Audited: <span id="audit-count">0 / 4</span></div>
-                <div class="metric-pill">Accuracy: <span id="accuracy-score" style="color: #e67e22;">100%</span></div>
-            </div>
+            <h1 class="main-title" id="dynamic-title">Decision Debt</h1>
+            <p class="subtitle" id="dynamic-subtitle">Unmade decisions compound like financial debt — silently and relentlessly.</p>
         </header>
 
         <div class="gameplay-arena" id="main-play-arena">
             
-            <nav class="horizontal-timeline">
-                <div class="timeline-tab active" id="tab-node-0">Threat Variable Alpha</div>
-                <div class="timeline-tab" id="tab-node-1">Threat Variable Beta</div>
-                <div class="timeline-tab" id="tab-node-2">Threat Variable Gamma</div>
-                <div class="timeline-tab" id="tab-node-3">Threat Variable Delta</div>
-            </nav>
+            <div class="tabs-simulator-panel">
+                <h2 class="panel-quote-heading">Every stalled approval sits in your head like open browser tabs.</h2>
+                
+                <div class="tabs-vertical-chassis">
+                    <button class="browser-tab-row" onclick="clearBacklogNode(0, this)">
+                        <span>Tab_01: Process Architecture Authorization</span>
+                        <span class="tab-close-glyph">✕</span>
+                    </button>
+                    <button class="browser-tab-row" onclick="clearBacklogNode(1, this)">
+                        <span>Tab_02: Commercial Integration Budget</span>
+                        <span class="tab-close-glyph">✕</span>
+                    </button>
+                    <button class="browser-tab-row" onclick="clearBacklogNode(2, this)">
+                        <span>Tab_03: Core Executive Hiring Mandate</span>
+                        <span class="tab-close-glyph">✕</span>
+                    </button>
+                    <button class="browser-tab-row" onclick="clearBacklogNode(3, this)">
+                        <span>Tab_04: Transport Lane Restructuring</span>
+                        <span class="tab-close-glyph">✕</span>
+                    </button>
+                    <button class="browser-tab-row" onclick="clearBacklogNode(4, this)">
+                        <span>Tab_05: Infrastructure Technology Lifecycle</span>
+                        <span class="tab-close-glyph">✕</span>
+                    </button>
+                </div>
 
-            <div class="threat-card-display">
-                <h3>Risk Impact Profile</h3>
-                <p id="threat-description-text">Competitors who act first capture customers and brand loyalty that are nearly impossible to reclaim.</p>
+                <p class="panel-definition-text">Decision debt is the cognitive load created by unresolved decisions. The more you carry, the less space you have for strategic thinking.</p>
             </div>
 
-            <div class="classification-grid">
-                <button class="bucket-btn" onclick="submitAssessment('share')">Lost Market Share</button>
-                <button class="bucket-btn" onclick="submitAssessment('window')">Missed Innovation Windows</button>
-                <button class="bucket-btn" onclick="submitAssessment('infra')">Outdated Infrastructure</button>
-                <button class="bucket-btn" onclick="submitAssessment('leader')">Follower, Not Leader</button>
+            <main class="compounding-output-card">
+                <h2>The Compounding Effect</h2>
+                <ul class="compounding-list-stack" id="revealed-list">
+                    <li id="initial-onboarding-prompt" style="list-style-type:none; padding-left:0; font-weight:normal; color:#6a7b8c;">
+                        Click on the open tab modules inside the left menu ribbon. Execute decisions by closing individual nodes to reveal compounding operational friction factors.
+                    </li>
+                </ul>
+            </main>
+
+        </div>
+
+        <div class="mastery-dashboard-view" id="mastery-screen">
+            
+            <div class="tabs-simulator-panel" style="justify
