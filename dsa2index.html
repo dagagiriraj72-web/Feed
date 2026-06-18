@@ -28,12 +28,12 @@
             padding: 5px;
         }
 
-        /* Fixed 16:9 Slide Wrapper - Guarantees absolute safety against bottom cuts */
+        /* Fixed 16:9 Slide Wrapper - Eliminates any risk of vertical clipping */
         .slide-container {
             width: 1280px;
             height: 720px;
-            padding: 30px 45px 20px 45px;
-            background-color: #ffffff;
+            padding: 35px 50px 25px 50px;
+            background-color: #f4f7fa;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
@@ -44,51 +44,75 @@
            2. Slide Title Header Area
            ========================================================================== */
         .slide-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
             flex-shrink: 0;
-            height: 65px;
+            height: 75px;
+        }
+
+        .title-group {
+            flex: 1;
         }
 
         .main-title {
-            font-size: 2.4rem;
+            font-size: 2.5rem;
             font-weight: 800;
-            color: #1a365d;
+            color: #1a365d; /* Brand deep blue from image_ef01e3.png */
             line-height: 1.1;
         }
 
         .subtitle {
-            font-size: 0.95rem;
+            font-size: 1.05rem;
             color: #6a7b8c;
-            margin-top: 3px;
+            margin-top: 4px;
             font-weight: 500;
             display: flex;
             align-items: center;
-            gap: 6px;
+            gap: 8px;
         }
 
         .subtitle::before {
             content: "•";
-            color: #e67e22;
-            font-size: 1.4rem;
+            color: #e67e22; /* Signature orange accent dot from image */
+            font-size: 1.5rem;
+        }
+
+        .hud-metrics {
+            display: flex;
+            align-items: center;
+        }
+
+        .metric-pill {
+            background-color: #ffffff;
+            padding: 6px 14px;
+            border-radius: 6px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: #1a365d;
+            border: 1px solid #ccdbe8;
         }
 
         /* ==========================================================================
-           3. Side-by-Side Arena Layout (Guards Vertical Real Estate)
+           3. Side-by-Side Arena Layout (Preserves Image Proportions Exactly)
            ========================================================================== */
         .gameplay-arena {
             display: grid;
-            grid-template-columns: 1.1fr 0.9fr;
-            gap: 30px;
+            grid-template-columns: 1fr 1fr;
+            gap: 35px;
             flex: 1;
-            margin: 15px 0 10px 0;
-            min-height: 0; /* Important lock for Storyline rendering safety */
-            height: calc(100% - 130px);
+            margin: 20px 0;
+            min-height: 0; /* Hard lock safeguards against layout expansion crashes */
+            height: calc(100% - 135px);
         }
 
-        /* Left Side: Interactive Browser Tabs Panel Chassis */
-        .tabs-simulator-panel {
+        /* Left Column Card (Deep Navy Block) */
+        .quote-display-panel {
             background-color: #1a365d;
-            border-radius: 8px;
-            padding: 25px 30px;
+            border-radius: 4px;
+            padding: 40px;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
@@ -98,143 +122,85 @@
         .panel-quote-heading {
             font-family: 'Georgia', serif;
             font-style: italic;
-            font-size: 1.65rem;
+            font-size: 2.1rem;
             line-height: 1.35;
             color: #ffffff;
         }
 
-        /* Tab Rows Menu Stack */
-        .tabs-vertical-chassis {
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
+        .panel-definition-text {
+            font-size: 1.05rem;
+            line-height: 1.5;
+            color: rgba(255, 255, 255, 0.9);
         }
 
-        .browser-tab-row {
-            background-color: rgba(255, 255, 255, 0.06);
-            border: 1px solid rgba(255, 255, 255, 0.12);
-            color: #ffffff;
-            border-radius: 6px;
-            padding: 0 16px;
-            font-family: inherit;
-            font-size: 0.88rem;
-            font-weight: 600;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            width: 100%;
-            height: 44px; /* Locked row height prevents downward panel expanding */
-            cursor: pointer;
-            transition: all 0.2s ease;
-        }
-
-        .browser-tab-row:hover {
-            background-color: rgba(255, 255, 255, 0.14);
-            transform: translateX(3px);
-        }
-
-        .browser-tab-row.tab-cleared {
-            background-color: rgba(46, 204, 113, 0.12);
-            border-color: #2ecc71;
-            color: #a3e2b7;
-            cursor: default;
-            pointer-events: none;
-            transform: none;
-        }
-
-        .tab-action-glyph {
-            font-size: 0.75rem;
-            background-color: rgba(255,255,255,0.12);
-            width: 20px;
-            height: 20px;
-            border-radius: 50%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .browser-tab-row.tab-cleared .tab-action-glyph {
-            background-color: #2ecc71;
-            color: #ffffff;
-        }
-
-        .panel-definition-footer {
-            font-size: 0.85rem;
-            line-height: 1.35;
-            color: rgba(255, 255, 255, 0.65);
-        }
-
-        /* Right Side: Compounding Results Output Window Box */
-        .compounding-output-card {
+        /* Right Column Card (Clean White Block) */
+        .compounding-effect-panel {
             background-color: #ffffff;
-            border: 1px solid #e1e8f0;
-            border-radius: 8px;
-            padding: 30px;
+            border-radius: 4px;
+            padding: 45px 50px;
             display: flex;
             flex-direction: column;
-            justify-content: center;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.01);
+            justify-content: flex-start;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.02);
         }
 
-        .compounding-output-card h2 {
-            font-size: 1.5rem;
+        .compounding-effect-panel h2 {
+            font-size: 1.8rem;
             font-weight: 700;
             color: #1a365d;
-            margin-bottom: 15px;
-            border-bottom: 2px solid #f0f4f8;
-            padding-bottom: 6px;
-            flex-shrink: 0;
+            margin-bottom: 35px;
+            padding-bottom: 5px;
         }
 
+        /* Interactive Focus Node Stack */
         .compounding-list-stack {
             list-style-type: none;
             display: flex;
             flex-direction: column;
-            gap: 12px;
+            gap: 20px;
         }
 
         .compounding-list-stack li {
-            font-size: 1rem;
+            font-size: 1.15rem;
             line-height: 1.4;
             color: #334455;
             position: relative;
-            padding-left: 22px;
+            padding-left: 30px;
             font-weight: 600;
-            animation: rowSlideIn 0.3s ease-out both;
+            cursor: pointer;
+            transition: color 0.2s ease, transform 0.2s ease;
         }
 
+        .compounding-list-stack li:hover {
+            transform: translateX(4px);
+            color: #1a365d;
+        }
+
+        /* Gray default bullets before interaction */
         .compounding-list-stack li::before {
             content: "•";
-            color: #3b75af;
-            font-size: 1.3rem;
+            color: #94a3b8;
+            font-size: 1.6rem;
             position: absolute;
             left: 0;
-            top: -2px;
+            top: -3px;
+            transition: color 0.25s ease;
+        }
+
+        /* Active highlight state mapping matching image accents */
+        .compounding-list-stack li.node-explored {
+            color: #1a365d;
+        }
+        .compounding-list-stack li.node-explored::before {
+            color: #e67e22; /* Matches the prominent orange node accent */
         }
 
         /* ==========================================================================
-           4. Game End Mastery Unified Viewport Overlay Dashboard
-           ========================================================================== */
-        .mastery-dashboard-view {
-            display: none; /* Safely switched via script logic to prevent clipping crashes */
-            grid-template-columns: 1.1fr 0.9fr;
-            gap: 30px;
-            flex: 1;
-            margin: 15px 0 10px 0;
-            height: calc(100% - 130px);
-            animation: layoutEntrance 0.4s ease-out both;
-        }
-
-        .mastery-dashboard-view .compounding-list-stack li {
-            animation: none;
-        }
-
-        /* ==========================================================================
-           5. Grounded Static Footer Line
+           4. Grounded Static Footer Line
            ========================================================================== */
         .slide-footer {
             border-top: 1px solid #e1e8f0;
-            padding-top: 8px;
+            padding-top: 10px;
             text-align: center;
             flex-shrink: 0;
             height: 35px;
@@ -245,75 +211,74 @@
             color: #6a7b8c;
             font-style: italic;
         }
-
-        @keyframes rowSlideIn {
-            from { opacity: 0; transform: translateX(6px); }
-            to { opacity: 1; transform: translateX(0); }
-        }
-        @keyframes layoutEntrance {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
     </style>
 </head>
 <body>
 
     <div class="slide-container">
         
+        <!-- Header Section -->
         <header class="slide-header">
-            <h1 class="main-title" id="dynamic-title">Decision Debt</h1>
-            <p class="subtitle" id="dynamic-subtitle">Unmade decisions compound like financial debt — silently and relentlessly.</p>
+            <div class="title-group">
+                <h1 class="main-title">Decision Debt</h1>
+                <p class="subtitle" id="dynamic-subtitle">Unmade decisions compound like financial debt — silently and relentlessly</p>
+            </div>
+            <div class="hud-metrics">
+                <div class="metric-pill">Analysis Status: <span id="hud-counter-text" style="color: #e67e22;">0 / 5 Audited</span></div>
+            </div>
         </header>
 
-        <div class="gameplay-arena" id="main-play-arena">
+        <!-- Main Workspace Arena -->
+        <div class="gameplay-arena">
             
-            <div class="tabs-simulator-panel">
+            <!-- Left Panel -->
+            <div class="quote-display-panel">
                 <h2 class="panel-quote-heading">Every stalled approval sits in your head like open browser tabs.</h2>
-                
-                <div class="tabs-vertical-chassis">
-                    <button class="browser-tab-row" onclick="clearTabItem(0, this)">
-                        <span>Tab_01: Process Architecture Authorization</span>
-                        <span class="tab-action-glyph">✕</span>
-                    </button>
-                    <button class="browser-tab-row" onclick="clearTabItem(1, this)">
-                        <span>Tab_02: Commercial Integration Budget</span>
-                        <span class="tab-action-glyph">✕</span>
-                    </button>
-                    <button class="browser-tab-row" onclick="clearTabItem(2, this)">
-                        <span>Tab_03: Core Executive Hiring Mandate</span>
-                        <span class="tab-action-glyph">✕</span>
-                    </button>
-                    <button class="browser-tab-row" onclick="clearTabItem(3, this)">
-                        <span>Tab_04: Transport Lane Restructuring</span>
-                        <span class="tab-action-glyph">✕</span>
-                    </button>
-                    <button class="browser-tab-row" onclick="clearTabItem(4, this)">
-                        <span>Tab_05: Infrastructure Technology Lifecycle</span>
-                        <span class="tab-action-glyph">✕</span>
-                    </button>
-                </div>
-
-                <p class="panel-definition-footer">Decision debt is the cognitive load created by unresolved decisions. The more you carry, the less space you have for strategic thinking.</p>
+                <p class="panel-definition-text">Decision debt is the cognitive load created by unresolved decisions. The more you carry, the less space you have for strategic thinking.</p>
             </div>
 
-            <main class="compounding-output-card">
+            <!-- Right Panel -->
+            <main class="compounding-effect-panel">
                 <h2>The Compounding Effect</h2>
-                <ul class="compounding-list-stack" id="revealed-list">
-                    <li id="initial-onboarding-prompt" style="list-style-type:none; padding-left:0; font-weight:normal; color:#6a7b8c;">
-                        Click on the open tab modules inside the left menu ribbon. Execute decisions by closing individual nodes to reveal compounding operational friction factors.
-                    </li>
+                <ul class="compounding-list-stack">
+                    <li onclick="exploreNode(this)">Hiring is delayed</li>
+                    <li onclick="exploreNode(this)">Revenue opportunities expire</li>
+                    <li onclick="exploreNode(this)">Team morale dips</li>
+                    <li onclick="exploreNode(this)">Competitive advantages erode</li>
+                    <li onclick="exploreNode(this)">Innovation pipeline stalls</li>
                 </ul>
             </main>
 
         </div>
 
-        <div class="mastery-dashboard-view" id="mastery-screen">
-            
-            <div class="tabs-simulator-panel" style="justify-content: center; gap: 15px;">
-                <h2 class="panel-quote-heading" style="border: none; padding: 0; font-size: 1.8rem; color: #e67e22;">Cognitive Space Maximized</h2>
-                <p style="font-size: 0.98rem; line-height: 1.5; color: #ffffff;">Decision debt is the cognitive load created by unresolved decisions. The more you carry, the less space you have for strategic thinking. Resolving unmade approval cycles preserves core organizational focus and speeds execution velocity loops.</p>
-            </div>
+        <!-- Footer Guidance Component -->
+        <footer class="slide-footer">
+            <p id="footer-text">Click on each item in the compounding effect profile block to complete the diagnostic review audit.</p>
+        </footer>
 
-            <div class="compounding-output-card">
-                <h2>The Compounding Effect</h2>
-                <ul class="compounding-list-stack">
+    </div>
+
+    <!-- ==========================================================================
+       5. Core State Tracking Matrix Script
+       ========================================================================== */ -->
+    <script>
+        let exploredNodesCount = 0;
+
+        function exploreNode(element) {
+            if (element.classList.contains('node-explored')) return;
+            
+            element.classList.add('node-explored');
+            exploredNodesCount++;
+            
+            const counterHUD = document.getElementById('hud-counter-text');
+            if (exploredNodesCount < 5) {
+                counterHUD.textContent = `${exploredNodesCount} / 5 Audited`;
+            } else {
+                counterHUD.textContent = "Audit Complete";
+                counterHUD.style.color = "#2ecc71";
+                document.getElementById('footer-text').textContent = "Review complete. All core decision debt variables mapped successfully.";
+            }
+        }
+    </script>
+</body>
+</html>
