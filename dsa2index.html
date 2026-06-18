@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>The Strategic Cost - Storyline Safe Edition</title>
+    <title>The Strategic Cost - Fixed Fit</title>
     
     <style>
         /* ==========================================================================
-           1. Core Reset & Fixed Canvas Dimensions (Absolute No-Scroll Gate)
+           1. Absolute Boundary Reset (Strict No-Scroll, No-Cut, No-Overlap)
            ========================================================================== */
         * {
             box-sizing: border-box;
@@ -17,155 +17,125 @@
 
         body {
             font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
-            background-color: #f0f4f8;
+            background-color: #fafcfe;
             color: #1a2a3a;
+            width: 100vw;
+            height: 100vh;
+            overflow: hidden;
             display: flex;
             justify-content: center;
             align-items: center;
-            min-height: 100vh;
-            overflow: hidden;
-            padding: 5px;
+            padding: 2px;
         }
 
-        /* Fixed 16:9 Presentation Canvas Container - Highly Guarded Height Cushioning */
+        /* Fixed 16:9 Slide Canvas Main Chassis */
         .slide-container {
-            background-color: #fafcfe;
             width: 1280px;
             height: 720px;
-            padding: 30px 50px 20px 50px;
-            border-radius: 8px;
-            box-shadow: 0 20px 50px rgba(26,42,58,0.12);
+            padding: 25px 45px 15px 45px; /* Highly defensive layout cushioning handles player frames */
             display: flex;
             flex-direction: column;
             justify-content: space-between;
             overflow: hidden;
+            position: relative;
         }
 
         /* ==========================================================================
-           2. Slide Header and HUD Metrics
+           2. Low-Profile Header Area
            ========================================================================== */
         .slide-header {
             display: flex;
             justify-content: space-between;
-            align-items: flex-start;
+            align-items: center;
             border-bottom: 2px solid #e1e8f0;
-            padding-bottom: 10px;
+            padding-bottom: 8px;
+            height: 65px;
             flex-shrink: 0;
         }
 
         .main-title {
-            font-size: 2.4rem;
+            font-size: 2.2rem;
             font-weight: 800;
-            color: #123456;
-            line-height: 1.1;
-        }
-
-        .subtitle {
-            font-size: 1rem;
-            color: #6a7b8c;
-            margin-top: 3px;
-            font-weight: 500;
+            color: #123456; /* Core branding deep blue */
         }
 
         .hud-metrics {
             display: flex;
-            gap: 12px;
+            gap: 10px;
         }
 
         .metric-pill {
             background-color: #eaf1f8;
-            padding: 6px 14px;
-            border-radius: 6px;
+            padding: 5px 12px;
+            border-radius: 4px;
             font-size: 0.8rem;
             font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
             color: #123456;
             border: 1px solid #ccdbe8;
         }
 
         /* ==========================================================================
-           3. Core Arena Layout Split (Horizontal Flow Reclaims Vertical Height)
+           3. Horizontal Arena Workspace (Ensures zero baseline drops)
            ========================================================================== */
         .gameplay-arena {
             display: flex;
             flex-direction: column;
             gap: 15px;
             flex: 1;
-            margin: 20px 0 15px 0;
-            height: calc(100% - 135px);
+            margin-top: 15px;
+            min-height: 0; /* Prevents overflow content stretch loops */
         }
 
-        /* Top Progress Stepper Track Replacing High-Risk Vertical Timeline */
-        .stepper-progress-track {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            position: relative;
-            background: #eaf1f8;
-            padding: 12px 25px;
-            border-radius: 8px;
-            border: 1px solid #ccdbe8;
+        /* Horizontal Tabs Layer - Bypasses high-risk vertical line clipping entirely */
+        .horizontal-timeline {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 12px;
+            height: 50px;
             flex-shrink: 0;
         }
 
-        .stepper-node-item {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            opacity: 0.5;
-            transition: opacity 0.3s ease;
-        }
-
-        .stepper-node-item.active {
-            opacity: 1;
-        }
-
-        .stepper-node-item.reviewed {
-            opacity: 0.9;
-        }
-
-        .mini-dot-marker {
-            width: 18px;
-            height: 18px;
-            background-color: #6a7b8c;
-            border-radius: 50%;
-            transition: background-color 0.3s ease;
-        }
-
-        .stepper-node-item.active .mini-dot-marker {
-            background-color: #e67e22;
-            box-shadow: 0 0 8px rgba(230,126,34,0.6);
-        }
-
-        .stepper-node-item.reviewed .mini-dot-marker {
-            background-color: #2ecc71;
-        }
-
-        .stepper-label-text {
+        .timeline-tab {
+            background-color: #ffffff;
+            border: 1px solid #e1e8f0;
+            border-bottom: 4px solid #cbd5e1;
+            border-radius: 6px;
+            font-family: inherit;
             font-size: 0.95rem;
             font-weight: 700;
-            color: #123456;
-        }
-
-        /* Assessment Laboratory Center Workbench */
-        .assessment-workspace-panel {
+            color: #4b5a6a;
             display: flex;
-            flex-direction: column;
-            gap: 15px;
-            flex: 1;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
         }
 
+        /* Interactive State Classes */
+        .timeline-tab.active {
+            border-bottom-color: #e67e22; /* Active signature orange marker */
+            color: #e67e22;
+            background-color: #fffbf7;
+        }
+
+        .timeline-tab.reviewed {
+            border-bottom-color: #2ecc71; /* Completed crisp green marker */
+            color: #2ecc71;
+            background-color: #f4fbf7;
+        }
+
+        /* Fixed-Height Central Prompt Card */
         .threat-card-display {
             background-color: #ffffff;
             border: 2px dashed #ccdbe8;
-            border-radius: 12px;
-            padding: 25px 35px;
-            flex: 1;
+            border-radius: 8px;
+            padding: 20px 30px;
+            height: 180px; /* Locked height preserves perfect spacing properties */
             display: flex;
             flex-direction: column;
             justify-content: center;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.01);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.01);
+            flex-shrink: 0;
         }
 
         .threat-card-display h3 {
@@ -173,100 +143,91 @@
             text-transform: uppercase;
             letter-spacing: 1px;
             color: #e67e22;
-            margin-bottom: 6px;
+            margin-bottom: 4px;
         }
 
         .threat-card-display p {
             font-size: 1.15rem;
-            line-height: 1.5;
+            line-height: 1.45;
             color: #2c3e50;
             font-weight: 600;
         }
 
-        /* Classification Target Row Buckets */
+        /* Lower Classification Options Row */
         .classification-grid {
-            display: flex;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
             gap: 12px;
+            height: 60px;
             flex-shrink: 0;
         }
 
         .bucket-btn {
-            flex: 1;
             background-color: #eaf1f8;
-            border: 2px solid transparent;
-            border-radius: 8px;
-            padding: 12px 10px;
+            border: 1px solid transparent;
+            border-radius: 6px;
             font-family: inherit;
             font-size: 0.88rem;
             font-weight: 700;
             color: #123456;
             cursor: pointer;
-            text-align: center;
             display: flex;
             align-items: center;
             justify-content: center;
-            min-height: 52px;
-            transition: all 0.2s;
+            transition: all 0.15s ease;
+            padding: 5px;
+            text-align: center;
         }
 
         .bucket-btn:hover {
             background-color: #ffffff;
             border-color: #3b75af;
-            transform: translateY(-2px);
+            color: #3b75af;
         }
 
         /* ==========================================================================
-           4. Game End Dashboard Panel (Revealed Smoothly)
+           4. Final Summary Screen Matrix (Hidden by Default)
            ========================================================================== */
         .summary-dashboard-screen {
             display: none;
-            width: 100%;
-            height: 100%;
             grid-template-columns: repeat(2, 1fr);
-            gap: 16px;
-            animation: paneEntrance 0.4s ease-out;
+            grid-template-rows: repeat(2, 1fr);
+            gap: 12px;
+            flex: 1;
             margin-top: 15px;
         }
 
         .summary-mini-card {
             background-color: #ffffff;
             border: 1px solid #e1e8f0;
-            border-radius: 10px;
-            padding: 18px 22px;
+            border-radius: 8px;
+            padding: 15px 20px;
             display: flex;
             flex-direction: column;
             justify-content: center;
         }
 
         .summary-mini-card h3 {
-            font-size: 1.15rem;
+            font-size: 1.05rem;
             color: #123456;
             font-weight: 700;
-            margin-bottom: 6px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .summary-mini-card h3::before {
-            content: "■";
-            color: #e67e22;
-            font-size: 1rem;
+            margin-bottom: 4px;
         }
 
         .summary-mini-card p {
-            font-size: 0.92rem;
+            font-size: 0.88rem;
             line-height: 1.4;
             color: #4b5a6a;
         }
 
         /* ==========================================================================
-           5. Slide Footer System
+           5. Grounded Static Footer Line
            ========================================================================== */
         .slide-footer {
             border-top: 1px solid #e1e8f0;
-            padding-top: 10px;
+            padding-top: 8px;
             text-align: center;
+            height: 35px;
             flex-shrink: 0;
         }
 
@@ -275,11 +236,6 @@
             color: #6a7b8c;
             font-style: italic;
         }
-
-        @keyframes paneEntrance {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
     </style>
 </head>
 <body>
@@ -287,10 +243,7 @@
     <div class="slide-container">
         
         <header class="slide-header">
-            <div class="title-group">
-                <h1 class="main-title" id="dynamic-title">The Strategic Cost</h1>
-                <p class="subtitle" id="dynamic-subtitle">Every delayed decision is a competitive advantage surrendered.</p>
-            </div>
+            <h1 class="main-title" id="dynamic-title">The Strategic Cost</h1>
             <div class="hud-metrics" id="hud-deck">
                 <div class="metric-pill">Audited: <span id="audit-count">0 / 4</span></div>
                 <div class="metric-pill">Accuracy: <span id="accuracy-score" style="color: #e67e22;">100%</span></div>
@@ -299,116 +252,20 @@
 
         <div class="gameplay-arena" id="main-play-arena">
             
-            <nav class="stepper-progress-track" id="horizontal-stepper">
-                <div class="stepper-node-item active" id="step-node-0">
-                    <div class="mini-dot-marker"></div>
-                    <span class="stepper-label-text">Variable Alpha</span>
-                </div>
-                <div class="stepper-node-item" id="step-node-1">
-                    <div class="mini-dot-marker"></div>
-                    <span class="stepper-label-text">Variable Beta</span>
-                </div>
-                <div class="stepper-node-item" id="step-node-2">
-                    <div class="mini-dot-marker"></div>
-                    <span class="stepper-label-text">Variable Gamma</span>
-                </div>
-                <div class="stepper-node-item" id="step-node-3">
-                    <div class="mini-dot-marker"></div>
-                    <span class="stepper-label-text">Variable Delta</span>
-                </div>
+            <nav class="horizontal-timeline">
+                <div class="timeline-tab active" id="tab-node-0">Threat Variable Alpha</div>
+                <div class="timeline-tab" id="tab-node-1">Threat Variable Beta</div>
+                <div class="timeline-tab" id="tab-node-2">Threat Variable Gamma</div>
+                <div class="timeline-tab" id="tab-node-3">Threat Variable Delta</div>
             </nav>
 
-            <main class="assessment-workspace-panel">
-                <div class="threat-card-display">
-                    <h3>Risk Impact Profile</h3>
-                    <p id="threat-description-text">Competitors who act first capture customers and brand loyalty that are nearly impossible to reclaim.</p>
-                </div>
-
-                <div class="classification-grid">
-                    <button class="bucket-btn" onclick="submitAssessment('share')">Lost Market Share</button>
-                    <button class="bucket-btn" onclick="submitAssessment('window')">Missed Innovation Windows</button>
-                    <button class="bucket-btn" onclick="submitAssessment('infra')">Outdated Infrastructure</button>
-                    <button class="bucket-btn" onclick="submitAssessment('leader')">Follower, Not Leader</button>
-                </div>
-            </main>
-
-        </div>
-
-        <div class="summary-dashboard-screen" id="dashboard-screen">
-            <div class="summary-mini-card">
-                <h3>Lost Market Share</h3>
-                <p>Competitors who act first capture customers and brand loyalty that are nearly impossible to reclaim.</p>
+            <div class="threat-card-display">
+                <h3>Risk Impact Profile</h3>
+                <p id="threat-description-text">Competitors who act first capture customers and brand loyalty that are nearly impossible to reclaim.</p>
             </div>
 
-            <div class="summary-mini-card">
-                <h3>Missed Innovation Windows</h3>
-                <p>Innovation depends on action — waiting for perfect certainty means someone else ships first.</p>
-            </div>
-
-            <div class="summary-mini-card">
-                <h3>Outdated Infrastructure</h3>
-                <p>Delayed technology investments leave organizations running on legacy systems with mounting costs.</p>
-            </div>
-
-            <div class="summary-mini-card">
-                <h3>Follower, Not Leader</h3>
-                <p>Indecisive organizations become reactive, always responding to events rather than shaping them.</p>
-            </div>
-        </div>
-
-        <footer class="slide-footer">
-            <p id="footer-text">Analyze the Risk Impact Profile on the card, then match it to the correct Strategic Cost classification bucket below.</p>
-        </footer>
-
-    </div>
-
-    <script>
-        const matrixDeck = [
-            { id: 0, actualKey: "share", label: "Lost Market Share", desc: "Competitors who act first capture customers and brand loyalty that are nearly impossible to reclaim." },
-            { id: 1, actualKey: "window", label: "Missed Innovation Windows", desc: "Innovation depends on action — waiting for perfect certainty means someone else ships first." },
-            { id: 2, actualKey: "infra", label: "Outdated Infrastructure", desc: "Delayed technology investments leave organizations running on legacy systems with mounting costs." },
-            { id: 3, actualKey: "leader", label: "Follower, Not Leader", desc: "Indecisive organizations become reactive, always responding to events rather than shaping them." }
-        ];
-
-        let activeNodeIndex = 0;
-        let sortedCount = 0;
-        let incorrectAttempts = 0;
-
-        function submitAssessment(userSelectionKey) {
-            const currentItem = matrixDeck[activeNodeIndex];
-            const activeNodeItem = document.getElementById(`step-node-${activeNodeIndex}`);
-
-            if (userSelectionKey === currentItem.actualKey) {
-                sortedCount++;
-                document.getElementById('audit-count').textContent = `${sortedCount} / 4`;
-                
-                activeNodeItem.classList.remove('active');
-                activeNodeItem.classList.add('reviewed');
-
-                if (sortedCount < 4) {
-                    activeNodeIndex++;
-                    document.getElementById(`step-node-${activeNodeIndex}`).classList.add('active');
-                    document.getElementById('threat-description-text').textContent = matrixDeck[activeNodeIndex].desc;
-                } else {
-                    displayFinalDashboard();
-                }
-            } else {
-                incorrectAttempts++;
-                const accuracyRate = Math.max(0, Math.round(((sortedCount) / (sortedCount + incorrectAttempts)) * 100));
-                document.getElementById('accuracy-score').textContent = `${accuracyRate}%`;
-            }
-        }
-
-        function displayFinalDashboard() {
-            document.getElementById('main-play-arena').style.display = 'none';
-            document.getElementById('hud-deck').style.display = 'none';
-
-            document.getElementById('dynamic-title').textContent = "Strategic Risk Audit Complete";
-            document.getElementById('dynamic-subtitle').textContent = "Review the unified cost profile framework definitions below.";
-
-            document.getElementById('dashboard-screen').style.display = 'grid';
-            document.getElementById('footer-text').textContent = "Assessment complete. You can now safely pass to the next module.";
-        }
-    </script>
-</body>
-</html>
+            <div class="classification-grid">
+                <button class="bucket-btn" onclick="submitAssessment('share')">Lost Market Share</button>
+                <button class="bucket-btn" onclick="submitAssessment('window')">Missed Innovation Windows</button>
+                <button class="bucket-btn" onclick="submitAssessment('infra')">Outdated Infrastructure</button>
+                <button class="bucket-btn" onclick="submitAssessment('leader')">Follower, Not Leader</button>
