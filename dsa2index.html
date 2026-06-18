@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Decision Debt - L3 Interactive Slide</title>
+    <title>Decision Debt - Optimized L3 Slide Layout</title>
     
     <style>
         /* ==========================================================================
-           1. Core Reset & Fixed Canvas Dimensions (Absolute No-Scroll)
+           1. Core Reset & Fixed 16:9 Aspect Ratio Canvas Constraints
            ========================================================================== */
         * {
             box-sizing: border-box;
@@ -27,68 +27,56 @@
             padding: 10px;
         }
 
-        /* Fixed 16:9 Widescreen Storyline Canvas Box Container */
+        /* Fixed 16:9 Storyline Canvas Framework to eliminate scrollbars */
         .slide-container {
             background-color: #fafcfe;
             width: 1280px;
             height: 720px;
-            padding: 45px 60px;
+            padding: 40px 55px;
             border-radius: 8px;
-            box-shadow: 0 20px 50px rgba(18, 52, 86, 0.15);
+            box-shadow: 0 20px 50px rgba(18, 52, 86, 0.12);
             display: flex;
             flex-direction: column;
             justify-content: space-between;
-            overflow: hidden; /* Strict lock preventing scrollbars */
+            overflow: hidden; 
         }
 
         /* ==========================================================================
-           2. Slide Header and Game HUD (Heads-Up Display)
+           2. Slide Header and HUD Metrics Dashboard
            ========================================================================== */
         .slide-header {
             display: flex;
             justify-content: space-between;
             align-items: flex-start;
             border-bottom: 2px solid #e1e8f0;
-            padding-bottom: 15px;
-        }
-
-        .title-group {
-            flex: 1;
+            padding-bottom: 12px;
+            margin-bottom: 20px;
         }
 
         .main-title {
-            font-size: 2.6rem;
+            font-size: 2.5rem;
             font-weight: 800;
-            color: #123456; /* Deep blue branding tone from image_0c02a8.png */
+            color: #123456; /* Brand deep blue from image_0ba107.png */
             line-height: 1.1;
         }
 
         .subtitle {
             font-size: 1.05rem;
             color: #6a7b8c;
-            margin-top: 5px;
+            margin-top: 4px;
             font-weight: 500;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .subtitle::before {
-            content: "•";
-            color: #e67e22; /* Vivid orange accent dot indicator */
-            font-size: 1.5rem;
         }
 
         .hud-metrics {
             display: flex;
-            gap: 15px;
+            gap: 12px;
         }
 
         .metric-pill {
             background-color: #eaf1f8;
-            padding: 8px 16px;
+            padding: 8px 14px;
             border-radius: 6px;
-            font-size: 0.85rem;
+            font-size: 0.82rem;
             font-weight: 700;
             text-transform: uppercase;
             letter-spacing: 0.5px;
@@ -97,156 +85,173 @@
         }
 
         /* ==========================================================================
-           3. Core Gameplay Arena Grid Split
+           3. Horizontal Browser Tab Dock (Fixes Vertical Text Cutoff)
            ========================================================================== */
-        .gameplay-arena {
+        .browser-tab-dock {
+            background-color: #1a365d; /* Classic background tone from your reference file */
+            padding: 12px 16px 0 16px;
+            border-radius: 10px 10px 0 0;
             display: flex;
-            gap: 40px;
-            flex: 1;
-            margin: 30px 0;
-            align-items: stretch;
-            height: calc(100% - 150px);
+            gap: 8px;
+            overflow: hidden;
         }
 
-        /* Left Split Column: Cognitive Load Control Board */
-        .cognitive-dashboard {
-            flex: 1;
-            background-color: #1a365d; /* Dark navy color card block from image_0c02a8.png */
-            border-radius: 12px;
-            padding: 40px;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
+        .tab-node {
+            background-color: rgba(255, 255, 255, 0.12);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-bottom: none;
             color: #ffffff;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
-        }
-
-        .quote-headline {
-            font-family: 'Georgia', serif;
-            font-style: italic;
-            font-size: 1.9rem;
-            line-height: 1.4;
-            color: #ffffff;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.15);
-            padding-bottom: 20px;
-        }
-
-        /* Interactive Browser Tabs Matrix */
-        .tabs-simulation-matrix {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-            margin-top: 20px;
-        }
-
-        .tab-button {
-            background-color: rgba(255, 255, 255, 0.1);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            color: #ffffff;
-            border-radius: 6px;
-            padding: 14px 20px;
+            padding: 12px 18px;
             font-family: inherit;
-            font-size: 0.95rem;
+            font-size: 0.88rem;
             font-weight: 600;
-            text-align: left;
+            border-radius: 8px 8px 0 0;
             cursor: pointer;
             display: flex;
-            justify-content: space-between;
             align-items: center;
+            gap: 12px;
+            max-width: 230px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
             transition: all 0.2s ease;
         }
 
-        .tab-button:hover {
+        .tab-node:hover {
             background-color: rgba(255, 255, 255, 0.2);
-            transform: translateX(4px);
         }
 
-        .tab-button.resolved {
-            background-color: rgba(46, 204, 113, 0.2);
-            border-color: #2ecc71;
+        .tab-node.resolved {
+            background-color: rgba(46, 204, 113, 0.15);
+            border-color: rgba(46, 204, 113, 0.3);
             color: #a3e2b7;
-            cursor: default;
-            pointer-events: none;
         }
 
-        .tab-close-icon {
-            font-size: 0.8rem;
-            background-color: rgba(255,255,255,0.15);
-            width: 20px;
-            height: 20px;
+        .tab-node.active-focus {
+            background-color: #fafcfe;
+            color: #1a365d;
+            border-color: transparent;
+        }
+
+        .close-action-x {
+            font-size: 0.75rem;
+            background-color: rgba(255, 255, 255, 0.15);
+            color: #ffffff;
+            width: 18px;
+            height: 18px;
             border-radius: 50%;
             display: flex;
             justify-content: center;
             align-items: center;
+            transition: background-color 0.2s;
         }
 
-        .tab-button.resolved .tab-close-icon {
+        .tab-node.active-focus .close-action-x {
+            background-color: #e1e8f0;
+            color: #1a365d;
+        }
+
+        .tab-node.resolved .close-action-x {
             background-color: #2ecc71;
             color: #ffffff;
         }
 
-        /* Right Split Column: Impact Realization Vault (No Layout Shift) */
-        .compounding-display-vault {
+        /* ==========================================================================
+           4. Split Workspace Panels
+           ========================================================================== */
+        .workspace-deck {
+            display: flex;
+            gap: 25px;
+            flex: 1;
+            align-items: stretch;
+            margin-bottom: 20px;
+            height: calc(100% - 220px);
+        }
+
+        /* Left Side: Cognitive Load Explainer Panel */
+        .cognitive-info-panel {
+            flex: 1;
+            background-color: #f7fafc;
+            border: 1px solid #e1e8f0;
+            border-radius: 0 0 10px 10px;
+            padding: 35px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .headline-callout {
+            font-family: 'Georgia', serif;
+            font-style: italic;
+            font-size: 1.7rem;
+            line-height: 1.4;
+            color: #1a365d;
+        }
+
+        .cognitive-core-desc {
+            font-size: 0.98rem;
+            line-height: 1.5;
+            color: #4b5a6a;
+            margin-top: 15px;
+        }
+
+        /* Right Side: Compounding Outcomes Realization Panel */
+        .compounding-outcomes-panel {
             flex: 1.1;
             background-color: #ffffff;
             border: 1px solid #e1e8f0;
-            border-radius: 12px;
-            padding: 45px;
+            border-radius: 10px;
+            padding: 35px 40px;
             display: flex;
             flex-direction: column;
             justify-content: center;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.02);
         }
 
-        .vault-welcome-pane {
-            text-align: center;
-            color: #6a7b8c;
-        }
-
-        .vault-welcome-pane h2 {
+        .panel-heading {
             font-family: 'Georgia', serif;
-            font-size: 2.2rem;
+            font-size: 1.8rem;
             color: #123456;
-            margin-bottom: 12px;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #f0f4f8;
+            padding-bottom: 8px;
         }
 
-        /* Dynamic compounding effect reveals list styles */
-        .compounding-list {
+        .compounding-list-wrapper {
             list-style-type: none;
             display: flex;
             flex-direction: column;
-            gap: 16px;
+            gap: 14px;
         }
 
-        .compounding-list li {
-            font-size: 1.15rem;
-            line-height: 1.5;
+        .compounding-list-wrapper li {
+            font-size: 1.1rem;
+            line-height: 1.45;
             color: #334455;
             position: relative;
-            padding-left: 28px;
+            padding-left: 26px;
             font-weight: 600;
-            animation: listItemEntrance 0.4s cubic-bezier(0.16, 1, 0.3, 1) both;
+            animation: textSlideReveal 0.35s ease-out both;
         }
 
-        .compounding-list li::before {
+        .compounding-list-wrapper li::before {
             content: "■";
-            color: #123456;
-            font-size: 0.85rem;
+            color: #3b75af;
+            font-size: 0.8rem;
             position: absolute;
             left: 0;
             top: 2px;
         }
 
         /* ==========================================================================
-           4. Game End Mastery Screen View (Smooth Fade Panel Overlay)
+           5. End-Game Mastery Dashboard State
            ========================================================================== */
-        .mastery-dashboard-panel {
+        .mastery-panel-overlay {
             display: none;
             width: 100%;
             height: 100%;
             grid-template-columns: 1fr 1.1fr;
-            gap: 40px;
-            animation: layoutFadeEntrance 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+            gap: 25px;
+            animation: overlayEntrance 0.4s ease-out;
         }
 
         .mastery-card-left {
@@ -262,30 +267,11 @@
         .mastery-card-left p {
             font-size: 1.15rem;
             line-height: 1.6;
-            opacity: 0.9;
-        }
-
-        .mastery-card-right {
-            background-color: #ffffff;
-            border: 1px solid #e1e8f0;
-            border-radius: 12px;
-            padding: 40px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-        }
-
-        .mastery-card-right h2 {
-            font-family: 'Georgia', serif;
-            font-size: 1.8rem;
-            color: #123456;
-            margin-bottom: 20px;
-            border-bottom: 2px solid #eaf1f8;
-            padding-bottom: 10px;
+            opacity: 0.95;
         }
 
         /* ==========================================================================
-           5. Slide Footer
+           6. Slide Footer Component
            ========================================================================== */
         .slide-footer {
             border-top: 1px solid #e1e8f0;
@@ -299,14 +285,13 @@
             font-style: italic;
         }
 
-        /* Keyframe Entry Micro-motions */
-        @keyframes listItemEntrance {
-            from { opacity: 0; transform: translateX(10px); }
+        /* Entry Keyframe System animations */
+        @keyframes textSlideReveal {
+            from { opacity: 0; transform: translateX(8px); }
             to { opacity: 1; transform: translateX(0); }
         }
-
-        @keyframes layoutFadeEntrance {
-            from { opacity: 0; transform: translateY(12px); }
+        @keyframes overlayEntrance {
+            from { opacity: 0; transform: translateY(10px); }
             to { opacity: 1; transform: translateY(0); }
         }
     </style>
@@ -315,7 +300,7 @@
 
     <div class="slide-container">
         
-        <!-- Header HUD Dashboard -->
+        <!-- Header Section -->
         <header class="slide-header">
             <div class="title-group">
                 <h1 class="main-title" id="dynamic-title">Decision Debt</h1>
@@ -323,148 +308,161 @@
             </div>
             <div class="hud-metrics" id="game-hud">
                 <div class="metric-pill">Open Tabs: <span id="tabs-left">5</span></div>
-                <div class="metric-pill">Strategic Thinking Space: <span id="cognitive-space" style="color: #e67e22;">20%</span></div>
+                <div class="metric-pill">Thinking Space: <span id="cognitive-space" style="color: #e67e22;">20%</span></div>
             </div>
         </header>
 
-        <!-- Main Dynamic Interactive Play Area -->
-        <div class="gameplay-arena" id="main-play-arena">
+        <!-- Horizontal Tab Selector Bar -->
+        <nav class="browser-tab-dock" id="tab-dock">
+            <button class="tab-node active-focus" onclick="viewTab(0, this)">
+                <span>Process Architecture</span>
+                <span class="close-action-x">✕</span>
+            </button>
+            <button class="tab-node" onclick="viewTab(1, this)">
+                <span>Commercial Integration</span>
+                <span class="close-action-x">✕</span>
+            </button>
+            <button class="tab-node" onclick="viewTab(2, this)">
+                <span>Core Executive Hiring</span>
+                <span class="close-action-x">✕</span>
+            </button>
+            <button class="tab-node" onclick="viewTab(3, this)">
+                <span>Transport Lane Plan</span>
+                <span class="close-action-x">✕</span>
+            </button>
+            <button class="tab-node" onclick="viewTab(4, this)">
+                <span>Infrastructure Lifecycle</span>
+                <span class="close-action-x">✕</span>
+            </button>
+        </nav>
+
+        <!-- Split Main Workspace Layout Arena -->
+        <div class="workspace-deck" id="main-workspace">
             
-            <!-- Left Column: Control Dashboard (Simulating Open Browser Tabs) -->
-            <div class="cognitive-dashboard">
-                <h2 class="quote-headline">Every stalled approval sits in your head like open browser tabs.</h2>
-                
-                <div class="tabs-simulation-matrix">
-                    <button class="tab-button" onclick="resolveTab(0, this)">
-                        <span>Tab_01: Process Architecture Approval</span>
-                        <span class="tab-close-icon">✕</span>
-                    </button>
-                    <button class="tab-button" onclick="resolveTab(1, this)">
-                        <span>Tab_02: Commercial Integration Budget</span>
-                        <span class="tab-close-icon">✕</span>
-                    </button>
-                    <button class="tab-button" onclick="resolveTab(2, this)">
-                        <span>Tab_03: Core Executive Hiring Mandate</span>
-                        <span class="tab-close-icon">✕</span>
-                    </button>
-                    <button class="tab-button" onclick="resolveTab(3, this)">
-                        <span>Tab_04: Transport Lane Restructuring</span>
-                        <span class="tab-close-icon">✕</span>
-                    </button>
-                    <button class="tab-button" onclick="resolveTab(4, this)">
-                        <span>Tab_05: Infrastructure Technology Lifecycle</span>
-                        <span class="tab-close-icon">✕</span>
-                    </button>
-                </div>
+            <!-- Left Info Panel Frame -->
+            <div class="cognitive-info-panel">
+                <h2 class="headline-callout" id="dynamic-headline">Every stalled approval sits in your head like open browser tabs.</h2>
+                <p class="cognitive-core-desc">Decision debt is the cognitive load created by unresolved decisions. The more you carry, the less space you have for strategic thinking.</p>
             </div>
 
-            <!-- Right Column: Compounding Realization Vault (No Shifting) -->
-            <main class="compounding-display-vault" id="compounding-vault">
-                <div class="vault-welcome-pane" id="welcome-pane">
-                    <h2>The Compounding Effect</h2>
-                    <p>Decision debt is the cognitive load created by unresolved decisions. Click to close open workflow tabs and diagnose compounding organizational liabilities.</p>
-                </div>
-                
-                <!-- Dynamic List Area (Populated in script to avoid overlap) -->
-                <ul class="compounding-list" id="revealed-effects-list" style="display: none;"></ul>
+            <!-- Right Outcomes List Panel Frame -->
+            <main class="compounding-outcomes-panel">
+                <h2 class="panel-heading" id="right-panel-title">The Compounding Effect</h2>
+                <ul class="compounding-list-wrapper" id="revealed-list">
+                    <!-- Base introductory prompt text string, cleared upon interactive selections -->
+                    <li id="initial-instruction-prompt" style="list-style-type:none; padding-left:0; font-weight:normal; color:#6a7b8c;">
+                        Click through the open browser tabs in the horizontal row above. Hit the "✕" on active tabs to clear your cognitive backlog and audit specific operational risks.
+                    </li>
+                </ul>
             </main>
 
         </div>
 
-        <!-- Hidden End-Game Master Framework Summary Dashboard Layer -->
-        <div class="mastery-dashboard-panel" id="mastery-screen">
-            
+        <!-- Hidden End-Game Master Framework Dashboard Panel Layer -->
+        <div class="mastery-panel-overlay" id="mastery-screen">
             <div class="mastery-card-left">
                 <h2 style="font-family:'Georgia',serif; font-size:2rem; margin-bottom:15px;">Cognitive Load Cleared</h2>
-                <p>Decision debt is the cognitive load created by unresolved decisions. The more you carry, the less space you have for strategic thinking. By resolving organizational stalemates promptly, you optimize clarity and execution speed.</p>
+                <p>Decision debt slows organizational execution and limits leadership clarity. By systematically diagnosing, prioritizing, and closing unmade decisions, you eliminate cognitive load and build a high-velocity culture focused on long-term strategy.</p>
             </div>
-
-            <div class="mastery-card-right">
-                <h2>The Compounding Effect Breakdown</h2>
-                <ul class="compounding-list">
-                    <li style="animation-delay: 0.1s;">Hiring is delayed</li>
-                    <li style="animation-delay: 0.2s;">Revenue opportunities expire</li>
-                    <li style="animation-delay: 0.3s;">Team morale dips</li>
-                    <li style="animation-delay: 0.4s;">Competitive advantages erode</li>
-                    <li style="animation-delay: 0.5s;">Innovation pipeline stalls</li>
+            <div class="compounding-outcomes-panel">
+                <h2>The Compounding Effect Framework</h2>
+                <ul class="compounding-list-wrapper">
+                    <li>Hiring is delayed</li>
+                    <li>Revenue opportunities expire</li>
+                    <li>Team morale dips</li>
+                    <li>Competitive advantages erode</li>
+                    <li>Innovation pipeline stalls</li>
                 </ul>
             </div>
-
         </div>
 
-        <!-- Instructions Slide Footer -->
+        <!-- Slide Footer Guidance Help Line -->
         <footer class="slide-footer">
-            <p id="footer-text">Click the "✕" marker on individual stalled decision browser tabs to process architecture blocks and regain strategic thinking space.</p>
+            <p id="footer-text">Select individual browser tabs from the horizontal menu bar, then click the "✕" icon to eliminate decision debt.</p>
         </footer>
 
     </div>
 
     <!-- ==========================================================================
-       6. JavaScript Interactive State Control Matrix
+       7. Interactive Layout Logic Controller Matrix
        ========================================================================== -->
     <script>
-        // Compounding effect text arrays sourced straight from image_0c02a8.png
-        const compoundingEffects = [
-            "Hiring is delayed",
-            "Revenue opportunities expire",
-            "Team morale dips",
-            "Competitive advantages erode",
-            "Innovation pipeline stalls"
+        // Core framework data points sourced straight from image_0b9e42.png
+        const compoundingEffectsData = [
+            { text: "Hiring is delayed", detail: "Every stalled approval sits in your head like open browser tabs, directly bottlenecking human capital acquisitions." },
+            { text: "Revenue opportunities expire", detail: "Delayed commercial integration parameters cause active market opportunities to lose relevance." },
+            { text: "Team morale dips", detail: "Unresolved executive hiring priorities stall directional workflow clarity, driving up systemic frustration." },
+            { text: "Competitive advantages erode", detail: "Hesitation along key transport lane strategies allows faster competitors to capture critical advantages." },
+            { text: "Innovation pipeline stalls", detail: "Failing to commit to a structured infrastructure technology lifecycle freezes engineering momentum." }
         ];
 
-        let resolvedTabsCount = 0;
-        let cognitiveSpacePercent = 20; // Starts restricted at 20% matching image layout parameters
+        let resolvedCount = 0;
+        let cognitiveCapacity = 20; // Starts limited at 20% capacity matching image layout parameters
+        const resolvedTrack = [false, false, false, false, false];
 
-        function resolveTab(index, buttonElement) {
-            if (buttonElement.classList.contains('resolved')) return;
+        function viewTab(index, element) {
+            // Clean previous active design accents across node selections
+            const tabs = document.querySelectorAll('.tab-node');
+            tabs.forEach(t => t.classList.remove('active-focus'));
+            
+            // Highlight current element choice
+            element.classList.add('active-focus');
 
-            // 1. Terminate button interactivity state variables
-            buttonElement.classList.add('resolved');
-            buttonElement.querySelector('.tab-close-icon').textContent = "✓";
+            // Populate the description details layout context dynamically
+            const dataItem = compoundingEffectsData[index];
+            document.getElementById('dynamic-headline').textContent = `Focusing on Tab_0${index + 1}...`;
+            
+            // Remove welcoming placeholder instructions if still active
+            const promptEl = document.getElementById('initial-instruction-prompt');
+            if (promptEl) promptEl.remove();
 
-            // 2. Increment score parameters and adjust top HUD values
-            resolvedTabsCount++;
-            cognitiveSpacePercent += 16; // Increments smoothly back up to approximately 100% capacity
+            // Intercept tab closing interactions if clicked directly on the close area anchor
+            const isCloseAction = event.target.classList.contains('close-action-x');
             
-            const tabsLeft = 5 - resolvedTabsCount;
-            document.getElementById('tabs-left').textContent = tabsLeft;
-            
-            const spaceElement = document.getElementById('cognitive-space');
-            spaceElement.textContent = `${cognitiveSpacePercent}%`;
-            
-            if (cognitiveSpacePercent >= 80) {
-                spaceElement.style.color = "#2ecc71"; // Shifts to green color as cognitive stress drops
+            if (isCloseAction && !resolvedTrack[index]) {
+                // Execute closing/resolving parameters mutation
+                resolvedTrack[index] = true;
+                element.classList.add('resolved');
+                element.querySelector('.close-action-x').textContent = "✓";
+
+                resolvedCount++;
+                cognitiveCapacity += 16; // Increment metric capacity smoothly back to 100%
+
+                // Synchronize HUD panel strings
+                document.getElementById('tabs-left').textContent = 5 - resolvedCount;
+                const spaceHUD = document.getElementById('cognitive-space');
+                spaceHUD.textContent = `${cognitiveCapacity}%`;
+                if (cognitiveCapacity >= 80) spaceHUD.style.color = "#2ecc71";
+
+                // Append resolved parameter to the master right-hand list block container
+                const listContainer = document.getElementById('revealed-list');
+                const newLi = document.createElement('li');
+                newLi.textContent = dataItem.text;
+                listContainer.appendChild(newLi);
             }
 
-            // 3. Render associated text block variables inside the right-hand panel
-            document.getElementById('welcome-pane').style.display = 'none';
-            
-            const listContainer = document.getElementById('revealed-effects-list');
-            listContainer.style.display = 'flex';
+            // Update lower panel text view blocks
+            document.getElementById('right-panel-title').textContent = dataItem.text;
 
-            // Generate an isolated child bullet without wiping out previous items (avoids spatial conflict)
-            const newListItem = document.createElement('li');
-            newListItem.textContent = compoundingEffects[index];
-            listContainer.appendChild(newListItem);
-
-            // 4. Evaluate end-game criteria constraints
-            if (resolvedTabsCount === 5) {
-                setTimeout(displayCompletionDashboard, 1200);
+            // Enforce exit criteria limits
+            if (resolvedCount === 5) {
+                setTimeout(triggerMasteryDashboardReveal, 1400);
             }
         }
 
-        function displayCompletionDashboard() {
-            // Remove active interactive play stage items cleanly
-            document.getElementById('main-play-arena').style.display = 'none';
+        function triggerMasteryDashboardReveal() {
+            // Drop staging interactive playground boxes
+            document.getElementById('main-workspace').style.display = 'none';
+            document.getElementById('tab-dock').style.display = 'none';
             document.getElementById('game-hud').style.display = 'none';
 
-            // Swap out primary top layout text metadata parameters
-            document.getElementById('dynamic-title').textContent = "Cognitive Optimization Maximized";
-            document.getElementById('dynamic-subtitle').textContent = "Framework Overview: Decision Debt Cleared.";
+            // Swap slide titles properties
+            document.getElementById('dynamic-title').textContent = "Cognitive Debt Resolved";
+            document.getElementById('dynamic-subtitle').textContent = "Summary Matrix: High-Velocity Organizational Blueprint.";
 
-            // Render final widescreen mastery metrics dashboard
+            // Display finalized framework summary analytics board
             document.getElementById('mastery-screen').style.display = 'grid';
-            document.getElementById('footer-text').textContent = "Simulation complete. You have successfully recovered your strategic thinking capacity.";
+            document.getElementById('footer-text').textContent = "Course component complete. You have successfully recovered your strategic thinking capacity.";
         }
     </script>
 </body>
