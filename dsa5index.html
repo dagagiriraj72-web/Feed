@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>OODA Loop in Business - Interactive L3 Slide</title>
+    <title>OODA Loop in Business - Optimized Widescreen Slide</title>
     
     <style>
         /* ==========================================================================
-           1. Core Reset & Fixed Canvas Dimensions (Absolute No-Scroll)
+           1. Core Reset & Fixed Canvas Dimensions (Absolute No-Scroll Gate)
            ========================================================================== */
         * {
             box-sizing: border-box;
@@ -24,17 +24,17 @@
             align-items: center;
             min-height: 100vh;
             overflow: hidden;
-            padding: 10px;
+            padding: 5px;
         }
 
-        /* Fixed 16:9 Widescreen Storyline Container to guarantee zero scrollbars */
+        /* Fixed 16:9 Widescreen Storyline Canvas Box Container */
         .slide-container {
             background-color: #fafcfe;
             width: 1280px;
             height: 720px;
-            padding: 45px 60px;
+            padding: 30px 50px 20px 50px; /* Bounded padding reclaims critical vertical area */
             border-radius: 8px;
-            box-shadow: 0 20px 50px rgba(18, 52, 86, 0.15);
+            box-shadow: 0 20px 50px rgba(18, 52, 86, 0.12);
             display: flex;
             flex-direction: column;
             justify-content: space-between;
@@ -49,7 +49,7 @@
             justify-content: space-between;
             align-items: flex-start;
             border-bottom: 2px solid #e1e8f0;
-            padding-bottom: 15px;
+            padding-bottom: 10px;
         }
 
         .title-group {
@@ -57,38 +57,38 @@
         }
 
         .main-title {
-            font-size: 2.6rem;
+            font-size: 2.4rem;
             font-weight: 800;
-            color: #123456; /* Brand deep blue from image_0b3503.png */
+            color: #123456; /* Brand deep blue from image_f1bc9a.png */
             line-height: 1.1;
         }
 
         .subtitle {
-            font-size: 1.05rem;
+            font-size: 1rem;
             color: #6a7b8c;
-            margin-top: 5px;
+            margin-top: 3px;
             font-weight: 500;
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 6px;
         }
 
         .subtitle::before {
             content: "•";
             color: #e67e22; /* Signature orange brand dot indicator from your layout */
-            font-size: 1.5rem;
+            font-size: 1.4rem;
         }
 
         .hud-metrics {
             display: flex;
-            gap: 15px;
+            gap: 12px;
         }
 
         .metric-pill {
             background-color: #eaf1f8;
-            padding: 8px 16px;
+            padding: 6px 14px;
             border-radius: 6px;
-            font-size: 0.85rem;
+            font-size: 0.8rem;
             font-weight: 700;
             text-transform: uppercase;
             letter-spacing: 0.5px;
@@ -97,15 +97,15 @@
         }
 
         /* ==========================================================================
-           3. Core Gameplay Arena Grid Split
+           3. Core Gameplay Arena Split Layout
            ========================================================================== */
         .gameplay-arena {
             display: flex;
-            gap: 40px;
+            gap: 35px;
             flex: 1;
-            margin: 25px 0;
+            margin: 20px 0 15px 0; /* Budgeted margin boundaries */
             align-items: stretch;
-            height: calc(100% - 140px);
+            height: calc(100% - 135px);
         }
 
         /* Left Side: Interactive Dynamic Mission Deck Box */
@@ -113,7 +113,7 @@
             flex: 1;
             background-color: #123456;
             border-radius: 12px;
-            padding: 35px;
+            padding: 25px; /* Streamlined internal padding prevents expansion cutoff */
             color: #ffffff;
             display: flex;
             flex-direction: column;
@@ -122,26 +122,26 @@
         }
 
         .mission-card h3 {
-            font-size: 0.8rem;
+            font-size: 0.75rem;
             text-transform: uppercase;
             letter-spacing: 1.5px;
             color: #e67e22;
-            margin-bottom: 8px;
+            margin-bottom: 4px;
         }
 
         .mission-card p {
-            font-size: 1.25rem;
-            line-height: 1.5;
+            font-size: 1.15rem;
+            line-height: 1.45;
             color: #ffffff;
             font-weight: 600;
+            margin-bottom: 10px;
         }
 
         /* Options Stack Controls Area */
         .options-matrix-stack {
             display: flex;
             flex-direction: column;
-            gap: 12px;
-            margin-top: 20px;
+            gap: 10px;
         }
 
         .option-action-btn {
@@ -149,9 +149,10 @@
             border: 1px solid rgba(255, 255, 255, 0.15);
             color: #ffffff;
             border-radius: 8px;
-            padding: 16px 22px;
+            padding: 12px 18px; /* Safe, tight padding keeps text bounded */
             font-family: inherit;
-            font-size: 1rem;
+            font-size: 0.92rem;
+            line-height: 1.35;
             font-weight: 600;
             text-align: left;
             cursor: pointer;
@@ -164,65 +165,65 @@
             border-color: #e67e22;
         }
 
-        /* Right Side: Reconstructed OODA Process Row Stack (Guarantees No Truncation) */
+        /* Right Side: OODA Process Row Stack */
         .ooda-process-stack {
-            flex: 1.2;
+            flex: 1.1;
             display: flex;
             flex-direction: column;
-            gap: 12px;
+            gap: 10px;
             justify-content: center;
         }
 
-        /* Unified block layout mimicking image_0b3503.png style bars exactly */
+        /* Row blocks style bars from layout reference image */
         .ooda-row-node {
             background-color: #ffffff;
             border: 1px solid #e1e8f0;
             border-radius: 4px;
             display: flex;
             align-items: center;
-            min-height: 72px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.02);
+            min-height: 64px; /* Scaled down slightly to secure vertical spacing layout */
+            box-shadow: 0 4px 12px rgba(0,0,0,0.01);
             position: relative;
-            opacity: 0.4; /* Dimmed until resolved by the interactive sequence loops */
+            opacity: 0.4; /* Dimmed until resolved by the interactive script loops */
             transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
-        /* Left side thick ribbon borders map to exact colors from reference graphic */
+        /* Left vertical accent ribbons */
         .ooda-row-node::before {
             content: '';
             position: absolute;
             left: 0;
             top: 0;
             bottom: 0;
-            width: 8px;
+            width: 6px;
         }
-        .node-observe::before { background-color: #3b75af; } /* Blue ribbon */
-        .node-orient::before  { background-color: #3b75af; } /* Blue ribbon */
-        .node-decide::before  { background-color: #e67e22; } /* Orange ribbon */
-        .node-act::before     { background-color: #123456; } /* Dark blue ribbon */
+        .node-observe::before { background-color: #3b75af; }
+        .node-orient::before  { background-color: #3b75af; }
+        .node-decide::before  { background-color: #e67e22; }
+        .node-act::before     { background-color: #123456; }
 
         .ooda-row-node.unlocked {
             opacity: 1;
-            transform: scale(1.02);
-            box-shadow: 0 6px 15px rgba(18, 52, 86, 0.06);
+            transform: scale(1.01);
+            box-shadow: 0 4px 12px rgba(18, 52, 86, 0.05);
             border-color: #ccdbe8;
         }
 
         .node-heading-zone {
-            width: 160px;
-            padding-left: 25px;
-            font-size: 1.25rem;
+            width: 130px;
+            padding-left: 20px;
+            font-size: 1.15rem;
             font-weight: 800;
             color: #123456;
             flex-shrink: 0;
         }
 
         .node-description-zone {
-            font-size: 0.95rem;
+            font-size: 0.88rem;
             line-height: 1.4;
             color: #4b5a6a;
-            padding: 15px 25px 15px 10px;
-            display: none; /* Appears only after interaction confirms unlock sequence */
+            padding: 10px 20px 10px 5px;
+            display: none; /* Appears only after interaction loop validation */
             animation: textRevealKey 0.3s ease forwards;
         }
 
@@ -231,7 +232,7 @@
         }
 
         /* ==========================================================================
-           4. Game End Mastery Dashboard Layout Viewport (Fades In Smoothly)
+           4. Game End Mastery Summary Dashboard Layout
            ========================================================================== */
         .mastery-dashboard-view {
             display: none;
@@ -240,11 +241,11 @@
             animation: paneEntranceKey 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
         }
 
-        /* Forces all rows to open up concurrently on success */
+        /* Unlocks full display snapshot view context concurrently */
         .mastery-dashboard-view .ooda-process-stack .ooda-row-node {
             opacity: 1;
             transform: none;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.02);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.01);
             border-color: #e1e8f0;
         }
         .mastery-dashboard-view .node-description-zone {
@@ -252,27 +253,27 @@
         }
 
         /* ==========================================================================
-           5. Slide Footer Component
+           5. Slide Footer
            ========================================================================== */
         .slide-footer {
             border-top: 1px solid #e1e8f0;
-            padding-top: 15px;
+            padding-top: 10px;
             text-align: center;
         }
 
         .slide-footer p {
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             color: #6a7b8c;
             font-style: italic;
         }
 
-        /* Structural Keyframe Motions */
+        /* Animations */
         @keyframes textRevealKey {
-            from { opacity: 0; transform: translateX(6px); }
+            from { opacity: 0; transform: translateX(5px); }
             to { opacity: 1; transform: translateX(0); }
         }
         @keyframes paneEntranceKey {
-            from { opacity: 0; transform: translateY(12px); }
+            from { opacity: 0; transform: translateY(10px); }
             to { opacity: 1; transform: translateY(0); }
         }
     </style>
@@ -293,10 +294,10 @@
             </div>
         </header>
 
-        <!-- Main Dynamic Play Field Arena -->
+        <!-- Main Dynamic Play Arena -->
         <div class="gameplay-arena" id="main-play-arena">
             
-            <!-- Left Side: Dynamic Strategy Challenge Deck Console -->
+            <!-- Left Side Command Card Console Console Deck -->
             <div class="mission-command-deck">
                 <div class="mission-card">
                     <h3 id="step-tag-heading">Task 01: Initial Response</h3>
@@ -310,7 +311,7 @@
                 </div>
             </div>
 
-            <!-- Right Side: The Reconstructed OODA Target Layout (Matches image_0b3503.png exactly when unlocked) -->
+            <!-- Right Side Target List Nodes Framework mapping image_f21bc9a.png elements -->
             <main class="ooda-process-stack">
                 
                 <!-- Row 1: Observe -->
@@ -341,9 +342,9 @@
 
         </div>
 
-        <!-- Hidden End-Game Master Infographic Dashboard Layer (Renders complete view snapshot from image_0b3503.png smoothly) -->
+        <!-- Hidden End-Game Master Infographic Summary Framework Panel -->
         <div class="mastery-dashboard-view" id="mastery-screen">
-            <main class="ooda-process-stack" style="max-width: 1000px; margin: 40px auto 0 auto; gap: 20px;">
+            <main class="ooda-process-stack" style="max-width: 900px; margin: 30px auto 0 auto; gap: 15px;">
                 <div class="ooda-row-node node-observe">
                     <div class="node-heading-zone">Observe</div>
                     <div class="node-description-zone">Monitor market signals, competitor moves, customer behavior, and internal metrics in real time.</div>
@@ -363,7 +364,7 @@
             </main>
         </div>
 
-        <!-- Instructions Slide Footer -->
+        <!-- Stable Slide Guidance Help Footer Component -->
         <footer class="slide-footer">
             <p id="footer-text">Analyze the current operational step in the Left Command Deck, then execute the option button that matches the next proper sequencing phase of the OODA Loop.</p>
         </footer>
@@ -371,10 +372,9 @@
     </div>
 
     <!-- ==========================================================================
-       6. Interactive Loop Sequencing Matrix Controller Script
+       4. Interactive Sequence State Logic Controller Script
        ========================================================================== -->
     <script>
-        // Interactive branching sequence matrix mapped to original content blocks
         const oodaGameSteps = [
             {
                 expectedKey: "observe",
@@ -425,21 +425,18 @@
             const activeStepData = oodaGameSteps[loopSequenceIndex];
             
             if (userClickedKey === activeStepData.expectedKey) {
-                // Correct sequencing handle
                 const targetedRow = document.getElementById(`row-${activeStepData.expectedKey}`);
                 if (targetedRow) targetedRow.classList.add('unlocked');
 
                 loopSequenceIndex++;
                 
                 if (loopSequenceIndex < 4) {
-                    // Re-render and advance command deck views
                     document.getElementById('loop-stage-text').textContent = `${loopSequenceIndex + 1} / 4`;
                     renderActiveChallengeStep();
                 } else {
                     displayMasteryInfographic();
                 }
             } else {
-                // Incorrect sequencing handler
                 penaltyMistakes++;
                 const ratingHUD = document.getElementById('accuracy-score');
                 if (penaltyMistakes === 1) {
@@ -457,7 +454,6 @@
             document.getElementById('step-tag-heading').textContent = data.tag;
             document.getElementById('challenge-prompt-text').textContent = data.text;
 
-            // Repopulate interactive button choices cleanly with no overlap parameters
             const optionsBox = document.getElementById('options-box');
             optionsBox.innerHTML = '';
             
@@ -471,17 +467,14 @@
         }
 
         function displayMasteryInfographic() {
-            // Unmount runtime play systems elements safely
             document.getElementById('main-play-arena').style.display = 'none';
             document.getElementById('game-hud').style.display = 'none';
 
-            // Rewrite slide subheadings text
             document.getElementById('dynamic-title').textContent = "OODA Loop Paradigm Mastered";
             document.getElementById('dynamic-subtitle').textContent = "The complete cycle layout is now unlocked. Review the unified execution path below.";
 
-            // Render static macro view mirroring image_0b3503.png structure perfectly
             document.getElementById('mastery-screen').style.display = 'block';
-            document.getElementById('footer-text').textContent = "Loop complete. You have successfully mapped strategic decision speed onto your operational framework variables.";
+            document.getElementById('footer-text').textContent = "Loop complete. You can now securely proceed forward to the next section block.";
         }
     </script>
 </body>
