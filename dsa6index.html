@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RAPID in Practice - Interactive Widescreen Slide</title>
+    
+    <style>
+        /* ==========================================================================
+           1. Core Reset & Fixed 16:9 Canvas Constraints (Absolute No-Scroll Gate)
+           ========================================================================== */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background-color: #f0f4f8;
+            color: #1a2a3a;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            overflow: hidden;
+            padding: 10px;
+        }
+
+        /* Fixed 16:9 Presentation Slide Frame Canvas Box Container */
+        .slide-container {
+            background-color: #fafcfe;
+            width: 1280px;
+            height: 720px;
+            padding: 45px 60px;
+            border-radius: 8px;
+            box-shadow: 0 20px 50px rgba(18, 52, 86, 0.15);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            overflow: hidden; 
+        }
+
+        /* ==========================================================================
+           2. Slide Header and HUD Metrics Display Panel
+           ========================================================================== */
+        .slide-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            border-bottom: 2px solid #e1e8f0;
+            padding-bottom: 15px;
+        }
+
+        .title-group {
+            flex: 1;
+        }
+
+        .main-title {
+            font-size: 2.6rem;
+            font-weight: 800;
+            color: #123456; /* Deep blue corporate branding tone from image_ffc7e1.png */
+            line-height: 1.1;
+        }
+
+        .subtitle {
+            font-size: 1.05rem;
+            color: #6a7b8c;
+            margin-top: 5px;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .subtitle::before {
+            content: "•";
+            color: #e67e22; /* Vivid orange accent dot indicator from your layout graphic */
+            font-size: 1.5rem;
+        }
+
+        .hud-metrics {
+            display: flex;
+            gap: 15px;
+        }
+
+        .metric-pill {
+            background-color: #eaf1f8;
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: #123456;
+            border: 1px solid #ccdbe8;
+        }
+
+        /* ==========================================================================
+           3. Gameplay Split-Grid Workspace Arena (Zero Vertical Shifting)
+           ========================================================================== */
+        .gameplay-arena {
+            display: flex;
+            gap: 40px;
+            flex: 1;
+            margin: 25px 0;
+            align-items: stretch;
+            height: calc(100% - 145px);
+        }
+
+        /* Left Side: Stalled Workflow Challenges Sidebar */
+        .challenges-sidebar {
+            flex: 0.9;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            justify-content: center;
+        }
+
+        .challenge-node-btn {
+            background-color: #ffffff;
+            border: 1px solid #e1e8f0;
+            border-radius: 8px;
+            padding: 16px 20px;
+            font-family: inherit;
+            font-size: 1.05rem;
+            font-weight: 600;
+            color: #2c3e50;
+            text-align: left;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.01);
+            transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .challenge-node-btn:hover {
+            background-color: #f7fafc;
+            border-color: #3b75af;
+            transform: translateX(4px);
+        }
+
+        .challenge-node-btn.active-focus {
+            background-color: #ffffff;
+            border-color: #e67e22;
+            box-shadow: 0 6px 15px rgba(230,126,34,0.08);
+            transform: scale(1.02) translateX(4px);
+        }
+
+        .challenge-node-btn.optimized {
+            background-color: rgba(46, 204, 113, 0.08);
+            border-color: #2ecc71;
+            color: #27ae60;
+            cursor: default;
+            pointer-events: none;
+            transform: none;
+        }
+
+        /* Right Side: Resolution Matrix Workbench Display Pane */
+        .resolution-workbench {
+            flex: 1.4;
+            background-color: #ffffff;
+            border: 1px solid #e1e8f0;
+            border-radius: 12px;
+            padding: 35px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.02);
+        }
+
+        .empty-prompt-view {
+            text-align: center;
+            color: #6a7b8c;
+        }
+
+        .empty-prompt-view h2 {
+            font-family: 'Georgia', serif;
+            font-size: 2rem;
+            color: #123456;
+            margin-bottom: 10px;
+        }
+
+        /* Solution Reveal Layout components */
+        .solution-reveal-view {
+            display: none;
+            flex-direction: column;
+            gap: 25px;
+            animation: paneEntrance 0.4s ease-out;
+        }
+
+        .solution-row-block {
+            border-bottom: 1px solid #f0f4f8;
+            padding-bottom: 15px;
+        }
+
+        .solution-row-block:last-child {
+            border-bottom: none;
+            padding-bottom: 0;
+        }
+
+        .solution-row-block h4 {
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #6a7b8c;
+            margin-bottom: 6px;
+        }
+
+        .solution-row-block p {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #123456;
+        }
+
+        /* Highlight blue benefit tag matching image styles */
+        .solution-row-block p.benefit-tag-text {
+            color: #3b75af;
+            font-weight: 700;
+        }
+
+        /* Interactive Resolution Submit Action Button */
+        .apply-framework-btn {
+            background-color: #123456;
+            color: #ffffff;
+            border: none;
+            border-radius: 6px;
+            padding: 14px 25px;
+            font-size: 0.95rem;
+            font-weight: 700;
+            cursor: pointer;
+            align-self: flex-start;
+            margin-top: 10px;
+            transition: background-color 0.2s;
+        }
+
+        .apply-framework-btn:hover {
+            background-color: #224b73;
+        }
+
+        /* ==========================================================================
+           4. End-Game Macro Framework Summary Table Layout (Smooth Reveal)
+           ========================================================================== */
+        .macro-summary-table-view {
+            display: none;
+            width: 100%;
+            height: 100%;
+            flex-direction: column;
+            animation: layoutEntrance 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
+            margin-top: 15px;
+        }
+
+        /* Clean framework grid mimicking image_ffc7e1.png architectural specs */
+        .summary-table-header, .summary-table-row {
+            display: grid;
+            grid-template-columns: 1fr 1.3fr 1.1fr;
+            padding: 16px 30px;
+            align-items: center;
+        }
+
+        .summary-table-header {
+            background-color: #ffffff;
+            border-bottom: 2px solid #123456;
+            font-size: 1rem;
+            font-weight: 700;
+            color: #123456;
+        }
+
+        .summary-table-row {
+            background-color: #ffffff;
+            border-bottom: 1px solid #e1e8f0;
+            font-size: 0.98rem;
+            color: #2c3e50;
+        }
+
+        .summary-table-row:nth-child(even) {
+            background-color: #f7fafc; /* Alternating sequence row fills matching graphic context */
+        }
+
+        .summary-table-row:last-child {
+            border-bottom: none;
+            border-radius: 0 0 8px 8px;
+        }
+
+        .table-benefit-cell {
+            color: #3b75af;
+            font-weight: 700;
+        }
+
+        /* ==========================================================================
+           5. Slide Footer Component
+           ========================================================================== */
+        .slide-footer {
+            border-top: 1px solid #e1e8f0;
+            padding-top: 15px;
+            text-align: center;
+        }
+
+        .slide-footer p {
+            font-size: 0.9rem;
+            color: #6a7b8c;
+            font-style: italic;
+        }
+
+        /* Structural Entry Motion Paths */
+        @keyframes paneEntrance {
+            from { opacity: 0; transform: translateX(8px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+        @keyframes layoutEntrance {
+            from { opacity: 0; transform: translateY(12px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="slide-container">
+        
+        <!-- Header HUD Control Dashboard Area -->
+        <header class="slide-header">
+            <div class="title-group">
+                <h1 class="main-title" id="dynamic-title">RAPID in Practice</h1>
+                <p class="subtitle" id="dynamic-subtitle">How clear decision roles eliminate ambiguity and accelerate execution.</p>
+            </div>
+            <div class="hud-metrics" id="game-hud">
+                <div class="metric-pill">Roles Bound: <span id="optimized-count">0 / 5</span></div>
+                <div class="metric-pill">Audit Status: <span id="audit-status-text" style="color: #e67e22;">Analyzing</span></div>
+            </div>
+        </header>
+
+        <!-- Main Dynamic Play Field Arena -->
+        <div class="gameplay-arena" id="main-play-arena">
+            
+            <!-- Left Sidebar Stack: Unresolved Process Challenges -->
+            <nav class="challenges-sidebar" id="sidebar-menu">
+                <button class="challenge-node-btn" onclick="activateChallenge(0, this)">"Too many cooks"</button>
+                <button class="challenge-node-btn" onclick="activateChallenge(1, this)">"Decision by committee"</button>
+                <button class="challenge-node-btn" onclick="activateChallenge(2, this)">"Approval loops"</button>
+                <button class="challenge-node-btn" onclick="activateChallenge(3, this)">"Everyone has an opinion"</button>
+                <button class="challenge-node-btn" onclick="activateChallenge(4, this)">"Who's doing it?"</button>
+            </nav>
+
+            <!-- Right Workbench Container: Interactive Resolution Panel -->
+            <main class="resolution-workbench" id="workbench-pane">
+                
+                <div class="empty-prompt-view" id="prompt-view">
+                    <h2>RAPID Design Laboratory</h2>
+                    <p>Select an unresolved operational process dilemma from the left sidebar stack to apply role authorization vectors.</p>
+                </div>
+
+                <!-- Hidden Solution Viewer Node Blocks (Revealed via click routines cleanly) -->
+                <div class="solution-reveal-view" id="solution-view">
+                    <div class="solution-row-block">
+                        <h4>Active Dilemma Context</h4>
+                        <p id="pane-challenge-text">"Too many cooks"</p>
+                    </div>
+                    <div class="solution-row-block">
+                        <h4>Target RAPID Framework Solution</h4>
+                        <p id="pane-solution-text">Assign one Recommender per decision</p>
+                    </div>
+                    <div class="solution-row-block">
+                        <h4>Organizational Operational Benefit</h4>
+                        <p class="benefit-tag-text" id="pane-benefit-text">Single accountability</p>
+                    </div>
+                    <button class="apply-framework-btn" onclick="commitOptimization()">Authorize Role Allocation</button>
+                </div>
+
+            </main>
+
+        </div>
+
+        <!-- Hidden End-Game Master Blueprint Table Layout Layer (Re-renders full matrix view from image_ffc7e1.png) -->
+        <div class="macro-summary-table-view" id="macro-table-screen">
+            <div class="summary-table-header">
+                <div>Challenge</div>
+                <div>RAPID Solution</div>
+                <div>Benefit</div>
+            </div>
+            <div class="summary-table-row">
+                <div>"Too many cooks"</div>
+                <div>Assign one Recommender per decision</div>
+                <div class="table-benefit-cell">Single accountability</div>
+            </div>
+            <div class="summary-table-row">
+                <div>"Decision by committee"</div>
+                <div>Name one Decider with final authority</div>
+                <div class="table-benefit-cell">Clear ownership</div>
+            </div>
+            <div class="summary-table-row">
+                <div>"Approval loops"</div>
+                <div>Limit Agree roles to legal/regulatory</div>
+                <div class="table-benefit-cell">Faster throughput</div>
+            </div>
+            <div class="summary-table-row">
+                <div>"Everyone has an opinion"</div>
+                <div>Distinguish Input from Agree</div>
+                <div class="table-benefit-cell">Focused feedback</div>
+            </div>
+            <div class="summary-table-row">
+                <div>"Who's doing it?"</div>
+                <div>Assign Perform role at decision time</div>
+                <div class="table-benefit-cell">Immediate execution</div>
+            </div>
+        </div>
+
+        <!-- Instructive Slide Footer Component -->
+        <footer class="slide-footer">
+            <p id="footer-text">Select individual workflow challenge blocks from the left matrix menu column to bind optimized governance roles.</p>
+        </footer>
+
+    </div>
+
+    <!-- ==========================================================================
+       6. Interactive Challenge Core Matrix Engine Script
+       ========================================================================== -->
+    <script>
+        // Standard database housing parameters matching image_ffc7e1.png details text exactly
+        const frameworkDatabase = [
+            { challenge: '"Too many cooks"', solution: "Assign one Recommender per decision", benefit: "Single accountability" },
+            { challenge: '"Decision by committee"', solution: "Name one Decider with final authority", benefit: "Clear ownership" },
+            { challenge: '"Approval loops"', solution: "Limit Agree roles to legal/regulatory", benefit: "Faster throughput" },
+            { challenge: '"Everyone has an opinion"', solution: "Distinguish Input from Agree", benefit: "Focused feedback" },
+            { challenge: '"Who\'s doing it?"', solution: "Assign Perform role at decision time", benefit: "Immediate execution" }
+        ];
+
+        let loadedIndex = null;
+        let completeOptimizationsCount = 0;
+        let activeNodeElement = null;
+
+        function activateChallenge(index, element) {
+            loadedIndex = index;
+            activeNodeElement = element;
+
+            // Remove highlighted borders across all selectable nodes list components
+            const nodesList = document.querySelectorAll('.challenge-node-btn');
+            nodesList.forEach(btn => btn.classList.remove('active-focus'));
+
+            // Focus highlighting parameters toggle
+            element.classList.add('active-focus');
+
+            // Swap instructional views structures smoothly
+            document.getElementById('prompt-view').style.display = 'none';
+            const displayPane = document.getElementById('solution-view');
+            displayPane.style.display = 'flex';
+
+            // Populate text parameters variables inside the workspace block content boxes
+            const targetData = frameworkDatabase[index];
+            document.getElementById('pane-challenge-text').textContent = targetData.challenge;
+            document.getElementById('pane-solution-text').textContent = targetData.solution;
+            document.getElementById('pane-benefit-text').textContent = targetData.benefit;
+        }
+
+        function commitOptimization() {
+            if (loadedIndex === null || activeNodeElement === null) return;
+
+            // Apply locked green design states attributes to verified sidebar element
+            activeNodeElement.classList.remove('active-focus');
+            activeNodeElement.classList.add('optimized');
+
+            completeOptimizationsCount++;
+            document.getElementById('optimized-count').textContent = `${completeOptimizationsCount} / 5`;
+
+            // Clean slate display views back to placeholder defaults temporarily
+            document.getElementById('solution-view').style.display = 'none';
+            document.getElementById('prompt-view').style.display = 'block';
+            loadedIndex = null;
+            activeNodeElement = null;
+
+            // Monitor end game entry criteria thresholds
+            if (completeOptimizationsCount === 5) {
+                setTimeout(revealUnifiedFrameworkMatrixBoard, 800);
+            }
+        }
+
+        function revealUnifiedFrameworkMatrixBoard() {
+            // Terminate interface execution systems layers components cleanly
+            document.getElementById('main-play-arena').style.display = 'none';
+            document.getElementById('game-hud').style.display = 'none';
+
+            // Rewrite slide title metadata text parameters
+            document.getElementById('dynamic-title').textContent = "RAPID Operational Framework Blueprint";
+            document.getElementById('dynamic-subtitle').textContent = "All decision roles mapped successfully. Final governance layout initialized.";
+
+            // Render static data matrix layout mirroring image_ffc7e1.png view perfectly
+            document.getElementById('macro-table-screen').style.display = 'flex';
+            document.getElementById('footer-text').textContent = "Review complete. Governance modeling parameters optimized. You can now close out this lesson block tab module safely.";
+        }
+    </script>
+</body>
+</html>
