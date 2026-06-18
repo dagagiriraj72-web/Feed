@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>The Strategic Cost - L3 Mini-Game Slide</title>
+    <title>The Strategic Cost - Fixed No-Scroll Slide</title>
     
     <style>
         /* ==========================================================================
-           1. Core Reset & Fixed Canvas Dimensions (Absolute No-Scroll)
+           1. Structural Reset & Fixed Dimensions (Absolute No-Scroll Gate)
            ========================================================================== */
         * {
             box-sizing: border-box;
@@ -24,17 +24,17 @@
             align-items: center;
             min-height: 100vh;
             overflow: hidden;
-            padding: 10px;
+            padding: 5px;
         }
 
-        /* Fixed 16:9 Slide Canvas Framework */
+        /* Fixed 16:9 Presentation Canvas Box Container - Rigid Height Enforcement */
         .slide-container {
             background-color: #fafcfe;
             width: 1280px;
             height: 720px;
-            padding: 45px 60px;
+            padding: 30px 45px 20px 45px; /* Streamlined to prevent bottom overflow */
             border-radius: 8px;
-            box-shadow: 0 20px 50px rgba(26,42,58,0.15);
+            box-shadow: 0 20px 50px rgba(26,42,58,0.12);
             display: flex;
             flex-direction: column;
             justify-content: space-between;
@@ -49,37 +49,33 @@
             justify-content: space-between;
             align-items: flex-start;
             border-bottom: 2px solid #e1e8f0;
-            padding-bottom: 15px;
-        }
-
-        .title-group {
-            flex: 1;
+            padding-bottom: 10px;
         }
 
         .main-title {
-            font-size: 2.6rem;
+            font-size: 2.4rem;
             font-weight: 800;
-            color: #123456; /* Deep corporate blue tone from image_0c0762.png */
+            color: #123456;
             line-height: 1.1;
         }
 
         .subtitle {
-            font-size: 1.05rem;
+            font-size: 1rem;
             color: #6a7b8c;
-            margin-top: 5px;
+            margin-top: 3px;
             font-weight: 500;
         }
 
         .hud-metrics {
             display: flex;
-            gap: 15px;
+            gap: 12px;
         }
 
         .metric-pill {
             background-color: #eaf1f8;
-            padding: 8px 16px;
+            padding: 6px 14px;
             border-radius: 6px;
-            font-size: 0.85rem;
+            font-size: 0.8rem;
             font-weight: 700;
             text-transform: uppercase;
             letter-spacing: 0.5px;
@@ -88,36 +84,38 @@
         }
 
         /* ==========================================================================
-           3. Core Gameplay Arena Split
+           3. Core Arena Layout Split
            ========================================================================== */
         .gameplay-arena {
             display: flex;
-            gap: 40px;
+            gap: 35px;
             flex: 1;
-            margin: 25px 0;
+            margin: 20px 0 15px 0; /* Optimized tight vertical spacing */
             align-items: stretch;
             height: calc(100% - 140px);
         }
 
-        /* Left Column: Interactive Vertical Timeline Nodes */
+        /* Left Column: Vertical Timeline Tree */
         .timeline-navigation {
             flex: 0.8;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
             position: relative;
-            padding-left: 30px;
+            padding-left: 20px;
+            padding-top: 10px;
+            padding-bottom: 10px;
         }
 
-        /* Vertical Connector Bar from image_0c0762.png */
+        /* Reconstructed connecting track from image_f2287f.png */
         .timeline-navigation::before {
             content: '';
             position: absolute;
-            left: 54px;
+            left: 39px;
             top: 0;
             bottom: 0;
             width: 4px;
-            background-color: #3b75af; /* Muted line color */
+            background-color: #3b75af;
             z-index: 1;
         }
 
@@ -126,7 +124,7 @@
             border: none;
             display: flex;
             align-items: center;
-            gap: 25px;
+            gap: 20px;
             cursor: pointer;
             width: 100%;
             text-align: left;
@@ -137,13 +135,13 @@
         }
 
         .node-marker-dot {
-            width: 52px;
-            height: 52px;
-            background-color: #e67e22; /* Vibrant orange node fill from image_0c0762.png */
+            width: 42px; /* Streamlined diameter to ensure perfect vertical clearance */
+            height: 42px;
+            background-color: #e67e22;
             border: 4px solid #fafcfe;
             border-radius: 50%;
-            box-shadow: 0 4px 10px rgba(230,126,34,0.3);
-            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            box-shadow: 0 3px 8px rgba(230,126,34,0.25);
+            transition: all 0.25s ease;
             flex-shrink: 0;
         }
 
@@ -151,17 +149,17 @@
             background-color: #ffffff;
             border-color: #e67e22;
             transform: scale(1.15);
-            box-shadow: 0 6px 15px rgba(230,126,34,0.5);
+            box-shadow: 0 4px 12px rgba(230,126,34,0.4);
         }
 
         .node-row-btn.reviewed .node-marker-dot {
-            background-color: #2ecc71; /* Green verification marker once sorted */
+            background-color: #2ecc71;
             border-color: #fafcfe;
-            box-shadow: 0 4px 10px rgba(46,204,113,0.3);
+            box-shadow: 0 3px 8px rgba(46,204,113,0.25);
         }
 
         .node-label-heading {
-            font-size: 1.35rem;
+            font-size: 1.2rem;
             font-weight: 700;
             color: #123456;
             transition: color 0.2s;
@@ -171,19 +169,19 @@
             color: #e67e22;
         }
 
-        /* Right Column: Work Card Focus & Classification Targets */
+        /* Right Column: Assessment Workspace */
         .assessment-workspace {
             flex: 1.2;
             display: flex;
             flex-direction: column;
-            gap: 20px;
+            gap: 15px;
         }
 
         .threat-card-display {
             background-color: #ffffff;
             border: 2px dashed #ccdbe8;
             border-radius: 12px;
-            padding: 30px;
+            padding: 25px 35px;
             flex: 1;
             display: flex;
             flex-direction: column;
@@ -192,24 +190,24 @@
         }
 
         .threat-card-display h3 {
-            font-size: 0.8rem;
+            font-size: 0.75rem;
             text-transform: uppercase;
             letter-spacing: 1px;
             color: #e67e22;
-            margin-bottom: 8px;
+            margin-bottom: 6px;
         }
 
         .threat-card-display p {
-            font-size: 1.2rem;
+            font-size: 1.15rem;
             line-height: 1.5;
             color: #2c3e50;
             font-weight: 600;
         }
 
-        /* Sorting Target Buttons */
+        /* Classification Target Row Buckets */
         .classification-grid {
             display: flex;
-            gap: 15px;
+            gap: 12px;
         }
 
         .bucket-btn {
@@ -217,13 +215,17 @@
             background-color: #eaf1f8;
             border: 2px solid transparent;
             border-radius: 8px;
-            padding: 18px;
+            padding: 14px 10px; /* Highly compact padding prevents vertical bloat */
             font-family: inherit;
-            font-size: 0.95rem;
+            font-size: 0.88rem;
             font-weight: 700;
             color: #123456;
             cursor: pointer;
             text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 54px;
             transition: all 0.2s;
         }
 
@@ -234,47 +236,47 @@
         }
 
         /* ==========================================================================
-           4. Game End Dashboard Panel (Smooth Reveal Screen)
+           4. Game End Dashboard Panel (Revealed Smoothly)
            ========================================================================== */
         .summary-dashboard-screen {
             display: none;
             width: 100%;
             height: 100%;
             grid-template-columns: repeat(2, 1fr);
-            gap: 20px;
-            animation: paneEntrance 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+            gap: 16px;
+            animation: paneEntrance 0.4s ease-out;
         }
 
         .summary-mini-card {
             background-color: #ffffff;
             border: 1px solid #e1e8f0;
             border-radius: 10px;
-            padding: 22px 25px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.02);
+            padding: 18px 22px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.01);
             display: flex;
             flex-direction: column;
-            justify-content: flex-start;
+            justify-content: center;
         }
 
         .summary-mini-card h3 {
-            font-size: 1.25rem;
+            font-size: 1.15rem;
             color: #123456;
             font-weight: 700;
-            margin-bottom: 8px;
+            margin-bottom: 6px;
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 8px;
         }
 
         .summary-mini-card h3::before {
             content: "■";
             color: #e67e22;
-            font-size: 1.1rem;
+            font-size: 1rem;
         }
 
         .summary-mini-card p {
-            font-size: 0.98rem;
-            line-height: 1.45;
+            font-size: 0.92rem;
+            line-height: 1.4;
             color: #4b5a6a;
         }
 
@@ -283,19 +285,18 @@
            ========================================================================== */
         .slide-footer {
             border-top: 1px solid #e1e8f0;
-            padding-top: 15px;
+            padding-top: 10px;
             text-align: center;
         }
 
         .slide-footer p {
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             color: #6a7b8c;
             font-style: italic;
         }
 
-        /* Entry Keyframe Animations */
         @keyframes paneEntrance {
-            from { opacity: 0; transform: translateY(12px); }
+            from { opacity: 0; transform: translateY(10px); }
             to { opacity: 1; transform: translateY(0); }
         }
     </style>
@@ -316,12 +317,11 @@
             </div>
         </header>
 
-        <!-- Main Workspace Play Field -->
+        <!-- Main Workspace Arena -->
         <div class="gameplay-arena" id="main-play-arena">
             
-            <!-- Left Side Timeline Nodes Selector Menu -->
+            <!-- Left Side Vertical Timeline Tree -->
             <nav class="timeline-navigation" id="timeline-menu">
-                
                 <button class="node-row-btn active" data-node="0" id="btn-node-0">
                     <div class="node-marker-dot"></div>
                     <span class="node-label-heading">Threat Variable Alpha</span>
@@ -341,12 +341,10 @@
                     <div class="node-marker-dot"></div>
                     <span class="node-label-heading">Threat Variable Delta</span>
                 </button>
-
             </nav>
 
-            <!-- Right Side Target Match Cards Arena -->
+            <!-- Right Side Interactive Matching Board -->
             <main class="assessment-workspace" id="assessment-workspace">
-                
                 <div class="threat-card-display">
                     <h3>Risk Impact Profile</h3>
                     <p id="threat-description-text">Competitors who act first capture customers and brand loyalty that are nearly impossible to reclaim.</p>
@@ -358,14 +356,12 @@
                     <button class="bucket-btn" onclick="submitAssessment('infra')">Outdated Infrastructure</button>
                     <button class="bucket-btn" onclick="submitAssessment('leader')">Follower, Not Leader</button>
                 </div>
-
             </main>
 
         </div>
 
-        <!-- Hidden End-Game Matrix Dashboard Layer -->
+        <!-- Hidden End-Game Master Blueprint Table Layout Layer -->
         <div class="summary-dashboard-screen" id="dashboard-screen">
-            
             <div class="summary-mini-card">
                 <h3>Lost Market Share</h3>
                 <p>Competitors who act first capture customers and brand loyalty that are nearly impossible to reclaim.</p>
@@ -378,17 +374,16 @@
 
             <div class="summary-mini-card">
                 <h3>Outdated Infrastructure</h3>
-                <p>Delayed technology investments leave organizations running on legacy systems with mounting maintenance costs.</p>
+                <p>Delayed technology investments leave organizations running on legacy systems with mounting costs.</p>
             </div>
 
             <div class="summary-mini-card">
                 <h3>Follower, Not Leader</h3>
-                <p>Indecisive organizations become fundamentally reactive, always responding to events rather than proactively shaping them.</p>
+                <p>Indecisive organizations become reactive, always responding to events rather than shaping them.</p>
             </div>
-
         </div>
 
-        <!-- Instructions Slide Footer -->
+        <!-- Stable Non-Shifting Footer -->
         <footer class="slide-footer">
             <p id="footer-text">Analyze the Risk Impact Profile on the card, then match it to the correct Strategic Cost classification bucket below.</p>
         </footer>
@@ -396,10 +391,9 @@
     </div>
 
     <!-- ==========================================================================
-       6. JavaScript Interactive Assessment Core Matrix
-       ========================================================================== -->
+       4. Interactive Script Engine
+       ========================================================================== */ -->
     <script>
-        // Data pool variables sourced straight from image_0c0762.png details text
         const matrixDeck = [
             { id: 0, actualKey: "share", label: "Lost Market Share", desc: "Competitors who act first capture customers and brand loyalty that are nearly impossible to reclaim." },
             { id: 1, actualKey: "window", label: "Missed Innovation Windows", desc: "Innovation depends on action — waiting for perfect certainty means someone else ships first." },
@@ -416,14 +410,12 @@
             const activeNodeBtn = document.getElementById(`btn-node-${activeNodeIndex}`);
 
             if (userSelectionKey === currentItem.actualKey) {
-                // Correct classification handle
                 sortedCount++;
                 document.getElementById('audit-count').textContent = `${sortedCount} / 4`;
                 
                 activeNodeBtn.classList.remove('active');
                 activeNodeBtn.classList.add('reviewed');
 
-                // Route forward to next unreviewed node index structural item
                 if (sortedCount < 4) {
                     activeNodeIndex++;
                     document.getElementById(`btn-node-${activeNodeIndex}`).classList.add('active');
@@ -432,7 +424,6 @@
                     displayFinalDashboard();
                 }
             } else {
-                // Incorrect matching handle metric modifier
                 incorrectAttempts++;
                 const accuracyRate = Math.max(0, Math.round(((sortedCount) / (sortedCount + incorrectAttempts)) * 100));
                 document.getElementById('accuracy-score').textContent = `${accuracyRate}%`;
@@ -440,17 +431,14 @@
         }
 
         function displayFinalDashboard() {
-            // Drop core functional game modules elements cleanly
             document.getElementById('main-play-arena').style.display = 'none';
             document.getElementById('hud-deck').style.display = 'none';
 
-            // Adapt headers structural text to match completion dashboard view state
             document.getElementById('dynamic-title').textContent = "Strategic Risk Audit Complete";
             document.getElementById('dynamic-subtitle').textContent = "Review the unified cost profile framework definitions below.";
 
-            // Switch presentation workspace frames with zero page displacement boundaries
             document.getElementById('dashboard-screen').style.display = 'grid';
-            document.getElementById('footer-text').textContent = "Assessment complete. You can now close out this lesson slide module tab safely.";
+            document.getElementById('footer-text').textContent = "Assessment complete. You can now safely move to the next slide section.";
         }
     </script>
 </body>
