@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Type 1 vs. Type 2 Decisions - Interactive L3 Gateway Challenge</title>
+    <title>Type 1 vs. Type 2 Decisions - Gate Style Interaction</title>
     
     <style>
         /* ==========================================================================
-           1. Core Reset & Fixed 16:9 Aspect Ratio Canvas Constraints
+           1. Core Reset & Fixed Canvas Dimensions (Absolute No-Scroll Gate)
            ========================================================================== */
         * {
             box-sizing: border-box;
@@ -24,15 +24,15 @@
             align-items: center;
             min-height: 100vh;
             overflow: hidden;
-            padding: 10px;
+            padding: 5px;
         }
 
-        /* Fixed 16:9 Storyline Canvas Framework to eliminate all scrolling */
+        /* Fixed 16:9 Presentation Slide Canvas Box Container - Strict Height Limits */
         .slide-container {
             background-color: #fafcfe;
             width: 1280px;
             height: 720px;
-            padding: 40px 60px;
+            padding: 30px 50px 20px 50px; /* Highly optimized padding to eliminate vertical clipping */
             border-radius: 8px;
             box-shadow: 0 20px 50px rgba(18, 52, 86, 0.12);
             display: flex;
@@ -42,37 +42,28 @@
         }
 
         /* ==========================================================================
-           2. Slide Header and HUD Metrics Dashboard
+           2. Slide Header and HUD Metrics Display Panel
            ========================================================================== */
         .slide-header {
             display: flex;
             justify-content: space-between;
             align-items: flex-start;
             border-bottom: 2px solid #e1e8f0;
-            padding-bottom: 12px;
+            padding-bottom: 10px;
         }
 
         .main-title {
-            font-size: 2.5rem;
+            font-size: 2.4rem;
             font-weight: 800;
-            color: #123456; /* Brand deep blue from image_0b8f02.png */
+            color: #123456; /* Deep corporate blue from your template theme */
             line-height: 1.1;
         }
 
         .subtitle {
-            font-size: 1.05rem;
+            font-size: 1rem;
             color: #6a7b8c;
-            margin-top: 4px;
+            margin-top: 3px;
             font-weight: 500;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-
-        .subtitle::before {
-            content: "•";
-            color: #e67e22; /* Vivid orange accent dot indicator from slide palette */
-            font-size: 1.5rem;
         }
 
         .hud-metrics {
@@ -82,9 +73,9 @@
 
         .metric-pill {
             background-color: #eaf1f8;
-            padding: 8px 14px;
+            padding: 6px 14px;
             border-radius: 6px;
-            font-size: 0.82rem;
+            font-size: 0.8rem;
             font-weight: 700;
             text-transform: uppercase;
             letter-spacing: 0.5px;
@@ -93,163 +84,155 @@
         }
 
         /* ==========================================================================
-           3. Core Gameplay Arena (Dilemma Console + Double Doors)
+           3. Core Gameplay Arena (Dilemma Console + Gate Split-Panels)
            ========================================================================== */
         .gameplay-arena {
             display: flex;
             flex-direction: column;
-            gap: 20px;
+            gap: 15px;
             flex: 1;
-            margin: 20px 0;
-            height: calc(100% - 150px);
+            margin: 20px 0 15px 0;
+            height: calc(100% - 140px);
         }
 
-        /* Top Strategy Audit Card Console */
-        .dilemma-console {
+        /* Upper Strategy Audit Card Console (Strictly bounded height) */
+        .decision-audit-box {
             background-color: #ffffff;
             border: 2px dashed #ccdbe8;
             border-radius: 12px;
-            padding: 20px 30px;
-            min-height: 105px;
+            padding: 16px 30px;
+            min-height: 90px;
             display: flex;
             flex-direction: column;
             justify-content: center;
             box-shadow: 0 4px 15px rgba(0,0,0,0.01);
         }
 
-        .dilemma-console h3 {
-            font-size: 0.78rem;
+        .decision-audit-box h3 {
+            font-size: 0.75rem;
             text-transform: uppercase;
             letter-spacing: 1.5px;
             color: #e67e22;
-            margin-bottom: 4px;
+            margin-bottom: 3px;
         }
 
-        .dilemma-console p {
-            font-size: 1.2rem;
-            line-height: 1.45;
+        .decision-audit-box p {
+            font-size: 1.15rem;
+            line-height: 1.4;
             color: #2c3e50;
             font-weight: 600;
         }
 
-        /* Double Door Interactive Environment Frame */
-        .double-door-frame {
+        /* Grand Split Gate Environment Layout */
+        .gate-interaction-deck {
             display: flex;
-            gap: 30px;
+            gap: 25px;
             flex: 1;
             align-items: stretch;
-            perspective: 1400px; /* Gives 3D depth field to the door wings */
         }
 
-        /* Isolated 3D Door Portal */
-        .door-portal {
+        /* The Gate Container Chassis */
+        .framework-gate-chassis {
             flex: 1;
             position: relative;
-            background-color: #e1e8f0;
-            border-radius: 10px;
-            overflow: visible; /* Allows doors to swing outwards into space */
+            background-color: #ffffff;
+            border-radius: 8px;
+            border: 1px solid #e1e8f0;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.02);
+            overflow: hidden; /* Contains the inner sliding gate completely */
         }
 
-        /* The Animated Door Wing itself */
-        .door-wing {
+        /* Interactive Gate Surface Panel Overlay */
+        .gate-surface-panel {
             position: absolute;
+            top: 0;
+            left: 0;
             width: 100%;
             height: 100%;
-            border-radius: 10px;
             padding: 30px;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
             cursor: pointer;
-            box-shadow: 0 8px 25px rgba(0,0,0,0.05);
-            transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
-            z-index: 10;
+            z-index: 5;
+            transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
-        /* Type 1 Colors: Deep dark navy facade matching image parameters */
-        .type-1-door {
+        /* Type 1 Gate Surface Colors (Deep Dark Navy Facade matching your layout) */
+        .type-1-gate-surface {
             background-color: #1a365d;
             color: #ffffff;
-            transform-origin: left center; /* Hinges fixed left */
+            transform-origin: left center;
         }
 
-        /* Type 2 Colors: White facade with soft border lines matching graphic */
-        .type-2-door {
+        /* Type 2 Gate Surface Colors (Pure Clean Off-White Facade matching your layout) */
+        .type-2-gate-surface {
             background-color: #ffffff;
             color: #1a365d;
-            border: 1px solid #ccdbe8;
-            transform-origin: right center; /* Hinges fixed right */
+            border-left: 6px solid #3b75af; /* Soft border accent line tracking */
         }
 
-        /* Interactive Animation Classes */
-        .door-portal.open-left .type-1-door {
-            transform: rotateY(-80deg);
-            box-shadow: 15px 10px 30px rgba(0,0,0,0.15);
+        /* Gate Sliding Parting/Action State modifiers */
+        .framework-gate-chassis.parted-open .type-1-gate-surface {
+            transform: translateX(-100%); /* Slides entirely off-stage left inside chassis */
         }
 
-        .door-portal.open-right .type-2-door {
-            transform: rotateY(80deg);
-            box-shadow: -15px 10px 30px rgba(0,0,0,0.1);
+        .framework-gate-chassis.parted-open .type-2-gate-surface {
+            transform: translateX(100%); /* Slides entirely off-stage right inside chassis */
         }
 
-        /* Typography elements inside Closed Door facades */
-        .door-heading h2 {
+        /* Gate Facade Text Typography */
+        .gate-title-block h2 {
             font-size: 2.2rem;
             font-weight: 800;
             line-height: 1.1;
         }
-        .type-1-door .door-heading h2 { color: #e67e22; } /* Orange title text */
-        .type-2-door .door-heading h2 { color: #3b75af; } /* Sky blue title text */
+        .type-1-gate-surface h2 { color: #e67e22; } /* Vibrant orange title text */
+        .type-2-gate-surface h2 { color: #3b75af; } /* Sky blue title text */
 
-        .door-heading span {
+        .gate-title-block span {
             display: block;
             font-size: 1.25rem;
             font-weight: 600;
             margin-top: 4px;
             opacity: 0.9;
         }
-        .type-1-door .door-heading span { color: #ffffff; }
-        .type-2-door .door-heading span { color: #123456; }
 
-        .door-hardware-handle {
-            font-size: 1.8rem;
-            opacity: 0.7;
+        .gate-hardware-glyph {
+            font-size: 1.6rem;
+            opacity: 0.5;
             align-self: flex-end;
         }
-        .type-1-door .door-hardware-handle { align-self: flex-end; }
-        .type-2-door .door-hardware-handle { align-self: flex-start; }
 
-        /* Vault Content Inside the Opened Door Portal (Prevents Layout Overlap) */
-        .portal-vault-contents {
-            position: absolute;
+        /* Safe Inner Database Chamber (Protected from layout overlap shifts) */
+        .gate-inner-chamber {
             width: 100%;
             height: 100%;
-            padding: 30px;
+            padding: 25px 30px;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
-            z-index: 1;
-            background-color: #f7fafc;
-            border-radius: 10px;
-            border: 1px solid #ccdbe8;
+            background-color: #f8fafc;
         }
 
-        .portal-vault-contents h4 {
-            font-size: 1rem;
+        .chamber-header-tag {
+            font-size: 0.85rem;
             text-transform: uppercase;
             letter-spacing: 0.5px;
-            margin-bottom: 12px;
             color: #7f8c8d;
+            border-bottom: 1px solid #e1e8f0;
+            padding-bottom: 6px;
+            margin-bottom: 12px;
         }
 
-        .features-bullet-list {
+        .criteria-bullet-matrix {
             list-style-type: none;
             display: flex;
             flex-direction: column;
             gap: 10px;
         }
 
-        .features-bullet-list li {
+        .criteria-bullet-matrix li {
             font-size: 0.95rem;
             line-height: 1.4;
             color: #334455;
@@ -258,86 +241,89 @@
             font-weight: 600;
         }
 
-        .features-bullet-list li::before {
+        .criteria-bullet-matrix li::before {
             content: "•";
             position: absolute;
             left: 0;
             font-size: 1.3rem;
             top: -2px;
-            color: #72846d;
+            color: #123456;
         }
+        .type-2-chamber .criteria-bullet-matrix li::before { color: #3b75af; }
 
-        .example-footer-text {
+        .example-context-footer {
             font-size: 0.85rem;
             font-style: italic;
             color: #7f8c8d;
             border-top: 1px solid #e1e8f0;
-            padding-top: 8px;
+            padding-top: 6px;
             margin-top: auto;
         }
 
         /* ==========================================================================
-           4. Game End Mastery Dashboard Overlay (Fades In Smoothly)
+           4. Game End Mastery Summary Dashboard Layout (Revealed on Completion)
            ========================================================================== */
-        .mastery-grid-overlay {
+        .mastery-dashboard-overlay {
             display: none;
             width: 100%;
             height: 100%;
             grid-template-columns: repeat(2, 1fr);
-            gap: 30px;
-            animation: layoutEntrance 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
+            gap: 25px;
+            animation: overlayEntranceEffect 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
+            margin: 15px 0;
         }
 
         .mastery-static-card {
             border-radius: 12px;
-            padding: 35px 40px;
+            padding: 30px 35px;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
             box-shadow: 0 4px 15px rgba(0,0,0,0.02);
         }
 
-        .mastery-static-card.m-1 {
+        .mastery-static-card.m-type1 {
             background-color: #1a365d;
             color: #ffffff;
         }
-        .mastery-static-card.m-1 .features-bullet-list li::before { color: #e67e22; }
-        .mastery-static-card.m-1 .features-bullet-list li { color: #ffffff; opacity: 0.95; }
+        .mastery-static-card.m-type1 .criteria-bullet-matrix li::before { color: #e67e22; }
+        .mastery-static-card.m-type1 .criteria-bullet-matrix li { color: #ffffff; opacity: 0.95; }
+        .mastery-static-card.m-type1 .example-context-footer { color: #cbd5e1; border-top-color: rgba(255,255,255,0.1); }
 
-        .mastery-static-card.m-2 {
+        .mastery-static-card.m-type2 {
             background-color: #ffffff;
             color: #1a365d;
             border: 1px solid #ccdbe8;
         }
-        .mastery-static-card.m-2 .features-bullet-list li::before { color: #3b75af; }
-        .mastery-static-card.m-2 .features-bullet-list li { color: #334455; }
+        .mastery-static-card.m-type2 .criteria-bullet-matrix li::before { color: #3b75af; }
+        .mastery-static-card.m-type2 .criteria-bullet-matrix li { color: #334455; }
 
         .mastery-static-card h2 {
-            font-size: 2.2rem;
+            font-size: 2rem;
             font-weight: 800;
+            padding-bottom: 10px;
+            margin-bottom: 15px;
             border-bottom: 1px solid rgba(255,255,255,0.1);
-            padding-bottom: 12px;
-            margin-bottom: 20px;
         }
-        .mastery-static-card.m-2 h2 { border-bottom-color: #f0f4f8; }
+        .mastery-static-card.m-type2 h2 { border-bottom-color: #f0f4f8; }
 
         /* ==========================================================================
            5. Slide Footer Component
            ========================================================================== */
         .slide-footer {
             border-top: 1px solid #e1e8f0;
-            padding-top: 15px;
+            padding-top: 10px;
             text-align: center;
         }
 
         .slide-footer p {
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             color: #6a7b8c;
             font-style: italic;
         }
 
-        /* Animation Entries */
-        @keyframes layoutEntrance {
+        /* Core Presentation Entry Keyframes */
+        @keyframes overlayEntranceEffect {
             from { opacity: 0; transform: translateY(12px); }
             to { opacity: 1; transform: translateY(0); }
         }
@@ -347,7 +333,6 @@
 
     <div class="slide-container">
         
-        <!-- Header HUD Console -->
         <header class="slide-header">
             <div class="title-group">
                 <h1 class="main-title" id="dynamic-title">Type 1 vs. Type 2 Decisions</h1>
@@ -359,65 +344,56 @@
             </div>
         </header>
 
-        <!-- Main Dynamic Play Field Environment Arena -->
         <div class="gameplay-arena" id="main-play-arena">
             
-            <!-- Upper Strategy Problem Dilemma Box -->
-            <div class="dilemma-console">
+            <div class="decision-audit-box">
                 <h3>Decision Audit Variable</h3>
-                <p id="dilemma-text">"We are evaluating a total exit from the core European market logistics space."</p>
+                <p id="dilemma-text">"We want to adjust our subscription pricing parameters by 5% for a restricted 48-hour localized customer cohort trial."</p>
             </div>
 
-            <!-- Double Door Interaction Row System -->
-            <div class="double-door-frame">
+            <div class="gate-interaction-deck">
                 
-                <!-- Door Portal 1: Type 1 -->
-                <div class="door-portal" id="portal-left">
-                    <!-- Front Facade (Closes/Opens via hinge) -->
-                    <div class="door-wing type-1-door" onclick="openDoorGateway('type1')">
-                        <div class="door-heading">
+                <div class="framework-gate-chassis" id="gate-left">
+                    <div class="gate-surface-panel type-1-gate-surface" onclick="openGateMechanism('type1')">
+                        <div class="gate-title-block">
                             <h2>TYPE 1</h2>
                             <span>One-Way Doors</span>
                         </div>
-                        <div class="door-hardware-handle">🗏</div>
+                        <div class="gate-hardware-glyph">📁</div>
                     </div>
-                    <!-- Hidden Inner Chamber Box Container (No text overlaps) -->
-                    <div class="portal-vault-contents">
+                    <div class="gate-inner-chamber type-1-chamber">
                         <div>
-                            <h4>Type 1 Framework Parameters</h4>
-                            <ul class="features-bullet-list">
+                            <div class="chamber-header-tag">Type 1 Criteria Blueprint</div>
+                            <ul class="criteria-bullet-matrix">
                                 <li>Irreversible and high-stakes</li>
                                 <li>Require full analysis and deliberation</li>
                                 <li>Involve cross-functional input</li>
                                 <li>~10% of organizational decisions</li>
                             </ul>
                         </div>
-                        <p class="example-footer-text">Example: Major acquisition, market exit</p>
+                        <p class="example-context-footer">Example: Major acquisition, market exit</p>
                     </div>
                 </div>
 
-                <!-- Door Portal 2: Type 2 -->
-                <div class="door-portal" id="portal-right">
-                    <!-- Front Facade (Closes/Opens via hinge) -->
-                    <div class="door-wing type-2-door" onclick="openDoorGateway('type2')">
-                        <div class="door-heading">
+                <div class="framework-gate-chassis" id="gate-right">
+                    <div class="gate-surface-panel type-2-gate-surface" onclick="openGateMechanism('type2')">
+                        <div class="gate-title-block">
                             <h2>TYPE 2</h2>
                             <span>Two-Way Doors</span>
                         </div>
-                        <div class="door-hardware-handle">🗏</div>
+                        <div class="gate-hardware-glyph">📁</div>
                     </div>
-                    <!-- Hidden Inner Chamber Box Container -->
-                    <div class="portal-vault-contents">
+                    <div class="gate-inner-chamber type-2-chamber">
                         <div>
-                            <h4>Type 2 Framework Parameters</h4>
-                            <ul class="features-bullet-list">
+                            <div class="chamber-header-tag">Type 2 Criteria Blueprint</div>
+                            <ul class="criteria-bullet-matrix">
                                 <li>Reversible and lower-stakes</li>
                                 <li>Should be made quickly and locally</li>
                                 <li>Delegate to closest team</li>
                                 <li>~90% of organizational decisions</li>
                             </ul>
                         </div>
-                        <p class="example-footer-text">Example: Pricing test, tool selection, feature rollout</p>
+                        <p class="example-context-footer">Example: Pricing test, tool selection, feature rollout</p>
                     </div>
                 </div>
 
@@ -425,119 +401,61 @@
 
         </div>
 
-        <!-- Hidden End-Game Master Infographic Dashboard Layer (Matches reference layout graphic perfectly upon finalization) -->
-        <div class="mastery-grid-overlay" id="mastery-screen">
+        <div class="mastery-dashboard-overlay" id="mastery-screen">
             
-            <!-- Complete Type 1 Summary Deck Column -->
             <div class="mastery-static-card m-1">
-                <div class="door-heading">
+                <div class="gate-title-block">
                     <h2 style="color: #e67e22;">TYPE 1</h2>
-                    <span style="font-size: 1.4rem; font-weight: 700; display: block; margin-bottom: 20px;">One-Way Doors</span>
+                    <span style="font-size: 1.35rem; font-weight: 700; display: block; margin-bottom: 20px;">One-Way Doors</span>
                 </div>
-                <ul class="features-bullet-list">
+                <ul class="criteria-bullet-matrix">
                     <li>Irreversible and high-stakes</li>
                     <li>Require full analysis and deliberation</li>
                     <li>Involve cross-functional input</li>
                     <li>~10% of organizational decisions</li>
                 </ul>
-                <p class="example-footer-text" style="color: #cbd5e1; margin-top: 25px;">Example: Major acquisition, market exit</p>
+                <p class="example-context-footer" style="margin-top: 25px;">Example: Major acquisition, market exit</p>
             </div>
 
-            <!-- Complete Type 2 Summary Deck Column -->
             <div class="mastery-static-card m-2">
-                <div class="door-heading">
+                <div class="gate-title-block">
                     <h2 style="color: #3b75af;">TYPE 2</h2>
-                    <span style="font-size: 1.4rem; font-weight: 700; display: block; margin-bottom: 20px;">Two-Way Doors</span>
+                    <span style="font-size: 1.35rem; font-weight: 700; display: block; margin-bottom: 20px;">Two-Way Doors</span>
                 </div>
-                <ul class="features-bullet-list">
+                <ul class="criteria-bullet-matrix">
                     <li>Reversible and lower-stakes</li>
                     <li>Should be made quickly and locally</li>
                     <li>Delegate to closest team</li>
                     <li>~90% of organizational decisions</li>
                 </ul>
-                <p class="example-footer-text" style="color: #7f8c8d; margin-top: 25px;">Example: Pricing test, tool selection, feature rollout</p>
+                <p class="example-context-footer" style="margin-top: 25px;">Example: Pricing test, tool selection, feature rollout</p>
             </div>
 
         </div>
 
-        <!-- Instructive Slide Footer Hint -->
         <footer class="slide-footer">
-            <p id="footer-text">Analyze the Decision Audit description variable at the top, then click on the correct door archetype to route the process parameters.</p>
+            <p id="footer-text">Analyze the Decision Audit description variable at the top, then click directly on the correct structural gate panel to clear the scenario route.</p>
         </footer>
 
     </div>
 
-    <!-- ==========================================================================
-       6. Interactive Decision Routing Engine Script
-       ========================================================================== -->
     <script>
-        // Decision scenarios array matrix mapping directly back to the correct criteria keys
-        const frameworkScenarios = [
-            { key: "type1", text: '"We are evaluating a total exit from the core European market logistics space."' },
+        // Decision scenarios database matrix matched to reference layout image steps
+        const executionScenarios = [
             { key: "type2", text: '"We want to adjust our subscription pricing parameters by 5% for a restricted 48-hour localized customer cohort trial."' },
+            { key: "type1", text: '"We are evaluating a total exit from the core European market logistics space."' },
             { key: "type1", text: '"Our legal and financial boards are conducting due diligence on acquiring a direct $50M regional competitor enterprise."' },
             { key: "type2", text: '"Our UX division needs to select and deploy an alternative localized wireframing software tool component for internal designers."' }
         ];
 
-        let currentScenarioIndex = 0;
-        let successfulAudits = 0;
-        let penaltyMistakesCount = 0;
+        let scenarioIndexLoop = 0;
+        let accurateAuditsCounter = 0;
+        let auditFailsCounter = 0;
 
-        function openDoorGateway(userSelectionKey) {
-            const currentItem = frameworkScenarios[currentScenarioIndex];
-            const leftPortal = document.getElementById('portal-left');
-            const rightPortal = document.getElementById('portal-right');
+        function openGateMechanism(userGateSelectionKey) {
+            const currentItem = executionScenarios[scenarioIndexLoop];
+            const leftGateBox = document.getElementById('gate-left');
+            const rightGateBox = document.getElementById('gate-right');
 
-            // Block fast recursive clicks during door transition cycles
-            if (leftPortal.classList.contains('open-left') || rightPortal.classList.contains('open-right')) return;
-
-            if (userSelectionKey === currentItem.key) {
-                // Correct classification handle
-                successfulAudits++;
-                document.getElementById('audit-count').textContent = `${successfulAudits} / 4`;
-
-                // Fire the 3D door swing rotation animation based on choice side target
-                if (userSelectionKey === 'type1') {
-                    leftPortal.classList.add('open-left');
-                } else {
-                    rightPortal.classList.add('open-right');
-                }
-
-                // Advance down the array loop indexes after a brief display gap
-                setTimeout(() => {
-                    // Close the door swing facade back up smoothly
-                    leftPortal.classList.remove('open-left');
-                    rightPortal.classList.remove('open-right');
-
-                    if (successfulAudits < 4) {
-                        currentScenarioIndex++;
-                        document.getElementById('dilemma-text').textContent = frameworkScenarios[currentScenarioIndex].text;
-                    } else {
-                        displayUnifiedFrameworkDashboard();
-                    }
-                }, 1500);
-
-            } else {
-                // Incorrect match structural penalty calculator
-                penaltyMistakesCount++;
-                const dynamicAccuracy = Math.max(0, Math.round((successfulAudits / (successfulAudits + penaltyMistakesCount)) * 100));
-                document.getElementById('accuracy-rate').textContent = `${dynamicAccuracy}%`;
-            }
-        }
-
-        function displayUnifiedFrameworkDashboard() {
-            // Unmount play environment panels cleanly
-            document.getElementById('main-play-arena').style.display = 'none';
-            document.getElementById('game-hud').style.display = 'none';
-
-            // Rewrite slide headers properties
-            document.getElementById('dynamic-title').textContent = "Type 1 vs. Type 2 Decisions Framework";
-            document.getElementById('dynamic-subtitle').textContent = "Framework Matrix Mastered: Matching process parameters to organizational stakes.";
-
-            // Mount the combined static summary dashboard layout
-            document.getElementById('mastery-screen').style.display = 'grid';
-            document.getElementById('footer-text').textContent = "Review complete. You have successfully classified all operational risk parameters across this component module safely.";
-        }
-    </script>
-</body>
-</html>
+            // Block overlapping click steps during the gate transition slide timelines
+            if (leftGateBox.classList.contains('parted-open
