@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Type 1 vs. Type 2 Decisions - Gate Style Interaction</title>
+    <title>Type 1 vs. Type 2 Decisions - Storyline Safe Gate Layout</title>
     
     <style>
         /* ==========================================================================
-           1. Core Reset & Fixed Canvas Dimensions (Absolute No-Scroll Gate)
+           1. Core Reset & Fixed 16:9 Canvas Constraints (Absolute No-Scroll Gate)
            ========================================================================== */
         * {
             box-sizing: border-box;
@@ -27,12 +27,12 @@
             padding: 5px;
         }
 
-        /* Fixed 16:9 Presentation Slide Canvas Box Container - Strict Height Limits */
+        /* Fixed 16:9 Presentation Slide Canvas Box Container - Strict Height Cushioning */
         .slide-container {
             background-color: #fafcfe;
             width: 1280px;
             height: 720px;
-            padding: 30px 50px 20px 50px; /* Highly optimized padding to eliminate vertical clipping */
+            padding: 30px 45px 20px 45px; /* Highly optimized boundaries protect against player layout cuts */
             border-radius: 8px;
             box-shadow: 0 20px 50px rgba(18, 52, 86, 0.12);
             display: flex;
@@ -49,18 +49,19 @@
             justify-content: space-between;
             align-items: flex-start;
             border-bottom: 2px solid #e1e8f0;
-            padding-bottom: 10px;
+            padding-bottom: 8px;
+            flex-shrink: 0;
         }
 
         .main-title {
             font-size: 2.4rem;
             font-weight: 800;
-            color: #123456; /* Deep corporate blue from your template theme */
+            color: #123456; /* Deep blue corporate tone from your theme */
             line-height: 1.1;
         }
 
         .subtitle {
-            font-size: 1rem;
+            font-size: 0.95rem;
             color: #6a7b8c;
             margin-top: 3px;
             font-weight: 500;
@@ -91,21 +92,22 @@
             flex-direction: column;
             gap: 15px;
             flex: 1;
-            margin: 20px 0 15px 0;
-            height: calc(100% - 140px);
+            margin: 15px 0;
+            height: calc(100% - 135px);
         }
 
-        /* Upper Strategy Audit Card Console (Strictly bounded height) */
+        /* Upper Strategy Audit Card Console (Strictly budgeted height protects bounds) */
         .decision-audit-box {
             background-color: #ffffff;
             border: 2px dashed #ccdbe8;
             border-radius: 12px;
             padding: 16px 30px;
-            min-height: 90px;
+            min-height: 85px;
             display: flex;
             flex-direction: column;
             justify-content: center;
             box-shadow: 0 4px 15px rgba(0,0,0,0.01);
+            flex-shrink: 0;
         }
 
         .decision-audit-box h3 {
@@ -117,16 +119,16 @@
         }
 
         .decision-audit-box p {
-            font-size: 1.15rem;
+            font-size: 1.12rem;
             line-height: 1.4;
             color: #2c3e50;
             font-weight: 600;
         }
 
-        /* Grand Split Gate Environment Layout */
+        /* Grand Split Gate Environment Layout Grid */
         .gate-interaction-deck {
             display: flex;
-            gap: 25px;
+            gap: 20px;
             flex: 1;
             align-items: stretch;
         }
@@ -139,17 +141,17 @@
             border-radius: 8px;
             border: 1px solid #e1e8f0;
             box-shadow: 0 4px 12px rgba(0,0,0,0.02);
-            overflow: hidden; /* Contains the inner sliding gate completely */
+            overflow: hidden; /* Lock and contain sliding doors internally */
         }
 
-        /* Interactive Gate Surface Panel Overlay */
-        .gate-surface-panel {
+        /* Interactive Door Surface Panel Overlay */
+        .gate-door-surface {
             position: absolute;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            padding: 30px;
+            padding: 25px 30px;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
@@ -158,57 +160,57 @@
             transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
-        /* Type 1 Gate Surface Colors (Deep Dark Navy Facade matching your layout) */
-        .type-1-gate-surface {
+        /* Type 1 Door Panel Colors (Deep Navy Facade) */
+        .type-1-door-panel {
             background-color: #1a365d;
             color: #ffffff;
             transform-origin: left center;
         }
 
-        /* Type 2 Gate Surface Colors (Pure Clean Off-White Facade matching your layout) */
-        .type-2-gate-surface {
+        /* Type 2 Door Panel Colors (Clean Off-White Facade) */
+        .type-2-door-panel {
             background-color: #ffffff;
             color: #1a365d;
-            border-left: 6px solid #3b75af; /* Soft border accent line tracking */
+            border-left: 6px solid #3b75af; /* Accent anchor band line */
         }
 
-        /* Gate Sliding Parting/Action State modifiers */
-        .framework-gate-chassis.parted-open .type-1-gate-surface {
-            transform: translateX(-100%); /* Slides entirely off-stage left inside chassis */
+        /* Gate Sliding Action State Modifiers (Zero Shifting Out of Layout Bounds) */
+        .framework-gate-chassis.door-parted-open .type-1-door-panel {
+            transform: translateX(-100%); /* Slides completely out of sight within chassis bounds */
         }
 
-        .framework-gate-chassis.parted-open .type-2-gate-surface {
-            transform: translateX(100%); /* Slides entirely off-stage right inside chassis */
+        .framework-gate-chassis.door-parted-open .type-2-door-panel {
+            transform: translateX(100%); /* Slides completely out of sight within chassis bounds */
         }
 
-        /* Gate Facade Text Typography */
-        .gate-title-block h2 {
-            font-size: 2.2rem;
+        /* Door Text Typography */
+        .door-title-block h2 {
+            font-size: 2rem;
             font-weight: 800;
             line-height: 1.1;
         }
-        .type-1-gate-surface h2 { color: #e67e22; } /* Vibrant orange title text */
-        .type-2-gate-surface h2 { color: #3b75af; } /* Sky blue title text */
+        .type-1-door-panel h2 { color: #e67e22; } /* Vibrant orange title text */
+        .type-2-door-panel h2 { color: #3b75af; } /* Sky blue title text */
 
-        .gate-title-block span {
+        .door-title-block span {
             display: block;
-            font-size: 1.25rem;
+            font-size: 1.15rem;
             font-weight: 600;
-            margin-top: 4px;
+            margin-top: 3px;
             opacity: 0.9;
         }
 
-        .gate-hardware-glyph {
-            font-size: 1.6rem;
+        .door-latch-glyph {
+            font-size: 1.4rem;
             opacity: 0.5;
             align-self: flex-end;
         }
 
-        /* Safe Inner Database Chamber (Protected from layout overlap shifts) */
+        /* Safe Inner Chamber Dashboard (Shielded from Storyline render shifting bugs) */
         .gate-inner-chamber {
             width: 100%;
             height: 100%;
-            padding: 25px 30px;
+            padding: 22px 30px;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
@@ -216,13 +218,14 @@
         }
 
         .chamber-header-tag {
-            font-size: 0.85rem;
+            font-size: 0.8rem;
             text-transform: uppercase;
             letter-spacing: 0.5px;
             color: #7f8c8d;
             border-bottom: 1px solid #e1e8f0;
-            padding-bottom: 6px;
-            margin-bottom: 12px;
+            padding-bottom: 4px;
+            margin-bottom: 10px;
+            flex-shrink: 0;
         }
 
         .criteria-bullet-matrix {
@@ -233,11 +236,11 @@
         }
 
         .criteria-bullet-matrix li {
-            font-size: 0.95rem;
+            font-size: 0.92rem;
             line-height: 1.4;
             color: #334455;
             position: relative;
-            padding-left: 20px;
+            padding-left: 18px;
             font-weight: 600;
         }
 
@@ -252,12 +255,13 @@
         .type-2-chamber .criteria-bullet-matrix li::before { color: #3b75af; }
 
         .example-context-footer {
-            font-size: 0.85rem;
+            font-size: 0.82rem;
             font-style: italic;
             color: #7f8c8d;
             border-top: 1px solid #e1e8f0;
             padding-top: 6px;
             margin-top: auto;
+            flex-shrink: 0;
         }
 
         /* ==========================================================================
@@ -268,14 +272,14 @@
             width: 100%;
             height: 100%;
             grid-template-columns: repeat(2, 1fr);
-            gap: 25px;
-            animation: overlayEntranceEffect 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
+            gap: 20px;
+            animation: overlayEntranceEffect 0.4s ease-out both;
             margin: 15px 0;
         }
 
         .mastery-static-card {
             border-radius: 12px;
-            padding: 30px 35px;
+            padding: 25px 30px;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
@@ -299,10 +303,10 @@
         .mastery-static-card.m-type2 .criteria-bullet-matrix li { color: #334455; }
 
         .mastery-static-card h2 {
-            font-size: 2rem;
+            font-size: 1.8rem;
             font-weight: 800;
-            padding-bottom: 10px;
-            margin-bottom: 15px;
+            padding-bottom: 8px;
+            margin-bottom: 12px;
             border-bottom: 1px solid rgba(255,255,255,0.1);
         }
         .mastery-static-card.m-type2 h2 { border-bottom-color: #f0f4f8; }
@@ -314,6 +318,7 @@
             border-top: 1px solid #e1e8f0;
             padding-top: 10px;
             text-align: center;
+            flex-shrink: 0;
         }
 
         .slide-footer p {
@@ -322,9 +327,8 @@
             font-style: italic;
         }
 
-        /* Core Presentation Entry Keyframes */
         @keyframes overlayEntranceEffect {
-            from { opacity: 0; transform: translateY(12px); }
+            from { opacity: 0; transform: translateY(10px); }
             to { opacity: 1; transform: translateY(0); }
         }
     </style>
@@ -354,12 +358,12 @@
             <div class="gate-interaction-deck">
                 
                 <div class="framework-gate-chassis" id="gate-left">
-                    <div class="gate-surface-panel type-1-gate-surface" onclick="openGateMechanism('type1')">
-                        <div class="gate-title-block">
+                    <div class="gate-door-surface type-1-door-panel" onclick="openDoorGate('type1')">
+                        <div class="door-title-block">
                             <h2>TYPE 1</h2>
                             <span>One-Way Doors</span>
                         </div>
-                        <div class="gate-hardware-glyph">📁</div>
+                        <div class="door-latch-glyph">🚪</div>
                     </div>
                     <div class="gate-inner-chamber type-1-chamber">
                         <div>
@@ -376,12 +380,12 @@
                 </div>
 
                 <div class="framework-gate-chassis" id="gate-right">
-                    <div class="gate-surface-panel type-2-gate-surface" onclick="openGateMechanism('type2')">
-                        <div class="gate-title-block">
+                    <div class="gate-door-surface type-2-door-panel" onclick="openDoorGate('type2')">
+                        <div class="door-title-block">
                             <h2>TYPE 2</h2>
                             <span>Two-Way Doors</span>
                         </div>
-                        <div class="gate-hardware-glyph">📁</div>
+                        <div class="door-latch-glyph">🚪</div>
                     </div>
                     <div class="gate-inner-chamber type-2-chamber">
                         <div>
@@ -404,9 +408,9 @@
         <div class="mastery-dashboard-overlay" id="mastery-screen">
             
             <div class="mastery-static-card m-1">
-                <div class="gate-title-block">
+                <div class="door-title-block">
                     <h2 style="color: #e67e22;">TYPE 1</h2>
-                    <span style="font-size: 1.35rem; font-weight: 700; display: block; margin-bottom: 20px;">One-Way Doors</span>
+                    <span style="font-size: 1.25rem; font-weight: 700; display: block; margin-bottom: 15px;">One-Way Doors</span>
                 </div>
                 <ul class="criteria-bullet-matrix">
                     <li>Irreversible and high-stakes</li>
@@ -414,13 +418,13 @@
                     <li>Involve cross-functional input</li>
                     <li>~10% of organizational decisions</li>
                 </ul>
-                <p class="example-context-footer" style="margin-top: 25px;">Example: Major acquisition, market exit</p>
+                <p class="example-context-footer" style="margin-top: 20px;">Example: Major acquisition, market exit</p>
             </div>
 
             <div class="mastery-static-card m-2">
-                <div class="gate-title-block">
+                <div class="door-title-block">
                     <h2 style="color: #3b75af;">TYPE 2</h2>
-                    <span style="font-size: 1.35rem; font-weight: 700; display: block; margin-bottom: 20px;">Two-Way Doors</span>
+                    <span style="font-size: 1.25rem; font-weight: 700; display: block; margin-bottom: 15px;">Two-Way Doors</span>
                 </div>
                 <ul class="criteria-bullet-matrix">
                     <li>Reversible and lower-stakes</li>
@@ -428,34 +432,70 @@
                     <li>Delegate to closest team</li>
                     <li>~90% of organizational decisions</li>
                 </ul>
-                <p class="example-context-footer" style="margin-top: 25px;">Example: Pricing test, tool selection, feature rollout</p>
+                <p class="example-context-footer" style="margin-top: 20px;">Example: Pricing test, tool selection, feature rollout</p>
             </div>
 
         </div>
 
         <footer class="slide-footer">
-            <p id="footer-text">Analyze the Decision Audit description variable at the top, then click directly on the correct structural gate panel to clear the scenario route.</p>
+            <p id="footer-text">Analyze the Decision Audit variable description at the top, then click on the correct structural door archetype to route the case parameters.</p>
         </footer>
 
     </div>
 
     <script>
-        // Decision scenarios database matrix matched to reference layout image steps
-        const executionScenarios = [
+        const decisionScenarios = [
             { key: "type2", text: '"We want to adjust our subscription pricing parameters by 5% for a restricted 48-hour localized customer cohort trial."' },
             { key: "type1", text: '"We are evaluating a total exit from the core European market logistics space."' },
             { key: "type1", text: '"Our legal and financial boards are conducting due diligence on acquiring a direct $50M regional competitor enterprise."' },
             { key: "type2", text: '"Our UX division needs to select and deploy an alternative localized wireframing software tool component for internal designers."' }
         ];
 
-        let scenarioIndexLoop = 0;
-        let accurateAuditsCounter = 0;
-        let auditFailsCounter = 0;
+        let currentIndexCounter = 0;
+        let accurateAudits = 0;
+        let wrongAudits = 0;
 
-        function openGateMechanism(userGateSelectionKey) {
-            const currentItem = executionScenarios[scenarioIndexLoop];
-            const leftGateBox = document.getElementById('gate-left');
-            const rightGateBox = document.getElementById('gate-right');
+        function openDoorGate(userGateSelectionKey) {
+            const currentItem = decisionScenarios[currentIndexCounter];
+            const leftGateChassis = document.getElementById('gate-left');
+            const rightGateChassis = document.getElementById('gate-right');
 
-            // Block overlapping click steps during the gate transition slide timelines
-            if (leftGateBox.classList.contains('parted-open
+            // Block clicks during door slide transition animations
+            if (leftGateChassis.classList.contains('door-parted-open') || rightGateChassis.classList.contains('door-parted-open')) return;
+
+            if (userGateSelectionKey === currentItem.key) {
+                accurateAudits++;
+                document.getElementById('audit-count').textContent = `${accurateAudits} / 4`;
+
+                // Slide open the overlay layer depending on side target key
+                if (userGateSelectionKey === 'type1') {
+                    leftGateChassis.classList.add('door-parted-open');
+                } else {
+                    rightGateChassis.classList.add('door-parted-open');
+                }
+
+                // Close doors and populate next item text context after a clear view buffer
+                setTimeout(() => {
+                    leftGateChassis.classList.remove('door-parted-open');
+                    rightGateChassis.classList.remove('door-parted-open');
+
+                    if (accurateAudits < 4) {
+                        currentIndexCounter++;
+                        document.getElementById('dilemma-text').textContent = decisionScenarios[currentIndexCounter].text;
+                    } else {
+                        triggerMasteryDashboardReveal();
+                    }
+                }, 1600);
+
+            } else {
+                wrongAudits++;
+                const adjustedAccuracy = Math.max(0, Math.round((accurateAudits / (accurateAudits + wrongAudits)) * 100));
+                document.getElementById('accuracy-rate').textContent = `${adjustedAccuracy}%`;
+            }
+        }
+
+        function triggerMasteryDashboardReveal() {
+            document.getElementById('main-play-arena').style.display = 'none';
+            document.getElementById('game-hud').style.display = 'none';
+
+            document.getElementById('dynamic-title
