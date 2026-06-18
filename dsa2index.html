@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Decision Debt - Optimized Widescreen Interaction</title>
+    <title>The Strategic Cost - Storyline Safe Edition</title>
     
     <style>
         /* ==========================================================================
-           1. Core Reset & Fixed 16:9 Canvas Constraints (Absolute No-Scroll Gate)
+           1. Core Reset & Fixed Canvas Dimensions (Absolute No-Scroll Gate)
            ========================================================================== */
         * {
             box-sizing: border-box;
@@ -27,22 +27,22 @@
             padding: 5px;
         }
 
-        /* Fixed 16:9 Presentation Slide Canvas Box Container - Zero-Scroll Gate */
+        /* Fixed 16:9 Presentation Canvas Container - Highly Guarded Height Cushioning */
         .slide-container {
             background-color: #fafcfe;
             width: 1280px;
             height: 720px;
-            padding: 35px 50px 20px 50px; /* Streamlined to prevent bottom overflow cuts */
+            padding: 30px 50px 20px 50px;
             border-radius: 8px;
-            box-shadow: 0 20px 50px rgba(18, 52, 86, 0.12);
+            box-shadow: 0 20px 50px rgba(26,42,58,0.12);
             display: flex;
             flex-direction: column;
             justify-content: space-between;
-            overflow: hidden; 
+            overflow: hidden;
         }
 
         /* ==========================================================================
-           2. Slide Header and Live HUD Metrics Display
+           2. Slide Header and HUD Metrics
            ========================================================================== */
         .slide-header {
             display: flex;
@@ -50,12 +50,13 @@
             align-items: flex-start;
             border-bottom: 2px solid #e1e8f0;
             padding-bottom: 10px;
+            flex-shrink: 0;
         }
 
         .main-title {
             font-size: 2.4rem;
             font-weight: 800;
-            color: #1a365d; /* Core deep blue branding tone from image_f1b4b9.png */
+            color: #123456;
             line-height: 1.1;
         }
 
@@ -79,183 +80,194 @@
             font-weight: 700;
             text-transform: uppercase;
             letter-spacing: 0.5px;
-            color: #1a365d;
+            color: #123456;
             border: 1px solid #ccdbe8;
         }
 
         /* ==========================================================================
-           3. Core Gameplay Arena Layout Split (Zero Vertical Shifting)
+           3. Core Arena Layout Split (Horizontal Flow Reclaims Vertical Height)
            ========================================================================== */
         .gameplay-arena {
             display: flex;
-            gap: 30px;
+            flex-direction: column;
+            gap: 15px;
             flex: 1;
             margin: 20px 0 15px 0;
-            align-items: stretch;
             height: calc(100% - 135px);
         }
 
-        /* Left Side: Browser Tabs Simulator Panel */
-        .browser-simulator-panel {
-            flex: 1.1;
-            background-color: #1a365d;
-            border-radius: 12px;
-            padding: 30px;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
-        }
-
-        .card-inner-quote {
-            font-family: 'Georgia', serif;
-            font-style: italic;
-            font-size: 1.8rem;
-            line-height: 1.4;
-            color: #ffffff;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.15);
-            padding-bottom: 12px;
-            margin-bottom: 12px;
-        }
-
-        .tabs-chassis-stack {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
-
-        .interactive-tab-row {
-            background-color: rgba(255, 255, 255, 0.08);
-            border: 1px solid rgba(255, 255, 255, 0.15);
-            color: #ffffff;
-            border-radius: 6px;
-            padding: 12px 18px;
-            font-family: inherit;
-            font-size: 0.92rem;
-            font-weight: 600;
-            text-align: left;
-            cursor: pointer;
+        /* Top Progress Stepper Track Replacing High-Risk Vertical Timeline */
+        .stepper-progress-track {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            transition: all 0.2s ease;
+            position: relative;
+            background: #eaf1f8;
+            padding: 12px 25px;
+            border-radius: 8px;
+            border: 1px solid #ccdbe8;
+            flex-shrink: 0;
         }
 
-        .interactive-tab-row:hover {
-            background-color: rgba(255, 255, 255, 0.16);
-            transform: translateX(4px);
+        .stepper-node-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            opacity: 0.5;
+            transition: opacity 0.3s ease;
         }
 
-        .interactive-tab-row.tab-cleared {
-            background-color: rgba(46, 204, 113, 0.12);
-            border-color: #2ecc71;
-            color: #a3e2b7;
-            cursor: default;
-            pointer-events: none;
-            transform: none;
+        .stepper-node-item.active {
+            opacity: 1;
         }
 
-        .tab-glyph-close {
-            font-size: 0.75rem;
-            background-color: rgba(255,255,255,0.12);
+        .stepper-node-item.reviewed {
+            opacity: 0.9;
+        }
+
+        .mini-dot-marker {
             width: 18px;
             height: 18px;
+            background-color: #6a7b8c;
             border-radius: 50%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
+            transition: background-color 0.3s ease;
         }
 
-        .interactive-tab-row.tab-cleared .tab-glyph-close {
+        .stepper-node-item.active .mini-dot-marker {
+            background-color: #e67e22;
+            box-shadow: 0 0 8px rgba(230,126,34,0.6);
+        }
+
+        .stepper-node-item.reviewed .mini-dot-marker {
             background-color: #2ecc71;
-            color: #ffffff;
         }
 
-        /* Right Side: The Compounding Effect Display Box */
-        .compounding-display-box {
-            flex: 0.9;
+        .stepper-label-text {
+            font-size: 0.95rem;
+            font-weight: 700;
+            color: #123456;
+        }
+
+        /* Assessment Laboratory Center Workbench */
+        .assessment-workspace-panel {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            flex: 1;
+        }
+
+        .threat-card-display {
             background-color: #ffffff;
-            border: 1px solid #e1e8f0;
+            border: 2px dashed #ccdbe8;
             border-radius: 12px;
-            padding: 35px;
+            padding: 25px 35px;
+            flex: 1;
             display: flex;
             flex-direction: column;
             justify-content: center;
             box-shadow: 0 4px 15px rgba(0,0,0,0.01);
         }
 
-        .box-main-title {
-            font-family: 'Georgia', serif;
-            font-size: 1.7rem;
-            color: #1a365d;
-            margin-bottom: 15px;
-            border-bottom: 2px solid #f0f4f8;
-            padding-bottom: 8px;
+        .threat-card-display h3 {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #e67e22;
+            margin-bottom: 6px;
+        }
+
+        .threat-card-display p {
+            font-size: 1.15rem;
+            line-height: 1.5;
+            color: #2c3e50;
+            font-weight: 600;
+        }
+
+        /* Classification Target Row Buckets */
+        .classification-grid {
+            display: flex;
+            gap: 12px;
             flex-shrink: 0;
         }
 
-        .compounding-bullets-stack {
-            list-style-type: none;
+        .bucket-btn {
+            flex: 1;
+            background-color: #eaf1f8;
+            border: 2px solid transparent;
+            border-radius: 8px;
+            padding: 12px 10px;
+            font-family: inherit;
+            font-size: 0.88rem;
+            font-weight: 700;
+            color: #123456;
+            cursor: pointer;
+            text-align: center;
             display: flex;
-            flex-direction: column;
-            gap: 14px;
+            align-items: center;
+            justify-content: center;
+            min-height: 52px;
+            transition: all 0.2s;
         }
 
-        .compounding-bullets-stack li {
-            font-size: 1.05rem;
-            line-height: 1.45;
-            color: #334455;
-            position: relative;
-            padding-left: 24px;
-            font-weight: 600;
-            animation: textEntrancePath 0.3s ease-out both;
-        }
-
-        .compounding-bullets-stack li::before {
-            content: "•";
-            color: #3b75af; /* Soft blue bullet contrast accent tracking image styles */
-            font-size: 1.4rem;
-            position: absolute;
-            left: 0;
-            top: -2px;
+        .bucket-btn:hover {
+            background-color: #ffffff;
+            border-color: #3b75af;
+            transform: translateY(-2px);
         }
 
         /* ==========================================================================
-           4. Game End Mastery Summary Dashboard Layout (Revealed on Completion)
+           4. Game End Dashboard Panel (Revealed Smoothly)
            ========================================================================== */
-        .mastery-dashboard-view {
+        .summary-dashboard-screen {
             display: none;
             width: 100%;
             height: 100%;
-            grid-template-columns: 1.1fr 0.9fr;
-            gap: 30px;
-            animation: layoutFadeInEffect 0.4s ease-out both;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
+            animation: paneEntrance 0.4s ease-out;
+            margin-top: 15px;
         }
 
-        .mastery-card-left {
-            background-color: #1a365d;
-            border-radius: 12px;
-            padding: 35px;
-            color: #ffffff;
+        .summary-mini-card {
+            background-color: #ffffff;
+            border: 1px solid #e1e8f0;
+            border-radius: 10px;
+            padding: 18px 22px;
             display: flex;
             flex-direction: column;
             justify-content: center;
         }
 
-        .mastery-card-left p {
-            font-size: 1.1rem;
-            line-height: 1.55;
-            opacity: 0.95;
-            margin-top: 12px;
+        .summary-mini-card h3 {
+            font-size: 1.15rem;
+            color: #123456;
+            font-weight: 700;
+            margin-bottom: 6px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .summary-mini-card h3::before {
+            content: "■";
+            color: #e67e22;
+            font-size: 1rem;
+        }
+
+        .summary-mini-card p {
+            font-size: 0.92rem;
+            line-height: 1.4;
+            color: #4b5a6a;
         }
 
         /* ==========================================================================
-           5. Slide Footer Component
+           5. Slide Footer System
            ========================================================================== */
         .slide-footer {
             border-top: 1px solid #e1e8f0;
             padding-top: 10px;
             text-align: center;
+            flex-shrink: 0;
         }
 
         .slide-footer p {
@@ -264,12 +276,7 @@
             font-style: italic;
         }
 
-        /* Core Structural Transitions */
-        @keyframes textEntrancePath {
-            from { opacity: 0; transform: translateX(6px); }
-            to { opacity: 1; transform: translateX(0); }
-        }
-        @keyframes layoutFadeInEffect {
+        @keyframes paneEntrance {
             from { opacity: 0; transform: translateY(10px); }
             to { opacity: 1; transform: translateY(0); }
         }
@@ -281,65 +288,127 @@
         
         <header class="slide-header">
             <div class="title-group">
-                <h1 class="main-title" id="dynamic-title">Decision Debt</h1>
-                <p class="subtitle" id="dynamic-subtitle">Unmade decisions compound like financial debt — silently and relentlessly.</p>
+                <h1 class="main-title" id="dynamic-title">The Strategic Cost</h1>
+                <p class="subtitle" id="dynamic-subtitle">Every delayed decision is a competitive advantage surrendered.</p>
             </div>
-            <div class="hud-metrics" id="game-hud">
-                <div class="metric-pill">Open Tabs: <span id="tabs-left">5</span></div>
-                <div class="metric-pill">Thinking Space: <span id="cognitive-space" style="color: #e67e22;">20%</span></div>
+            <div class="hud-metrics" id="hud-deck">
+                <div class="metric-pill">Audited: <span id="audit-count">0 / 4</span></div>
+                <div class="metric-pill">Accuracy: <span id="accuracy-score" style="color: #e67e22;">100%</span></div>
             </div>
         </header>
 
-        <div class="gameplay-arena" id="main-workspace">
+        <div class="gameplay-arena" id="main-play-arena">
             
-            <div class="browser-simulator-panel">
-                <h2 class="card-inner-quote">Every stalled approval sits in your head like open browser tabs.</h2>
-                
-                <div class="tabs-chassis-stack">
-                    <button class="interactive-tab-row" onclick="resolveBacklogNode(0, this)">
-                        <span>Tab_01: Process Architecture Approval</span>
-                        <span class="tab-glyph-close">✕</span>
-                    </button>
-                    <button class="interactive-tab-row" onclick="resolveBacklogNode(1, this)">
-                        <span>Tab_02: Commercial Integration Budget</span>
-                        <span class="tab-glyph-close">✕</span>
-                    </button>
-                    <button class="interactive-tab-row" onclick="resolveBacklogNode(2, this)">
-                        <span>Tab_03: Core Executive Hiring Mandate</span>
-                        <span class="tab-glyph-close">✕</span>
-                    </button>
-                    <button class="interactive-tab-row" onclick="resolveBacklogNode(3, this)">
-                        <span>Tab_04: Transport Lane Restructuring</span>
-                        <span class="tab-glyph-close">✕</span>
-                    </button>
-                    <button class="interactive-tab-row" onclick="resolveBacklogNode(4, this)">
-                        <span>Tab_05: Infrastructure Technology Lifecycle</span>
-                        <span class="tab-glyph-close">✕</span>
-                    </button>
+            <nav class="stepper-progress-track" id="horizontal-stepper">
+                <div class="stepper-node-item active" id="step-node-0">
+                    <div class="mini-dot-marker"></div>
+                    <span class="stepper-label-text">Variable Alpha</span>
                 </div>
-            </div>
+                <div class="stepper-node-item" id="step-node-1">
+                    <div class="mini-dot-marker"></div>
+                    <span class="stepper-label-text">Variable Beta</span>
+                </div>
+                <div class="stepper-node-item" id="step-node-2">
+                    <div class="mini-dot-marker"></div>
+                    <span class="stepper-label-text">Variable Gamma</span>
+                </div>
+                <div class="stepper-node-item" id="step-node-3">
+                    <div class="mini-dot-marker"></div>
+                    <span class="stepper-label-text">Variable Delta</span>
+                </div>
+            </nav>
 
-            <main class="compounding-display-box">
-                <h2 class="box-main-title" id="right-panel-title">The Compounding Effect</h2>
-                <ul class="compounding-bullets-stack" id="revealed-list">
-                    <li id="initial-instruction-prompt" style="list-style-type:none; padding-left:0; font-weight:normal; color:#6a7b8c;">
-                        Click on the open tab rows on the left. Clear them down sequentially by hitting the "✕" close element to eliminate decision debt load parameters.
-                    </li>
-                </ul>
+            <main class="assessment-workspace-panel">
+                <div class="threat-card-display">
+                    <h3>Risk Impact Profile</h3>
+                    <p id="threat-description-text">Competitors who act first capture customers and brand loyalty that are nearly impossible to reclaim.</p>
+                </div>
+
+                <div class="classification-grid">
+                    <button class="bucket-btn" onclick="submitAssessment('share')">Lost Market Share</button>
+                    <button class="bucket-btn" onclick="submitAssessment('window')">Missed Innovation Windows</button>
+                    <button class="bucket-btn" onclick="submitAssessment('infra')">Outdated Infrastructure</button>
+                    <button class="bucket-btn" onclick="submitAssessment('leader')">Follower, Not Leader</button>
+                </div>
             </main>
 
         </div>
 
-        <div class="mastery-dashboard-view" id="mastery-screen">
-            
-            <div class="mastery-card-left">
-                <h2 style="font-family:'Georgia',serif; font-size:1.8rem; color: #e67e22;">Cognitive Load Cleared</h2>
-                <p>Decision debt is the cognitive load created by unresolved decisions. The more you carry, the less space you have for strategic thinking. Actively addressing operational logs and building high-velocity loops protects bandwidth and accelerates execution.</p>
+        <div class="summary-dashboard-screen" id="dashboard-screen">
+            <div class="summary-mini-card">
+                <h3>Lost Market Share</h3>
+                <p>Competitors who act first capture customers and brand loyalty that are nearly impossible to reclaim.</p>
             </div>
 
-            <div class="compounding-display-box">
-                <h2 class="box-main-title" style="border-bottom-color:#e1e8f0;">The Compounding Effect</h2>
-                <ul class="compounding-bullets-stack">
-                    <li>Hiring is delayed</li>
-                    <li>Revenue opportunities expire</li>
-                    <li>Team
+            <div class="summary-mini-card">
+                <h3>Missed Innovation Windows</h3>
+                <p>Innovation depends on action — waiting for perfect certainty means someone else ships first.</p>
+            </div>
+
+            <div class="summary-mini-card">
+                <h3>Outdated Infrastructure</h3>
+                <p>Delayed technology investments leave organizations running on legacy systems with mounting costs.</p>
+            </div>
+
+            <div class="summary-mini-card">
+                <h3>Follower, Not Leader</h3>
+                <p>Indecisive organizations become reactive, always responding to events rather than shaping them.</p>
+            </div>
+        </div>
+
+        <footer class="slide-footer">
+            <p id="footer-text">Analyze the Risk Impact Profile on the card, then match it to the correct Strategic Cost classification bucket below.</p>
+        </footer>
+
+    </div>
+
+    <script>
+        const matrixDeck = [
+            { id: 0, actualKey: "share", label: "Lost Market Share", desc: "Competitors who act first capture customers and brand loyalty that are nearly impossible to reclaim." },
+            { id: 1, actualKey: "window", label: "Missed Innovation Windows", desc: "Innovation depends on action — waiting for perfect certainty means someone else ships first." },
+            { id: 2, actualKey: "infra", label: "Outdated Infrastructure", desc: "Delayed technology investments leave organizations running on legacy systems with mounting costs." },
+            { id: 3, actualKey: "leader", label: "Follower, Not Leader", desc: "Indecisive organizations become reactive, always responding to events rather than shaping them." }
+        ];
+
+        let activeNodeIndex = 0;
+        let sortedCount = 0;
+        let incorrectAttempts = 0;
+
+        function submitAssessment(userSelectionKey) {
+            const currentItem = matrixDeck[activeNodeIndex];
+            const activeNodeItem = document.getElementById(`step-node-${activeNodeIndex}`);
+
+            if (userSelectionKey === currentItem.actualKey) {
+                sortedCount++;
+                document.getElementById('audit-count').textContent = `${sortedCount} / 4`;
+                
+                activeNodeItem.classList.remove('active');
+                activeNodeItem.classList.add('reviewed');
+
+                if (sortedCount < 4) {
+                    activeNodeIndex++;
+                    document.getElementById(`step-node-${activeNodeIndex}`).classList.add('active');
+                    document.getElementById('threat-description-text').textContent = matrixDeck[activeNodeIndex].desc;
+                } else {
+                    displayFinalDashboard();
+                }
+            } else {
+                incorrectAttempts++;
+                const accuracyRate = Math.max(0, Math.round(((sortedCount) / (sortedCount + incorrectAttempts)) * 100));
+                document.getElementById('accuracy-score').textContent = `${accuracyRate}%`;
+            }
+        }
+
+        function displayFinalDashboard() {
+            document.getElementById('main-play-arena').style.display = 'none';
+            document.getElementById('hud-deck').style.display = 'none';
+
+            document.getElementById('dynamic-title').textContent = "Strategic Risk Audit Complete";
+            document.getElementById('dynamic-subtitle').textContent = "Review the unified cost profile framework definitions below.";
+
+            document.getElementById('dashboard-screen').style.display = 'grid';
+            document.getElementById('footer-text').textContent = "Assessment complete. You can now safely pass to the next module.";
+        }
+    </script>
+</body>
+</html>
