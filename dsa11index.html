@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>5 Principles of a Decisive Culture - Interactive L3 Slide</title>
+    <title>5 Principles of a Decisive Culture - Storyline Safe Layout</title>
     
     <style>
         /* ==========================================================================
@@ -24,15 +24,15 @@
             align-items: center;
             min-height: 100vh;
             overflow: hidden;
-            padding: 10px;
+            padding: 5px;
         }
 
-        /* Fixed 16:9 Slide Canvas Framework */
+        /* Fixed 16:9 Slide Canvas Bounding Box Container - Tight Padding Protection */
         .slide-container {
             background-color: #162e44;
             width: 1280px;
             height: 720px;
-            padding: 45px 60px;
+            padding: 30px 45px 20px 45px; /* Reclaims critical vertical limits */
             border-radius: 8px;
             box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
             display: flex;
@@ -49,11 +49,12 @@
             justify-content: space-between;
             align-items: flex-start;
             border-bottom: 2px solid rgba(255, 255, 255, 0.1);
-            padding-bottom: 12px;
+            padding-bottom: 10px;
+            flex-shrink: 0;
         }
 
         .main-title {
-            font-size: 2.6rem;
+            font-size: 2.4rem;
             font-weight: 800;
             color: #ffffff;
             line-height: 1.1;
@@ -61,14 +62,14 @@
 
         .hud-metrics {
             display: flex;
-            gap: 15px;
+            gap: 12px;
         }
 
         .metric-pill {
             background-color: rgba(255, 255, 255, 0.08);
-            padding: 8px 16px;
+            padding: 6px 14px;
             border-radius: 6px;
-            font-size: 0.85rem;
+            font-size: 0.8rem;
             font-weight: 700;
             text-transform: uppercase;
             letter-spacing: 0.5px;
@@ -77,23 +78,51 @@
         }
 
         /* ==========================================================================
-           3. Gameplay Split-Grid Workspace Arena (Zero Vertical Shifting)
+           3. Core Gameplay Arena Framework (Side-by-Side Horizontal Balance)
            ========================================================================== */
         .gameplay-arena {
             display: flex;
-            gap: 35px;
+            gap: 25px;
             flex: 1;
-            margin: 25px 0;
+            margin: 20px 0 15px 0;
             align-items: stretch;
-            height: calc(100% - 145px);
+            height: calc(100% - 135px);
         }
 
-        /* Left Column: Vertical Matrix Target Nodes */
-        .principles-sidebar {
-            flex: 1.1;
+        /* Left Split: Dynamic Friction Sidebar Monitor Column */
+        .sidebar-friction-panel {
+            flex: 0.85;
+            background-color: rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            padding: 25px;
             display: flex;
             flex-direction: column;
-            gap: 12px;
+            justify-content: center;
+            box-shadow: inset 0 0 20px rgba(0,0,0,0.2);
+        }
+
+        .sidebar-friction-panel h3 {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: #e67e22;
+            margin-bottom: 6px;
+        }
+
+        .sidebar-friction-panel p {
+            font-size: 1.12rem;
+            line-height: 1.45;
+            color: #ffffff;
+            font-weight: 600;
+        }
+
+        /* Right Split: Parallel Target Node List Menu Box */
+        .principles-sidebar {
+            flex: 1.15;
+            display: flex;
+            flex-direction: column;
+            gap: 10px; /* Highly compact gap properties safeguard from cuts */
             justify-content: center;
         }
 
@@ -101,10 +130,10 @@
             background-color: rgba(255, 255, 255, 0.04);
             border: 1px solid rgba(255, 255, 255, 0.1);
             border-radius: 4px;
-            padding: 14px 22px;
+            padding: 12px 20px;
             display: flex;
             align-items: center;
-            gap: 20px;
+            gap: 15px;
             cursor: pointer;
             width: 100%;
             text-align: left;
@@ -119,20 +148,20 @@
         }
 
         .node-number {
-            font-size: 1.5rem;
+            font-size: 1.4rem;
             font-weight: 800;
             color: #e67e22;
-            width: 30px;
+            width: 25px;
             flex-shrink: 0;
         }
 
         .node-text {
-            font-size: 1.15rem;
+            font-size: 1.1rem;
             font-weight: 700;
             color: #ffffff;
         }
 
-        /* Solved State styling locks for Left Cards */
+        /* Solved State active locks */
         .principle-node-btn.solved-complete {
             background-color: rgba(46, 204, 113, 0.1);
             border-color: #2ecc71;
@@ -144,77 +173,48 @@
             color: #2ecc71;
         }
 
-        /* Right Column: Dynamic Scenario Workspace Console */
-        .scenario-workspace {
-            flex: 1.3;
-            background-color: rgba(255, 255, 255, 0.02);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 8px;
-            padding: 35px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            box-shadow: inset 0 0 20px rgba(0,0,0,0.2);
-        }
-
-        .scenario-box h3 {
-            font-size: 0.8rem;
-            text-transform: uppercase;
-            letter-spacing: 1.5px;
-            color: #e67e22;
-            margin-bottom: 8px;
-        }
-
-        .scenario-box p {
-            font-size: 1.3rem;
-            line-height: 1.5;
-            color: #ffffff;
-            font-weight: 600;
-        }
-
         /* ==========================================================================
-           4. Game End Mastery Dashboard Layout Viewport (Fades In Smoothly)
+           4. Game End Mastery Dashboard Layout Overlay Viewport
            ========================================================================== */
         .mastery-dashboard-overlay {
             display: none;
             width: 100%;
             height: 100%;
             flex-direction: column;
-            gap: 12px;
+            gap: 10px;
             justify-content: center;
-            animation: overlayEntrance 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
+            animation: overlayEntrance 0.4s ease-out both;
             margin: 15px 0;
         }
 
-        /* Re-renders the exact static layout from image_fee2c7.png beautifully */
         .static-framework-row {
             background-color: rgba(255, 255, 255, 0.04);
             border-radius: 4px;
-            padding: 16px 35px;
+            padding: 14px 30px;
             display: flex;
             align-items: center;
-            min-height: 72px;
+            min-height: 64px;
         }
 
         .static-num {
-            font-size: 1.6rem;
+            font-size: 1.5rem;
             font-weight: 800;
             color: #e67e22;
-            width: 60px;
+            width: 50px;
             flex-shrink: 0;
         }
 
         .static-title {
-            font-size: 1.25rem;
+            font-size: 1.15rem;
             font-weight: 700;
             color: #ffffff;
-            width: 300px;
+            width: 280px;
             flex-shrink: 0;
-            padding-right: 20px;
+            padding-right: 15px;
         }
 
         .static-desc {
-            font-size: 1rem;
+            font-size: 0.95rem;
             line-height: 1.4;
             color: rgba(255, 255, 255, 0.7);
         }
@@ -224,19 +224,19 @@
            ========================================================================== */
         .slide-footer {
             border-top: 1px solid rgba(255, 255, 255, 0.1);
-            padding-top: 15px;
+            padding-top: 10px;
             text-align: center;
+            flex-shrink: 0;
         }
 
         .slide-footer p {
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             color: rgba(255, 255, 255, 0.5);
             font-style: italic;
         }
 
-        /* Core Structural Animations */
         @keyframes overlayEntrance {
-            from { opacity: 0; transform: translateY(15px); }
+            from { opacity: 0; transform: translateY(10px); }
             to { opacity: 1; transform: translateY(0); }
         }
     </style>
@@ -245,146 +245,4 @@
 
     <div class="slide-container">
         
-        <!-- Header Section -->
-        <header class="slide-header">
-            <h1 class="main-title" id="dynamic-title">5 Principles of a Decisive Culture</h1>
-            <div class="hud-metrics" id="game-hud">
-                <div class="metric-pill">Aligned: <span id="resolved-count">0 / 5</span></div>
-            </div>
-        </header>
-
-        <!-- Main Dynamic Play Field Arena -->
-        <div class="gameplay-arena" id="main-play-arena">
-            
-            <!-- Left Side: Interactive Principle Target Cards -->
-            <nav class="principles-sidebar">
-                <button class="principle-node-btn" id="btn-node-1" onclick="routeScenario('clarity')">
-                    <div class="node-number">01</div>
-                    <div class="node-text">Clarity Over Consensus</div>
-                </button>
-                <button class="principle-node-btn" id="btn-node-2" onclick="routeScenario('speed')">
-                    <div class="node-number">02</div>
-                    <div class="node-text">Speed Over Perfection</div>
-                </button>
-                <button class="principle-node-btn" id="btn-node-3" onclick="routeScenario('accountability')">
-                    <div class="node-number">03</div>
-                    <div class="node-text">Accountability Over Blame</div>
-                </button>
-                <button class="principle-node-btn" id="btn-node-4" onclick="routeScenario('action')">
-                    <div class="node-number">04</div>
-                    <div class="node-text">Action Over Analysis</div>
-                </button>
-                <button class="principle-node-btn" id="btn-node-5" onclick="routeScenario('learning')">
-                    <div class="node-number">05</div>
-                    <div class="node-text">Learning Over Certainty</div>
-                </button>
-            </nav>
-
-            <!-- Right Side: Dynamic Cultural Hurdle Console -->
-            <main class="scenario-workspace">
-                <div class="scenario-box">
-                    <h3>Operational Friction Dilemma</h3>
-                    <p id="scenario-text">"Our rollout is frozen because teams are locked in endless steering committees, trying to make sure absolutely everyone agrees before moving forward."</p>
-                </div>
-            </main>
-
-        </div>
-
-        <!-- Hidden End-Game Master Infographic Dashboard Layer (Re-renders full layout view from image_fee2c7.png) -->
-        <div class="mastery-dashboard-overlay" id="mastery-screen">
-            
-            <div class="static-framework-row">
-                <div class="static-num">01</div>
-                <div class="static-title">Clarity Over Consensus</div>
-                <div class="static-desc">One decider, clear roles, explicit criteria</div>
-            </div>
-
-            <div class="static-framework-row">
-                <div class="static-num">02</div>
-                <div class="static-title">Speed Over Perfection</div>
-                <div class="static-desc">Move fast on reversible decisions, deliberate on irreversible ones</div>
-            </div>
-
-            <div class="static-framework-row">
-                <div class="static-num">03</div>
-                <div class="static-title">Accountability Over Blame</div>
-                <div class="static-desc">Own outcomes, learn from mistakes, never punish well-reasoned risk</div>
-            </div>
-
-            <div class="static-framework-row">
-                <div class="static-num">04</div>
-                <div class="static-title">Action Over Analysis</div>
-                <div class="static-desc">Default to doing — the best insights come from execution, not meetings</div>
-            </div>
-
-            <div class="static-framework-row">
-                <div class="static-num">05</div>
-                <div class="static-title">Learning Over Certainty</div>
-                <div class="static-desc">Treat every decision as a hypothesis to test, not a bet to win</div>
-            </div>
-
-        </div>
-
-        <!-- Instructions Slide Footer Help Line -->
-        <footer class="slide-footer">
-            <p id="footer-text">Analyze the current Operational Friction Dilemma card on the right, then select the proper core culture card on the left to counter it.</p>
-        </footer>
-
-    </div>
-
-    <!-- ==========================================================================
-       6. Interactive Diagnostic Engine Script Matrix
-       ========================================================================== -->
-    <script>
-        // Array matrix housing scenarios linked directly to the image parameters
-        const challengeDeck = [
-            { key: "clarity", node: "btn-node-1", text: '"Our rollout is frozen because teams are locked in endless steering committees, trying to make sure absolutely everyone agrees before moving forward."' },
-            { key: "speed", node: "btn-node-2", text: '"We are missing critical market windows on easily undoable feature changes because managers are treating them with heavy deliberation rules."' },
-            { key: "accountability", node: "btn-node-3", text: '"Innovation has completely stopped because employees are terrified that any calculated operational risk will result in strict penalties if it fails."' },
-            { key: "action", node: "btn-node-4", text: '"Our teams default to setting up secondary follow-up meetings to talk instead of launching field experiments to discover what works."' },
-            { key: "learning", node: "btn-node-5", text: '"Project updates are paralyzed because leadership treats every deployment path like an permanent bet to win instead of an experimental hypothesis."' }
-        ];
-
-        let activeIndex = 0;
-        let successfulMatches = 0;
-
-        function routeScenario(userCardChoice) {
-            const currentItem = challengeDeck[activeIndex];
-
-            if (userCardChoice === currentItem.key) {
-                // Correct choice sequence routing
-                successfulMatches++;
-                document.getElementById('resolved-count').textContent = `${successfulMatches} / 5`;
-
-                // Give the active card card a permanent success lock state
-                document.getElementById(currentItem.node).classList.add('solved-complete');
-
-                if (successfulMatches < 5) {
-                    activeIndex++;
-                    document.getElementById('scenario-text').textContent = challengeDeck[activeIndex].text;
-                } else {
-                    displayFinalDashboard();
-                }
-            } else {
-                // Flash mistake indication feedback directly onto the selected element
-                const badButton = document.querySelector(`[onclick="routeScenario('${userCardChoice}')"]`);
-                badButton.style.borderColor = '#c0392b';
-                setTimeout(() => { badButton.style.borderColor = 'rgba(255,255,255,0.1)'; }, 600);
-            }
-        }
-
-        function displayFinalDashboard() {
-            // Unmount active interactive simulation layouts
-            document.getElementById('main-play-arena').style.display = 'none';
-            document.getElementById('game-hud').style.display = 'none';
-
-            // Rewrite primary header labels
-            document.getElementById('dynamic-title').textContent = "Decisive Culture Archetypes Unlocked";
-
-            // Switch presentation workspace frames with zero page displacement boundaries
-            document.getElementById('mastery-screen').style.display = 'flex';
-            document.getElementById('footer-text').textContent = "Review complete. All 5 fundamental corporate culture principles are now successfully deployed.";
-        }
-    </script>
-</body>
-</html>
+        <header class="slide-header
