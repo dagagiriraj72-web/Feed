@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>The Strategic Cost - Fixed No-Scroll Slide</title>
+    <title>The Strategic Cost - Optimized Storyline Box</title>
     
     <style>
         /* ==========================================================================
@@ -24,15 +24,15 @@
             align-items: center;
             min-height: 100vh;
             overflow: hidden;
-            padding: 5px;
+            padding: 2px;
         }
 
-        /* Fixed 16:9 Presentation Canvas Box Container - Rigid Height Enforcement */
+        /* Fixed 16:9 Presentation Canvas Box Container - Strict Height Cushioning */
         .slide-container {
             background-color: #fafcfe;
             width: 1280px;
             height: 720px;
-            padding: 30px 45px 20px 45px; /* Streamlined to prevent bottom overflow */
+            padding: 24px 40px 16px 40px; /* Highly optimized padding boundaries protect against bottom-cuts */
             border-radius: 8px;
             box-shadow: 0 20px 50px rgba(26,42,58,0.12);
             display: flex;
@@ -49,33 +49,33 @@
             justify-content: space-between;
             align-items: flex-start;
             border-bottom: 2px solid #e1e8f0;
-            padding-bottom: 10px;
+            padding-bottom: 8px;
         }
 
         .main-title {
-            font-size: 2.4rem;
+            font-size: 2.2rem; /* Scaled down slightly to reclaim high-value vertical real estate */
             font-weight: 800;
             color: #123456;
             line-height: 1.1;
         }
 
         .subtitle {
-            font-size: 1rem;
+            font-size: 0.95rem;
             color: #6a7b8c;
-            margin-top: 3px;
+            margin-top: 2px;
             font-weight: 500;
         }
 
         .hud-metrics {
             display: flex;
-            gap: 12px;
+            gap: 10px;
         }
 
         .metric-pill {
             background-color: #eaf1f8;
-            padding: 6px 14px;
+            padding: 5px 12px;
             border-radius: 6px;
-            font-size: 0.8rem;
+            font-size: 0.78rem;
             font-weight: 700;
             text-transform: uppercase;
             letter-spacing: 0.5px;
@@ -88,30 +88,30 @@
            ========================================================================== */
         .gameplay-arena {
             display: flex;
-            gap: 35px;
+            gap: 30px;
             flex: 1;
-            margin: 20px 0 15px 0; /* Optimized tight vertical spacing */
+            margin: 15px 0 10px 0; /* Tightened margins prevent column pushdowns */
             align-items: stretch;
-            height: calc(100% - 140px);
+            height: calc(100% - 125px);
         }
 
         /* Left Column: Vertical Timeline Tree */
         .timeline-navigation {
-            flex: 0.8;
+            flex: 0.75;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
             position: relative;
-            padding-left: 20px;
-            padding-top: 10px;
-            padding-bottom: 10px;
+            padding-left: 15px;
+            padding-top: 8px;
+            padding-bottom: 8px;
         }
 
-        /* Reconstructed connecting track from image_f2287f.png */
+        /* Reconstructed connecting track */
         .timeline-navigation::before {
             content: '';
             position: absolute;
-            left: 39px;
+            left: 30px; /* Aligned precisely with compressed marker dots */
             top: 0;
             bottom: 0;
             width: 4px;
@@ -124,7 +124,7 @@
             border: none;
             display: flex;
             align-items: center;
-            gap: 20px;
+            gap: 15px;
             cursor: pointer;
             width: 100%;
             text-align: left;
@@ -135,31 +135,31 @@
         }
 
         .node-marker-dot {
-            width: 42px; /* Streamlined diameter to ensure perfect vertical clearance */
-            height: 42px;
+            width: 34px; /* Compressed marker diameter preserves crucial pixel buffers */
+            height: 34px;
             background-color: #e67e22;
             border: 4px solid #fafcfe;
             border-radius: 50%;
-            box-shadow: 0 3px 8px rgba(230,126,34,0.25);
-            transition: all 0.25s ease;
+            box-shadow: 0 2px 6px rgba(230,126,34,0.2);
+            transition: all 0.2s ease;
             flex-shrink: 0;
         }
 
         .node-row-btn.active .node-marker-dot {
             background-color: #ffffff;
             border-color: #e67e22;
-            transform: scale(1.15);
-            box-shadow: 0 4px 12px rgba(230,126,34,0.4);
+            transform: scale(1.1);
+            box-shadow: 0 3px 10px rgba(230,126,34,0.35);
         }
 
         .node-row-btn.reviewed .node-marker-dot {
             background-color: #2ecc71;
             border-color: #fafcfe;
-            box-shadow: 0 3px 8px rgba(46,204,113,0.25);
+            box-shadow: 0 2px 6px rgba(46,204,113,0.2);
         }
 
         .node-label-heading {
-            font-size: 1.2rem;
+            font-size: 1.1rem;
             font-weight: 700;
             color: #123456;
             transition: color 0.2s;
@@ -171,17 +171,17 @@
 
         /* Right Column: Assessment Workspace */
         .assessment-workspace {
-            flex: 1.2;
+            flex: 1.25;
             display: flex;
             flex-direction: column;
-            gap: 15px;
+            gap: 12px;
         }
 
         .threat-card-display {
             background-color: #ffffff;
             border: 2px dashed #ccdbe8;
             border-radius: 12px;
-            padding: 25px 35px;
+            padding: 20px 30px;
             flex: 1;
             display: flex;
             flex-direction: column;
@@ -190,16 +190,16 @@
         }
 
         .threat-card-display h3 {
-            font-size: 0.75rem;
+            font-size: 0.72rem;
             text-transform: uppercase;
             letter-spacing: 1px;
             color: #e67e22;
-            margin-bottom: 6px;
+            margin-bottom: 4px;
         }
 
         .threat-card-display p {
-            font-size: 1.15rem;
-            line-height: 1.5;
+            font-size: 1.1rem;
+            line-height: 1.45;
             color: #2c3e50;
             font-weight: 600;
         }
@@ -207,7 +207,7 @@
         /* Classification Target Row Buckets */
         .classification-grid {
             display: flex;
-            gap: 12px;
+            gap: 10px;
         }
 
         .bucket-btn {
@@ -215,9 +215,9 @@
             background-color: #eaf1f8;
             border: 2px solid transparent;
             border-radius: 8px;
-            padding: 14px 10px; /* Highly compact padding prevents vertical bloat */
+            padding: 10px 8px; /* Clean padding layout metrics bypass vertical spill */
             font-family: inherit;
-            font-size: 0.88rem;
+            font-size: 0.85rem;
             font-weight: 700;
             color: #123456;
             cursor: pointer;
@@ -225,14 +225,14 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            min-height: 54px;
+            min-height: 48px; /* Tight functional footprint matches smaller storyline skins */
             transition: all 0.2s;
         }
 
         .bucket-btn:hover {
             background-color: #ffffff;
             border-color: #3b75af;
-            transform: translateY(-2px);
+            transform: translateY(-1px);
         }
 
         /* ==========================================================================
@@ -243,7 +243,7 @@
             width: 100%;
             height: 100%;
             grid-template-columns: repeat(2, 1fr);
-            gap: 16px;
+            gap: 12px;
             animation: paneEntrance 0.4s ease-out;
         }
 
@@ -251,32 +251,31 @@
             background-color: #ffffff;
             border: 1px solid #e1e8f0;
             border-radius: 10px;
-            padding: 18px 22px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.01);
+            padding: 14px 20px;
             display: flex;
             flex-direction: column;
             justify-content: center;
         }
 
         .summary-mini-card h3 {
-            font-size: 1.15rem;
+            font-size: 1.05rem;
             color: #123456;
             font-weight: 700;
-            margin-bottom: 6px;
+            margin-bottom: 4px;
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 6px;
         }
 
         .summary-mini-card h3::before {
             content: "■";
             color: #e67e22;
-            font-size: 1rem;
+            font-size: 0.9rem;
         }
 
         .summary-mini-card p {
-            font-size: 0.92rem;
-            line-height: 1.4;
+            font-size: 0.88rem;
+            line-height: 1.35;
             color: #4b5a6a;
         }
 
@@ -285,18 +284,18 @@
            ========================================================================== */
         .slide-footer {
             border-top: 1px solid #e1e8f0;
-            padding-top: 10px;
+            padding-top: 8px;
             text-align: center;
         }
 
         .slide-footer p {
-            font-size: 0.85rem;
+            font-size: 0.82rem;
             color: #6a7b8c;
             font-style: italic;
         }
 
         @keyframes paneEntrance {
-            from { opacity: 0; transform: translateY(10px); }
+            from { opacity: 0; transform: translateY(8px); }
             to { opacity: 1; transform: translateY(0); }
         }
     </style>
@@ -305,7 +304,6 @@
 
     <div class="slide-container">
         
-        <!-- Header HUD Area -->
         <header class="slide-header">
             <div class="title-group">
                 <h1 class="main-title" id="dynamic-title">The Strategic Cost</h1>
@@ -317,10 +315,8 @@
             </div>
         </header>
 
-        <!-- Main Workspace Arena -->
         <div class="gameplay-arena" id="main-play-arena">
             
-            <!-- Left Side Vertical Timeline Tree -->
             <nav class="timeline-navigation" id="timeline-menu">
                 <button class="node-row-btn active" data-node="0" id="btn-node-0">
                     <div class="node-marker-dot"></div>
@@ -343,7 +339,6 @@
                 </button>
             </nav>
 
-            <!-- Right Side Interactive Matching Board -->
             <main class="assessment-workspace" id="assessment-workspace">
                 <div class="threat-card-display">
                     <h3>Risk Impact Profile</h3>
@@ -360,7 +355,6 @@
 
         </div>
 
-        <!-- Hidden End-Game Master Blueprint Table Layout Layer -->
         <div class="summary-dashboard-screen" id="dashboard-screen">
             <div class="summary-mini-card">
                 <h3>Lost Market Share</h3>
@@ -383,16 +377,12 @@
             </div>
         </div>
 
-        <!-- Stable Non-Shifting Footer -->
         <footer class="slide-footer">
             <p id="footer-text">Analyze the Risk Impact Profile on the card, then match it to the correct Strategic Cost classification bucket below.</p>
         </footer>
 
     </div>
 
-    <!-- ==========================================================================
-       4. Interactive Script Engine
-       ========================================================================== */ -->
     <script>
         const matrixDeck = [
             { id: 0, actualKey: "share", label: "Lost Market Share", desc: "Competitors who act first capture customers and brand loyalty that are nearly impossible to reclaim." },
@@ -438,7 +428,7 @@
             document.getElementById('dynamic-subtitle').textContent = "Review the unified cost profile framework definitions below.";
 
             document.getElementById('dashboard-screen').style.display = 'grid';
-            document.getElementById('footer-text').textContent = "Assessment complete. You can now safely move to the next slide section.";
+            document.getElementById('footer-text').textContent = "Assessment complete. You can now safely pass to the next section block.";
         }
     </script>
 </body>
