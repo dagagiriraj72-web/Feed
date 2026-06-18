@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Decision Debt - Storyline Guaranteed Fit</title>
+    <title>Decision Debt - Absolute 16:9 Fit</title>
     
     <style>
         /* ==========================================================================
-           1. Absolute Boundary Reset (Strict No-Scroll, No-Cut, No-Overlap)
+           1. Core Reset & Rigid Widescreen Boundaries (No-Scroll, No-Cuts)
            ========================================================================== */
         * {
             box-sizing: border-box;
@@ -17,7 +17,7 @@
 
         body {
             font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
-            background-color: #fafcfe;
+            background-color: #f8fafc;
             color: #1a2a3a;
             width: 100vw;
             height: 100vh;
@@ -28,55 +28,63 @@
             padding: 5px;
         }
 
-        /* Fixed 16:9 Slide Canvas Main Chassis */
+        /* Fixed 16:9 Slide Wrapper - Guarantees absolute safety against bottom cuts */
         .slide-container {
             width: 1280px;
             height: 720px;
-            padding: 30px 45px 20px 45px; /* Highly defensive padding guards against timeline cuts */
+            padding: 30px 45px 20px 45px;
+            background-color: #ffffff;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
             overflow: hidden;
-            position: relative;
         }
 
         /* ==========================================================================
-           2. Low-Profile Header Area
+           2. Slide Title Header Area
            ========================================================================== */
         .slide-header {
-            border-bottom: 2px solid #edf2f7;
-            padding-bottom: 8px;
-            height: 75px;
             flex-shrink: 0;
+            height: 65px;
         }
 
         .main-title {
-            font-size: 2.3rem;
+            font-size: 2.4rem;
             font-weight: 800;
-            color: #1a365d; /* Brand deep blue from image_ef6e84.png */
+            color: #1a365d;
             line-height: 1.1;
         }
 
         .subtitle {
             font-size: 0.95rem;
             color: #6a7b8c;
-            margin-top: 2px;
+            margin-top: 3px;
             font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .subtitle::before {
+            content: "•";
+            color: #e67e22;
+            font-size: 1.4rem;
         }
 
         /* ==========================================================================
-           3. Horizontal Split Arena (Reclaims Vertical Space)
+           3. Side-by-Side Arena Layout (Guards Vertical Real Estate)
            ========================================================================== */
         .gameplay-arena {
             display: grid;
-            grid-template-columns: 1.05fr 0.95fr;
+            grid-template-columns: 1.1fr 0.9fr;
             gap: 30px;
             flex: 1;
-            margin: 20px 0 15px 0;
-            min-height: 0; /* Keeps layout strictly bounded */
+            margin: 15px 0 10px 0;
+            min-height: 0; /* Important lock for Storyline rendering safety */
+            height: calc(100% - 130px);
         }
 
-        /* Left Split: Browser Tabs Simulator Card Platform */
+        /* Left Side: Interactive Browser Tabs Panel Chassis */
         .tabs-simulator-panel {
             background-color: #1a365d;
             border-radius: 8px;
@@ -93,38 +101,35 @@
             font-size: 1.65rem;
             line-height: 1.35;
             color: #ffffff;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.15);
-            padding-bottom: 12px;
         }
 
-        /* Browser Tab Matrix Rows */
+        /* Tab Rows Menu Stack */
         .tabs-vertical-chassis {
             display: flex;
             flex-direction: column;
-            gap: 10px;
-            margin: 15px 0;
+            gap: 8px;
         }
 
         .browser-tab-row {
-            background-color: rgba(255, 255, 255, 0.08);
-            border: 1px solid rgba(255, 255, 255, 0.15);
+            background-color: rgba(255, 255, 255, 0.06);
+            border: 1px solid rgba(255, 255, 255, 0.12);
             color: #ffffff;
             border-radius: 6px;
-            padding: 12px 16px;
+            padding: 0 16px;
             font-family: inherit;
-            font-size: 0.9rem;
+            font-size: 0.88rem;
             font-weight: 600;
-            text-align: left;
-            cursor: pointer;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            width: 100%;
+            height: 44px; /* Locked row height prevents downward panel expanding */
+            cursor: pointer;
             transition: all 0.2s ease;
-            height: 46px;
         }
 
         .browser-tab-row:hover {
-            background-color: rgba(255, 255, 255, 0.15);
+            background-color: rgba(255, 255, 255, 0.14);
             transform: translateX(3px);
         }
 
@@ -137,34 +142,34 @@
             transform: none;
         }
 
-        .tab-close-glyph {
+        .tab-action-glyph {
             font-size: 0.75rem;
             background-color: rgba(255,255,255,0.12);
-            width: 18px;
-            height: 18px;
+            width: 20px;
+            height: 20px;
             border-radius: 50%;
             display: flex;
             justify-content: center;
             align-items: center;
         }
 
-        .browser-tab-row.tab-cleared .tab-close-glyph {
+        .browser-tab-row.tab-cleared .tab-action-glyph {
             background-color: #2ecc71;
             color: #ffffff;
         }
 
-        .panel-definition-text {
-            font-size: 0.88rem;
-            line-height: 1.4;
-            color: rgba(255, 255, 255, 0.8);
+        .panel-definition-footer {
+            font-size: 0.85rem;
+            line-height: 1.35;
+            color: rgba(255, 255, 255, 0.65);
         }
 
-        /* Right Split: The Compounding Effect Display Card Box */
+        /* Right Side: Compounding Results Output Window Box */
         .compounding-output-card {
             background-color: #ffffff;
             border: 1px solid #e1e8f0;
             border-radius: 8px;
-            padding: 35px;
+            padding: 30px;
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -172,50 +177,52 @@
         }
 
         .compounding-output-card h2 {
-            font-size: 1.6rem;
+            font-size: 1.5rem;
             font-weight: 700;
             color: #1a365d;
-            margin-bottom: 20px;
+            margin-bottom: 15px;
             border-bottom: 2px solid #f0f4f8;
-            padding-bottom: 8px;
+            padding-bottom: 6px;
+            flex-shrink: 0;
         }
 
         .compounding-list-stack {
             list-style-type: none;
             display: flex;
             flex-direction: column;
-            gap: 14px;
+            gap: 12px;
         }
 
         .compounding-list-stack li {
-            font-size: 1.05rem;
+            font-size: 1rem;
             line-height: 1.4;
             color: #334455;
             position: relative;
-            padding-left: 24px;
+            padding-left: 22px;
             font-weight: 600;
-            animation: listRowEntrance 0.3s ease-out both;
+            animation: rowSlideIn 0.3s ease-out both;
         }
 
         .compounding-list-stack li::before {
             content: "•";
-            color: #3b75af; /* Sky blue branding accent bullet */
-            font-size: 1.4rem;
+            color: #3b75af;
+            font-size: 1.3rem;
             position: absolute;
             left: 0;
             top: -2px;
         }
 
         /* ==========================================================================
-           4. Game End Mastery Unified Viewport Dashboard Overlay
+           4. Game End Mastery Unified Viewport Overlay Dashboard
            ========================================================================== */
         .mastery-dashboard-view {
-            display: none; /* Controlled strictly by state routines */
-            grid-template-columns: 1.05fr 0.95fr;
+            display: none; /* Safely switched via script logic to prevent clipping crashes */
+            grid-template-columns: 1.1fr 0.9fr;
             gap: 30px;
             flex: 1;
-            margin: 20px 0 15px 0;
-            animation: overlayEntrance 0.4s ease-out both;
+            margin: 15px 0 10px 0;
+            height: calc(100% - 130px);
+            animation: layoutEntrance 0.4s ease-out both;
         }
 
         .mastery-dashboard-view .compounding-list-stack li {
@@ -227,7 +234,7 @@
            ========================================================================== */
         .slide-footer {
             border-top: 1px solid #e1e8f0;
-            padding-top: 10px;
+            padding-top: 8px;
             text-align: center;
             flex-shrink: 0;
             height: 35px;
@@ -239,11 +246,11 @@
             font-style: italic;
         }
 
-        @keyframes listRowEntrance {
+        @keyframes rowSlideIn {
             from { opacity: 0; transform: translateX(6px); }
             to { opacity: 1; transform: translateX(0); }
         }
-        @keyframes overlayEntrance {
+        @keyframes layoutEntrance {
             from { opacity: 0; transform: translateY(10px); }
             to { opacity: 1; transform: translateY(0); }
         }
@@ -264,29 +271,29 @@
                 <h2 class="panel-quote-heading">Every stalled approval sits in your head like open browser tabs.</h2>
                 
                 <div class="tabs-vertical-chassis">
-                    <button class="browser-tab-row" onclick="clearBacklogNode(0, this)">
+                    <button class="browser-tab-row" onclick="clearTabItem(0, this)">
                         <span>Tab_01: Process Architecture Authorization</span>
-                        <span class="tab-close-glyph">✕</span>
+                        <span class="tab-action-glyph">✕</span>
                     </button>
-                    <button class="browser-tab-row" onclick="clearBacklogNode(1, this)">
+                    <button class="browser-tab-row" onclick="clearTabItem(1, this)">
                         <span>Tab_02: Commercial Integration Budget</span>
-                        <span class="tab-close-glyph">✕</span>
+                        <span class="tab-action-glyph">✕</span>
                     </button>
-                    <button class="browser-tab-row" onclick="clearBacklogNode(2, this)">
+                    <button class="browser-tab-row" onclick="clearTabItem(2, this)">
                         <span>Tab_03: Core Executive Hiring Mandate</span>
-                        <span class="tab-close-glyph">✕</span>
+                        <span class="tab-action-glyph">✕</span>
                     </button>
-                    <button class="browser-tab-row" onclick="clearBacklogNode(3, this)">
+                    <button class="browser-tab-row" onclick="clearTabItem(3, this)">
                         <span>Tab_04: Transport Lane Restructuring</span>
-                        <span class="tab-close-glyph">✕</span>
+                        <span class="tab-action-glyph">✕</span>
                     </button>
-                    <button class="browser-tab-row" onclick="clearBacklogNode(4, this)">
+                    <button class="browser-tab-row" onclick="clearTabItem(4, this)">
                         <span>Tab_05: Infrastructure Technology Lifecycle</span>
-                        <span class="tab-close-glyph">✕</span>
+                        <span class="tab-action-glyph">✕</span>
                     </button>
                 </div>
 
-                <p class="panel-definition-text">Decision debt is the cognitive load created by unresolved decisions. The more you carry, the less space you have for strategic thinking.</p>
+                <p class="panel-definition-footer">Decision debt is the cognitive load created by unresolved decisions. The more you carry, the less space you have for strategic thinking.</p>
             </div>
 
             <main class="compounding-output-card">
@@ -302,4 +309,11 @@
 
         <div class="mastery-dashboard-view" id="mastery-screen">
             
-            <div class="tabs-simulator-panel" style="justify
+            <div class="tabs-simulator-panel" style="justify-content: center; gap: 15px;">
+                <h2 class="panel-quote-heading" style="border: none; padding: 0; font-size: 1.8rem; color: #e67e22;">Cognitive Space Maximized</h2>
+                <p style="font-size: 0.98rem; line-height: 1.5; color: #ffffff;">Decision debt is the cognitive load created by unresolved decisions. The more you carry, the less space you have for strategic thinking. Resolving unmade approval cycles preserves core organizational focus and speeds execution velocity loops.</p>
+            </div>
+
+            <div class="compounding-output-card">
+                <h2>The Compounding Effect</h2>
+                <ul class="compounding-list-stack">
