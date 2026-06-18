@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clear Decision Rights - Interactive Widescreen Slide</title>
+    
+    <style>
+        /* ==========================================================================
+           1. Core Reset & Fixed 16:9 Canvas Constraints (Absolute No-Scroll Gate)
+           ========================================================================== */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background-color: #f0f4f8;
+            color: #1a2a3a;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            overflow: hidden;
+            padding: 10px;
+        }
+
+        /* Fixed 16:9 Slide Canvas Framework */
+        .slide-container {
+            background-color: #fafcfe;
+            width: 1280px;
+            height: 720px;
+            padding: 45px 60px;
+            border-radius: 8px;
+            box-shadow: 0 20px 50px rgba(18, 52, 86, 0.12);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            overflow: hidden; 
+        }
+
+        /* ==========================================================================
+           2. Slide Header and Interactive HUD Display Panel
+           ========================================================================== */
+        .slide-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            border-bottom: 2px solid #e1e8f0;
+            padding-bottom: 12px;
+        }
+
+        .title-group {
+            flex: 1;
+        }
+
+        .main-title {
+            font-size: 2.6rem;
+            font-weight: 800;
+            color: #123456; /* Deep blue corporate branding tone from image_fee7a0.png */
+            line-height: 1.1;
+        }
+
+        .subtitle {
+            font-size: 1.05rem;
+            color: #6a7b8c;
+            margin-top: 5px;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .subtitle::before {
+            content: "•";
+            color: #e67e22; /* Vivid orange accent dot indicator from slide palette */
+            font-size: 1.5rem;
+        }
+
+        .hud-metrics {
+            display: flex;
+            gap: 15px;
+        }
+
+        .metric-pill {
+            background-color: #eaf1f8;
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: #123456;
+            border: 1px solid #ccdbe8;
+        }
+
+        /* ==========================================================================
+           3. Gameplay Split-Grid Workspace Arena (Zero Vertical Shifting)
+           ========================================================================== */
+        .gameplay-arena {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            flex: 1;
+            margin: 25px 0;
+            height: calc(100% - 145px);
+        }
+
+        /* Upper Focus: Diagnostic Pathologies Console */
+        .diagnostic-console {
+            background-color: #ffffff;
+            border: 2px dashed #ccdbe8;
+            border-radius: 12px;
+            padding: 22px 30px;
+            min-height: 110px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.01);
+        }
+
+        .diagnostic-console h3 {
+            font-size: 0.78rem;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: #e67e22;
+            margin-bottom: 4px;
+        }
+
+        .diagnostic-console p {
+            font-size: 1.15rem;
+            line-height: 1.45;
+            color: #2c3e50;
+            font-weight: 600;
+        }
+
+        /* Lower Interactive Matrix Split Grid (Matches image_fee7a0.png columns exactly) */
+        .matrix-split-grid {
+            display: flex;
+            gap: 24px;
+            flex: 1;
+            align-items: stretch;
+        }
+
+        .matrix-column-card {
+            flex: 1;
+            background-color: #ffffff;
+            border-radius: 4px;
+            border: 1px solid #e1e8f0;
+            box-shadow: 0 6px 15px rgba(0,0,0,0.02);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        /* Specific Header Colors Sourced Directly from the Image Palette */
+        .card-banner-header {
+            padding: 16px 25px;
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: #ffffff;
+        }
+        .root-causes-card .card-banner-header { background-color: #c0392b; } /* Deep rust red header */
+        .solutions-card .card-banner-header { background-color: #2ecc71; } /* Clean green header */
+
+        .card-inner-features {
+            padding: 25px;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            flex: 1;
+        }
+
+        .criteria-bullet-list {
+            list-style-type: none;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .criteria-bullet-list li {
+            font-size: 0.95rem;
+            line-height: 1.45;
+            color: #4b5a6a;
+            position: relative;
+            padding-left: 22px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .criteria-bullet-list li::before {
+            content: "•";
+            position: absolute;
+            left: 0;
+            font-size: 1.3rem;
+            top: -2px;
+            color: #9e9587;
+        }
+
+        /* Interactive Sorting Drop Button Targets */
+        .solutions-card .criteria-bullet-list li {
+            background-color: #f7fafc;
+            border: 1px solid #e1e8f0;
+            padding: 12px 12px 12px 28px;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+        .solutions-card .criteria-bullet-list li::before { left: 12px; top: 10px; }
+
+        .solutions-card .criteria-bullet-list li:hover {
+            background-color: #ffffff;
+            border-color: #2ecc71;
+            transform: translateX(4px);
+        }
+
+        /* Solved State Formatting Configuration Flags */
+        .root-causes-card .criteria-bullet-list li { opacity: 0.3; }
+        .root-causes-card .criteria-bullet-list li.active-revealed {
+            opacity: 1;
+            color: #c0392b;
+            transform: translateX(2px);
+        }
+        .root-causes-card .criteria-bullet-list li.active-revealed::before { color: #c0392b; }
+
+        .solutions-card .criteria-bullet-list li.resolved-matched {
+            background-color: #f4fbf7;
+            border-color: #2ecc71;
+            color: #27ae60;
+            cursor: default;
+            pointer-events: none;
+            transform: none;
+        }
+        .solutions-card .criteria-bullet-list li.resolved-matched::before { color: #2ecc71; }
+
+        /* ==========================================================================
+           4. Game End Mastery Dashboard Layout Viewport (Fades In Smoothly)
+           ========================================================================== */
+        .mastery-dashboard-overlay {
+            display: none;
+            width: 100%;
+            height: 100%;
+            gap: 24px;
+            animation: overlayEntrance 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
+            margin: 25px 0;
+        }
+
+        /* Re-renders the exact static layout from image_fee7a0.png concurrently */
+        .mastery-dashboard-overlay .matrix-column-card {
+            cursor: default;
+            pointer-events: none;
+        }
+        .mastery-dashboard-overlay .criteria-bullet-list li {
+            opacity: 1 !important;
+            color: #4b5a6a !important;
+            background: none !important;
+            border: none !important;
+            padding: 0 0 0 22px !important;
+            transform: none !important;
+        }
+        .mastery-dashboard-overlay .criteria-bullet-list li::before {
+            left: 0 !important;
+            top: -2px !important;
+            color: #9e9587 !important;
+        }
+
+        /* ==========================================================================
+           5. Slide Footer Component
+           ========================================================================== */
+        .slide-footer {
+            border-top: 1px solid #e1e8f0;
+            padding-top: 15px;
+            text-align: center;
+        }
+
+        .slide-footer p {
+            font-size: 0.9rem;
+            color: #6a7b8c;
+            font-style: italic;
+        }
+
+        /* Core Structural Animations */
+        @keyframes overlayEntrance {
+            from { opacity: 0; transform: translateY(12px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="slide-container">
+        
+        <!-- Header Section -->
+        <header class="slide-header">
+            <div class="title-group">
+                <h1 class="main-title" id="dynamic-title">Clear Decision Rights</h1>
+                <p class="subtitle" id="dynamic-subtitle">Ambiguity about who decides is the primary source of organizational indecision.</p>
+            </div>
+            <div class="hud-metrics" id="game-hud">
+                <div class="metric-pill">Cures Deployed: <span id="resolved-count">0 / 5</span></div>
+                <div class="metric-pill">Efficiency Rating: <span id="accuracy-score" style="color: #2ecc71;">100%</span></div>
+            </div>
+        </header>
+
+        <!-- Main Dynamic Play Field Arena -->
+        <div class="gameplay-arena" id="main-play-arena">
+            
+            <!-- Upper Dynamic Pathology Log Box Window -->
+            <div class="diagnostic-console">
+                <h3>Organizational Pathology Log</h3>
+                <p id="pathology-text">"Our business units are frozen because four different department heads hold overlapping veto authority over the exact same project milestones."</p>
+            </div>
+
+            <!-- Lower Split Card Columns Mirroring image_fee7a0.png Parameters -->
+            <div class="matrix-split-grid">
+                
+                <!-- Left Card Side: Root Causes -->
+                <div class="matrix-column-card root-causes-card">
+                    <div class="card-banner-header">Root Causes of Indecision</div>
+                    <div class="card-inner-features">
+                        <ul class="criteria-bullet-list">
+                            <li class="cause-node-0 active-revealed">Complex structures and overlapping responsibilities</li>
+                            <li class="cause-node-1">Informal power dynamics and politics</li>
+                            <li class="cause-node-2">Lack of trust among senior leaders</li>
+                            <li class="cause-node-3">Fear of failure or accountability</li>
+                            <li class="cause-node-4">Conflict avoidance in political environments</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Right Card Side: Solutions -->
+                <div class="matrix-column-card solutions-card">
+                    <div class="card-banner-header">Solutions</div>
+                    <div class="card-inner-features">
+                        <ul class="criteria-bullet-list">
+                            <li class="sol-btn" data-key="dynamics" onclick="routeSolution('dynamics', this)">Set decision deadlines for every open item</li>
+                            <li class="sol-btn" data-key="trust" onclick="routeSolution('trust', this)">Separate veto from advisory input</li>
+                            <li class="sol-btn" data-key="conflict" onclick="routeSolution('conflict', this)">Make decision authority explicit and visible</li>
+                            <li class="sol-btn" data-key="structures" onclick="routeSolution('structures', this)">Map decision rights using RAPID or similar</li>
+                            <li class="sol-btn" data-key="fear" onclick="routeSolution('fear', this)">Establish escalation paths with time limits</li>
+                        </ul>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- Hidden End-Game Master Framework Dashboard Layer (Renders pure layout view from image_fee7a0.png smoothly) -->
+        <div class="mastery-dashboard-overlay" id="mastery-screen">
+            
+            <div class="matrix-column-card root-causes-card">
+                <div class="card-banner-header">Root Causes of Indecision</div>
+                <div class="card-inner-features">
+                    <ul class="criteria-bullet-list">
+                        <li>Complex structures and overlapping responsibilities</li>
+                        <li>Informal power dynamics and politics</li>
+                        <li>Lack of trust among senior leaders</li>
+                        <li>Fear of failure or accountability</li>
+                        <li>Conflict avoidance in political environments</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="matrix-column-card solutions-card">
+                <div class="card-banner-header">Solutions</div>
+                <div class="card-inner-features">
+                    <ul class="criteria-bullet-list">
+                        <li>Map decision rights using RAPID or similar</li>
+                        <li>Set decision deadlines for every open item</li>
+                        <li>Separate veto from advisory input</li>
+                        <li>Establish escalation paths with time limits</li>
+                        <li>Make decision authority explicit and visible</li>
+                    </ul>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Instructions Slide Footer Help Line -->
+        <footer class="slide-footer">
+            <p id="footer-text">Analyze the current active Root Cause entry and Pathology Log, then click on the proper matching governance Solution on the right card column.</p>
+        </footer>
+
+    </div>
+
+    <!-- ==========================================================================
+       6. Interactive Diagnostic Engine Script Matrix
+       ========================================================================== -->
+    <script>
+        // Data loop matrix mapping specific pathology indicators to exact solution keys Sourced directly from image_fee7a0.png text profiles
+        const frameworkDataMatrix = [
+            { key: "structures", causeNodeIndex: 0, text: '"Our business units are frozen because multiple department heads hold overlapping authority over the exact same structural milestones."' },
+            { key: "dynamics", causeNodeIndex: 1, text: '"Unspoken political alignments and informal power sub-channels are overriding our standardized project sign-off pipelines."' },
+            { key: "trust", causeNodeIndex: 2, text: '"Executive progress is completely blocked because senior stakeholders refuse to clear project steps without micro-managing every variance."' },
+            { key: "fear", causeNodeIndex: 3, text: '"Product updates are stalled indefinitely because team managers are terrified of taking direct responsibility if launch metrics turn sub-optimal."' },
+            { key: "conflict", causeNodeIndex: 4, text: '"Decisions are being kicked down the line continuously because leaders default to conflict avoidance inside our highly political environment."' }
+        ];
+
+        let internalLoopIndex = 0;
+        let successfulCuresCount = 0;
+        let diagnosticFailuresCount = 0;
+
+        function routeSolution(userClickedKey, buttonElement) {
+            const currentLevel = frameworkDataMatrix[internalLoopIndex];
+
+            if (userClickedKey === currentLevel.key) {
+                // Correct match sequence
+                successfulCuresCount++;
+                document.getElementById('resolved-count').textContent = `${successfulCuresCount} / 5`;
+
+                // Lock button element into green resolved state block parameters
+                buttonElement.classList.add('resolved-matched');
+
+                // Advance down the array loop structures
+                if (successfulCuresCount < 5) {
+                    internalLoopIndex++;
+                    
+                    // Synchronize and illuminate the next root cause list row item
+                    const nextCauseRow = document.querySelector(`.cause-node-${frameworkDataMatrix[internalLoopIndex].causeNodeIndex}`);
+                    if (nextCauseRow) nextCauseRow.classList.add('active-revealed');
+                    
+                    // Update main diagnostic presentation window text
+                    document.getElementById('pathology-text').textContent = frameworkDataMatrix[internalLoopIndex].text;
+                } else {
+                    displayMasteryDashboard();
+                }
+            } else {
+                // Incorrect match structural penalty calculation modifier
+                diagnosticFailuresCount++;
+                const adjustedAccuracy = Math.max(0, Math.round((successfulCuresCount / (successfulCuresCount + diagnosticFailuresCount)) * 100));
+                document.getElementById('accuracy-score').textContent = `${adjustedAccuracy}%`;
+            }
+        }
+
+        function displayMasteryDashboard() {
+            // Drop dynamic runtime game environments layers cleanly
+            document.getElementById('main-play-arena').style.display = 'none';
+            document.getElementById('game-hud').style.display = 'none';
+
+            // Rewrite primary headers strings
+            document.getElementById('dynamic-title').textContent = "Clear Decision Rights Framework Complete";
+            document.getElementById('dynamic-subtitle').textContent = "Unified Matrix Guide: Overcoming organizational ambiguity to eradicate systemic indecision.";
+
+            // Switch presentation workspace frames with zero page displacement boundaries
+            document.getElementById('mastery-screen').style.display = 'grid';
+            document.getElementById('footer-text').textContent = "Framework modeling finalized. You have successfully resolved all structural causes of indecision across this segment module safely.";
+        }
+
+        // Initialize active initial element strings parameters on play lifecycle creation
+        document.getElementById('pathology-text').textContent = frameworkDataMatrix[0].text;
+    </script>
+</body>
+</html>
