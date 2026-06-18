@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Clear Decision Rights - Storyline Safe Edition</title>
+    <title>Clear Decision Rights - Absolute Fit Station</title>
     
     <style>
         /* ==========================================================================
-           1. Core Reset & Fixed 16:9 Canvas Constraints (Absolute No-Scroll Gate)
+           1. Absolute Boundary Reset (Strict No-Scroll, No-Cut, No-Overlap)
            ========================================================================== */
         * {
             box-sizing: border-box;
@@ -17,24 +17,23 @@
 
         body {
             font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
-            background-color: #f0f4f8;
+            background-color: #fafcfe;
             color: #1a2a3a;
+            width: 100vw;
+            height: 100vh;
+            overflow: hidden;
             display: flex;
             justify-content: center;
             align-items: center;
-            min-height: 100vh;
-            overflow: hidden;
             padding: 5px;
         }
 
-        /* Fixed 16:9 Presentation Slide Canvas Box Container - Strict Height Limits */
+        /* Fixed 16:9 Presentation Canvas Container - Strict Height Cushioning */
         .slide-container {
             background-color: #fafcfe;
             width: 1280px;
             height: 720px;
-            padding: 30px 45px 20px 45px; /* Highly optimized padding to eliminate vertical clipping */
-            border-radius: 8px;
-            box-shadow: 0 20px 50px rgba(18, 52, 86, 0.12);
+            padding: 30px 45px 20px 45px;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
@@ -42,38 +41,23 @@
         }
 
         /* ==========================================================================
-           2. Slide Header and Interactive HUD Display Panel
+           2. Slide Header and HUD Display Panel
            ========================================================================== */
         .slide-header {
             display: flex;
             justify-content: space-between;
-            align-items: flex-start;
+            align-items: center;
             border-bottom: 2px solid #e1e8f0;
-            padding-bottom: 10px;
+            padding-bottom: 8px;
+            height: 65px;
             flex-shrink: 0;
         }
 
         .main-title {
-            font-size: 2.4rem;
+            font-size: 2.2rem;
             font-weight: 800;
             color: #123456;
             line-height: 1.1;
-        }
-
-        .subtitle {
-            font-size: 1rem;
-            color: #6a7b8c;
-            margin-top: 3px;
-            font-weight: 500;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-
-        .subtitle::before {
-            content: "•";
-            color: #e67e22;
-            font-size: 1.4rem;
         }
 
         .hud-metrics {
@@ -83,78 +67,72 @@
 
         .metric-pill {
             background-color: #eaf1f8;
-            padding: 6px 14px;
-            border-radius: 6px;
+            padding: 5px 12px;
+            border-radius: 4px;
             font-size: 0.8rem;
             font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
             color: #123456;
             border: 1px solid #ccdbe8;
         }
 
         /* ==========================================================================
-           3. Core Gameplay Arena Framework (Restructured to Horizontal Split-Grid)
+           3. Core Gameplay Arena Framework (Restructured to Multi-Layer Horizontal)
            ========================================================================== */
         .gameplay-arena {
             display: flex;
-            gap: 25px;
+            flex-direction: column;
+            gap: 15px;
             flex: 1;
-            margin: 20px 0 15px 0;
-            align-items: stretch;
-            height: calc(100% - 135px);
+            margin: 15px 0;
+            min-height: 0;
         }
 
-        /* Left Split: Live Log Diagnostic Panel */
+        /* Upper Focus: Pathology Log Terminal Box Window */
         .sidebar-diagnostic-desk {
-            flex: 0.8;
             background-color: #123456;
-            border-radius: 8px;
-            padding: 25px;
+            border-radius: 6px;
+            padding: 15px 25px;
             color: #ffffff;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            flex-shrink: 0;
         }
 
         .sidebar-diagnostic-desk h3 {
             font-size: 0.75rem;
             text-transform: uppercase;
-            letter-spacing: 1.5px;
+            letter-spacing: 1px;
             color: #e67e22;
-            margin-bottom: 6px;
+            margin-bottom: 2px;
         }
 
         .sidebar-diagnostic-desk p {
-            font-size: 1.1rem;
-            line-height: 1.5;
+            font-size: 1.05rem;
+            line-height: 1.4;
             color: #ffffff;
             font-weight: 600;
         }
 
-        /* Right Split: Parallel Twin Framework Grids */
+        /* Lower Horizontal Workbench Grid Split */
         .matrix-split-grid {
-            flex: 1.3;
-            display: flex;
-            gap: 16px;
-            align-items: stretch;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            flex: 1;
+            min-height: 0;
         }
 
         .matrix-column-card {
-            flex: 1;
             background-color: #ffffff;
-            border-radius: 6px;
             border: 1px solid #e1e8f0;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.01);
+            border-radius: 6px;
             display: flex;
             flex-direction: column;
             overflow: hidden;
+            height: 100%;
         }
 
         .card-banner-header {
-            padding: 12px 20px;
-            font-size: 1.15rem;
+            padding: 10px 20px;
+            font-size: 1.1rem;
             font-weight: 700;
             color: #ffffff;
             flex-shrink: 0;
@@ -163,44 +141,45 @@
         .solutions-card .card-banner-header { background-color: #2ecc71; }
 
         .card-inner-features {
-            padding: 16px 20px;
+            padding: 15px 20px;
             display: flex;
             flex-direction: column;
-            justify-content: center;
+            justify-content: space-between;
             flex: 1;
+            min-height: 0;
         }
 
         .criteria-bullet-list {
             list-style-type: none;
             display: flex;
             flex-direction: column;
-            gap: 8px; /* Tightly padded spacing rules avoid bottom cuts */
+            gap: 10px;
         }
 
         .criteria-bullet-list li {
-            font-size: 0.85rem;
+            font-size: 0.9rem;
             line-height: 1.35;
             color: #4b5a6a;
             position: relative;
-            padding-left: 18px;
+            padding-left: 20px;
             font-weight: 600;
-            transition: all 0.25s ease;
+            transition: all 0.2s ease;
         }
 
         .criteria-bullet-list li::before {
             content: "•";
             position: absolute;
             left: 0;
-            font-size: 1.2rem;
+            font-size: 1.3rem;
             top: -2px;
-            color: #9e9587;
+            color: #cbd5e1;
         }
 
-        /* Interactive Choice Match Items Layout */
+        /* Interactive Target Click Controls */
         .solutions-card .criteria-bullet-list li {
             background-color: #f7fafc;
             border: 1px solid #e1e8f0;
-            padding: 10px 10px 10px 24px;
+            padding: 10px 12px 10px 25px;
             border-radius: 4px;
             cursor: pointer;
         }
@@ -212,7 +191,7 @@
             transform: translateX(3px);
         }
 
-        /* Dynamic solved modifications flags */
+        /* State Modifiers managed reliably via JS events */
         .root-causes-card .criteria-bullet-list li { opacity: 0.25; }
         .root-causes-card .criteria-bullet-list li.active-revealed {
             opacity: 1;
@@ -231,15 +210,14 @@
         .solutions-card .criteria-bullet-list li.resolved-matched::before { color: #2ecc71; }
 
         /* ==========================================================================
-           4. Game End Mastery Summary Dashboard Layout Viewport
+           4. Game End Mastery Dashboard Layout Viewport
            ========================================================================== */
         .mastery-dashboard-overlay {
             display: none;
-            width: 100%;
-            height: 100%;
+            grid-template-columns: 1fr 1fr;
             gap: 20px;
-            animation: overlayEntrance 0.4s ease-out both;
-            margin-top: 15px;
+            flex: 1;
+            margin: 15px 0;
         }
 
         .mastery-dashboard-overlay .matrix-column-card .criteria-bullet-list li {
@@ -261,20 +239,16 @@
            ========================================================================== */
         .slide-footer {
             border-top: 1px solid #e1e8f0;
-            padding-top: 10px;
+            padding-top: 8px;
             text-align: center;
             flex-shrink: 0;
+            height: 35px;
         }
 
         .slide-footer p {
             font-size: 0.85rem;
             color: #6a7b8c;
             font-style: italic;
-        }
-
-        @keyframes overlayEntrance {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
         }
     </style>
 </head>
@@ -285,7 +259,6 @@
         <header class="slide-header">
             <div class="title-group">
                 <h1 class="main-title" id="dynamic-title">Clear Decision Rights</h1>
-                <p class="subtitle" id="dynamic-subtitle">Ambiguity about who decides is the primary source of organizational indecision.</p>
             </div>
             <div class="hud-metrics" id="game-hud">
                 <div class="metric-pill">Cures Deployed: <span id="resolved-count">0 / 5</span></div>
@@ -348,4 +321,72 @@
             </div>
 
             <div class="matrix-column-card solutions-card">
-                <div class="card-banner-
+                <div class="card-banner-header">Solutions</div>
+                <div class="card-inner-features">
+                    <ul class="criteria-bullet-list">
+                        <li>Map decision rights using RAPID or similar</li>
+                        <li>Set decision deadlines for every open item</li>
+                        <li>Separate veto from advisory input</li>
+                        <li>Establish escalation paths with time limits</li>
+                        <li>Make decision authority explicit and visible</li>
+                    </ul>
+                </div>
+            </div>
+
+        </div>
+
+        <footer class="slide-footer">
+            <p id="footer-text">Analyze the current active log inside the upper blue dashboard, then click on the correct matching Solution target button row.</p>
+        </footer>
+
+    </div>
+
+    <script>
+        const frameworkDataMatrix = [
+            { key: "structures", causeNodeIndex: 0, text: '"Our business units are frozen because multiple department heads hold overlapping authority over the exact same structural milestones."' },
+            { key: "dynamics", causeNodeIndex: 1, text: '"Unspoken political alignments and informal power sub-channels are overriding our standardized project sign-off pipelines."' },
+            { key: "trust", causeNodeIndex: 2, text: '"Executive progress is completely blocked because senior stakeholders refuse to clear project steps without micro-managing every variance."' },
+            { key: "fear", causeNodeIndex: 3, text: '"Product updates are stalled indefinitely because team managers are terrified of taking direct responsibility if launch metrics turn sub-optimal."' },
+            { key: "conflict", causeNodeIndex: 4, text: '"Decisions are being kicked down the line continuously because leaders default to conflict avoidance inside our highly political environment."' }
+        ];
+
+        let internalLoopIndex = 0;
+        let successfulCuresCount = 0;
+        let diagnosticFailuresCount = 0;
+
+        function routeSolution(userClickedKey, buttonElement) {
+            const currentLevel = frameworkDataMatrix[internalLoopIndex];
+
+            if (userClickedKey === currentLevel.key) {
+                successfulCuresCount++;
+                document.getElementById('resolved-count').textContent = `${successfulCuresCount} / 5`;
+                buttonElement.classList.add('resolved-matched');
+
+                if (successfulCuresCount < 5) {
+                    internalLoopIndex++;
+                    const nextCauseRow = document.querySelector(`.cause-node-${frameworkDataMatrix[internalLoopIndex].causeNodeIndex}`);
+                    if (nextCauseRow) nextCauseRow.classList.add('active-revealed');
+                    document.getElementById('pathology-text').textContent = frameworkDataMatrix[internalLoopIndex].text;
+                } else {
+                    displayMasteryDashboard();
+                }
+            } else {
+                diagnosticFailuresCount++;
+                const adjustedAccuracy = Math.max(0, Math.round((successfulCuresCount / (successfulCuresCount + diagnosticFailuresCount)) * 100));
+                document.getElementById('accuracy-score').textContent = `${adjustedAccuracy}%`;
+            }
+        }
+
+        function displayMasteryDashboard() {
+            document.getElementById('main-play-arena').style.display = 'none';
+            document.getElementById('game-hud').style.display = 'none';
+
+            document.getElementById('dynamic-title').textContent = "Clear Decision Rights Complete";
+            document.getElementById('mastery-screen').style.display = 'grid';
+            document.getElementById('footer-text').textContent = "Framework modeling finalized. You can now pass forward cleanly.";
+        }
+
+        document.getElementById('pathology-text').textContent = frameworkDataMatrix[0].text;
+    </script>
+</body>
+</html>
