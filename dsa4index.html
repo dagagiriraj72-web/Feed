@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Type 1 vs. Type 2 Decisions - Dynamic Side-By-Side Framework</title>
+    <title>Type 1 vs. Type 2 Decisions - Free Exploration Sandbox</title>
     
     <style>
         /* ==========================================================================
-           1. Core Reset & Fixed 16:9 Canvas Constraints (Absolute No-Scroll Gate)
+           1. Absolute Boundary Reset (Strict No-Scroll, No-Cut, No-Overlap)
            ========================================================================== */
         * {
             box-sizing: border-box;
@@ -19,20 +19,21 @@
             font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
             background-color: #f0f4f8;
             color: #1a2a3a;
+            width: 100vw;
+            height: 100vh;
+            overflow: hidden;
             display: flex;
             justify-content: center;
             align-items: center;
-            min-height: 100vh;
-            overflow: hidden;
             padding: 5px;
         }
 
-        /* Fixed 16:9 Presentation Slide Canvas Box Container - Strict Height Cushioning */
+        /* Fixed 16:9 Presentation Canvas Container Box */
         .slide-container {
             background-color: #fafcfe;
             width: 1280px;
             height: 720px;
-            padding: 30px 45px 20px 45px; /* Highly optimized padding to eliminate vertical clipping */
+            padding: 30px 45px 20px 45px;
             border-radius: 8px;
             box-shadow: 0 20px 50px rgba(18, 52, 86, 0.12);
             display: flex;
@@ -42,7 +43,7 @@
         }
 
         /* ==========================================================================
-           2. Slide Header and HUD Metrics Display Panel
+           2. Slide Header and HUD Metrics Panel
            ========================================================================== */
         .slide-header {
             display: flex;
@@ -94,7 +95,7 @@
         }
 
         /* ==========================================================================
-           3. Core Gameplay Arena (Side-by-Side Dynamic Balance Workspace)
+           3. Lateral Split Arena (Matches image_eefd88.png Layout Format)
            ========================================================================== */
         .gameplay-arena {
             display: flex;
@@ -105,7 +106,7 @@
             height: calc(100% - 135px);
         }
 
-        /* Left Side Split Column: Interactive Scenario Monitor Panel Box */
+        /* Left Split: Constant Diagnostic Input Sidebar Panel Box */
         .sidebar-diagnostic-monitor {
             flex: 0.85;
             background-color: #123456;
@@ -133,7 +134,7 @@
             font-weight: 600;
         }
 
-        /* Right Side Split Column: Double Gate Door Interface Grid Component */
+        /* Right Split: Twin Gate Panel Arena System */
         .gate-interaction-deck {
             flex: 1.35;
             display: flex;
@@ -141,7 +142,6 @@
             align-items: stretch;
         }
 
-        /* Container Chassis */
         .framework-gate-chassis {
             flex: 1;
             position: relative;
@@ -152,14 +152,14 @@
             overflow: hidden;
         }
 
-        /* Interactive Top Door Panel Covers */
+        /* Outer Door Panels Facade */
         .gate-door-surface {
             position: absolute;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            padding: 25px 25px;
+            padding: 25px;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
@@ -179,14 +179,13 @@
             border-left: 6px solid #3b75af;
         }
 
-        /* Reveal Action State Modifications: Fades outer facade to reveal content text */
-        .framework-gate-chassis.door-unlocked .gate-door-surface {
+        /* State Modifiers: Keeps open doors completely invisible */
+        .framework-gate-chassis.door-parted-open .gate-door-surface {
             opacity: 0;
             pointer-events: none;
-            transform: scale(0.98);
+            transform: scale(0.96);
         }
 
-        /* Door Text Headings Typography */
         .door-title-block h2 {
             font-size: 1.8rem;
             font-weight: 800;
@@ -209,7 +208,7 @@
             align-self: flex-end;
         }
 
-        /* Protected Internal Content Vault Chamber System Box */
+        /* Internal Content Chambers */
         .gate-inner-chamber {
             width: 100%;
             height: 100%;
@@ -240,7 +239,7 @@
             list-style-type: none;
             display: flex;
             flex-direction: column;
-            gap: 10px; /* Highly compact properties completely avoid vertical bleed cuts */
+            gap: 10px;
         }
 
         .criteria-bullet-matrix li {
@@ -273,7 +272,7 @@
         }
 
         /* ==========================================================================
-           4. Game End Mastery Summary Dashboard Layout Overlay Viewport
+           4. Game End Mastery Unified Viewport Overlay Dashboard
            ========================================================================== */
         .mastery-dashboard-overlay {
             display: none;
@@ -322,7 +321,7 @@
 
     <div class="slide-container">
         
-        <!-- Header Dashboard Bar -->
+        <!-- Header -->
         <header class="slide-header">
             <div class="title-group">
                 <h1 class="main-title" id="dynamic-title">Type 1 vs. Type 2 Decisions</h1>
@@ -334,29 +333,29 @@
             </div>
         </header>
 
-        <!-- Main Dynamic Play Field Environment Arena -->
+        <!-- Main Workspace Arena -->
         <div class="gameplay-arena" id="main-play-arena">
             
-            <!-- Left Side Split Column: Live Scenario Diagnostic Monitor Box -->
+            <!-- Left Side Static Query Sidebar Component -->
             <div class="sidebar-diagnostic-monitor">
                 <h3>Decision Audit Variable</h3>
                 <p id="dilemma-text">"We want to adjust our subscription pricing parameters by 5% for a restricted 48-hour localized customer cohort trial."</p>
             </div>
 
-            <!-- Right Side Split Column: Double Gate Door Interface Grid Component -->
+            <!-- Right Side Dynamic Choice Processing Grids -->
             <div class="gate-interaction-deck">
                 
-                <!-- Door Chassis 1: Type 1 -->
-                <div class="framework-gate-chassis" id="gate-left">
-                    <!-- Surface Cover Overlay -->
-                    <div class="gate-door-surface type-1-door-panel" onclick="submitAssessment('type1')">
+                <!-- Gate Chassis 1: Type 1 -->
+                <div class="framework-gate-chassis" id="gate-type1">
+                    <!-- Surface Panel Cover -->
+                    <div class="gate-door-surface type-1-door-panel" onclick="processSelection('type1')">
                         <div class="door-title-block">
                             <h2>TYPE 1</h2>
                             <span>One-Way Doors</span>
                         </div>
                         <div class="door-icon-glyph">🚪</div>
                     </div>
-                    <!-- Internal Content Chamber Vault -->
+                    <!-- Internal Criteria Matrix -->
                     <div class="gate-inner-chamber type-1-chamber">
                         <div>
                             <h2 class="chamber-header-tag">TYPE 1</h2>
@@ -373,16 +372,16 @@
                 </div>
 
                 <!-- Door Chassis 2: Type 2 -->
-                <div class="framework-gate-chassis" id="gate-right">
-                    <!-- Surface Cover Overlay -->
-                    <div class="gate-door-surface type-2-door-panel" onclick="submitAssessment('type2')">
+                <div class="framework-gate-chassis" id="gate-type2">
+                    <!-- Surface Panel Cover -->
+                    <div class="gate-door-surface type-2-door-panel" onclick="processSelection('type2')">
                         <div class="door-title-block">
                             <h2>TYPE 2</h2>
                             <span>Two-Way Doors</span>
                         </div>
                         <div class="door-icon-glyph">🚪</div>
                     </div>
-                    <!-- Internal Content Chamber Vault -->
+                    <!-- Internal Criteria Matrix -->
                     <div class="gate-inner-chamber type-2-chamber">
                         <div>
                             <h2 class="chamber-header-tag">TYPE 2</h2>
@@ -402,7 +401,7 @@
 
         </div>
 
-        <!-- Hidden End-Game Master Infographic Dashboard Layer (Revealed on Completion) -->
+        <!-- Hidden End-Game Master Infographic Dashboard Layer -->
         <div class="mastery-dashboard-overlay" id="mastery-screen">
             
             <div class="mastery-static-card type-1-chamber">
@@ -435,15 +434,15 @@
 
         </div>
 
-        <!-- Grounded Slide Guidance Help Footer Component -->
+        <!-- Footer Guidance -->
         <footer class="slide-footer">
-            <p id="footer-text">Analyze the Decision Audit variable description inside the left blue panel, then click on the correct structural door archetype on the right.</p>
+            <p id="footer-text">Analyze the active variable on the left, then click on either door facade panel to flip it open and route the parameters.</p>
         </footer>
 
     </div>
 
     <!-- ==========================================================================
-       6. Secure Execution Script Routing Engine
+       6. Secure State Routine Execution Matrix Script
        ========================================================================== -->
     <script>
         const decisionScenarios = [
@@ -453,46 +452,51 @@
             { key: "type2", text: '"Our UX division needs to select and deploy an alternative localized wireframing software tool component for internal designers."' }
         ];
 
-        let currentIndexCounter = 0;
+        let currentActiveIdx = 0;
         let accurateAudits = 0;
         let wrongAudits = 0;
+        let animationLock = false;
 
-        function submitAssessment(userGateSelectionKey) {
-            const currentItem = decisionScenarios[currentIndexCounter];
-            const leftGateChassis = document.getElementById('gate-left');
-            const rightGateChassis = document.getElementById('gate-right');
+        function processSelection(userClickedKey) {
+            if (animationLock) return;
+            
+            const currentItem = decisionScenarios[currentActiveIdx];
+            const targetChassis = document.getElementById(`gate-${userClickedKey}`);
 
-            // Block overlapping script runs during reveal loops
-            if (leftGateChassis.classList.contains('door-unlocked') || rightGateChassis.classList.contains('door-unlocked')) return;
+            // 1. Immediately pop open the selected door on click
+            animationLock = true;
+            targetChassis.classList.add('door-parted-open');
 
-            if (userGateSelectionKey === currentItem.key) {
+            // 2. Validate selection criteria against the active scenario queue
+            if (userClickedKey === currentItem.key) {
                 accurateAudits++;
                 document.getElementById('audit-count').textContent = `${accurateAudits} / 4`;
 
-                // Fade away the outer door cover panel
-                if (userGateSelectionKey === 'type1') {
-                    leftGateChassis.classList.add('door-unlocked');
-                } else {
-                    rightGateChassis.classList.add('door-unlocked');
-                }
-
-                // Reset cards and update challenge text variables safely after brief review gap
+                // Success path loop: Pause to show revealed text, then queue next setup item
                 setTimeout(() => {
-                    leftGateChassis.classList.remove('door-unlocked');
-                    rightGateChassis.classList.remove('door-unlocked');
-
-                    if (accurateAudits < 4) {
-                        currentIndexCounter++;
-                        document.getElementById('dilemma-text').textContent = decisionScenarios[currentIndexCounter].text;
-                    } else {
-                        triggerMasteryDashboardReveal();
-                    }
-                }, 1800);
+                    targetChassis.classList.remove('door-parted-open');
+                    
+                    setTimeout(() => {
+                        if (accurateAudits < 4) {
+                            currentActiveIdx++;
+                            document.getElementById('dilemma-text').textContent = decisionScenarios[currentActiveIdx].text;
+                            animationLock = false;
+                        } else {
+                            triggerMasteryDashboardReveal();
+                        }
+                    }, 400);
+                }, 1600);
 
             } else {
+                // Incorrect matching branch: Show revealed panel metrics briefly, then reset the cover
                 wrongAudits++;
                 const adjustedAccuracy = Math.max(0, Math.round((accurateAudits / (accurateAudits + wrongAudits)) * 100));
                 document.getElementById('accuracy-rate').textContent = `${adjustedAccuracy}%`;
+
+                setTimeout(() => {
+                    targetChassis.classList.remove('door-parted-open');
+                    setTimeout(() => { animationLock = false; }, 400);
+                }, 1600);
             }
         }
 
@@ -501,7 +505,7 @@
             document.getElementById('game-hud').style.display = 'none';
 
             document.getElementById('dynamic-title').textContent = "Decision Framework Criteria Complete";
-            document.getElementById('dynamic-subtitle').textContent = "All decision audit matrices processed successfully.";
+            document.getElementById('dynamic-subtitle').textContent = "All framework parameters audited successfully.";
 
             document.getElementById('mastery-screen').style.display = 'grid';
             document.getElementById('footer-text').textContent = "Assessment complete. All metrics recorded cleanly. You can now advance slides safely.";
