@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Anatomy of a Decisive Organization - Interactive Slide</title>
+    <title>Anatomy of a Decisive Organization - Fixed Layout</title>
     
     <style>
         /* ==========================================================================
-           1. Core Reset & Fixed Canvas Dimensions (Absolute No-Scroll Rule)
+           1. Core Reset & Fixed Canvas Dimensions (Absolute No-Scroll Gate)
            ========================================================================== */
         * {
             box-sizing: border-box;
@@ -24,32 +24,32 @@
             align-items: center;
             min-height: 100vh;
             overflow: hidden;
-            padding: 10px;
+            padding: 5px;
         }
 
-        /* Fixed 16:9 Widescreen Storyline Canvas Container */
+        /* Fixed 16:9 Widescreen Presentation Slide Bounding Canvas Box */
         .slide-container {
             background-color: #fafcfe;
             width: 1280px;
             height: 720px;
-            padding: 45px 60px;
+            padding: 30px 45px 20px 45px; /* Highly optimized padding buffers to prevent clipping */
             border-radius: 8px;
-            box-shadow: 0 20px 50px rgba(18, 52, 86, 0.15);
+            box-shadow: 0 20px 50px rgba(18, 52, 86, 0.12);
             display: flex;
             flex-direction: column;
             justify-content: space-between;
-            overflow: hidden; /* Prevent all accidental scrollbars */
+            overflow: hidden; 
         }
 
         /* ==========================================================================
-           2. Slide Header and Interactive HUD Display
+           2. Slide Header and Interactive HUD Panel Layout
            ========================================================================== */
         .slide-header {
             display: flex;
             justify-content: space-between;
             align-items: flex-start;
             border-bottom: 2px solid #e1e8f0;
-            padding-bottom: 15px;
+            padding-bottom: 10px;
         }
 
         .title-group {
@@ -57,38 +57,38 @@
         }
 
         .main-title {
-            font-size: 2.6rem;
+            font-size: 2.4rem;
             font-weight: 800;
-            color: #123456; /* Deep blue branding tone from image_0ba4b1.png */
+            color: #123456;
             line-height: 1.1;
         }
 
         .subtitle {
-            font-size: 1.05rem;
+            font-size: 1rem;
             color: #6a7b8c;
-            margin-top: 5px;
+            margin-top: 3px;
             font-weight: 500;
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 6px;
         }
 
         .subtitle::before {
             content: "•";
-            color: #e67e22; /* Vivid orange accent dot indicator from slide palette */
-            font-size: 1.5rem;
+            color: #e67e22; /* Vibrant orange accent dot marker from slide palette */
+            font-size: 1.4rem;
         }
 
         .hud-metrics {
             display: flex;
-            gap: 15px;
+            gap: 12px;
         }
 
         .metric-pill {
             background-color: #eaf1f8;
-            padding: 8px 16px;
+            padding: 6px 14px;
             border-radius: 6px;
-            font-size: 0.85rem;
+            font-size: 0.8rem;
             font-weight: 700;
             text-transform: uppercase;
             letter-spacing: 0.5px;
@@ -97,50 +97,49 @@
         }
 
         /* ==========================================================================
-           3. Core Gameplay Arena Matrix Grid (5-Column Structural Layout)
+           3. Core Gameplay Arena Layout (Diagnostic Terminal + 5-Column Grid)
            ========================================================================== */
         .gameplay-arena {
             display: flex;
             flex-direction: column;
-            gap: 20px;
+            gap: 15px; /* Tight non-shifting spacing buffers */
             flex: 1;
-            margin: 25px 0;
-            height: calc(100% - 150px);
+            margin: 20px 0 15px 0;
+            height: calc(100% - 135px);
         }
 
-        /* Upper Diagnostic Work Desk */
+        /* Upper Focus: Diagnostic Work Logs Box Window */
         .diagnostic-work-desk {
             background-color: #ffffff;
             border: 2px dashed #ccdbe8;
             border-radius: 12px;
-            padding: 25px 35px;
-            min-height: 120px;
+            padding: 18px 30px;
+            min-height: 95px;
             display: flex;
             flex-direction: column;
             justify-content: center;
             box-shadow: 0 4px 15px rgba(0,0,0,0.01);
-            position: relative;
         }
 
         .diagnostic-work-desk h3 {
-            font-size: 0.8rem;
+            font-size: 0.75rem;
             text-transform: uppercase;
             letter-spacing: 1.5px;
             color: #e67e22;
-            margin-bottom: 6px;
+            margin-bottom: 4px;
         }
 
         .diagnostic-work-desk p {
             font-size: 1.15rem;
-            line-height: 1.45;
+            line-height: 1.4;
             color: #2c3e50;
             font-weight: 600;
         }
 
-        /* Lower Interactive Card Grid Matrix mirroring image_0ba4b1.png */
+        /* Lower 5-Column Grid Matrix - Height-optimized to completely avoid clipping */
         .pillars-grid {
             display: flex;
-            gap: 15px;
+            gap: 12px;
             flex: 1;
             align-items: stretch;
         }
@@ -150,96 +149,100 @@
             background-color: #ffffff;
             border-radius: 8px;
             border: 1px solid #e1e8f0;
-            box-shadow: 0 6px 15px rgba(0,0,0,0.03);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.02);
             display: flex;
             flex-direction: column;
             align-items: center;
-            padding: 25px 15px;
+            padding: 20px 12px;
             text-align: center;
             cursor: pointer;
             position: relative;
-            transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+            transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
         .pillar-node-card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 10px 25px rgba(18, 52, 86, 0.08);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(18, 52, 86, 0.08);
         }
 
-        /* Custom top colored ribbons alternating precisely like reference layout graphics */
+        /* Ribbon accent lines mapping reference aesthetics */
         .pillar-node-card::after {
             content: '';
             position: absolute;
             top: 0;
             left: 0;
             right: 0;
-            height: 5px;
+            height: 4px;
             border-radius: 8px 8px 0 0;
         }
         .pillar-node-card.blue-top::after { background-color: #3b75af; }
         .pillar-node-card.orange-top::after { background-color: #e67e22; }
 
-        /* Step circle layout element matching image elements */
+        /* Step circle element metrics scaled down for 16:9 vertical safety */
         .step-circle {
-            width: 44px;
-            height: 44px;
+            width: 36px;
+            height: 36px;
             background-color: #1a365d;
             color: #ffffff;
             border-radius: 50%;
             display: flex;
             justify-content: center;
             align-items: center;
-            font-size: 0.95rem;
+            font-size: 0.85rem;
             font-weight: 700;
-            margin-bottom: 20px;
-            transition: background-color 0.3s;
+            margin-bottom: 15px;
+            flex-shrink: 0;
+            transition: background-color 0.2s;
         }
 
         .pillar-node-card h2 {
-            font-size: 1.25rem;
+            font-size: 1.15rem;
             font-weight: 700;
             color: #123456;
             line-height: 1.2;
-            margin-bottom: 15px;
-            min-height: 44px; /* Stabilizes header spacing alignment */
+            margin-bottom: 12px;
+            min-height: 40px; /* Stabilizes text layout baseline alignment */
             display: flex;
             align-items: center;
             justify-content: center;
         }
 
         .pillar-node-card .pillar-static-text {
-            font-size: 0.88rem;
-            line-height: 1.4;
+            font-size: 0.85rem;
+            line-height: 1.35;
             color: #6a7b8c;
-            display: none; /* Hidden during gamified sorting phase */
-            animation: textReveal 0.3s ease forwards;
+            display: none; /* Revealed dynamically after user selects correctly */
+            animation: fadeInReveal 0.3s ease forwards;
         }
 
-        /* Active solved state formatting configuration rules */
-        .pillar-node-card.solved {
+        /* Solved State active highlights */
+        .pillar-node-card.solved-complete {
             background-color: #f4fbf7;
             border-color: #2ecc71;
             cursor: default;
             pointer-events: none;
+            transform: none;
+            box-shadow: none;
         }
-        .pillar-node-card.solved .step-circle {
+        .pillar-node-card.solved-complete .step-circle {
             background-color: #2ecc71;
         }
-        .pillar-node-card.solved .pillar-static-text {
+        .pillar-node-card.solved-complete .pillar-static-text {
             display: block;
+            color: #2c3e50;
         }
 
         /* ==========================================================================
-           4. Game End Mastery Panel Layer (Revealed smoothly at termination)
+           4. Game End Mastery Infographic view Layer (Fades in smoothly)
            ========================================================================== */
         .mastery-dashboard-view {
             display: none;
             width: 100%;
             height: 100%;
-            animation: paneEntrance 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+            animation: paneEntrance 0.4s ease-out both;
         }
 
-        /* Re-renders the full static layout from image_0ba4b1.png simultaneously */
+        /* Forces all 5 cards into full view concurrently when complete */
         .mastery-dashboard-view .pillars-grid .pillar-node-card .pillar-static-text {
             display: block;
         }
@@ -258,23 +261,23 @@
            ========================================================================== */
         .slide-footer {
             border-top: 1px solid #e1e8f0;
-            padding-top: 15px;
+            padding-top: 10px;
             text-align: center;
         }
 
         .slide-footer p {
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             color: #6a7b8c;
             font-style: italic;
         }
 
-        /* Structural Animations */
-        @keyframes textReveal {
-            from { opacity: 0; transform: translateY(4px); }
+        /* Core Structural Transitions */
+        @keyframes fadeInReveal {
+            from { opacity: 0; transform: translateY(3px); }
             to { opacity: 1; transform: translateY(0); }
         }
         @keyframes paneEntrance {
-            from { opacity: 0; transform: translateY(12px); }
+            from { opacity: 0; transform: translateY(10px); }
             to { opacity: 1; transform: translateY(0); }
         }
     </style>
@@ -283,7 +286,6 @@
 
     <div class="slide-container">
         
-        <!-- Header HUD Area -->
         <header class="slide-header">
             <div class="title-group">
                 <h1 class="main-title" id="dynamic-title">Anatomy of a Decisive Organization</h1>
@@ -295,47 +297,39 @@
             </div>
         </header>
 
-        <!-- Main Dynamic Play Field Arena -->
         <div class="gameplay-arena" id="main-play-arena">
             
-            <!-- Upper Core Work Deck Diagnostic Window -->
             <div class="diagnostic-work-desk">
                 <h3>Corporate Vulnerability Diagnostic Logs</h3>
-                <p id="symptom-text">"Our teams are suffering from severe paralysis; consensus-seeking groups keep dragging out tasks because nobody has clear ownership."</p>
+                <p id="symptom-text">"Our deployment timelines are stalling because approvals require signature sign-offs across multiple departments with overlapping authority."</p>
             </div>
 
-            <!-- Lower 5-Column Matrix Grid Targets mapping image_0ba4b1.png elements -->
             <div class="pillars-grid">
                 
-                <!-- Pillar 1 -->
                 <div class="pillar-node-card blue-top" onclick="submitDiagnostic('clear')">
                     <div class="step-circle">1</div>
                     <h2>Clear Accountability</h2>
                     <p class="pillar-static-text">Every decision has a single owner who is empowered and responsible</p>
                 </div>
 
-                <!-- Pillar 2 -->
                 <div class="pillar-node-card orange-top" onclick="submitDiagnostic('flat')">
                     <div class="step-circle">2</div>
                     <h2>Flat Structures</h2>
                     <p class="pillar-static-text">Fewer layers mean faster information flow and quicker action</p>
                 </div>
 
-                <!-- Pillar 3 -->
                 <div class="pillar-node-card blue-top" onclick="submitDiagnostic('culture')">
                     <div class="step-circle">3</div>
                     <h2>Data-Informed Culture</h2>
                     <p class="pillar-static-text">Decisions grounded in evidence, not politics or hierarchy</p>
                 </div>
 
-                <!-- Pillar 4 -->
                 <div class="pillar-node-card orange-top" onclick="submitDiagnostic('bias')">
                     <div class="step-circle">4</div>
                     <h2>Bias for Action</h2>
                     <p class="pillar-static-text">Default is to move forward, not to wait for more information</p>
                 </div>
 
-                <!-- Pillar 5 -->
                 <div class="pillar-node-card blue-top" onclick="submitDiagnostic('iteration')">
                     <div class="step-circle">5</div>
                     <h2>Rapid Iteration</h2>
@@ -346,9 +340,8 @@
 
         </div>
 
-        <!-- Hidden End-Game Master Infographic Dashboard Layer (Matches image_0ba4b1.png exactly when finalized) -->
         <div class="mastery-dashboard-view" id="mastery-screen">
-            <div class="pillars-grid">
+            <div class="pillars-grid" style="margin-top: 30px; height: calc(100% - 60px);">
                 <div class="pillar-node-card blue-top">
                     <div class="step-circle">1</div>
                     <h2>Clear Accountability</h2>
@@ -377,18 +370,14 @@
             </div>
         </div>
 
-        <!-- Instructions Slide Footer -->
         <footer class="slide-footer">
             <p id="footer-text">Analyze the Corporate Vulnerability Log entry at the top, then click on the specific core pillar target card that provides the structural cure.</p>
         </footer>
 
     </div>
 
-    <!-- ==========================================================================
-       6. Interactive Diagnostic Routing Engine Script
-       ========================================================================== -->
     <script>
-        // Diagnostic symptoms data tracking array matrix maps to the exact solutions
+        // Diagnostic symptoms array configurations map directly to correct column keys
         const diagnosticDeck = [
             { key: "clear", text: '"Our deployment timelines are stalling because approvals require signature sign-offs across multiple departments with overlapping authority."' },
             { key: "flat", text: '"Critical customer insights take three weeks to travel from front-line agents up through middle management layers to reach engineering teams."' },
@@ -404,11 +393,10 @@
         function submitDiagnostic(userTargetKey) {
             const activeChallenge = diagnosticDeck[activeIndex];
             
-            // Query current card columns list DOM maps
+            // Query current card columns list DOM elements
             const cardsList = document.querySelectorAll('#main-play-arena .pillar-node-card');
             let targetCardElement = null;
             
-            // Identify targeted card object element matching key
             cardsList.forEach(card => {
                 if(card.getAttribute('onclick').includes(userTargetKey)) {
                     targetCardElement = card;
@@ -416,14 +404,12 @@
             });
 
             if (userTargetKey === activeChallenge.key) {
-                // Correct match handling mechanics
                 correctMatches++;
                 document.getElementById('resolved-count').textContent = `${correctMatches} / 5`;
                 
-                // Lock current column profile into its verified solved view state
-                targetCardElement.classList.add('solved');
+                // Set localized success lock parameters on target card
+                targetCardElement.classList.add('solved-complete');
 
-                // Advance down the array index loop structures
                 if (correctMatches < 5) {
                     activeIndex++;
                     document.getElementById('symptom-text').textContent = diagnosticDeck[activeIndex].text;
@@ -431,7 +417,6 @@
                     displayMasteryDashboard();
                 }
             } else {
-                // Incorrect match penalty tracking parameter configurations
                 mistakeCount++;
                 const adjustedAccuracy = Math.max(0, Math.round((correctMatches / (correctMatches + mistakeCount)) * 100));
                 document.getElementById('accuracy-score').textContent = `${adjustedAccuracy}%`;
@@ -439,20 +424,17 @@
         }
 
         function displayMasteryDashboard() {
-            // Drop tracking game elements layout components cleanly
             document.getElementById('main-play-arena').style.display = 'none';
             document.getElementById('game-hud').style.display = 'none';
 
-            // Rewrite slide subheadings properties cleanly
             document.getElementById('dynamic-title').textContent = "Anatomy of a Decisive Organization";
-            document.getElementById('dynamic-subtitle').textContent = "Audit Blueprint Finalized: Framework Criteria Mastered.";
+            document.getElementById('dynamic-subtitle').textContent = "Audit Blueprint Finalized: All 5 core organizational attributes deployed successfully.";
 
-            // Display full unified static infographic mirror matrix panel safely
             document.getElementById('mastery-screen').style.display = 'block';
-            document.getElementById('footer-text').textContent = "Review complete. You have successfully diagnosed all operational vulnerabilities across this framework segment.";
+            document.getElementById('footer-text').textContent = "Framework unlocked completely. You can now safely close this interaction module block.";
         }
 
-        // Initialize active initial element strings parameters on play lifecycle creation
+        // Bootstrapping initial value
         document.getElementById('symptom-text').textContent = diagnosticDeck[0].text;
     </script>
 </body>
