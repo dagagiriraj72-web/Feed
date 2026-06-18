@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>5 Principles of a Decisive Culture - Storyline Safe Layout</title>
+    <title>5 Principles of a Decisive Culture - Storyline Fixed Layout</title>
     
     <style>
         /* ==========================================================================
@@ -17,7 +17,7 @@
 
         body {
             font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
-            background-color: #0f2537; /* Matching the deep slate blue theme of image_fee2c7.png */
+            background-color: #0f2537; /* Deep slate blue theme match */
             color: #ffffff;
             display: flex;
             justify-content: center;
@@ -27,12 +27,12 @@
             padding: 5px;
         }
 
-        /* Fixed 16:9 Slide Canvas Bounding Box Container - Tight Padding Protection */
+        /* Fixed 16:9 Slide Canvas Framework - Height Protection Buffers */
         .slide-container {
             background-color: #162e44;
             width: 1280px;
             height: 720px;
-            padding: 30px 45px 20px 45px; /* Reclaims critical vertical limits */
+            padding: 30px 45px 20px 45px;
             border-radius: 8px;
             box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
             display: flex;
@@ -42,7 +42,7 @@
         }
 
         /* ==========================================================================
-           2. Slide Header and Interactive HUD Display Panel
+           2. Slide Header and Interactive HUD Panel
            ========================================================================== */
         .slide-header {
             display: flex;
@@ -73,7 +73,7 @@
             font-weight: 700;
             text-transform: uppercase;
             letter-spacing: 0.5px;
-            color: #e67e22; /* Vibrant orange contrast accent tone from your layout */
+            color: #e67e22;
             border: 1px solid rgba(230, 126, 34, 0.3);
         }
 
@@ -117,12 +117,12 @@
             font-weight: 600;
         }
 
-        /* Right Split: Parallel Target Node List Menu Box */
+        /* Right Split: Target Principles Interactive Row Stack */
         .principles-sidebar {
             flex: 1.15;
             display: flex;
             flex-direction: column;
-            gap: 10px; /* Highly compact gap properties safeguard from cuts */
+            gap: 10px; /* Highly compact gap safeguards layout limits */
             justify-content: center;
         }
 
@@ -161,7 +161,7 @@
             color: #ffffff;
         }
 
-        /* Solved State active locks */
+        /* Solved State active styles lock rules */
         .principle-node-btn.solved-complete {
             background-color: rgba(46, 204, 113, 0.1);
             border-color: #2ecc71;
@@ -174,7 +174,7 @@
         }
 
         /* ==========================================================================
-           4. Game End Mastery Dashboard Layout Overlay Viewport
+           4. Game End Mastery Summary Dashboard Layout Overlay Viewport
            ========================================================================== */
         .mastery-dashboard-overlay {
             display: none;
@@ -245,4 +245,140 @@
 
     <div class="slide-container">
         
-        <header class="slide-header
+        <!-- Header Section -->
+        <header class="slide-header">
+            <h1 class="main-title" id="dynamic-title">5 Principles of a Decisive Culture</h1>
+            <div class="hud-metrics" id="game-hud">
+                <div class="metric-pill">Aligned: <span id="resolved-count">0 / 5</span></div>
+            </div>
+        </header>
+
+        <!-- Main Dynamic Play Field Arena -->
+        <div class="gameplay-arena" id="main-play-arena">
+            
+            <!-- Left Split Column: Live Friction Monitor Panel -->
+            <div class="sidebar-friction-panel">
+                <h3>Operational Friction Dilemma</h3>
+                <p id="scenario-text">"Our rollout is frozen because teams are locked in endless steering committees, trying to make sure absolutely everyone agrees before moving forward."</p>
+            </div>
+
+            <!-- Right Split Column: Parallel Target Principles Menu Stack -->
+            <nav class="principles-sidebar">
+                <button class="principle-node-btn" id="btn-node-1" onclick="routeScenario('clarity')">
+                    <div class="node-number">01</div>
+                    <div class="node-text">Clarity Over Consensus</div>
+                </button>
+                <button class="principle-node-btn" id="btn-node-2" onclick="routeScenario('speed')">
+                    <div class="node-number">02</div>
+                    <div class="node-text">Speed Over Perfection</div>
+                </button>
+                <button class="principle-node-btn" id="btn-node-3" onclick="routeScenario('accountability')">
+                    <div class="node-number">03</div>
+                    <div class="node-text">Accountability Over Blame</div>
+                </button>
+                <button class="principle-node-btn" id="btn-node-4" onclick="routeScenario('action')">
+                    <div class="node-number">04</div>
+                    <div class="node-text">Action Over Analysis</div>
+                </button>
+                <button class="principle-node-btn" id="btn-node-5" onclick="routeScenario('learning')">
+                    <div class="node-number">05</div>
+                    <div class="node-text">Learning Over Certainty</div>
+                </button>
+            </nav>
+
+        </div>
+
+        <!-- Hidden End-Game Master Infographic Dashboard Layer (Matches data rows perfectly) -->
+        <div class="mastery-dashboard-overlay" id="mastery-screen">
+            
+            <div class="static-framework-row">
+                <div class="static-num">01</div>
+                <div class="static-title">Clarity Over Consensus</div>
+                <div class="static-desc">One decider, clear roles, explicit criteria</div>
+            </div>
+
+            <div class="static-framework-row">
+                <div class="static-num">02</div>
+                <div class="static-title">Speed Over Perfection</div>
+                <div class="static-desc">Move fast on reversible decisions, deliberate on irreversible ones</div>
+            </div>
+
+            <div class="static-framework-row">
+                <div class="static-num">03</div>
+                <div class="static-title">Accountability Over Blame</div>
+                <div class="static-desc">Own outcomes, learn from mistakes, never punish well-reasoned risk</div>
+            </div>
+
+            <div class="static-framework-row">
+                <div class="static-num">04</div>
+                <div class="static-title">Action Over Analysis</div>
+                <div class="static-desc">Default to doing — the best insights come from execution, not meetings</div>
+            </div>
+
+            <div class="static-framework-row">
+                <div class="static-num">05</div>
+                <div class="static-title">Learning Over Certainty</div>
+                <div class="static-desc">Treat every decision as a hypothesis to test, not a bet to win</div>
+            </div>
+
+        </div>
+
+        <!-- Instructions Slide Footer Help Line -->
+        <footer class="slide-footer">
+            <p id="footer-text">Analyze the live Operational Friction Dilemma inside the left sidebar panel, then select the matching core culture card block from the right stack.</p>
+        </footer>
+
+    </div>
+
+    <!-- ==========================================================================
+       6. Interactive Diagnostic Engine Script Matrix
+       ========================================================================== -->
+    <script>
+        const challengeDeck = [
+            { key: "clarity", node: "btn-node-1", text: '"Our rollout is frozen because teams are locked in endless steering committees, trying to make sure absolutely everyone agrees before moving forward."' },
+            { key: "speed", node: "btn-node-2", text: '"We are missing critical market windows on easily undoable feature changes because managers are treating them with heavy deliberation rules."' },
+            { key: "accountability", node: "btn-node-3", text: '"Innovation has completely stopped because employees are terrified that any calculated operational risk will result in strict penalties if it fails."' },
+            { key: "action", node: "btn-node-4", text: '"Our teams default to setting up secondary follow-up meetings to talk instead of launching field experiments to discover what works."' },
+            { key: "learning", node: "btn-node-5", text: '"Project updates are paralyzed because leadership treats every deployment path like an permanent bet to win instead of an experimental hypothesis."' }
+        ];
+
+        let activeIndex = 0;
+        let successfulMatches = 0;
+
+        function routeScenario(userCardChoice) {
+            const currentItem = challengeDeck[activeIndex];
+
+            if (userCardChoice === currentItem.key) {
+                successfulMatches++;
+                document.getElementById('resolved-count').textContent = `${successfulMatches} / 5`;
+
+                // Permanent victory state flag lock
+                document.getElementById(currentItem.node).classList.add('solved-complete');
+
+                if (successfulMatches < 5) {
+                    activeIndex++;
+                    document.getElementById('scenario-text').textContent = challengeDeck[activeIndex].text;
+                } else {
+                    displayFinalDashboard();
+                }
+            } else {
+                const badButton = document.querySelector(`[onclick="routeScenario('${userCardChoice}')"]`);
+                if (badButton) {
+                    badButton.style.borderColor = '#c0392b';
+                    setTimeout(() => { badButton.style.borderColor = 'rgba(255,255,255,0.1)'; }, 600);
+                }
+            }
+        }
+
+        function displayFinalDashboard() {
+            document.getElementById('main-play-arena').style.display = 'none';
+            document.getElementById('game-hud').style.display = 'none';
+
+            document.getElementById('dynamic-title').textContent = "Decisive Culture Archetypes Unlocked";
+
+            document.getElementById('mastery-screen').style.display = 'flex';
+            document.getElementById('footer-text').textContent = "Review complete. All 5 fundamental corporate culture principles are now successfully deployed.";
+        }
+    </script>
+</body>
+</html>
