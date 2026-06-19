@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Clear Decision Rights - Interactive Matrix</title>
+    <title>Clear Decision Rights - Complete Interactive Matrix</title>
     <style>
         /* BASE RESET & ANTI-COLLAPSE RESTRAINT ENGINE
            Locks parent bounds to fill the iframe cleanly, preventing dynamic 
@@ -19,7 +19,7 @@
             overflow: hidden;
         }
 
-        /* 16:9 FIXED CANVAS LAYERFOOTPRINT
+        /* 16:9 FIXED CANVAS LAYER FOOTPRINT
            Enforces structural barriers to neutralize text bleeding into lower margins.
         */
         .slide-wrapper {
@@ -28,8 +28,8 @@
             max-width: 1280px;
             max-height: 720px;
             aspect-ratio: 16 / 9;
-            padding: 3rem 4.5rem 2.5rem 4.5rem;
-            background-color: #f8f9fa; /* Sleek light canvas finish matching image_637c06.png */
+            padding: 2.2rem 3.5rem 1.5rem 3.5rem;
+            background-color: #f8f9fa; /* Sleek light canvas finish matching image_590327.png */
             display: flex;
             flex-direction: column;
             justify-content: space-between;
@@ -39,15 +39,15 @@
 
         /* Top Header Presentation Row */
         .header-section {
-            margin-bottom: 1.5rem;
+            margin-bottom: 1rem;
             flex-shrink: 0;
         }
 
         .main-title {
-            font-size: 2.8rem;
-            color: #1a365d; /* Dark corporate primary tone from image_637c06.png */
+            font-size: 2.6rem;
+            color: #1a365d; /* Dark corporate primary tone from image_590327.png */
             font-weight: 700;
-            margin: 0 0 0.6rem 0;
+            margin: 0 0 0.4rem 0;
             letter-spacing: -0.5px;
         }
 
@@ -55,14 +55,14 @@
             display: flex;
             align-items: center;
             gap: 10px;
-            font-size: 1.15rem;
-            color: #718096; /* Subtle steel gray text from image_637c06.png */
+            font-size: 1.1rem;
+            color: #718096; /* Subtle steel gray text from image_590327.png */
         }
 
         .accent-bullet {
             width: 10px;
             height: 10px;
-            background-color: #e67e22; /* Pure orange icon indicator from image_637c06.png */
+            background-color: #e67e22; /* Pure orange icon indicator from image_590327.png */
             border-radius: 50%;
             display: inline-block;
         }
@@ -93,34 +93,39 @@
 
         /* Colored Panel Header Elements */
         .card-header-banner {
-            padding: 1.2rem 2rem;
-            font-size: 1.45rem;
+            padding: 1.1rem 2rem;
+            font-size: 1.4rem;
             font-weight: 700;
             color: #ffffff;
             flex-shrink: 0;
         }
 
-        /* Verbatim specific color maps from image_637c06.png */
+        /* Verbatim specific color maps from image_590327.png */
         .bg-root-causes { background-color: #c0392b; } /* Deep Rust-Red */
         .bg-solutions { background-color: #27ae60; }   /* Emerald Green */
 
-        /* Inner List Matrix Pipelines */
+        /* Inner List Matrix Pipelines - Core Fix: Switched to pure vertical scroll layout */
         .card-content-stack {
-            padding: 2.5rem 2rem;
+            padding: 1.5rem;
             display: flex;
             flex-direction: column;
-            justify-content: space-around;
+            gap: 0.5rem;
             flex-grow: 1;
+            max-height: 440px;
+            overflow-y: auto;
             list-style: none;
             margin: 0;
         }
+
+        .card-content-stack::-webkit-scrollbar { width: 4px; }
+        .card-content-stack::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 2px; }
 
         /* Interactive Text Node Targets */
         .matrix-bullet-node {
             display: flex;
             align-items: flex-start;
             gap: 1.2rem;
-            font-size: 1.05rem;
+            font-size: 1.02rem;
             color: #4a5568;
             line-height: 1.45;
             padding: 0.8rem 1rem;
@@ -128,12 +133,13 @@
             cursor: pointer;
             transition: all 0.2s ease;
             font-weight: 500;
+            box-sizing: border-box;
         }
 
         .bullet-dot-indicator {
             width: 6px;
             height: 6px;
-            background-color: #4a5568; /* Solid charcoal bullet point matching image_637c06.png */
+            background-color: #4a5568; /* Solid charcoal bullet point matching image_590327.png */
             border-radius: 50%;
             margin-top: 0.6rem;
             flex-shrink: 0;
@@ -183,7 +189,6 @@
 <body>
 
     <div class="slide-wrapper">
-        <!-- Interactive Header Banner -->
         <div class="header-section">
             <h1 class="main-title">Clear Decision Rights</h1>
             <div class="sub-directive-row">
@@ -192,10 +197,8 @@
             </div>
         </div>
 
-        <!-- Balanced Sidebar Matrix Workspace Area -->
         <div class="workspace-split-matrix">
             
-            <!-- LEFT PANEL: ROOT CAUSES -->
             <div class="presentation-column-card">
                 <div class="card-header-banner bg-root-causes">Root Causes of Indecision</div>
                 <ul class="card-content-stack">
@@ -222,7 +225,6 @@
                 </ul>
             </div>
 
-            <!-- RIGHT PANEL: SOLUTIONS -->
             <div class="presentation-column-card">
                 <div class="card-header-banner bg-solutions">Solutions</div>
                 <ul class="card-content-stack">
@@ -251,7 +253,6 @@
 
         </div>
 
-        <!-- Lower Instructional Prompt Strip -->
         <div class="footer-bar">
             <span class="instruction-tag">Hover your cursor over any framework variable to dynamically audit corresponding problem-to-solution operational maps.</span>
         </div>
