@@ -3,151 +3,554 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Choosing the Right Framework - Interactive Discovery</title>
+    <title>IB Group - Framework Selection Center</title>
     <style>
-        * { box-sizing: border-box; margin: 0; padding: 0; }
-        body {
-            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
-            background-color: #f0f4f8;
-            color: #1a2a3a;
-            width: 100vw;
-            height: 100vh;
+        /* FORCE CONTAINERS TO OCCUPY THE ENTIRE IFRAME WINDOW WITHOUT DROPOUTS */
+        html, body {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #fcf8f2;
+            font-family: 'Segoe UI', Arial, sans-serif;
             overflow: hidden;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 5px;
         }
-        .slide-container {
-            background-color: #fafcfe;
-            width: 1280px;
-            height: 720px;
-            padding: 30px 45px 20px 45px;
+
+        /* 16:9 ASPECT RATIO CONTAINER CANOPY
+           Locks coordinates strictly to stop text bleeding into lower margins.
+        */
+        .slide-wrapper {
+            width: 100%;
+            height: 100%;
+            max-width: 1280px;
+            max-height: 720px;
+            aspect-ratio: 16 / 9;
+            padding: 2.2rem 3.5rem 1.5rem 3.5rem;
+            background-color: #fdfaf6;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
-            overflow: hidden;
+            box-sizing: border-box;
+            position: relative;
         }
-        .slide-header {
+
+        /* Top Branded Corporate Header Row */
+        .header-section {
             display: flex;
             justify-content: space-between;
-            align-items: center;
-            border-bottom: 2px solid #e1e8f0;
-            padding-bottom: 8px;
-            height: 65px;
+            align-items: flex-start;
+            border-bottom: 2px solid #e2dbd5;
+            padding-bottom: 0.5rem;
             flex-shrink: 0;
         }
-        .main-title { font-size: 2.2rem; font-weight: 800; color: #123456; }
-        .metric-pill {
-            background-color: #eaf1f8;
-            padding: 5px 12px;
-            border-radius: 4px;
-            font-size: 0.8rem;
-            font-weight: 700;
-            color: #123456;
-            border: 1px solid #ccdbe8;
+
+        .main-title {
+            font-size: 2.4rem;
+            color: #1e3a5f;
+            font-weight: 800;
+            line-height: 1.1;
         }
-        .framework-tabs-dock {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 16px;
-            margin-top: 15px;
-            height: 50px;
-            flex-shrink: 0;
-        }
-        .tab-trigger-btn {
-            background-color: #ffffff;
-            border: 1px solid #e1e8f0;
-            border-bottom: 4px solid #cbd5e1;
-            border-radius: 6px;
-            font-family: inherit;
+
+        .company-branding {
             font-size: 1.1rem;
-            font-weight: 700;
-            color: #4b5a6a;
+            font-weight: 800;
+            color: #7b9583;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            background-color: rgba(123, 149, 131, 0.1);
+            padding: 0.3rem 0.8rem;
+            border-radius: 4px;
+        }
+
+        /* MASTER VERTICAL WORKSPACE PIPELINE */
+        .workspace-matrix {
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+            min-height: 0; /* Core anti-collapse structural barrier line */
+            margin: 0.8rem 0;
+        }
+
+        /* Horizontal Selection Ribbon Track Strip */
+        .ribbon-navigation-track {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 0.5rem;
+            width: 100%;
+            flex-shrink: 0;
+            margin-bottom: 1.2rem;
+        }
+
+        .business-hub-btn {
+            background-color: #e2dbd5;
+            border: 1px solid rgba(61, 35, 20, 0.08);
+            border-radius: 8px;
+            padding: 0.65rem 0.5rem;
             cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.15rem;
             transition: all 0.2s ease;
         }
-        .tab-trigger-btn.active-tab[data-target="ooda"] { border-bottom-color: #3b75af; color: #3b75af; background-color: #f4f8fb; }
-        .tab-trigger-btn.active-tab[data-target="rapid"] { border-bottom-color: #1a365d; color: #1a365d; background-color: #f0f4f8; }
-        .content-viewport-panel {
-            flex: 1;
+
+        .hub-index-lbl {
+            font-size: 0.72rem;
+            font-weight: 800;
+            color: #8d7d74;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .hub-title-lbl {
+            font-size: 0.92rem;
+            font-weight: 700;
+            color: #4a382c;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            width: 100%;
+            text-align: center;
+        }
+
+        /* Active Selected Navigation Tab Highlighting */
+        .business-hub-btn.active-tab {
             background-color: #ffffff;
-            border: 1px solid #e1e8f0;
-            border-radius: 8px;
-            padding: 30px 40px;
-            margin: 20px 0;
+            border-color: #1e3a5f;
+            box-shadow: 0 4px 12px rgba(30, 58, 95, 0.08);
+        }
+        .business-hub-btn.active-tab .hub-title-lbl { color: #1e3a5f; }
+        .business-hub-btn.active-tab .hub-index-lbl { color: #1e3a5f; }
+
+        /* Mastered Level Node State Complete Modifiers */
+        .business-hub-btn.mastered-tab {
+            border-color: #2a9d8f !important;
+            background-color: rgba(42, 157, 143, 0.03);
+        }
+        .business-hub-btn.mastered-tab .hub-title-lbl {
+            color: #2a9d8f;
+            text-decoration: line-through;
+            opacity: 0.6;
+        }
+        .business-hub-btn.mastered-tab .hub-index-lbl { color: #2a9d8f; }
+
+        /* HORIZONTAL SPLIT PLAYGROUND CARD
+           Splits content left-to-right to maximize space and guarantee zero text overlaps.
+        */
+        .unified-arena-card {
+            background-color: #ffffff;
+            border: 1px solid rgba(61, 35, 20, 0.08);
+            border-radius: 12px;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.02);
+            padding: 1.8rem 2.2rem;
+            flex-grow: 1;
+            min-height: 0;
             display: flex;
             flex-direction: column;
             justify-content: center;
-            min-height: 0;
         }
-        .framework-content-pane { display: none; flex-direction: column; gap: 20px; }
-        .framework-content-pane.visible-pane { display: flex; }
-        .criteria-bullet-matrix {
-            list-style-type: none;
+
+        .arena-split-view {
+            display: none; 
+            grid-template-columns: 0.95fr 1.05fr;
+            gap: 2.5rem;
+            align-items: center;
+            width: 100%;
+            height: 100%;
+        }
+
+        .arena-split-view.visible-view {
+            display: grid;
+        }
+
+        /* Left Split Column: Dilemma Asset Profile Case */
+        .arena-brief-column {
+            display: flex;
+            flex-direction: column;
+            gap: 0.8rem;
+            max-height: 440px;
+            overflow-y: auto;
+            padding-right: 0.5rem;
+        }
+
+        .arena-brief-column::-webkit-scrollbar { width: 4px; }
+        .arena-brief-column::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 2px; }
+
+        .arena-tag-heading {
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: #1e3a5f;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .framework-criterion-box {
+            font-size: 0.98rem;
+            font-weight: 600;
+            color: #6e5d53;
+            background-color: #fdfbf9;
+            padding: 0.75rem 1.2rem;
+            border-left: 4px solid #1e3a5f;
+            border-radius: 4px;
+            line-height: 1.45;
+        }
+
+        .challenge-statement-text {
+            font-size: 1.22rem;
+            font-weight: 700;
+            color: #3d2314;
+            line-height: 1.42;
+        }
+
+        /* Right Split Column: Twin Framework Interactive Matching Docking Cards */
+        .arena-input-column {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 20px 40px;
+            gap: 1rem;
+            width: 100%;
         }
-        .criteria-bullet-matrix li {
-            font-size: 1.1rem;
-            line-height: 1.45;
-            color: #334455;
-            position: relative;
-            padding-left: 24px;
+
+        .framework-matching-card {
+            background-color: #ffffff;
+            border: 2px solid #e2dbd5;
+            border-radius: 10px;
+            padding: 1.4rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.25s cubic-bezier(0.165, 0.84, 0.44, 1);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            min-height: 180px;
+        }
+
+        .framework-matching-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.04);
+        }
+
+        /* Custom Specific Framework Colored Accents matching image_6382ae.png */
+        .card-ooda-accent { border-top: 6px solid #4a90e2; }
+        .card-ooda-accent:hover { border-color: #4a90e2; }
+        .card-rapid-accent { border-top: 6px solid #1e3a5f; }
+        .card-rapid-accent:hover { border-color: #1e3a5f; }
+
+        .card-title-lbl {
+            font-size: 1.5rem;
+            font-weight: 800;
+            margin-bottom: 0.5rem;
+        }
+        .ooda-lbl { color: #4a90e2; }
+        .rapid-lbl { color: #1e3a5f; }
+
+        .card-desc-lbl {
+            font-size: 0.88rem;
+            color: #6e5d53;
             font-weight: 600;
+            line-height: 1.4;
         }
-        .criteria-bullet-matrix li::before { content: "•"; position: absolute; left: 0; font-size: 1.6rem; top: -2px; }
-        #pane-ooda .criteria-bullet-matrix li::before { color: #3b75af; }
-        #pane-rapid .criteria-bullet-matrix li::before { color: #1a365d; }
-        .slide-footer { border-top: 1px solid #e1e8f0; padding-top: 8px; text-align: center; height: 35px; flex-shrink: 0; }
-        .slide-footer p { font-size: 0.85rem; color: #6a7b8c; font-style: italic; }
+
+        /* Step Complete Success Inner Overlay Card Component Layer */
+        .stage-success-overlay {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            width: 100%;
+            height: 100%;
+            gap: 0.6rem;
+        }
+
+        .success-heading-text {
+            font-size: 1.4rem;
+            font-weight: 800;
+            color: #2a9d8f;
+        }
+
+        /* Grand Total Campaign Clear Screen Overrides */
+        .campaign-clear-panel {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            width: 100%;
+            height: 100%;
+            gap: 0.8rem;
+        }
+
+        /* Bottom Fixed Corporate Metrics Row Status Bar */
+        .footer-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-shrink: 0;
+            border-top: 1px solid rgba(61, 35, 20, 0.08);
+            padding-top: 0.6rem;
+            margin-top: 0.2rem;
+        }
+
+        .score-tracker-badge {
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: #3d2314;
+            background-color: #fff8eb;
+            padding: 0.25rem 0.8rem;
+            border-radius: 20px;
+            border: 1px solid #f4a261;
+            font-variant-numeric: tabular-nums;
+        }
+
+        .instruction-tag {
+            font-size: 0.85rem;
+            color: #a39389;
+            font-style: italic;
+        }
     </style>
 </head>
 <body>
-    <div class="slide-container">
-        <header class="slide-header">
+
+    <div class="slide-wrapper">
+        <!-- Dashboard Title Header Row -->
+        <div class="header-section">
             <h1 class="main-title">Choosing the Right Framework</h1>
-            <div class="hud-metrics">
-                <div class="metric-pill">Review Progress: <span id="review-counter" style="color: #e67e22;">1 / 2 Explored</span></div>
+            <span class="company-branding">IB Group</span>
+        </div>
+
+        <!-- Master Workspace Grid Area Frame -->
+        <div class="workspace-matrix">
+            
+            <!-- Horizontal Business Unit Folder Ribbon Track -->
+            <div class="ribbon-navigation-track">
+                <button class="business-hub-btn active-tab" id="tab-0" onclick="switchOperationalTab(0)">
+                    <span class="hub-index-lbl">Sector 01</span>
+                    <span class="hub-title-lbl">Broiler Integration</span>
+                </button>
+                <button class="business-hub-btn" id="tab-1" onclick="switchOperationalTab(1)">
+                    <span class="hub-index-lbl">Sector 02</span>
+                    <span class="hub-title-lbl">Fish Feed</span>
+                </button>
+                <button class="business-hub-btn" id="tab-2" onclick="switchOperationalTab(2)">
+                    <span class="hub-index-lbl">Sector 03</span>
+                    <span class="hub-title-lbl">Abis Pro Retail</span>
+                </button>
+                <button class="business-hub-btn" id="tab-3" onclick="switchOperationalTab(3)">
+                    <span class="hub-index-lbl">Sector 04</span>
+                    <span class="hub-title-lbl">Lynk Sweets</span>
+                </button>
+                <button class="business-hub-btn" id="tab-4" onclick="switchOperationalTab(4)">
+                    <span class="hub-index-lbl">Sector 05</span>
+                    <span class="hub-title-lbl">Abis Edible Oil</span>
+                </button>
             </div>
-        </header>
-        <nav class="framework-tabs-dock">
-            <button class="tab-trigger-btn active-tab" data-target="ooda" onclick="switchFrameworkTab('ooda', this)">OODA Loop</button>
-            <button class="tab-trigger-btn" data-target="rapid" onclick="switchFrameworkTab('rapid', this)">RAPID</button>
-        </nav>
-        <main class="content-viewport-panel">
-            <div class="framework-content-pane visible-pane" id="pane-ooda">
-                <ul class="criteria-bullet-matrix">
-                    <li>Competitive strategy and market response</li>
-                    <li>Fast-moving, dynamic environments</li>
-                    <li>Individual or small team decisions</li>
-                    <li>Continuous cycling for rapid adaptation</li>
-                </ul>
+
+            <!-- Master Playbook Content Display Desk -->
+            <div class="unified-arena-card" id="sandbox-container">
+                
+                <!-- Sector 1 Panel View: Broiler Integration -->
+                <div class="arena-split-view visible-view" id="view-0">
+                    <div class="arena-brief-column">
+                        <div class="arena-tag-heading">Operational Decision Profile • 1 of 5</div>
+                        <div class="framework-criterion-box">Context Domain: Fast-moving, dynamic environments requiring rapid individual or small team market responses.</div>
+                        <h2 class="challenge-statement-text">IB Group Case File: Competitors launch an unseasonable hatch rate price war across regional contract farming nodes. Which workflow do you deploy to adapt execution plans hourly?</h2>
+                    </div>
+                    <div class="arena-input-column">
+                        <div class="framework-matching-card card-ooda-accent" onclick="submitStrategySelection('OODA')">
+                            <span class="card-title-lbl ooda-lbl">OODA Loop</span>
+                            <span class="card-desc-lbl">Continuous loop optimized for fast-moving competitive adaptation.</span>
+                        </div>
+                        <div class="framework-matching-card card-rapid-accent" onclick="submitStrategySelection('RAPID')">
+                            <span class="card-title-lbl rapid-lbl">RAPID</span>
+                            <span class="card-desc-lbl">Structured framework built for high-value internal governance.</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Sector 2 Panel View: Fish Feed -->
+                <div class="arena-split-view" id="view-1">
+                    <div class="arena-brief-column">
+                        <div class="arena-tag-heading">Operational Decision Profile • 2 of 5</div>
+                        <div class="framework-criterion-box">Context Domain: Complex, multi-stakeholder governance and cross-functional corporate transformation matrices.</div>
+                        <h2 class="challenge-statement-text">IB Group Case File: Designing a long-term capital allocation upgrade plan to construct a high-capacity fish and shrimp feed extrusion plant line. Which framework governs this?</h2>
+                    </div>
+                    <div class="arena-input-column">
+                        <div class="framework-matching-card card-ooda-accent" onclick="submitStrategySelection('OODA')">
+                            <span class="card-title-lbl ooda-lbl">OODA Loop</span>
+                            <span class="card-desc-lbl">Continuous loop optimized for fast-moving competitive adaptation.</span>
+                        </div>
+                        <div class="framework-matching-card card-rapid-accent" onclick="submitStrategySelection('RAPID')">
+                            <span class="card-title-lbl rapid-lbl">RAPID</span>
+                            <span class="card-desc-lbl">Structured framework built for high-value internal governance.</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Sector 3 Panel View: Abis Pro Retail -->
+                <div class="arena-split-view" id="view-2">
+                    <div class="arena-brief-column">
+                        <div class="arena-tag-heading">Operational Decision Profile • 3 of 5</div>
+                        <div class="framework-criterion-box">Context Domain: High-frequency operational strategy loops requiring real-time agile execution changes.</div>
+                        <h2 class="challenge-statement-text">IB Group Case File: A sudden weekend fresh stock supply logistics delay affects two active retail storefront checkouts. How does the storefront coordinator align actions instantly?</h2>
+                    </div>
+                    <div class="arena-input-column">
+                        <div class="framework-matching-card card-ooda-accent" onclick="submitStrategySelection('OODA')">
+                            <span class="card-title-lbl ooda-lbl">OODA Loop</span>
+                            <span class="card-desc-lbl">Continuous loop optimized for fast-moving competitive adaptation.</span>
+                        </div>
+                        <div class="framework-matching-card card-rapid-accent" onclick="submitStrategySelection('RAPID')">
+                            <span class="card-title-lbl rapid-lbl">RAPID</span>
+                            <span class="card-desc-lbl">Structured framework built for high-value internal governance.</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Sector 4 Panel View: Lynk Sweets -->
+                <div class="arena-split-view" id="view-3">
+                    <div class="arena-brief-column">
+                        <div class="arena-tag-heading">Operational Decision Profile • 4 of 5</div>
+                        <div class="framework-criterion-box">Context Domain: Internal cross-functional matrix alignment involving high-value brand parameters.</div>
+                        <h2 class="challenge-statement-text">IB Group Case Profile: Deciding whether to completely re-brand the sugar confectionery line packaging assets, requiring sign-offs from Marketing, Supply Chain, and Legal.</h2>
+                    </div>
+                    <div class="arena-input-column">
+                        <div class="framework-matching-card card-ooda-accent" onclick="submitStrategySelection('OODA')">
+                            <span class="card-title-lbl ooda-lbl">OODA Loop</span>
+                            <span class="card-desc-lbl">Continuous loop optimized for fast-moving competitive adaptation.</span>
+                        </div>
+                        <div class="framework-matching-card card-rapid-accent" onclick="submitStrategySelection('RAPID')">
+                            <span class="card-title-lbl rapid-lbl">RAPID</span>
+                            <span class="card-desc-lbl">Structured framework built for high-value internal governance.</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Sector 5 Panel View: Abis Edible Oil -->
+                <div class="arena-split-view" id="view-4">
+                    <div class="arena-brief-column">
+                        <div class="arena-tag-heading">Operational Decision Profile • 5 of 5</div>
+                        <div class="framework-criterion-box">Context Domain: Matrixed enterprise strategy adjustments for long-term internal operational transformation.</div>
+                        <h2 class="challenge-statement-text">IB Group Case Profile: Establishing a new regional bulk edible oil packaging distribution channel joint-venture roadmap. Which model structures roles?</h2>
+                    </div>
+                    <div class="arena-input-column">
+                        <div class="framework-matching-card card-ooda-accent" onclick="submitStrategySelection('OODA')">
+                            <span class="card-title-lbl ooda-lbl">OODA Loop</span>
+                            <span class="card-desc-lbl">Continuous loop optimized for fast-moving competitive adaptation.</span>
+                        </div>
+                        <div class="framework-matching-card card-rapid-accent" onclick="submitStrategySelection('RAPID')">
+                            <span class="card-title-lbl rapid-lbl">RAPID</span>
+                            <span class="card-desc-lbl">Structured framework built for high-value internal governance.</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step Clear Success Inner Overlay Card Component -->
+                <div class="stage-success-overlay" id="victory-overlay-panel">
+                    <span style="font-size: 40px;">🎯⚙️</span>
+                    <p class="success-heading-text">Operational Architecture Synchronized!</p>
+                    <p style="color: #6e5d53; font-size: 0.92rem; margin: 0;">Select an uncompleted business segment folder tab from the top ribbon track to continue formatting standard workflows.</p>
+                </div>
+
+                <!-- Grand Campaign Matrix Complete Screen Panel -->
+                <div class="stage-success-overlay" id="campaign-clear-panel">
+                    <span style="font-size: 50px;">👑</span>
+                    <h2 style="color: #1e3a5f; font-size: 24px; font-weight: 800; margin: 5px 0;">Corporate Strategy Aligned!</h2>
+                    <p style="color: #4a382c; font-size: 14px; font-weight: 600; max-width: 480px; margin: 0 auto; line-height: 1.45;">All five IB Group operational divisions have been successfully synchronized under optimal decision-making frameworks.</p>
+                </div>
+
             </div>
-            <div class="framework-content-pane" id="pane-rapid">
-                <ul class="criteria-bullet-matrix">
-                    <li>Internal governance and transformation</li>
-                    <li>Complex, multi-stakeholder decisions</li>
-                    <li>Cross-functional or matrixed orgs</li>
-                    <li>High-value or high-frequency decisions</li>
-                </ul>
-            </div>
-        </main>
-        <footer class="slide-footer">
-            <p id="footer-text">Select a strategic framework tab above to verify its application parameters.</p>
-        </footer>
+        </div>
+
+        <!-- Progress Tracking Status Row -->
+        <div class="footer-bar">
+            <div class="score-tracker-badge">Sectors Optimized: <span id="progress-val">0</span> / 5</div>
+            <div class="instruction-tag">Different decisions call for different tactical approaches. Evaluate the case metrics and deploy the corresponding framework archetype.</div>
+        </div>
     </div>
+
     <script>
-        const stateRegister = { ooda: true, rapid: false };
-        function switchFrameworkTab(key, element) {
-            document.querySelectorAll('.tab-trigger-btn').forEach(t => t.classList.remove('active-tab'));
-            document.querySelectorAll('.framework-content-pane').forEach(p => p.classList.remove('visible-pane'));
-            element.classList.add('active-tab');
-            document.getElementById(`pane-${key}`).classList.add('visible-pane');
-            stateRegister[key] = true;
-            const count = Object.values(stateRegister).filter(Boolean).length;
-            document.getElementById('review-counter').textContent = count === 2 ? "Complete" : "1 / 2 Explored";
+        // High fidelity map determining correct framework archetypes based on image criterion lists
+        const targetAnswerKey = {
+            0: "OODA",  // Fast-moving market adaptation
+            1: "RAPID", // Complex internal transformation matrix
+            2: "OODA",  // High-frequency agile operational responses
+            3: "RAPID", // Multi-stakeholder matrixed org alignment
+            4: "RAPID"  // High-value internal governance roadmap
+        };
+
+        let activeStageIdx = 0;
+        let solvedCount = 0;
+        let masteredStateMap = { 0: false, 1: false, 2: false, 3: false, 4: false };
+
+        function loadSimulationStage() {
+            const splitView = document.getElementById(`view-${activeStageIdx}`);
+            const victoryPanel = document.getElementById("victory-overlay-panel");
+            const clearPanel = document.getElementById("campaign-clear-panel");
+
+            if (masteredStateMap[activeStageIdx]) {
+                if (splitView) splitView.classList.remove("visible-view");
+                victoryPanel.style.display = "flex";
+                clearPanel.style.display = "none";
+                return;
+            }
+
+            victoryPanel.style.display = "none";
+            clearPanel.style.display = "none";
+            
+            for (let i = 0; i < 5; i++) {
+                const targetView = document.getElementById(`view-${i}`);
+                if (targetView) {
+                    if (i === activeStageIdx) {
+                        targetView.classList.add("visible-view");
+                    } else {
+                        targetView.classList.remove("visible-view");
+                    }
+                }
+            }
+        }
+
+        function switchOperationalTab(targetIdx) {
+            if (targetIdx === activeStageIdx) return;
+
+            document.getElementById(`tab-${activeStageIdx}`).classList.remove("active-tab");
+            activeStageIdx = targetIdx;
+            document.getElementById(`tab-${activeStageIdx}`).classList.add("active-tab");
+
+            const totalMasteryCount = Object.values(masteredStateMap).filter(Boolean).length;
+            if (totalMasteryCount === 5) {
+                document.getElementById(`view-${targetIdx}`).classList.remove("visible-view");
+                document.getElementById("victory-overlay-panel").style.display = "none";
+                document.getElementById("campaign-clear-panel").style.display = "flex";
+                return;
+            }
+
+            loadSimulationStage();
+        }
+
+        function submitStrategySelection(selectedFrameworkString) {
+            const correctAnswer = targetAnswerKey[activeStageIdx];
+
+            if (selectedFrameworkString === correctAnswer) {
+                masteredStateMap[activeStageIdx] = true;
+                solvedCount = Object.values(masteredStateMap).filter(Boolean).length;
+                document.getElementById("progress-val").innerText = solvedCount;
+
+                const activeTab = document.getElementById(`tab-${activeStageIdx}`);
+                activeTab.classList.add("mastered-tab");
+
+                document.getElementById(`view-${activeStageIdx}`).classList.remove("visible-view");
+                if (solvedCount === 5) {
+                    document.getElementById("campaign-clear-panel").style.display = "flex";
+                } else {
+                    document.getElementById("victory-overlay-panel").style.display = "flex";
+                }
+            } else {
+                // Flash main arena card soft red to notify alignment mismatch parameters
+                const windowBoard = document.getElementById("sandbox-container");
+                windowBoard.style.backgroundColor = "#faeae1";
+                setTimeout(() => windowBoard.style.backgroundColor = "#ffffff", 350);
+            }
         }
     </script>
 </body>
