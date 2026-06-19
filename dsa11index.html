@@ -3,10 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>5 Principles of a Decisive Culture</title>
+    <title>5 Principles of a Decisive Culture - Safe Fit</title>
     <style>
         /* ==========================================================================
-           1. Absolute Boundary Reset (Strict No-Scroll, No-Cut, No-Overlap)
+           1. Core Reset & Rigid 16:9 Window Locks (Absolute Prevention of Overflow)
            ========================================================================== */
         * {
             box-sizing: border-box;
@@ -24,81 +24,82 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            padding: 5px;
+            padding: 4px;
         }
 
-        /* Fixed 16:9 Presentation Canvas Container - Strict Height Cushioning */
+        /* Fixed 16:9 Slide Wrapper - Highly defensive tracking limits vertical leak */
         .slide-container {
             background-color: #0f2537;
             width: 1280px;
             height: 720px;
-            padding: 50px 60px 45px 60px;
+            padding: 20px 45px 15px 45px; /* Shrunk vertical cushions pull content from borders */
             display: flex;
             flex-direction: column;
-            justify-content: space-between;
+            justify-content: flex-start;
             overflow: hidden;
         }
 
         /* ==========================================================================
-           2. Slide Header Section
+           2. Low-Profile Slide Header Section
            ========================================================================== */
         .slide-header {
-            height: 70px;
+            height: 55px;
             flex-shrink: 0;
             display: flex;
             align-items: center;
+            margin-bottom: 10px;
         }
 
         .main-title {
-            font-size: 3rem;
+            font-size: 2.2rem; /* Reduced font size ensures the title stays away from the top edge */
             font-weight: 700;
             color: #ffffff;
             line-height: 1.1;
         }
 
         /* ==========================================================================
-           3. Core Content Matrix Rows Block (Defensive Geometry Controls Height)
+           3. Core Content Matrix Rows Block (Ultra-Compact Low Profile)
            ========================================================================== */
         .principles-container {
             display: flex;
             flex-direction: column;
-            gap: 14px; /* Rigid spacing block avoids vertical accumulation */
-            height: 520px;
-            margin-top: 25px;
-            justify-content: center;
+            gap: 10px; /* Highly tight spacing eliminates layout vertical creep */
+            height: 440px; /* Drastically bounded window constraints */
+            margin-top: 5px;
+            justify-content: flex-start;
             min-height: 0;
         }
 
         .principle-row {
             background-color: rgba(255, 255, 255, 0.08);
             border-radius: 4px;
-            height: 82px; /* Rigid pixel height limits eliminate bottom-overflow cuts */
+            height: 62px; /* Rigidly locked low-profile height caps total size cleanly */
             display: flex;
             align-items: center;
-            padding: 0 45px;
+            padding: 0 25px;
         }
 
         .principle-num {
-            font-size: 2.1rem;
+            font-size: 1.55rem;
             font-weight: 800;
-            color: #e67e22; /* Signature accent orange contrast */
-            width: 80px;
+            color: #e67e22; /* Signature orange contrast accent */
+            width: 60px;
             flex-shrink: 0;
         }
 
         .principle-title {
-            font-size: 1.55rem;
+            font-size: 1.25rem;
             font-weight: 700;
             color: #ffffff;
-            width: 400px;
+            width: 320px;
             flex-shrink: 0;
-            padding-right: 20px;
+            padding-right: 15px;
         }
 
         .principle-desc {
-            font-size: 1.1rem;
-            line-height: 1.4;
-            color: rgba(255, 255, 255, 0.75);
+            font-size: 0.98rem;
+            line-height: 1.35;
+            color: rgba(255, 255, 255, 0.8);
             font-weight: 500;
         }
     </style>
@@ -112,7 +113,7 @@
             <h1 class="main-title">5 Principles of a Decisive Culture</h1>
         </header>
 
-        <!-- Static Framework Row Chassis -->
+        <!-- Low-Profile Framework Row Chassis (Guaranteed to fit 720px window boundaries) -->
         <main class="principles-container">
             
             <!-- Row 1 -->
