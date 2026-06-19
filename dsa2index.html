@@ -3,18 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Decision Debt - Absolute 16:9 Fit</title>
-    
+    <title>Decision Debt</title>
     <style>
-        /* ==========================================================================
-           1. Core Reset & Rigid Widescreen Boundaries (No-Scroll, No-Cuts)
-           ========================================================================== */
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
-
+        * { box-sizing: border-box; margin: 0; padding: 0; }
         body {
             font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
             background-color: #f8fafc;
@@ -25,258 +16,131 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            padding: 5px;
         }
-
-        /* Fixed 16:9 Slide Wrapper - Eliminates any risk of vertical clipping */
         .slide-container {
             width: 1280px;
             height: 720px;
-            padding: 35px 50px 25px 50px;
-            background-color: #f4f7fa;
+            padding: 40px 50px 35px 50px;
+            background-color: #f8fafc;
             display: flex;
             flex-direction: column;
-            justify-content: space-between;
             overflow: hidden;
         }
-
-        /* ==========================================================================
-           2. Slide Title Header Area
-           ========================================================================== */
         .slide-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
+            height: 90px;
             flex-shrink: 0;
-            height: 75px;
         }
-
-        .title-group {
-            flex: 1;
-        }
-
         .main-title {
-            font-size: 2.5rem;
+            font-size: 2.6rem;
             font-weight: 800;
-            color: #1a365d;
+            color: #1c3d5a;
             line-height: 1.1;
         }
-
         .subtitle {
-            font-size: 1.05rem;
-            color: #6a7b8c;
-            margin-top: 4px;
+            font-size: 1.1rem;
+            color: #718096;
+            margin-top: 8px;
             font-weight: 500;
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 10px;
         }
-
         .subtitle::before {
             content: "•";
             color: #e67e22;
-            font-size: 1.5rem;
+            font-size: 1.8rem;
+            line-height: 0;
         }
-
-        .hud-metrics {
-            display: flex;
-            align-items: center;
-        }
-
-        .metric-pill {
-            background-color: #ffffff;
-            padding: 6px 14px;
-            border-radius: 6px;
-            font-size: 0.8rem;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            color: #1a365d;
-            border: 1px solid #ccdbe8;
-        }
-
-        /* ==========================================================================
-           3. Side-by-Side Arena Layout (Preserves Image Proportions Exactly)
-           ========================================================================== */
         .gameplay-arena {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 35px;
-            flex: 1;
-            margin: 20px 0;
+            gap: 40px;
+            height: 510px;
+            margin-top: 15px;
             min-height: 0;
-            height: calc(100% - 135px);
         }
-
-        /* Left Column Card (Deep Navy Block) */
         .quote-display-panel {
-            background-color: #1a365d;
+            background-color: #1c3d5a;
             border-radius: 4px;
-            padding: 40px;
+            padding: 45px;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            height: 100%;
         }
-
         .panel-quote-heading {
             font-family: 'Georgia', serif;
             font-style: italic;
-            font-size: 2.1rem;
-            line-height: 1.35;
+            font-size: 2.3rem;
+            line-height: 1.4;
             color: #ffffff;
         }
-
         .panel-definition-text {
             font-size: 1.05rem;
-            line-height: 1.5;
-            color: rgba(255, 255, 255, 0.9);
+            line-height: 1.55;
+            color: rgba(255, 255, 255, 0.85);
         }
-
-        /* Right Column Card (Clean White Block) */
         .compounding-effect-panel {
             background-color: #ffffff;
             border-radius: 4px;
             padding: 45px 50px;
             display: flex;
             flex-direction: column;
-            justify-content: flex-start;
             box-shadow: 0 4px 20px rgba(0,0,0,0.02);
+            height: 100%;
         }
-
         .compounding-effect-panel h2 {
-            font-size: 1.8rem;
+            font-size: 1.9rem;
             font-weight: 700;
-            color: #1a365d;
+            color: #1c3d5a;
             margin-bottom: 35px;
-            padding-bottom: 5px;
         }
-
-        /* Interactive Focus Node Stack */
         .compounding-list-stack {
             list-style-type: none;
             display: flex;
             flex-direction: column;
-            gap: 20px;
+            gap: 22px;
         }
-
         .compounding-list-stack li {
             font-size: 1.15rem;
             line-height: 1.4;
-            color: #334455;
+            color: #4a5568;
             position: relative;
             padding-left: 30px;
             font-weight: 600;
-            cursor: pointer;
-            transition: color 0.2s ease, transform 0.2s ease;
         }
-
-        .compounding-list-stack li:hover {
-            transform: translateX(4px);
-            color: #1a365d;
-        }
-
-        /* Gray default bullets before interaction */
         .compounding-list-stack li::before {
             content: "•";
-            color: #94a3b8;
-            font-size: 1.6rem;
+            color: #4a5568;
+            font-size: 1.8rem;
             position: absolute;
             left: 0;
-            top: -3px;
-            transition: color 0.25s ease;
-        }
-
-        /* Active highlight state mapping matching image accents */
-        .compounding-list-stack li.node-explored {
-            color: #1a365d;
-        }
-        .compounding-list-stack li.node-explored::before {
-            color: #e67e22;
-        }
-
-        /* ==========================================================================
-           4. Grounded Static Footer Line
-           ========================================================================== */
-        .slide-footer {
-            border-top: 1px solid #e1e8f0;
-            padding-top: 10px;
-            text-align: center;
-            flex-shrink: 0;
-            height: 35px;
-        }
-
-        .slide-footer p {
-            font-size: 0.85rem;
-            color: #6a7b8c;
-            font-style: italic;
+            top: -4px;
         }
     </style>
 </head>
 <body>
-
     <div class="slide-container">
-        
-        <!-- Header Section -->
         <header class="slide-header">
-            <div class="title-group">
-                <h1 class="main-title">Decision Debt</h1>
-                <p class="subtitle">Unmade decisions compound like financial debt — silently and relentlessly</p>
-            </div>
-            <div class="hud-metrics">
-                <div class="metric-pill">Analysis Status: <span id="hud-counter-text" style="color: #e67e22;">0 / 5 Audited</span></div>
-            </div>
+            <h1 class="main-title">Decision Debt</h1>
+            <p class="subtitle">Unmade decisions compound like financial debt — silently and relentlessly</p>
         </header>
-
-        <!-- Main Workspace Arena Layout Split -->
-        <div class="gameplay-arena">
-            
-            <!-- Left Panel -->
+        <main class="gameplay-arena">
             <div class="quote-display-panel">
                 <h2 class="panel-quote-heading">Every stalled approval sits in your head like open browser tabs.</h2>
                 <p class="panel-definition-text">Decision debt is the cognitive load created by unresolved decisions. The more you carry, the less space you have for strategic thinking.</p>
             </div>
-
-            <!-- Right Panel -->
-            <main class="compounding-effect-panel">
+            <div class="compounding-effect-panel">
                 <h2>The Compounding Effect</h2>
                 <ul class="compounding-list-stack">
-                    <li onclick="exploreNode(this)">Hiring is delayed</li>
-                    <li onclick="exploreNode(this)">Revenue opportunities expire</li>
-                    <li onclick="exploreNode(this)">Team morale dips</li>
-                    <li onclick="exploreNode(this)">Competitive advantages erode</li>
-                    <li onclick="exploreNode(this)">Innovation pipeline stalls</li>
+                    <li>Hiring is delayed</li>
+                    <li>Revenue opportunities expire</li>
+                    <li>Team morale dips</li>
+                    <li>Competitive advantages erode</li>
+                    <li>Innovation pipeline stalls</li>
                 </ul>
-            </main>
-
-        </div>
-
-        <!-- Footer Guidance Component -->
-        <footer class="slide-footer">
-            <p id="footer-text">Click on each item in the compounding effect profile block to complete the diagnostic review audit.</p>
-        </footer>
-
+            </div>
+        </main>
     </div>
-
-    <!-- Script Processing Engine -->
-    <script>
-        let exploredNodesCount = 0;
-
-        function exploreNode(element) {
-            if (element.classList.contains('node-explored')) return;
-            
-            element.classList.add('node-explored');
-            exploredNodesCount++;
-            
-            const counterHUD = document.getElementById('hud-counter-text');
-            if (exploredNodesCount < 5) {
-                counterHUD.textContent = `${exploredNodesCount} / 5 Audited`;
-            } else {
-                counterHUD.textContent = "Audit Complete";
-                counterHUD.style.color = "#2ecc71";
-                document.getElementById('footer-text').textContent = "Review complete. All core decision debt variables mapped successfully.";
-            }
-        }
-    </script>
 </body>
 </html>
