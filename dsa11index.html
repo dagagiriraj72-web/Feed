@@ -3,21 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>IB Group - Decisive Culture Simulator</title>
+    <title>Choosing the Right Framework - Clean Console</title>
     <style>
-        /* FORCE ROOT WINDOW CONTAINER TO FILL IFRAME EXACTLY AND PREVENT COLLAPSE DROPOUTS */
+        /* FORCE WINDOW TO STRETCH TO MAXIMUM BOUNDARIES INSIDE STORYLINE IFRAMES */
         html, body {
             margin: 0;
             padding: 0;
             width: 100%;
             height: 100%;
-            background-color: #0f1d2a; /* Deep navy blue matching image_637865.png */
+            background-color: #fcf8f2;
             font-family: 'Segoe UI', Arial, sans-serif;
             overflow: hidden;
         }
 
-        /* 16:9 FIXED PRESENTATION CANVAS 
-           Locks coordinates strictly to completely stop component clashing or lower text bleeding.
+        /* 16:9 ASPECT RATIO PLAYBACK FRAME
+           Locks workspace bounds strictly at 1280x720 to neutralize lower text bleeding,
+           overlapping cards, or responsive layout failures.
         */
         .slide-wrapper {
             width: 100%;
@@ -25,8 +26,8 @@
             max-width: 1280px;
             max-height: 720px;
             aspect-ratio: 16 / 9;
-            padding: 2.5rem 4rem;
-            background-color: #122232; /* Rich corporate canvas palette */
+            padding: 2.2rem 3.5rem 1.5rem 3.5rem;
+            background-color: #fdfaf6;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
@@ -34,184 +35,219 @@
             position: relative;
         }
 
-        /* Top Header Bar */
+        /* Top Branded Corporate Header */
         .header-section {
-            border-bottom: 2px solid rgba(255, 255, 255, 0.08);
-            padding-bottom: 0.8rem;
-            margin-bottom: 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            border-bottom: 2px solid #e2dbd5;
+            padding-bottom: 0.5rem;
             flex-shrink: 0;
         }
 
         .main-title {
-            font-size: 2.6rem;
-            color: #ffffff; /* Crisp contrast headline text */
-            font-weight: 700;
-            margin: 0;
-            letter-spacing: -0.5px;
+            font-size: 2.4rem;
+            color: #1e3a5f;
+            font-weight: 800;
+            line-height: 1.1;
         }
 
-        /* LATERAL SPLIT ARCHITECTURE PLAYGROUND
-           Distributes selection nodes and text fields side-by-side to end vertical crowding.
+        .company-branding {
+            font-size: 1.1rem;
+            font-weight: 800;
+            color: #7b9583;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            background-color: rgba(123, 149, 131, 0.1);
+            padding: 0.3rem 0.8rem;
+            border-radius: 4px;
+        }
+
+        /* MASTER SINGLE-COLUMN PIPELINE WORKSPACE 
+           Core Fix: Eliminates hazardous side-by-side splits so text blocks can grow down naturally.
         */
         .workspace-matrix {
-            display: grid;
-            grid-template-columns: 0.95fr 1.05fr; /* Protects tracking lane balance */
-            gap: 3rem;
-            flex-grow: 1;
-            min-height: 0; /* Dynamic height buffer safety guardrail */
-            align-items: center;
-        }
-
-        /* Left Side: Vertical Stack Navigation Track */
-        .tabs-vertical-stack {
             display: flex;
             flex-direction: column;
-            gap: 12px;
-            width: 100%;
+            flex-grow: 1;
+            min-height: 0; /* Strict anti-collapse vertical layout guardrail */
+            margin: 0.8rem 0;
         }
 
-        .principle-nav-btn {
-            background-color: #1b3249; /* Dark blueprint tab fill */
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            border-radius: 6px;
-            padding: 1.1rem 1.4rem;
+        /* Horizontal Ribbon Navigation Track */
+        .ribbon-navigation-track {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 0.5rem;
+            width: 100%;
+            flex-shrink: 0;
+            margin-bottom: 1.2rem;
+        }
+
+        .business-hub-btn {
+            background-color: #e2dbd5;
+            border: 1px solid rgba(61, 35, 20, 0.08);
+            border-radius: 8px;
+            padding: 0.65rem 0.5rem;
             cursor: pointer;
             display: flex;
+            flex-direction: column;
             align-items: center;
-            gap: 1.5rem;
-            transition: all 0.2s cubic-bezier(0.165, 0.84, 0.44, 1);
-            text-align: left;
-            width: 100%;
+            gap: 0.15rem;
+            transition: all 0.2s ease;
         }
 
-        .principle-nav-btn:hover {
-            transform: translateX(4px);
-            background-color: #233e5b;
-        }
-
-        .btn-index-num {
-            font-size: 1.5rem;
+        .hub-index-lbl {
+            font-size: 0.72rem;
             font-weight: 800;
-            color: #f39c12; /* Vibrant amber orange indicator index */
-            font-variant-numeric: tabular-nums;
+            color: #8d7d74;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
 
-        .btn-title-lbl {
-            font-size: 1.2rem;
+        .hub-title-lbl {
+            font-size: 0.92rem;
             font-weight: 700;
-            color: #ffffff;
+            color: #4a382c;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            width: 100%;
+            text-align: center;
         }
 
-        /* Active Navigation Tab Highlight States Modifiers */
-        .principle-nav-btn.active-tab {
-            background-color: #ffffff !important;
-            border-color: #f39c12;
-            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.3);
+        /* Active Navigation Tab Highlighting */
+        .business-hub-btn.active-tab {
+            background-color: #ffffff;
+            border-color: #1e3a5f;
+            box-shadow: 0 4px 12px rgba(30, 58, 95, 0.08);
         }
-        .principle-nav-btn.active-tab .btn-title-lbl { color: #122232; }
-        .principle-nav-btn.active-tab .btn-index-num { color: #122232; }
+        .business-hub-btn.active-tab .hub-title-lbl { color: #1e3a5f; }
+        .business-hub-btn.active-tab .hub-index-lbl { color: #1e3a5f; }
 
-        /* Mastered complete tracking classes */
-        .principle-nav-btn.mastered-tab {
+        /* Mastered Level Node State Complete Modifiers */
+        .business-hub-btn.mastered-tab {
             border-color: #2a9d8f !important;
-            background-color: rgba(42, 157, 143, 0.1);
+            background-color: rgba(42, 157, 143, 0.03);
         }
-        .principle-nav-btn.mastered-tab .btn-title-lbl {
+        .business-hub-btn.mastered-tab .hub-title-lbl {
             color: #2a9d8f;
             text-decoration: line-through;
             opacity: 0.6;
         }
-        .principle-nav-btn.mastered-tab .btn-index-num { color: #2a9d8f; }
+        .business-hub-btn.mastered-tab .hub-index-lbl { color: #2a9d8f; }
 
-        /* Right Side: Isolated Content Reveal Display Terminal Deck */
-        .display-content-card {
+        /* UNIFIED WORKSPACE DESK CARD
+           Houses framework elements inside an isolated, scroll-protected container panel.
+        */
+        .unified-arena-card {
             background-color: #ffffff;
+            border: 1px solid rgba(61, 35, 20, 0.08);
             border-radius: 12px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
-            padding: 2.2rem;
-            height: 100%;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.02);
+            padding: 1.8rem 2.2rem;
+            flex-grow: 1;
+            min-height: 0;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
-            box-sizing: border-box;
         }
 
-        /* Continuous expansion scroll protection zone */
+        /* Bounded vertical protection zone isolating textual blocks from footer bounds */
         .terminal-scroll-sandbox {
+            flex-grow: 1;
+            min-height: 0;
+            max-height: 440px; /* Rigid vertical ceiling constraint blocks collisions */
+            overflow-y: auto;
+            padding-right: 0.5rem;
             display: flex;
             flex-direction: column;
             gap: 1rem;
-            max-height: 445px; /* Locked maximum ceiling prevents dynamic text overflow */
-            overflow-y: auto;
-            padding-right: 0.5rem;
-            flex-grow: 1;
         }
 
         .terminal-scroll-sandbox::-webkit-scrollbar { width: 4px; }
         .terminal-scroll-sandbox::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 2px; }
 
         .arena-tag-heading {
-            font-family: Arial, sans-serif;
             font-size: 0.85rem;
-            font-weight: 800;
-            color: #f39c12;
+            font-weight: 700;
+            color: #1e3a5f;
             text-transform: uppercase;
-            letter-spacing: 1px;
+            letter-spacing: 0.5px;
         }
 
         /* Textbook Framework Criterion Description Box */
         .framework-criterion-box {
-            font-size: 1.05rem;
+            font-size: 0.98rem;
             font-weight: 600;
-            color: #5c6b73;
-            background-color: #fcfbf9;
-            padding: 0.8rem 1.2rem;
-            border-left: 4px solid #122232;
+            color: #6e5d53;
+            background-color: #fdfbf9;
+            padding: 0.75rem 1.2rem;
+            border-left: 4px solid #1e3a5f;
             border-radius: 4px;
             line-height: 1.45;
         }
 
         .challenge-statement-text {
-            font-size: 1.25rem;
+            font-size: 1.22rem;
             font-weight: 700;
-            color: #122232;
+            color: #3d2314;
             line-height: 1.42;
             margin: 0;
         }
 
-        /* Stacking Options Pipeline Container Group */
-        .choices-stack-pipeline {
-            display: flex;
-            flex-direction: column;
-            gap: 0.6rem;
+        /* Twin Selection Choice Buttons Grid Matrix (Positioned safely at base) */
+        .choices-grid-matrix {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.2rem;
             margin-top: auto;
             padding-top: 1rem;
             flex-shrink: 0;
-        }
-
-        .choice-interaction-card {
-            background-color: #ffffff;
-            border: 1px solid #cbd5e1;
-            padding: 1.1rem 1.4rem;
-            border-radius: 8px;
-            font-size: 0.95rem;
-            font-weight: 600;
-            color: #334155;
-            cursor: pointer;
-            text-align: left;
-            line-height: 1.42;
-            transition: all 0.2s ease;
             width: 100%;
         }
 
-        .choice-interaction-card:hover {
-            background-color: #fffbf7;
-            border-color: #f39c12;
-            color: #122232;
-            transform: translateX(4px);
+        .framework-matching-card {
+            background-color: #ffffff;
+            border: 2px solid #e2dbd5;
+            border-radius: 10px;
+            padding: 1.2rem 1.5rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.25s cubic-bezier(0.165, 0.84, 0.44, 1);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
         }
 
-        /* Step Complete Inner Success Overlay Component Sheet */
+        .framework-matching-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.03);
+        }
+
+        /* Brand Accent Markers matching criteria data charts */
+        .card-ooda-accent { border-top: 5px solid #4a90e2; }
+        .card-ooda-accent:hover { border-color: #4a90e2; }
+        .card-rapid-accent { border-top: 5px solid #1e3a5f; }
+        .card-rapid-accent:hover { border-color: #1e3a5f; }
+
+        .card-title-lbl {
+            font-size: 1.4rem;
+            font-weight: 800;
+            margin-bottom: 0.4rem;
+        }
+        .ooda-lbl { color: #4a90e2; }
+        .rapid-lbl { color: #1e3a5f; }
+
+        .card-desc-lbl {
+            font-size: 0.88rem;
+            color: #6e5d53;
+            font-weight: 600;
+            line-height: 1.4;
+        }
+
+        /* Mid-Stage Completed View Overlay Component Sheets */
         .stage-success-overlay {
             display: none;
             flex-direction: column;
@@ -241,31 +277,31 @@
             gap: 0.8rem;
         }
 
-        /* Bottom Fixed Metric Tracking Status Footer Bar Row */
+        /* Bottom Fixed Corporate Metrics Row Status Bar */
         .footer-bar {
             display: flex;
             justify-content: space-between;
             align-items: center;
             flex-shrink: 0;
-            border-top: 1px solid rgba(255, 255, 255, 0.08);
-            padding-top: 0.8rem;
-            margin-top: 0.5rem;
+            border-top: 1px solid rgba(61, 35, 20, 0.08);
+            padding-top: 0.6rem;
+            margin-top: 0.2rem;
         }
 
         .score-tracker-badge {
             font-size: 0.85rem;
             font-weight: 700;
-            color: #ffffff;
-            background-color: #f39c12;
-            padding: 0.25rem 0.9rem;
+            color: #3d2314;
+            background-color: #fff8eb;
+            padding: 0.25rem 0.8rem;
             border-radius: 20px;
+            border: 1px solid #f4a261;
             font-variant-numeric: tabular-nums;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.15);
         }
 
         .instruction-tag {
             font-size: 0.85rem;
-            color: #a0aec0;
+            color: #a39389;
             font-style: italic;
         }
     </style>
@@ -273,126 +309,111 @@
 <body>
 
     <div class="slide-wrapper">
-        <!-- Interactive Slide Title Header Block -->
         <div class="header-section">
-            <h1 class="main-title">5 Principles of a Decisive Culture</h1>
+            <h1 class="main-title">Choosing the Right Framework</h1>
+            <span class="company-branding">IB Group</span>
         </div>
 
-        <!-- Stable Symmetrical Split Workspace Area Matrix -->
         <div class="workspace-matrix">
             
-            <!-- Left Side: Anchor Principle Selection List Menu Vertical Track -->
-            <div class="tabs-vertical-stack">
-                <!-- Tab 1 -->
-                <button class="principle-nav-btn active-tab" id="tab-0" onclick="switchPrincipleTab(0)">
-                    <span class="btn-index-num">01</span>
-                    <span class="btn-title-lbl">Clarity Over Consensus</span>
+            <div class="ribbon-navigation-track">
+                <button class="business-hub-btn active-tab" id="tab-0" onclick="switchOperationalTab(0)">
+                    <span class="hub-index-lbl">Sector 01</span>
+                    <span class="hub-title-lbl">Broiler Integration</span>
                 </button>
-                <!-- Tab 2 -->
-                <button class="principle-nav-btn" id="tab-1" onclick="switchPrincipleTab(1)">
-                    <span class="btn-index-num">02</span>
-                    <span class="btn-title-lbl">Speed Over Perfection</span>
+                <button class="business-hub-btn" id="tab-1" onclick="switchOperationalTab(1)">
+                    <span class="hub-index-lbl">Sector 02</span>
+                    <span class="hub-title-lbl">Fish Feed</span>
                 </button>
-                <!-- Tab 3 -->
-                <button class="principle-nav-btn" id="tab-2" onclick="switchPrincipleTab(2)">
-                    <span class="btn-index-num">03</span>
-                    <span class="btn-title-lbl">Accountability Over Blame</span>
+                <button class="business-hub-btn" id="tab-2" onclick="switchOperationalTab(2)">
+                    <span class="hub-index-lbl">Sector 03</span>
+                    <span class="hub-title-lbl">Abis Pro Retail</span>
                 </button>
-                <!-- Tab 4 -->
-                <button class="principle-nav-btn" id="tab-3" onclick="switchPrincipleTab(3)">
-                    <span class="btn-index-num">04</span>
-                    <span class="btn-title-lbl">Action Over Analysis</span>
+                <button class="business-hub-btn" id="tab-3" onclick="switchOperationalTab(3)">
+                    <span class="hub-index-lbl">Sector 04</span>
+                    <span class="hub-title-lbl">Lynk Sweets</span>
                 </button>
-                <!-- Tab 5 -->
-                <button class="principle-nav-btn" id="tab-4" onclick="switchPrincipleTab(4)">
-                    <span class="btn-index-num">05</span>
-                    <span class="btn-title-lbl">Learning Over Certainty</span>
+                <button class="business-hub-btn" id="tab-4" onclick="switchOperationalTab(4)">
+                    <span class="hub-index-lbl">Sector 05</span>
+                    <span class="hub-title-lbl">Abis Edible Oil</span>
                 </button>
             </div>
 
-            <!-- Right Side: Isolated Content Reveal Display Window Deck -->
-            <div class="display-content-card" id="sandbox-container">
+            <div class="unified-arena-card" id="sandbox-container">
                 
-                <!-- Internal vertical layout engine scroll protection zone -->
                 <div class="terminal-scroll-sandbox" id="interactive-view-block">
-                    <div class="arena-tag-heading" id="arena-stage-title">Transformation Domain 1 of 5</div>
-                    <!-- Textbook descriptions populated verbatim from image layout data charts -->
-                    <div class="framework-criterion-box" id="arena-brief-text">Textbook Blueprint Rule: One decider, clear roles, explicit criteria.</div>
-                    <h2 class="challenge-statement-text" id="arena-challenge-text">Loading tailored operational division case logs...</h2>
+                    <div class="arena-tag-heading" id="arena-stage-title">Operational Decision Profile • 1 of 5</div>
+                    <div class="framework-criterion-box" id="arena-brief-text">Context Domain: Fast-moving, dynamic environments requiring rapid individual or small team market responses.</div>
+                    <h2 class="challenge-statement-text" id="arena-challenge-text">IB Group Case File: Competitors launch an unseasonable hatch rate price war across regional contract farming nodes. Which workflow do you deploy to adapt execution plans hourly?</h2>
                 </div>
 
-                <!-- Lower isolated choice option pipeline container fields -->
-                <div class="choices-stack-pipeline" id="arena-options-container">
-                    <!-- Programmatically iterated via script arrays -->
+                <div class="choices-grid-matrix" id="arena-options-container">
+                    <div class="framework-matching-card card-ooda-accent" onclick="submitStrategySelection('OODA')">
+                        <span class="card-title-lbl ooda-lbl">OODA Loop</span>
+                        <span class="card-desc-lbl">Continuous loop optimized for fast-moving competitive adaptation.</span>
+                    </div>
+                    <div class="framework-matching-card card-rapid-accent" onclick="submitStrategySelection('RAPID')">
+                        <span class="card-title-lbl rapid-lbl">RAPID</span>
+                        <span class="card-desc-lbl">Structured framework built for high-value internal governance.</span>
+                    </div>
                 </div>
 
-                <!-- Step Clear Success Inner Overlay Component Display Sheet -->
                 <div class="stage-success-overlay" id="victory-overlay-panel">
-                    <span style="font-size: 3.5rem;">🎯⚡</span>
-                    <p class="success-heading-text">Cultural Vector Aligned!</p>
-                    <p style="color: #6e5d53; font-size: 0.92rem; margin: 0;">Select an uncompleted milestone node from the left anchor stack track to continue aligning enterprise standards.</p>
+                    <span style="font-size: 2.5rem;">🎯⚙️</span>
+                    <p class="success-heading-text">Operational Strategy Aligned!</p>
+                    <p style="color: #6e5d53; font-size: 0.92rem;">Select an uncompleted business sector from the top folder row track to continue mapping workflows.</p>
                 </div>
 
-                <!-- Grand Campaign Matrix Complete Screen Panel -->
-                <div class="campaign-clear-panel" id="campaign-clear-panel">
-                    <span style="font-size: 4rem;">👑</span>
-                    <h2 style="color: #2a9d8f; font-size: 1.8rem; font-weight: 800; margin-top: 0.5rem;">Decisive Leadership Aligned!</h2>
-                    <p style="color: #122232; font-size: 1rem; font-weight: 600; max-width: 440px; line-height: 1.45; margin-top: 0.4rem;">All five industrial divisions have been successfully synchronized under verified corporate execution principles.</p>
+                <div class="stage-success-overlay" id="campaign-clear-panel">
+                    <span style="font-size: 3.5rem;">👑</span>
+                    <h2 style="color: #1e3a5f; font-size: 1.8rem; font-weight: 800;">Corporate Roadmap Aligned!</h2>
+                    <p style="color: #4a382c; font-size: 1rem; font-weight: 600; max-width: 440px; line-height: 1.45;">All five IB Group operational divisions have been successfully synchronized under optimal decision-making frameworks.</p>
                 </div>
 
             </div>
-
         </div>
 
-        <!-- Fixed Metrics Tracker Utilities Footer Row -->
         <div class="footer-bar">
-            <div class="score-tracker-badge">Principles Synchronized: <span id="progress-val">0</span> / 5</div>
-            <div class="instruction-tag">Isolate framework principles across the left anchor menu to resolve enterprise sector dilemmas.</div>
+            <div class="score-tracker-badge">Sectors Optimized: <span id="progress-val">0</span> / 5</div>
+            <div class="instruction-tag">Different decisions call for different tactical approaches. Evaluate the case metrics and deploy the corresponding framework.</div>
         </div>
     </div>
 
     <script>
-        // High fidelity map relating image criteria verbatim to your requested business divisions
-        const corporateSimulationMatrix = [
+        // High fidelity map determining correct framework archetypes based on image criterion lists
+        const targetAnswerKey = {
+            0: "OODA",  // Fast-moving market adaptation
+            1: "RAPID", // Complex internal transformation matrix
+            2: "OODA",  // High-frequency agile operational responses
+            3: "RAPID", // Multi-stakeholder matrixed org alignment
+            4: "RAPID"  // High-value internal governance roadmap
+        };
+
+        const sectorSimulationMatrix = [
             {
-                brief: "One decider, clear roles, explicit criteria.",
-                case: "IB Group Case Profile [Broiler Integration]: Formulating next month's contract farming feed subsidy matrix. Multiple cross-functional committees are stuck debating minor cost baselines. What action do you execute?",
-                choices: [
-                    { text: "Appoint the Integration Operations Director as the sole absolute decision owner, gather advisory feedback from accounting, and issue the rollout directive today.", correct: true },
-                    { text: "Prolong consensus tracking cycles until all regional integration office branch supervisors reach complete alignment on the parameters.", correct: false }
-                ]
+                tag: "Operational Decision Profile • 1 of 5",
+                brief: "Context Domain: Fast-moving, dynamic environments requiring rapid individual or small team market responses.",
+                case: "IB Group Case File: Competitors launch an unseasonable hatch rate price war across regional contract farming nodes. Which workflow do you deploy to adapt execution plans hourly?"
             },
             {
-                brief: "Move fast on reversible decisions, deliberate on irreversible ones.",
-                case: "IB Group Case Profile [Abis Pro Retail Shop]: Store coordinators want to test an updated digital display layout model on storefront screens to see if it catches foot traffic parameters. How do you authorize the vector?",
-                choices: [
-                    { text: "Halt launch plans for 4 weeks to construct an enterprise multi-department technical review board to fully evaluate the layout.", correct: false },
-                    { text: "Deploy the digital display test track immediately at two branch locations tonight, knowing it can be reverted instantly with one click if needed.", correct: true }
-                ]
+                tag: "Operational Decision Profile • 2 of 5",
+                brief: "Context Domain: Complex, multi-stakeholder governance and cross-functional corporate transformation matrices.",
+                case: "IB Group Case File: Designing a long-term capital allocation upgrade plan to construct a high-capacity fish and shrimp feed extrusion plant line. Which framework governs this?"
             },
             {
-                brief: "Own outcomes, learn from mistakes, never punish well-reasoned risk.",
-                case: "IB Group Case Profile [Lynk Sweets Confectionery]: A newly deployed premium automated wrapping machine track causes a temporary production backlog due to unique recipe calibration variables. How do you lead?",
-                choices: [
-                    { text: "Publicly back the innovation team's test, extract the calibration logs to adapt future setups, and avoid issuing punitive penalty marks.", correct: true },
-                    { text: "Revert immediately to legacy slow manual processes and issue formal warnings to the engineering team line leads for the oversight.", correct: false }
-                ]
+                tag: "Operational Decision Profile • 3 of 5",
+                brief: "Context Domain: High-frequency operational strategy loops requiring real-time agile execution changes.",
+                case: "IB Group Case Profile: A sudden weekend fresh stock supply logistics delay affects two active retail storefront checkouts. How does the storefront coordinator align actions instantly?"
             },
             {
-                brief: "Default to doing — the best insights come from execution, not meetings.",
-                case: "IB Group Case Profile [Fish Feed Plant]: Plant floor engineers notice a slight workflow sorting latency step on the floating feed packaging line. How do you target optimization?",
-                choices: [
-                    { text: "Schedule a cross-departmental daily sync sequence spanning two weeks to gather extensive notes and conceptual diagrams.", correct: false },
-                    { text: "Authorize line supervisors to run a live 4-hour mock test loop right shift using the updated sorting modifications to capture empirical data metrics.", correct: true }
-                ]
+                tag: "Operational Decision Profile • 4 of 5",
+                brief: "Context Domain: Internal cross-functional matrix alignment involving high-value brand parameters.",
+                case: "IB Group Case Profile: Deciding whether to completely re-brand the sugar confectionery line packaging assets, requiring sign-offs from Marketing, Supply Chain, and Legal."
             },
             {
-                brief: "Treat every decision as a hypothesis to test, not a bet to win.",
-                case: "IB Group Case Profile [Abis Edible Oil Refinery]: Launching an updated distribution logistics track for premium seed oil variants. How do you approach the launch metrics?",
-                choices: [
-                    { text: "Deploy the distribution track as an isolated operational test pilot, configuring clear baseline check-ins to continuously iterate the logistics map.", correct: true },
-                    { text: "Commit the entire annual logistics capital pool into a single rigid long-term freight agreement to defend your initial projection lines at all costs.", correct: false }
-                ]
+                tag: "Operational Decision Profile • 5 of 5",
+                brief: "Context Domain: Matrixed enterprise strategy adjustments for long-term internal operational transformation.",
+                case: "IB Group Case Profile: Establishing a new regional bulk edible oil packaging distribution channel joint-venture roadmap. Which model structures roles?"
             }
         ];
 
@@ -415,40 +436,28 @@
             }
 
             scrollSandbox.style.display = "flex";
-            optionsContainer.style.display = "flex";
+            optionsContainer.style.display = "grid";
             victoryPanel.style.display = "none";
             clearPanel.style.display = "none";
 
-            const data = corporateSimulationMatrix[activeStageIdx];
-            document.getElementById("arena-stage-title").innerText = `Principle Execution Matrix • 0${activeStageIdx + 1}`;
-            document.getElementById("arena-brief-text").innerText = `Textbook Blueprint Rule: ${data.brief}`;
+            const data = sectorSimulationMatrix[activeStageIdx];
+            document.getElementById("arena-stage-title").innerText = data.tag;
+            document.getElementById("arena-brief-text").innerText = data.brief;
             document.getElementById("arena-challenge-text").innerText = data.case;
-
-            // Generate option action cards inside the container stack cleanly
-            optionsContainer.innerHTML = "";
-            data.choices.forEach(choice => {
-                const btn = document.createElement("button");
-                btn.className = "choice-interaction-card";
-                btn.innerText = choice.text;
-                btn.onclick = () => evaluateChoiceInput(choice.correct);
-                optionsContainer.appendChild(btn);
-            });
 
             // Auto reset scroll box to top boundary when switching content fields
             scrollSandbox.scrollTop = 0;
         }
 
-        function switchPrincipleTab(targetIdx) {
+        function switchOperationalTab(targetIdx) {
             if (targetIdx === activeStageIdx) return;
 
-            // Clear current selection border highlights
             document.getElementById(`tab-${activeStageIdx}`).classList.remove("active-tab");
-            
             activeStageIdx = targetIdx;
             document.getElementById(`tab-${activeStageIdx}`).classList.add("active-tab");
 
-            const totalClearsCount = Object.values(masteredStateMap).filter(Boolean).length;
-            if (totalClearsCount === 5) {
+            const totalMasteryCount = Object.values(masteredStateMap).filter(Boolean).length;
+            if (totalMasteryCount === 5) {
                 document.getElementById("interactive-view-block").style.display = "none";
                 document.getElementById("arena-options-container").style.display = "none";
                 document.getElementById("victory-overlay-panel").style.display = "none";
@@ -459,14 +468,16 @@
             loadSimulationStage();
         }
 
-        function evaluateChoiceInput(isCorrectChoicePath) {
-            if (isCorrectChoicePath) {
+        function submitStrategySelection(selectedFrameworkString) {
+            const correctAnswer = targetAnswerKey[activeStageIdx];
+
+            if (selectedFrameworkString === correctAnswer) {
                 masteredStateMap[activeStageIdx] = true;
                 solvedCount = Object.values(masteredStateMap).filter(Boolean).length;
                 document.getElementById("progress-val").innerText = solvedCount;
 
-                // Adjust ribbon buttons completed classes
-                document.getElementById(`tab-${activeStageIdx}`).classList.add("mastered-tab");
+                const activeTab = document.getElementById(`tab-${activeStageIdx}`);
+                activeTab.classList.add("mastered-tab");
 
                 document.getElementById("interactive-view-block").style.display = "none";
                 document.getElementById("arena-options-container").style.display = "none";
@@ -477,14 +488,14 @@
                     document.getElementById("victory-overlay-panel").style.display = "flex";
                 }
             } else {
-                // Instantly flash bounding card background red to report a decision path variance error
+                // Flash main arena card soft red to notify alignment mismatch parameters
                 const windowBoard = document.getElementById("sandbox-container");
                 windowBoard.style.backgroundColor = "#faeae1";
                 setTimeout(() => windowBoard.style.backgroundColor = "#ffffff", 350);
             }
         }
 
-        // Initialize setup on run load configurations mount loop
+        // Initialize setup on run load configurations
         loadSimulationStage();
     </script>
 </body>
