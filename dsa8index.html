@@ -3,11 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Case Studies in Decisiveness - Absolute Fit</title>
-    
+    <title>Case Studies in Decisiveness - Absolute Fit Station</title>
     <style>
         /* ==========================================================================
-           1. Core Reset & Rigid 16:9 Window Locks (Absolute Prevention of Overflow)
+           1. Core Reset & Rigid Widescreen Boundaries (No-Scroll, No-Cuts)
            ========================================================================== */
         * {
             box-sizing: border-box;
@@ -17,7 +16,7 @@
 
         body {
             font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
-            background-color: #f0f4f8;
+            background-color: #f8fafc;
             color: #1a2a3a;
             width: 100vw;
             height: 100vh;
@@ -25,36 +24,39 @@
             display: flex;
             justify-content: center;
             align-items: center;
+            padding: 5px;
         }
 
-        /* Enforced 16:9 Bounding Box Chassis */
+        /* Fixed 16:9 Slide Wrapper - Absolute Protection Against Vertical Clipping */
         .slide-container {
             background-color: #fafcfe;
             width: 1280px;
             height: 720px;
-            padding: 25px 40px; /* Reduced to pull elements away from boundaries */
+            padding: 35px 50px 25px 50px;
             display: flex;
             flex-direction: column;
+            justify-content: space-between;
             overflow: hidden;
-            position: relative;
         }
 
         /* ==========================================================================
-           2. Low-Profile Slide Header & Compact Tabs Menu
+           2. Slide Title Header & Nav Tabs Dock (Compressed Profile Footprint)
            ========================================================================== */
         .slide-header {
             border-bottom: 2px solid #e1e8f0;
-            padding-bottom: 10px;
-            height: 135px; /* Locked header footprint */
+            padding-bottom: 12px;
+            height: 135px;
             flex-shrink: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
         }
 
         .main-title {
-            font-size: 2.2rem;
+            font-size: 2.3rem;
             font-weight: 800;
-            color: #123456;
+            color: #1a365d;
             line-height: 1.1;
-            margin-bottom: 10px;
         }
 
         .leader-horizontal-menu {
@@ -66,23 +68,24 @@
             flex: 1;
             background-color: #ffffff;
             border: 1px solid #e1e8f0;
+            border-bottom: 4px solid #cbd5e1;
             border-radius: 6px;
-            padding: 8px 14px; /* Tightened inner vertical space */
+            padding: 8px 16px;
             font-family: inherit;
-            font-size: 0.95rem;
+            font-size: 1rem;
             font-weight: 700;
-            color: #123456;
+            color: #1a365d;
             text-align: left;
             cursor: pointer;
             display: flex;
             flex-direction: column;
             gap: 1px;
-            height: 54px; /* Firm height lock prevents shifting */
+            height: 56px;
             transition: all 0.15s ease;
         }
 
         .leader-tab-btn span {
-            font-size: 0.68rem;
+            font-size: 0.7rem;
             font-weight: 600;
             color: #6a7b8c;
             text-transform: uppercase;
@@ -91,14 +94,14 @@
 
         .leader-tab-btn:hover {
             background-color: #f7fafc;
-            border-color: #3b75af;
+            border-bottom-color: #3b75af;
         }
 
         .leader-tab-btn.active {
-            background-color: #123456;
+            background-color: #1a365d;
             color: #ffffff;
-            border-color: #123456;
-            box-shadow: 0 4px 10px rgba(18, 52, 86, 0.12);
+            border-color: #1a365d;
+            box-shadow: 0 4px 10px rgba(26, 54, 93, 0.15);
         }
 
         .leader-tab-btn.active span {
@@ -106,23 +109,23 @@
         }
 
         /* ==========================================================================
-           3. Core Content Workspace Vault (Strictly Fixed Vertical Space)
+           3. Core Content Viewport Display (Locked Height Boundary Protects Space)
            ========================================================================== */
         .case-vault-display {
             background-color: #ffffff;
             border: 1px solid #e1e8f0;
-            border-radius: 8px;
-            padding: 30px 40px; 
-            margin-top: 15px;
-            height: 480px; /* Rigidly locked to perfectly fit inside the 720px total height */
-            box-shadow: 0 4px 15px rgba(0,0,0,0.01);
+            border-radius: 6px;
+            padding: 40px 45px;
+            height: 485px; 
+            box-shadow: 0 4px 20px rgba(0,0,0,0.01);
             position: relative;
+            margin-top: 15px;
         }
 
         .case-pane {
             display: none;
-            grid-template-columns: 1.45fr 0.55fr; /* Maximizes left column width to spread out words horizontally */
-            gap: 35px;
+            grid-template-columns: 1.25fr 0.75fr; /* Flat horizontal split geometry */
+            gap: 50px;
             width: 100%;
             height: 100%;
             align-items: center;
@@ -130,71 +133,75 @@
 
         .case-pane.active {
             display: grid;
+            animation: paneFadeIn 0.3s ease forwards;
         }
 
-        /* Left Narrative Layout */
+        @keyframes paneFadeIn {
+            from { opacity: 0; transform: translateY(4px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Left Side: Text Descriptions */
         .narrative-side {
             display: flex;
             flex-direction: column;
             justify-content: center;
         }
 
-        .narrative-side h2 {
-            font-size: 1.5rem;
+        .panel-block-title {
+            font-size: 1.65rem;
             font-weight: 700;
-            color: #123456;
-            margin-bottom: 12px;
+            color: #1a365d;
+            margin-bottom: 20px;
         }
 
-        .narrative-side p {
-            font-size: 0.98rem;
-            line-height: 1.55;
+        .panel-desc-text {
+            font-size: 1.05rem;
+            line-height: 1.6;
             color: #334455;
-            margin-bottom: 12px;
+            margin-bottom: 16px;
         }
-        
-        .narrative-side p:last-child {
+
+        .panel-desc-text:last-child {
             margin-bottom: 0;
         }
 
-        /* Right Meta Data List Layout */
+        /* Right Side: Visual Data Column Layout */
         .data-side {
             height: 100%;
             display: flex;
             flex-direction: column;
             justify-content: center;
             border-left: 2px solid #f0f4f8;
-            padding-left: 35px;
+            padding-left: 45px;
         }
 
-        .data-side-title {
-            font-size: 0.82rem;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            color: #6a7b8c;
-            margin-bottom: 15px;
+        .data-column-title {
+            font-size: 1.25rem;
             font-weight: 700;
+            color: #1a365d;
+            margin-bottom: 25px;
         }
 
-        /* Disney Row Mechanics */
+        /* Target 1 List formatting (image_64d0e7.png - Disney) */
         .acquisition-list {
             display: flex;
             flex-direction: column;
-            gap: 12px;
+            gap: 16px;
         }
 
         .acq-row {
             display: flex;
             align-items: center;
-            gap: 12px;
-            font-size: 0.95rem;
+            gap: 15px;
+            font-size: 1.05rem;
             color: #334455;
             font-weight: 600;
         }
 
         .acq-dot {
-            width: 10px;
-            height: 10px;
+            width: 14px;
+            height: 14px;
             background-color: #e67e22;
             border-radius: 50%;
             flex-shrink: 0;
@@ -202,37 +209,38 @@
 
         .acq-year {
             font-weight: 800;
-            color: #123456;
-            width: 40px;
+            color: #1a365d;
+            width: 50px;
         }
 
-        /* PepsiCo Block Mechanics */
+        /* Target 2 Box formatting (image_64d0c7.png - PepsiCo Blue Box) */
         .lessons-box-navy {
             background-color: #1a365d;
-            border-radius: 6px;
-            padding: 20px;
+            border-radius: 4px;
+            padding: 25px 30px;
             color: #ffffff;
         }
 
         .lessons-box-navy h3 {
-            font-size: 1.1rem;
-            margin-bottom: 10px;
-            border-bottom: 1px solid rgba(255,255,255,0.15);
-            padding-bottom: 6px;
+            font-size: 1.35rem;
+            margin-bottom: 15px;
+            font-weight: 700;
         }
 
         .lessons-list {
             list-style-type: none;
             display: flex;
             flex-direction: column;
-            gap: 8px;
+            gap: 12px;
         }
 
         .lessons-list li {
-            font-size: 0.85rem;
-            line-height: 1.35;
+            font-size: 0.95rem;
+            line-height: 1.45;
             position: relative;
-            padding-left: 14px;
+            padding-left: 18px;
+            color: rgba(255, 255, 255, 0.9);
+            font-weight: 500;
         }
 
         .lessons-list li::before {
@@ -240,35 +248,35 @@
             position: absolute;
             left: 0;
             color: #e67e22;
-            font-size: 1.1rem;
-            top: -1px;
+            font-size: 1.4rem;
+            top: -2px;
         }
 
-        /* GM Metric Block Mechanics */
+        /* Target 3 Callouts formatting (image_64ce02.png - GM Metrics) */
         .stats-column {
             display: flex;
             flex-direction: column;
-            gap: 14px;
+            gap: 20px;
         }
 
         .stat-block {
             display: flex;
             align-items: center;
-            gap: 12px;
+            gap: 16px;
         }
 
         .stat-value {
-            font-size: 1.8rem;
+            font-size: 2.1rem;
             font-weight: 800;
-            color: #3b75af;
-            width: 95px;
+            color: #3182ce;
+            width: 130px;
             flex-shrink: 0;
         }
 
         .stat-label {
-            font-size: 0.88rem;
-            line-height: 1.3;
-            color: #4b5a6a;
+            font-size: 0.98rem;
+            line-height: 1.35;
+            color: #4a5568;
             font-weight: 600;
         }
 
@@ -277,14 +285,14 @@
            ========================================================================== */
         .slide-footer {
             margin-top: auto;
-            padding-top: 10px;
+            padding-top: 8px;
             text-align: center;
             height: 30px;
             flex-shrink: 0;
         }
 
         .slide-footer p {
-            font-size: 0.82rem;
+            font-size: 0.85rem;
             color: #6a7b8c;
             font-style: italic;
         }
@@ -294,38 +302,38 @@
 
     <div class="slide-container">
         
-        <!-- Header & Nav Hub -->
+        <!-- Header & Top Navigation Hub -->
         <header class="slide-header">
-            <h1 class="main-title">Case Studies in Decisiveness</h1>
+            <h1 class="main-title" id="dynamic-main-title">Bob Iger — Disney's Transformation</h1>
             
             <nav class="leader-horizontal-menu">
-                <button class="leader-tab-btn active" onclick="switchCaseStudy(0, this)">
+                <button class="leader-tab-btn active" onclick="switchExecutiveProfile(0, 'Bob Iger — Disney\'s Transformation', this)">
                     <span>Disney's Transformation</span>
                     Bob Iger
                 </button>
-                <button class="leader-tab-btn" onclick="switchCaseStudy(1, this)">
+                <button class="leader-tab-btn" onclick="switchExecutiveProfile(1, 'Indra Nooyi — PepsiCo\'s Bold Pivot', this)">
                     <span>PepsiCo's Bold Pivot</span>
                     Indra Nooyi
                 </button>
-                <button class="leader-tab-btn" onclick="switchCaseStudy(2, this)">
-                    <span>GM's Crisis Response</span>
+                <button class="leader-tab-btn" onclick="switchExecutiveProfile(2, 'Mary Barra — GM\'s Crisis Response', this)">
+                    <span>Mary Barra — GM's Crisis Response</span>
                     Mary Barra
                 </button>
             </nav>
         </header>
 
-        <!-- Main Display Chamber -->
+        <!-- Main Content Arena Pane Vault -->
         <main class="case-vault-display">
             
-            <!-- Tab 1: Disney / Bob Iger -->
+            <!-- Profile 1: Disney / Bob Iger (image_64d0e7.png) -->
             <div class="case-pane active" id="pane-0">
                 <div class="narrative-side">
-                    <h2>The Decisive Move</h2>
-                    <p>When Iger became Disney CEO in 2006, the animation studio was struggling. Rather than waiting for internal solutions, he made a bold call: acquire Pixar for $7.4 billion.</p>
-                    <p>This single decision launched a strategic transformation that would include Marvel, Lucasfilm, and 21st Century Fox — turning Disney into the world's content powerhouse.</p>
+                    <h2 class="panel-block-title">The Decisive Move</h2>
+                    <p class="panel-desc-text">When Iger became Disney CEO in 2006, the animation studio was struggling. Rather than waiting for internal solutions, he made a bold call: acquire Pixar for $7.4 billion.</p>
+                    <p class="panel-desc-text">This single decision launched a strategic transformation that would include Marvel, Lucasfilm, and 21st Century Fox — turning Disney into the world's content powerhouse.</p>
                 </div>
                 <div class="data-side">
-                    <h2 class="data-side-title">Decisive Acquisitions</h2>
+                    <h2 class="data-column-title">Decisive Acquisitions</h2>
                     <div class="acquisition-list">
                         <div class="acq-row"><div class="acq-dot"></div><div class="acq-year">2006</div><div>Pixar — $7.4B</div></div>
                         <div class="acq-row"><div class="acq-dot"></div><div class="acq-year">2009</div><div>Marvel — $4.0B</div></div>
@@ -335,14 +343,14 @@
                 </div>
             </div>
 
-            <!-- Tab 2: PepsiCo / Indra Nooyi -->
+            <!-- Profile 2: PepsiCo / Indra Nooyi (image_64d0c7.png) -->
             <div class="case-pane" id="pane-1">
                 <div class="narrative-side">
-                    <h2>Against the Current</h2>
-                    <p>Nooyi shifted PepsiCo toward healthier offerings despite intense skepticism from industry analysts. She invested heavily in bottled water, baked snacks, and reduced-sugar products while competitors clung to traditional formulations.</p>
-                    <p>By her 2018 departure, PepsiCo was positioned ahead of market health trends — validating her decisive stance against conventional wisdom.</p>
+                    <h2 class="panel-block-title">Against the Current</h2>
+                    <p class="panel-desc-text">Nooyi shifted PepsiCo toward healthier offerings despite intense skepticism from industry analysts. She invested heavily in bottled water, baked snacks, and reduced-sugar products while competitors clung to traditional formulations.</p>
+                    <p class="panel-desc-text">By her 2018 departure, PepsiCo was positioned ahead of market health trends — validating her decisive stance against conventional wisdom.</p>
                 </div>
-                <div class="data-side" style="padding-left: 0; border-left: none;">
+                <div class="data-side" style="border-left: none; padding-left: 0;">
                     <div class="lessons-box-navy">
                         <h3>Lessons in Decisiveness</h3>
                         <ul class="lessons-list">
@@ -355,15 +363,15 @@
                 </div>
             </div>
 
-            <!-- Tab 3: GM / Mary Barra -->
+            <!-- Profile 3: GM / Mary Barra (image_64ce02.png) -->
             <div class="case-pane" id="pane-2">
                 <div class="narrative-side">
-                    <h2>Decisive Crisis Management</h2>
-                    <p>When GM faced a deadly ignition switch defect, Barra didn't hesitate or deflect. She immediately acknowledged the company's failures, initiated a transparent investigation, and allocated $900 million for claims.</p>
-                    <p>This decisive response restored public confidence in GM's integrity and set the foundation for her equally bold pivot toward electric vehicles.</p>
+                    <h2 class="panel-block-title">Decisive Crisis Management</h2>
+                    <p class="panel-desc-text">When GM faced a deadly ignition switch defect, Barra didn't hesitate or deflect. She immediately acknowledged the company's failures, initiated a transparent investigation, and allocated $900 million for claims.</p>
+                    <p class="panel-desc-text">This decisive response restored public confidence in GM's integrity and set the foundation for her equally bold pivot toward electric vehicles.</p>
                 </div>
                 <div class="data-side">
-                    <h2 class="data-side-title">Bold Outcomes</h2>
+                    <h2 class="data-column-title">Bold Outcomes</h2>
                     <div class="stats-column">
                         <div class="stat-block"><div class="stat-value">$900M</div><div class="stat-label">Allocated for claims</div></div>
                         <div class="stat-block"><div class="stat-value">$35B</div><div class="stat-label">EV investment commitment</div></div>
@@ -374,24 +382,28 @@
 
         </main>
 
-        <!-- Presentation Footer Help Line -->
+        <!-- Presentation Footer Help Component -->
         <footer class="slide-footer">
-            <p>Select an executive leadership tab above to review their strategic case profile snapshot variables.</p>
+            <p>Select an executive leadership tab above to toggle their comprehensive corporate strategy matrix variables.</p>
         </footer>
 
     </div>
 
-    <!-- Router Logic Triggers -->
+    <!-- Core Interactive Execution Routing Script -->
     <script>
-        function switchCaseStudy(paneIndex, tabElement) {
+        function switchExecutiveProfile(paneIndex, headerTextString, tabElement) {
+            // Clear active flags from tab controls navigation bar
             const tabs = document.querySelectorAll('.leader-tab-btn');
             tabs.forEach(t => t.classList.remove('active'));
 
+            // Shut down visibility on active viewport display panes
             const panes = document.querySelectorAll('.case-pane');
             panes.forEach(p => p.classList.remove('active'));
 
+            // Mount active metrics onto current user targets
             tabElement.classList.add('active');
             document.getElementById(`pane-${paneIndex}`).classList.add('active');
+            document.getElementById('dynamic-main-title').textContent = headerTextString;
         }
     </script>
 </body>
