@@ -3,21 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Choosing the Right Framework - Storyline Flat Edition</title>
-    
+    <title>RAPID in Practice</title>
     <style>
-        /* ==========================================================================
-           1. Core Reset & Fixed Canvas Dimensions (Absolute No-Scroll Gate)
-           ========================================================================= */
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
-
+        * { box-sizing: border-box; margin: 0; padding: 0; }
         body {
             font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
-            background-color: #f0f4f8;
+            background-color: #f8fafc;
             color: #1a2a3a;
             width: 100vw;
             height: 100vh;
@@ -25,274 +16,126 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            padding: 5px;
         }
-
-        /* Fixed 16:9 Presentation Canvas Container - Strict Spacing Prevents Vertical Cuts */
         .slide-container {
-            background-color: #fafcfe;
             width: 1280px;
             height: 720px;
-            padding: 35px 50px 25px 50px;
+            padding: 40px 50px 35px 50px;
+            background-color: #f8fafc;
             display: flex;
             flex-direction: column;
-            justify-content: space-between;
-            overflow: hidden; 
+            overflow: hidden;
         }
-
-        /* ==========================================================================
-           2. Slide Header Components
-           ========================================================================== */
         .slide-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            border-bottom: 2px solid #e1e8f0;
-            padding-bottom: 10px;
+            height: 90px;
             flex-shrink: 0;
-            height: 75px;
         }
-
         .main-title {
-            font-size: 2.4rem;
+            font-size: 2.6rem;
             font-weight: 800;
-            color: #123456;
+            color: #1c3d5a;
             line-height: 1.1;
         }
-
         .subtitle {
-            font-size: 1rem;
-            color: #6a7b8c;
-            margin-top: 3px;
+            font-size: 1.1rem;
+            color: #718096;
+            margin-top: 8px;
             font-weight: 500;
             display: flex;
             align-items: center;
-            gap: 6px;
+            gap: 10px;
         }
-
         .subtitle::before {
             content: "•";
             color: #e67e22;
-            font-size: 1.4rem;
+            font-size: 1.8rem;
+            line-height: 0;
         }
-
-        .hud-metrics {
-            display: flex;
-            align-items: center;
-        }
-
-        .metric-pill {
-            background-color: #eaf1f8;
-            padding: 6px 14px;
-            border-radius: 4px;
-            font-size: 0.8rem;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            color: #123456;
-            border: 1px solid #ccdbe8;
-        }
-
-        /* ==========================================================================
-           3. Side-by-Side Arena Layout (Zero Vertical Shifts or Truncation)
-           ========================================================================== */
-        .gameplay-arena {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 35px;
-            flex: 1;
-            margin: 25px 0;
-            height: calc(100% - 135px);
-            min-height: 0;
-        }
-
-        .framework-target-card {
+        .table-panel-container {
             background-color: #ffffff;
-            border: 1px solid #e1e8f0;
-            border-radius: 8px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.02);
+            border-radius: 4px;
+            padding: 30px 40px;
+            height: 510px;
+            margin-top: 15px;
             display: flex;
             flex-direction: column;
-            cursor: pointer;
-            overflow: hidden;
-            transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+            justify-content: center;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.01);
         }
-
-        .framework-target-card:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(18, 52, 86, 0.08);
+        .rapid-matrix-table {
+            width: 100%;
+            border-collapse: collapse;
         }
-
-        .card-banner-header {
-            padding: 18px 30px;
-            font-size: 1.65rem;
-            font-weight: 700;
-            color: #ffffff;
-            flex-shrink: 0;
+        .rapid-matrix-table th {
+            text-align: left;
+            font-size: 1.25rem;
+            font-weight: 800;
+            color: #1c3d5a;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #e2e8f0;
         }
-        .ooda-theme .card-banner-header { background-color: #3b75af; }
-        .rapid-theme .card-banner-header { background-color: #1a365d; }
-
-        .card-inner-features {
-            padding: 30px 35px;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            flex: 1;
-        }
-
-        .criteria-bullet-list {
-            list-style-type: none;
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-        }
-
-        .criteria-bullet-list li {
+        .rapid-matrix-table td {
             font-size: 1.05rem;
-            line-height: 1.45;
-            color: #4b5a6a;
-            position: relative;
-            padding-left: 25px;
             font-weight: 600;
-            opacity: 0.3; /* Hidden until clicked */
-            transition: opacity 0.3s ease, color 0.3s ease;
+            color: #4a5568;
+            padding: 18px 10px;
         }
-
-        .criteria-bullet-list li::before {
-            content: "•";
-            position: absolute;
-            left: 0;
-            font-size: 1.6rem;
-            top: -2px;
-            color: #cbd5e1;
+        .rapid-matrix-table tr:not(:last-child) td {
+            border-bottom: 1px solid #edf2f7;
         }
-
-        /* Active highlight states for clicked blocks */
-        .framework-target-card.activated-panel {
-            border-color: #ccdbe8;
-            background-color: #fffbf7;
+        .rapid-matrix-table tr.highlight-row td {
+            background-color: #f7fafc;
         }
-        .framework-target-card.activated-panel .criteria-bullet-list li {
-            opacity: 1;
-            color: #123456;
-        }
-        .ooda-theme.activated-panel .criteria-bullet-list li::before { color: #3b75af; }
-        .rapid-theme.activated-panel .criteria-bullet-list li::before { color: #1a365d; }
-
-        .example-context-footer {
-            font-size: 0.9rem;
-            font-style: italic;
-            color: #7f8c8d;
-            border-top: 1px solid #e1e8f0;
-            padding-top: 10px;
-            margin-top: 20px;
-            opacity: 0;
-            transition: opacity 0.3s ease;
-        }
-        .framework-target-card.activated-panel .example-context-footer {
-            opacity: 1;
-        }
-
-        /* ==========================================================================
-           4. Slide Footer Component
-           ========================================================================== */
-        .slide-footer {
-            border-top: 1px solid #e1e8f0;
-            padding-top: 10px;
-            text-align: center;
-            flex-shrink: 0;
-            height: 35px;
-        }
-
-        .slide-footer p {
-            font-size: 0.85rem;
-            color: #6a7b8c;
-            font-style: italic;
+        .benefit-callout {
+            color: #2b6cb0;
+            font-weight: 700;
         }
     </style>
 </head>
 <body>
-
     <div class="slide-container">
-        
-        <!-- Header -->
         <header class="slide-header">
-            <div class="title-group">
-                <h1 class="main-title" id="dynamic-title">Choosing the Right Framework</h1>
-                <p class="subtitle" id="dynamic-subtitle">Different decisions call for different approaches.</p>
-            </div>
-            <div class="hud-metrics">
-                <div class="metric-pill">Review Progress: <span id="review-counter" style="color: #e67e22;">0 / 2 Unlocked</span></div>
-            </div>
+            <h1 class="main-title">RAPID in Practice</h1>
+            <p class="subtitle">How clear decision roles eliminate ambiguity and accelerate execution</p>
         </header>
-
-        <!-- Main Gameplay Arena Grid -->
-        <div class="gameplay-arena" id="main-play-arena">
-            
-            <!-- Framework Card 1: OODA Loop -->
-            <div class="framework-target-card ooda-theme" id="card-ooda" onclick="activateFramework('ooda')">
-                <div class="card-banner-header">OODA Loop</div>
-                <div class="card-inner-features">
-                    <ul class="criteria-bullet-list">
-                        <li>Competitive strategy and market response</li>
-                        <li>Fast-moving, dynamic environments</li>
-                        <li>Individual or small team decisions</li>
-                        <li>Continuous cycling for rapid adaptation</li>
-                    </ul>
-                    <p class="example-context-footer">Context: Aggressive pricing pivots, sudden regional market shifts</p>
-                </div>
-            </div>
-
-            <!-- Framework Card 2: RAPID -->
-            <div class="framework-target-card rapid-theme" id="card-rapid" onclick="activateFramework('rapid')">
-                <div class="card-banner-header">RAPID</div>
-                <div class="card-inner-features">
-                    <ul class="criteria-bullet-list">
-                        <li>Internal governance and transformation</li>
-                        <li>Complex, multi-stakeholder decisions</li>
-                        <li>Cross-functional or matrixed orgs</li>
-                        <li>High-value or high-frequency decisions</li>
-                    </ul>
-                    <p class="example-context-footer">Context: Cross-department alignment, internal restructuring rules</p>
-                </div>
-            </div>
-
-        </div>
-
-        <!-- Stable Slide Footer Help Line -->
-        <footer class="slide-footer">
-            <p id="footer-text">Click on either strategic framework block card to reveal its core properties and execution constraints.</p>
-        </footer>
-
+        <main class="table-panel-container">
+            <table class="rapid-matrix-table">
+                <thead>
+                    <tr>
+                        <th style="width: 32%;">Challenge</th>
+                        <th style="width: 43%;">RAPID Solution</th>
+                        <th style="width: 25%;">Benefit</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="highlight-row">
+                        <td>"Too many cooks"</td>
+                        <td>Assign one Recommender per decision</td>
+                        <td class="benefit-callout">Single accountability</td>
+                    </tr>
+                    <tr>
+                        <td>"Decision by committee"</td>
+                        <td>Name one Decider with final authority</td>
+                        <td class="benefit-callout">Clear ownership</td>
+                    </tr>
+                    <tr class="highlight-row">
+                        <td>"Approval loops"</td>
+                        <td>Limit Agree roles to legal/regulatory</td>
+                        <td class="benefit-callout">Faster throughput</td>
+                    </tr>
+                    <tr>
+                        <td>"Everyone has an opinion"</td>
+                        <td>Distinguish Input from Agree</td>
+                        <td class="benefit-callout">Focused feedback</td>
+                    </tr>
+                    <tr class="highlight-row">
+                        <td>"Who's doing it?"</td>
+                        <td>Assign Perform role at decision time</td>
+                        <td class="benefit-callout">Immediate execution</td>
+                    </tr>
+                </tbody>
+            </table>
+        </main>
     </div>
-
-    <!-- ==========================================================================
-       5. Simple State Controller Script
-       ========================================================================== */ -->
-    <script>
-        const trackingState = { ooda: false, rapid: false };
-
-        function activateFramework(frameworkKey) {
-            const targetedCard = document.getElementById(`card-${frameworkKey}`);
-            
-            if (!trackingState[frameworkKey]) {
-                trackingState[frameworkKey] = true;
-                targetedCard.classList.add('activated-panel');
-                
-                // Track total viewed counts
-                const unlockedCount = Object.values(trackingState).filter(Boolean).length;
-                const counterHUD = document.getElementById('review-counter');
-                
-                if (unlockedCount < 2) {
-                    counterHUD.textContent = `${unlockedCount} / 2 Unlocked`;
-                } else {
-                    counterHUD.textContent = "Complete";
-                    counterHUD.style.color = "#2ecc71";
-                    document.getElementById('footer-text').textContent = "Matrix audited successfully. You can now pass forward cleanly.";
-                }
-            }
-        }
-    </script>
 </body>
 </html>
