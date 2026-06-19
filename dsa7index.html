@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RAPID in Practice</title>
+    <title>Choosing the Right Framework</title>
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body {
@@ -51,90 +51,93 @@
             font-size: 1.8rem;
             line-height: 0;
         }
-        .table-panel-container {
-            background-color: #ffffff;
-            border-radius: 4px;
-            padding: 30px 40px;
+        .gameplay-arena {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
             height: 510px;
             margin-top: 15px;
+            min-height: 0;
+        }
+        .framework-target-card {
+            background-color: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 4px;
             display: flex;
             flex-direction: column;
-            justify-content: center;
+            overflow: hidden;
             box-shadow: 0 4px 20px rgba(0,0,0,0.01);
+            height: 100%;
         }
-        .rapid-matrix-table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-        .rapid-matrix-table th {
-            text-align: left;
-            font-size: 1.25rem;
-            font-weight: 800;
-            color: #1c3d5a;
-            padding-bottom: 20px;
-            border-bottom: 2px solid #e2e8f0;
-        }
-        .rapid-matrix-table td {
-            font-size: 1.05rem;
-            font-weight: 600;
-            color: #4a5568;
-            padding: 18px 10px;
-        }
-        .rapid-matrix-table tr:not(:last-child) td {
-            border-bottom: 1px solid #edf2f7;
-        }
-        .rapid-matrix-table tr.highlight-row td {
-            background-color: #f7fafc;
-        }
-        .benefit-callout {
-            color: #2b6cb0;
+        .card-banner-header {
+            padding: 22px 40px;
+            font-size: 1.7rem;
             font-weight: 700;
+            color: #ffffff;
+            flex-shrink: 0;
+        }
+        .ooda-theme .card-banner-header { background-color: #4a80b5; }
+        .rapid-theme .card-banner-header { background-color: #1c3d5a; }
+
+        .card-inner-features {
+            padding: 45px;
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+        }
+        .criteria-bullet-list {
+            list-style-type: none;
+            display: flex;
+            flex-direction: column;
+            gap: 22px;
+        }
+        .criteria-bullet-list li {
+            font-size: 1.1rem;
+            line-height: 1.45;
+            color: #4a5568;
+            position: relative;
+            padding-left: 30px;
+            font-weight: 600;
+        }
+        .criteria-bullet-list li::before {
+            content: "•";
+            position: absolute;
+            left: 0;
+            font-size: 1.8rem;
+            top: -4px;
+            color: #4a5568;
         }
     </style>
 </head>
 <body>
     <div class="slide-container">
         <header class="slide-header">
-            <h1 class="main-title">RAPID in Practice</h1>
-            <p class="subtitle">How clear decision roles eliminate ambiguity and accelerate execution</p>
+            <h1 class="main-title">Choosing the Right Framework</h1>
+            <p class="subtitle">Different decisions call for different approaches</p>
         </header>
-        <main class="table-panel-container">
-            <table class="rapid-matrix-table">
-                <thead>
-                    <tr>
-                        <th style="width: 32%;">Challenge</th>
-                        <th style="width: 43%;">RAPID Solution</th>
-                        <th style="width: 25%;">Benefit</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr class="highlight-row">
-                        <td>"Too many cooks"</td>
-                        <td>Assign one Recommender per decision</td>
-                        <td class="benefit-callout">Single accountability</td>
-                    </tr>
-                    <tr>
-                        <td>"Decision by committee"</td>
-                        <td>Name one Decider with final authority</td>
-                        <td class="benefit-callout">Clear ownership</td>
-                    </tr>
-                    <tr class="highlight-row">
-                        <td>"Approval loops"</td>
-                        <td>Limit Agree roles to legal/regulatory</td>
-                        <td class="benefit-callout">Faster throughput</td>
-                    </tr>
-                    <tr>
-                        <td>"Everyone has an opinion"</td>
-                        <td>Distinguish Input from Agree</td>
-                        <td class="benefit-callout">Focused feedback</td>
-                    </tr>
-                    <tr class="highlight-row">
-                        <td>"Who's doing it?"</td>
-                        <td>Assign Perform role at decision time</td>
-                        <td class="benefit-callout">Immediate execution</td>
-                    </tr>
-                </tbody>
-            </table>
+        <main class="gameplay-arena">
+            <div class="framework-target-card ooda-theme">
+                <div class="card-banner-header">OODA Loop</div>
+                <div class="card-inner-features">
+                    <ul class="criteria-bullet-list">
+                        <li>Competitive strategy and market response</li>
+                        <li>Fast-moving, dynamic environments</li>
+                        <li>Individual or small team decisions</li>
+                        <li>Continuous cycling for rapid adaptation</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="framework-target-card rapid-theme">
+                <div class="card-banner-header">RAPID</div>
+                <div class="card-inner-features">
+                    <ul class="criteria-bullet-list">
+                        <li>Internal governance and transformation</li>
+                        <li>Complex, multi-stakeholder decisions</li>
+                        <li>Cross-functional or matrixed orgs</li>
+                        <li>High-value or high-frequency decisions</li>
+                    </ul>
+                </div>
+            </div>
         </main>
     </div>
 </body>
