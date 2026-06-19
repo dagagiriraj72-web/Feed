@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Clear Decision Rights</title>
+    <title>Clear Decision Rights - Interactive Simulation</title>
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body {
@@ -16,131 +16,204 @@
             display: flex;
             justify-content: center;
             align-items: center;
+            padding: 5px;
         }
         .slide-container {
+            background-color: #fafcfe;
             width: 1280px;
             height: 720px;
-            padding: 40px 50px 35px 50px;
-            background-color: #f8fafc;
+            padding: 30px 45px 20px 45px;
             display: flex;
             flex-direction: column;
-            overflow: hidden;
+            justify-content: space-between;
+            overflow: hidden; 
         }
         .slide-header {
-            height: 90px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px solid #e1e8f0;
+            padding-bottom: 8px;
+            height: 65px;
             flex-shrink: 0;
         }
         .main-title {
-            font-size: 2.6rem;
+            font-size: 2.2rem;
             font-weight: 800;
-            color: #1c3d5a;
+            color: #123456;
             line-height: 1.1;
         }
-        .subtitle {
-            font-size: 1.1rem;
-            color: #718096;
-            margin-top: 8px;
-            font-weight: 500;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        .subtitle::before {
-            content: "•";
-            color: #e67e22;
-            font-size: 1.8rem;
-            line-height: 0;
+        .hud-metrics { display: flex; gap: 12px; }
+        .metric-pill {
+            background-color: #eaf1f8;
+            padding: 5px 12px;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: #123456;
+            border: 1px solid #ccdbe8;
         }
         .gameplay-arena {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            flex: 1;
+            margin: 15px 0;
+            min-height: 0;
+        }
+        .sidebar-diagnostic-desk {
+            background-color: #123456;
+            border-radius: 6px;
+            padding: 15px 25px;
+            color: #ffffff;
+            flex-shrink: 0;
+        }
+        .sidebar-diagnostic-desk h3 {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #e67e22;
+            margin-bottom: 2px;
+        }
+        .sidebar-diagnostic-desk p {
+            font-size: 1.05rem;
+            line-height: 1.4;
+            color: #ffffff;
+            font-weight: 600;
+        }
+        .matrix-split-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 40px;
-            height: 510px;
-            margin-top: 15px;
+            gap: 20px;
+            flex: 1;
             min-height: 0;
         }
         .matrix-column-card {
             background-color: #ffffff;
-            border: 1px solid #e2e8f0;
-            border-radius: 4px;
+            border: 1px solid #e1e8f0;
+            border-radius: 6px;
             display: flex;
             flex-direction: column;
             overflow: hidden;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.01);
             height: 100%;
         }
         .card-banner-header {
-            padding: 22px 40px;
-            font-size: 1.55rem;
+            padding: 10px 20px;
+            font-size: 1.1rem;
             font-weight: 700;
             color: #ffffff;
             flex-shrink: 0;
         }
-        .root-causes-card .card-banner-header { background-color: #bd3a2b; }
-        .solutions-card .card-banner-header { background-color: #27ae60; }
-
+        .root-causes-card .card-banner-header { background-color: #c0392b; }
+        .solutions-card .card-banner-header { background-color: #2ecc71; }
         .card-inner-features {
-            padding: 45px;
+            padding: 15px 20px;
             display: flex;
             flex-direction: column;
+            justify-content: space-between;
             flex: 1;
+            min-height: 0;
         }
         .criteria-bullet-list {
             list-style-type: none;
             display: flex;
             flex-direction: column;
-            gap: 20px;
+            gap: 10px;
         }
         .criteria-bullet-list li {
-            font-size: 1.1rem;
-            line-height: 1.45;
-            color: #4a5568;
+            font-size: 0.9rem;
+            line-height: 1.35;
+            color: #4b5a6a;
             position: relative;
-            padding-left: 30px;
+            padding-left: 20px;
             font-weight: 600;
+            transition: all 0.2s ease;
         }
         .criteria-bullet-list li::before {
             content: "•";
             position: absolute;
             left: 0;
-            font-size: 1.8rem;
-            top: -4px;
-            color: #4a5568;
+            font-size: 1.3rem;
+            top: -2px;
+            color: #cbd5e1;
         }
+        .solutions-card .criteria-bullet-list li {
+            background-color: #f7fafc;
+            border: 1px solid #e1e8f0;
+            padding: 10px 12px 10px 25px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .solutions-card .criteria-bullet-list li::before { left: 10px; top: 8px; }
+        .solutions-card .criteria-bullet-list li:hover {
+            background-color: #ffffff;
+            border-color: #2ecc71;
+            transform: translateX(3px);
+        }
+        .root-causes-card .criteria-bullet-list li { opacity: 0.25; }
+        .root-causes-card .criteria-bullet-list li.active-revealed {
+            opacity: 1;
+            color: #c0392b;
+        }
+        .root-causes-card .criteria-bullet-list li.active-revealed::before { color: #c0392b; }
+        .solutions-card .criteria-bullet-list li.resolved-matched {
+            background-color: #f4fbf7;
+            border-color: #2ecc71;
+            color: #27ae60;
+            cursor: default;
+            pointer-events: none;
+            transform: none;
+        }
+        .solutions-card .criteria-bullet-list li.resolved-matched::before { color: #2ecc71; }
+        .slide-footer {
+            border-top: 1px solid #e1e8f0;
+            padding-top: 8px;
+            text-align: center;
+            flex-shrink: 0;
+            height: 35px;
+        }
+        .slide-footer p { font-size: 0.85rem; color: #6a7b8c; font-style: italic; }
     </style>
 </head>
 <body>
     <div class="slide-container">
         <header class="slide-header">
-            <h1 class="main-title">Clear Decision Rights</h1>
-            <p class="subtitle">Ambiguity about who decides is the primary source of organizational indecision</p>
+            <h1 class="main-title" id="dynamic-title">Clear Decision Rights</h1>
+            <div class="hud-metrics">
+                <div class="metric-pill">Cures Deployed: <span id="resolved-count">0 / 5</span></div>
+            </div>
         </header>
-        <main class="gameplay-arena">
-            <div class="matrix-column-card root-causes-card">
-                <div class="card-banner-header">Root Causes of Indecision</div>
-                <div class="card-inner-features">
-                    <ul class="criteria-bullet-list">
-                        <li>Complex structures and overlapping responsibilities</li>
-                        <li>Informal power dynamics and politics</li>
-                        <li>Lack of trust among senior leaders</li>
-                        <li>Fear of failure or accountability</li>
-                        <li>Conflict avoidance in political environments</li>
-                    </ul>
+        <div class="gameplay-arena">
+            <div class="sidebar-diagnostic-desk">
+                <h3>Organizational Pathology Log</h3>
+                <p id="pathology-text">Loading case profile log variables...</p>
+            </div>
+            <div class="matrix-split-grid">
+                <div class="matrix-column-card root-causes-card">
+                    <div class="card-banner-header">Root Causes of Indecision</div>
+                    <div class="card-inner-features">
+                        <ul class="criteria-bullet-list">
+                            <li class="cause-node-0 active-revealed">Complex structures and overlapping responsibilities</li>
+                            <li class="cause-node-1">Informal power dynamics and politics</li>
+                            <li class="cause-node-2">Lack of trust among senior leaders</li>
+                            <li class="cause-node-3">Fear of failure or accountability</li>
+                            <li class="cause-node-4">Conflict avoidance in political environments</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="matrix-column-card solutions-card">
+                    <div class="card-banner-header">Solutions</div>
+                    <div class="card-inner-features">
+                        <ul class="criteria-bullet-list">
+                            <li onclick="routeSolution('deadlines', this)">Set decision deadlines for every open item</li>
+                            <li onclick="routeSolution('veto', this)">Separate veto from advisory input</li>
+                            <li onclick="routeSolution('explicit', this)">Make decision authority explicit and visible</li>
+                            <li onclick="routeSolution('rapid', this)">Map decision rights using RAPID or similar</li>
+                            <li onclick="routeSolution('escalation', this)">Establish escalation paths with time limits</li>
+                        </ul>
+                    </div>
                 </div>
             </div>
-            <div class="matrix-column-card solutions-card">
-                <div class="card-banner-header">Solutions</div>
-                <div class="card-inner-features">
-                    <ul class="criteria-bullet-list">
-                        <li>Map decision rights using RAPID or similar</li>
-                        <li>Set decision deadlines for every open item</li>
-                        <li>Separate veto from advisory input</li>
-                        <li>Establish escalation paths with time limits</li>
-                        <li>Make decision authority explicit and visible</li>
-                    </ul>
-                </div>
-            </div>
-        </main>
-    </div>
-</body>
-</html>
+        </div>
+        <footer class="slide-footer">
+            <p id="footer-text">Analyze the active Pathology statement
