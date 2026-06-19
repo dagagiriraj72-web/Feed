@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>IB Group - Framework Selection Center</title>
+    <title>Choosing the Right Framework - Clean Strategic Console</title>
     <style>
-        /* FORCE CONTAINERS TO OCCUPY THE ENTIRE IFRAME WINDOW WITHOUT DROPOUTS */
+        /* FORCE GLOBAL CONTAINER TO STRETCH TO FULL IFRAME BOUNDS */
         html, body {
             margin: 0;
             padding: 0;
@@ -16,8 +16,9 @@
             overflow: hidden;
         }
 
-        /* 16:9 ASPECT RATIO CONTAINER CANOPY
-           Locks coordinates strictly to stop text bleeding into lower margins.
+        /* STRICT 16:9 ASPECT RATIO SLIDE VIEWPORT
+           Enforces structural boundary barriers to permanently eliminate lower text bleeding,
+           overlapping cards, or footer truncation errors inside Storyline web objects.
         */
         .slide-wrapper {
             width: 100%;
@@ -34,7 +35,7 @@
             position: relative;
         }
 
-        /* Top Branded Corporate Header Row */
+        /* Top Branded Header Row */
         .header-section {
             display: flex;
             justify-content: space-between;
@@ -62,12 +63,14 @@
             border-radius: 4px;
         }
 
-        /* MASTER VERTICAL WORKSPACE PIPELINE */
+        /* MASTER SINGLE-COLUMN PIPELINE WORKSPACE 
+           Arranges sections vertically to isolate the choice blocks from text expansions.
+        */
         .workspace-matrix {
             display: flex;
             flex-direction: column;
             flex-grow: 1;
-            min-height: 0; /* Core anti-collapse structural barrier line */
+            min-height: 0; 
             margin: 0.8rem 0;
         }
 
@@ -113,7 +116,7 @@
             text-align: center;
         }
 
-        /* Active Selected Navigation Tab Highlighting */
+        /* Active Navigation Tab Highlighting */
         .business-hub-btn.active-tab {
             background-color: #ffffff;
             border-color: #1e3a5f;
@@ -134,8 +137,8 @@
         }
         .business-hub-btn.mastered-tab .hub-index-lbl { color: #2a9d8f; }
 
-        /* HORIZONTAL SPLIT PLAYGROUND CARD
-           Splits content left-to-right to maximize space and guarantee zero text overlaps.
+        /* UNIFIED WORKSPACE DESK ARENA CARD
+           Houses content in a clean, vertical scrollable dock to guarantee zero overlaps.
         */
         .unified-arena-card {
             background-color: #ffffff;
@@ -147,34 +150,23 @@
             min-height: 0;
             display: flex;
             flex-direction: column;
-            justify-content: center;
+            justify-content: space-between;
         }
 
-        .arena-split-view {
-            display: none; 
-            grid-template-columns: 0.95fr 1.05fr;
-            gap: 2.5rem;
-            align-items: center;
-            width: 100%;
-            height: 100%;
-        }
-
-        .arena-split-view.visible-view {
-            display: grid;
-        }
-
-        /* Left Split Column: Dilemma Asset Profile Case */
-        .arena-brief-column {
-            display: flex;
-            flex-direction: column;
-            gap: 0.8rem;
-            max-height: 440px;
+        /* Safe scroll sandbox zone preventing text parameters overflow issues */
+        .terminal-scroll-sandbox {
+            flex-grow: 1;
+            min-height: 0;
+            max-height: 440px; /* Rigid vertical ceiling constraint blocks collisions */
             overflow-y: auto;
             padding-right: 0.5rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
         }
 
-        .arena-brief-column::-webkit-scrollbar { width: 4px; }
-        .arena-brief-column::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 2px; }
+        .terminal-scroll-sandbox::-webkit-scrollbar { width: 4px; }
+        .terminal-scroll-sandbox::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 2px; }
 
         .arena-tag-heading {
             font-size: 0.85rem;
@@ -184,6 +176,7 @@
             letter-spacing: 0.5px;
         }
 
+        /* Textbook Core Value Information Block */
         .framework-criterion-box {
             font-size: 0.98rem;
             font-weight: 600;
@@ -200,13 +193,17 @@
             font-weight: 700;
             color: #3d2314;
             line-height: 1.42;
+            margin: 0;
         }
 
-        /* Right Split Column: Twin Framework Interactive Matching Docking Cards */
-        .arena-input-column {
+        /* Twin Card Grid Matrix for Framework Selections */
+        .choices-grid-matrix {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 1rem;
+            gap: 1.2rem;
+            margin-top: auto;
+            padding-top: 1rem;
+            flex-shrink: 0;
             width: 100%;
         }
 
@@ -214,7 +211,7 @@
             background-color: #ffffff;
             border: 2px solid #e2dbd5;
             border-radius: 10px;
-            padding: 1.4rem;
+            padding: 1.2rem 1.5rem;
             text-align: center;
             cursor: pointer;
             transition: all 0.25s cubic-bezier(0.165, 0.84, 0.44, 1);
@@ -222,25 +219,23 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            height: 100%;
-            min-height: 180px;
         }
 
         .framework-matching-card:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.04);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.03);
         }
 
-        /* Custom Specific Framework Colored Accents matching image_6382ae.png */
-        .card-ooda-accent { border-top: 6px solid #4a90e2; }
+        /* Brand Colored Accents matching image layouts */
+        .card-ooda-accent { border-top: 5px solid #4a90e2; }
         .card-ooda-accent:hover { border-color: #4a90e2; }
-        .card-rapid-accent { border-top: 6px solid #1e3a5f; }
+        .card-rapid-accent { border-top: 5px solid #1e3a5f; }
         .card-rapid-accent:hover { border-color: #1e3a5f; }
 
         .card-title-lbl {
-            font-size: 1.5rem;
+            font-size: 1.4rem;
             font-weight: 800;
-            margin-bottom: 0.5rem;
+            margin-bottom: 0.4rem;
         }
         .ooda-lbl { color: #4a90e2; }
         .rapid-lbl { color: #1e3a5f; }
@@ -252,7 +247,7 @@
             line-height: 1.4;
         }
 
-        /* Step Complete Success Inner Overlay Card Component Layer */
+        /* Success Stage Transitions Overlay Sheets */
         .stage-success-overlay {
             display: none;
             flex-direction: column;
@@ -268,18 +263,6 @@
             font-size: 1.4rem;
             font-weight: 800;
             color: #2a9d8f;
-        }
-
-        /* Grand Total Campaign Clear Screen Overrides */
-        .campaign-clear-panel {
-            display: none;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-            width: 100%;
-            height: 100%;
-            gap: 0.8rem;
         }
 
         /* Bottom Fixed Corporate Metrics Row Status Bar */
@@ -314,16 +297,16 @@
 <body>
 
     <div class="slide-wrapper">
-        <!-- Dashboard Title Header Row -->
+        <!-- Dashboard Branded Header -->
         <div class="header-section">
             <h1 class="main-title">Choosing the Right Framework</h1>
             <span class="company-branding">IB Group</span>
         </div>
 
-        <!-- Master Workspace Grid Area Frame -->
+        <!-- Master Workspace Dashboard Matrix -->
         <div class="workspace-matrix">
             
-            <!-- Horizontal Business Unit Folder Ribbon Track -->
+            <!-- Horizontal Folder Tab Ribbon Track -->
             <div class="ribbon-navigation-track">
                 <button class="business-hub-btn active-tab" id="tab-0" onclick="switchOperationalTab(0)">
                     <span class="hub-index-lbl">Sector 01</span>
@@ -347,116 +330,40 @@
                 </button>
             </div>
 
-            <!-- Master Playbook Content Display Desk -->
+            <!-- Master Playbook Content Container Card -->
             <div class="unified-arena-card" id="sandbox-container">
                 
-                <!-- Sector 1 Panel View: Broiler Integration -->
-                <div class="arena-split-view visible-view" id="view-0">
-                    <div class="arena-brief-column">
-                        <div class="arena-tag-heading">Operational Decision Profile • 1 of 5</div>
-                        <div class="framework-criterion-box">Context Domain: Fast-moving, dynamic environments requiring rapid individual or small team market responses.</div>
-                        <h2 class="challenge-statement-text">IB Group Case File: Competitors launch an unseasonable hatch rate price war across regional contract farming nodes. Which workflow do you deploy to adapt execution plans hourly?</h2>
+                <!-- Internal vertical scroll block isolating texts from lower action targets -->
+                <div class="terminal-scroll-sandbox" id="interactive-view-block">
+                    <div class="arena-tag-heading" id="arena-stage-title">Operational Decision Profile • 1 of 5</div>
+                    <div class="framework-criterion-box" id="arena-brief-text">Context Domain: Fast-moving, dynamic environments requiring rapid individual or small team market responses.</div>
+                    <h2 class="challenge-statement-text" id="arena-challenge-text">IB Group Case File: Competitors launch an unseasonable hatch rate price war across regional contract farming nodes. Which workflow do you deploy to adapt execution plans hourly?</h2>
+                </div>
+
+                <!-- Lower horizontally separated selection choice matrix pipeline -->
+                <div class="choices-grid-matrix" id="arena-options-container">
+                    <div class="framework-matching-card card-ooda-accent" onclick="submitStrategySelection('OODA')">
+                        <span class="card-title-lbl ooda-lbl">OODA Loop</span>
+                        <span class="card-desc-lbl">Continuous loop optimized for fast-moving competitive adaptation.</span>
                     </div>
-                    <div class="arena-input-column">
-                        <div class="framework-matching-card card-ooda-accent" onclick="submitStrategySelection('OODA')">
-                            <span class="card-title-lbl ooda-lbl">OODA Loop</span>
-                            <span class="card-desc-lbl">Continuous loop optimized for fast-moving competitive adaptation.</span>
-                        </div>
-                        <div class="framework-matching-card card-rapid-accent" onclick="submitStrategySelection('RAPID')">
-                            <span class="card-title-lbl rapid-lbl">RAPID</span>
-                            <span class="card-desc-lbl">Structured framework built for high-value internal governance.</span>
-                        </div>
+                    <div class="framework-matching-card card-rapid-accent" onclick="submitStrategySelection('RAPID')">
+                        <span class="card-title-lbl rapid-lbl">RAPID</span>
+                        <span class="card-desc-lbl">Structured framework built for high-value internal governance.</span>
                     </div>
                 </div>
 
-                <!-- Sector 2 Panel View: Fish Feed -->
-                <div class="arena-split-view" id="view-1">
-                    <div class="arena-brief-column">
-                        <div class="arena-tag-heading">Operational Decision Profile • 2 of 5</div>
-                        <div class="framework-criterion-box">Context Domain: Complex, multi-stakeholder governance and cross-functional corporate transformation matrices.</div>
-                        <h2 class="challenge-statement-text">IB Group Case File: Designing a long-term capital allocation upgrade plan to construct a high-capacity fish and shrimp feed extrusion plant line. Which framework governs this?</h2>
-                    </div>
-                    <div class="arena-input-column">
-                        <div class="framework-matching-card card-ooda-accent" onclick="submitStrategySelection('OODA')">
-                            <span class="card-title-lbl ooda-lbl">OODA Loop</span>
-                            <span class="card-desc-lbl">Continuous loop optimized for fast-moving competitive adaptation.</span>
-                        </div>
-                        <div class="framework-matching-card card-rapid-accent" onclick="submitStrategySelection('RAPID')">
-                            <span class="card-title-lbl rapid-lbl">RAPID</span>
-                            <span class="card-desc-lbl">Structured framework built for high-value internal governance.</span>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Sector 3 Panel View: Abis Pro Retail -->
-                <div class="arena-split-view" id="view-2">
-                    <div class="arena-brief-column">
-                        <div class="arena-tag-heading">Operational Decision Profile • 3 of 5</div>
-                        <div class="framework-criterion-box">Context Domain: High-frequency operational strategy loops requiring real-time agile execution changes.</div>
-                        <h2 class="challenge-statement-text">IB Group Case File: A sudden weekend fresh stock supply logistics delay affects two active retail storefront checkouts. How does the storefront coordinator align actions instantly?</h2>
-                    </div>
-                    <div class="arena-input-column">
-                        <div class="framework-matching-card card-ooda-accent" onclick="submitStrategySelection('OODA')">
-                            <span class="card-title-lbl ooda-lbl">OODA Loop</span>
-                            <span class="card-desc-lbl">Continuous loop optimized for fast-moving competitive adaptation.</span>
-                        </div>
-                        <div class="framework-matching-card card-rapid-accent" onclick="submitStrategySelection('RAPID')">
-                            <span class="card-title-lbl rapid-lbl">RAPID</span>
-                            <span class="card-desc-lbl">Structured framework built for high-value internal governance.</span>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Sector 4 Panel View: Lynk Sweets -->
-                <div class="arena-split-view" id="view-3">
-                    <div class="arena-brief-column">
-                        <div class="arena-tag-heading">Operational Decision Profile • 4 of 5</div>
-                        <div class="framework-criterion-box">Context Domain: Internal cross-functional matrix alignment involving high-value brand parameters.</div>
-                        <h2 class="challenge-statement-text">IB Group Case Profile: Deciding whether to completely re-brand the sugar confectionery line packaging assets, requiring sign-offs from Marketing, Supply Chain, and Legal.</h2>
-                    </div>
-                    <div class="arena-input-column">
-                        <div class="framework-matching-card card-ooda-accent" onclick="submitStrategySelection('OODA')">
-                            <span class="card-title-lbl ooda-lbl">OODA Loop</span>
-                            <span class="card-desc-lbl">Continuous loop optimized for fast-moving competitive adaptation.</span>
-                        </div>
-                        <div class="framework-matching-card card-rapid-accent" onclick="submitStrategySelection('RAPID')">
-                            <span class="card-title-lbl rapid-lbl">RAPID</span>
-                            <span class="card-desc-lbl">Structured framework built for high-value internal governance.</span>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Sector 5 Panel View: Abis Edible Oil -->
-                <div class="arena-split-view" id="view-4">
-                    <div class="arena-brief-column">
-                        <div class="arena-tag-heading">Operational Decision Profile • 5 of 5</div>
-                        <div class="framework-criterion-box">Context Domain: Matrixed enterprise strategy adjustments for long-term internal operational transformation.</div>
-                        <h2 class="challenge-statement-text">IB Group Case Profile: Establishing a new regional bulk edible oil packaging distribution channel joint-venture roadmap. Which model structures roles?</h2>
-                    </div>
-                    <div class="arena-input-column">
-                        <div class="framework-matching-card card-ooda-accent" onclick="submitStrategySelection('OODA')">
-                            <span class="card-title-lbl ooda-lbl">OODA Loop</span>
-                            <span class="card-desc-lbl">Continuous loop optimized for fast-moving competitive adaptation.</span>
-                        </div>
-                        <div class="framework-matching-card card-rapid-accent" onclick="submitStrategySelection('RAPID')">
-                            <span class="card-title-lbl rapid-lbl">RAPID</span>
-                            <span class="card-desc-lbl">Structured framework built for high-value internal governance.</span>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Step Clear Success Inner Overlay Card Component -->
+                <!-- Module Dynamic Success Panel Sheet Overlay -->
                 <div class="stage-success-overlay" id="victory-overlay-panel">
-                    <span style="font-size: 40px;">🎯⚙️</span>
-                    <p class="success-heading-text">Operational Architecture Synchronized!</p>
-                    <p style="color: #6e5d53; font-size: 0.92rem; margin: 0;">Select an uncompleted business segment folder tab from the top ribbon track to continue formatting standard workflows.</p>
+                    <span style="font-size: 2.5rem;">🎯⚙️</span>
+                    <p class="success-heading-text">Operational Strategy Aligned!</p>
+                    <p style="color: #6e5d53; font-size: 0.92rem;">Select an uncompleted business sector from the top folder row track to continue mapping workflows.</p>
                 </div>
 
                 <!-- Grand Campaign Matrix Complete Screen Panel -->
                 <div class="stage-success-overlay" id="campaign-clear-panel">
-                    <span style="font-size: 50px;">👑</span>
-                    <h2 style="color: #1e3a5f; font-size: 24px; font-weight: 800; margin: 5px 0;">Corporate Strategy Aligned!</h2>
-                    <p style="color: #4a382c; font-size: 14px; font-weight: 600; max-width: 480px; margin: 0 auto; line-height: 1.45;">All five IB Group operational divisions have been successfully synchronized under optimal decision-making frameworks.</p>
+                    <span style="font-size: 3.5rem;">👑</span>
+                    <h2 style="color: #1e3a5f; font-size: 1.8rem; font-weight: 800;">Corporate Roadmap Aligned!</h2>
+                    <p style="color: #4a382c; font-size: 1rem; font-weight: 600; max-width: 440px; line-height: 1.45;">All five IB Group operational divisions have been successfully synchronized under optimal decision-making frameworks.</p>
                 </div>
 
             </div>
@@ -465,7 +372,7 @@
         <!-- Progress Tracking Status Row -->
         <div class="footer-bar">
             <div class="score-tracker-badge">Sectors Optimized: <span id="progress-val">0</span> / 5</div>
-            <div class="instruction-tag">Different decisions call for different tactical approaches. Evaluate the case metrics and deploy the corresponding framework archetype.</div>
+            <div class="instruction-tag">Different decisions call for different tactical approaches. Evaluate the case metrics and deploy the corresponding framework.</div>
         </div>
     </div>
 
@@ -479,35 +386,64 @@
             4: "RAPID"  // High-value internal governance roadmap
         };
 
+        const sectorSimulationMatrix = [
+            {
+                tag: "Operational Decision Profile • 1 of 5",
+                brief: "Context Domain: Fast-moving, dynamic environments requiring rapid individual or small team market responses.",
+                case: "IB Group Case File: Competitors launch an unseasonable hatch rate price war across regional contract farming nodes. Which workflow do you deploy to adapt execution plans hourly?"
+            },
+            {
+                tag: "Operational Decision Profile • 2 of 5",
+                brief: "Context Domain: Complex, multi-stakeholder governance and cross-functional corporate transformation matrices.",
+                case: "IB Group Case File: Designing a long-term capital allocation upgrade plan to construct a high-capacity fish and shrimp feed extrusion plant line. Which framework governs this?"
+            },
+            {
+                tag: "Operational Decision Profile • 3 of 5",
+                brief: "Context Domain: High-frequency operational strategy loops requiring real-time agile execution changes.",
+                case: "IB Group Case Profile: A sudden weekend fresh stock supply logistics delay affects two active retail storefront checkouts. How does the storefront coordinator align actions instantly?"
+            },
+            {
+                tag: "Operational Decision Profile • 4 of 5",
+                brief: "Context Domain: Internal cross-functional matrix alignment involving high-value brand parameters.",
+                case: "IB Group Case Profile: Deciding whether to completely re-brand the sugar confectionery line packaging assets, requiring sign-offs from Marketing, Supply Chain, and Legal."
+            },
+            {
+                tag: "Operational Decision Profile • 5 of 5",
+                brief: "Context Domain: Matrixed enterprise strategy adjustments for long-term internal operational transformation.",
+                case: "IB Group Case Profile: Establishing a new regional bulk edible oil packaging distribution channel joint-venture roadmap. Which model structures roles?"
+            }
+        ];
+
         let activeStageIdx = 0;
         let solvedCount = 0;
         let masteredStateMap = { 0: false, 1: false, 2: false, 3: false, 4: false };
 
         function loadSimulationStage() {
-            const splitView = document.getElementById(`view-${activeStageIdx}`);
+            const scrollSandbox = document.getElementById("interactive-view-block");
             const victoryPanel = document.getElementById("victory-overlay-panel");
             const clearPanel = document.getElementById("campaign-clear-panel");
-
+            const optionsContainer = document.getElementById("arena-options-container");
+            
             if (masteredStateMap[activeStageIdx]) {
-                if (splitView) splitView.classList.remove("visible-view");
+                scrollSandbox.style.display = "none";
+                optionsContainer.style.display = "none";
                 victoryPanel.style.display = "flex";
                 clearPanel.style.display = "none";
                 return;
             }
 
+            scrollSandbox.style.display = "flex";
+            optionsContainer.style.display = "grid";
             victoryPanel.style.display = "none";
             clearPanel.style.display = "none";
-            
-            for (let i = 0; i < 5; i++) {
-                const targetView = document.getElementById(`view-${i}`);
-                if (targetView) {
-                    if (i === activeStageIdx) {
-                        targetView.classList.add("visible-view");
-                    } else {
-                        targetView.classList.remove("visible-view");
-                    }
-                }
-            }
+
+            const data = sectorSimulationMatrix[activeStageIdx];
+            document.getElementById("arena-stage-title").innerText = data.tag;
+            document.getElementById("arena-brief-text").innerText = data.brief;
+            document.getElementById("arena-challenge-text").innerText = data.case;
+
+            // Auto reset scroll box to top boundary when switching content fields
+            scrollSandbox.scrollTop = 0;
         }
 
         function switchOperationalTab(targetIdx) {
@@ -519,7 +455,8 @@
 
             const totalMasteryCount = Object.values(masteredStateMap).filter(Boolean).length;
             if (totalMasteryCount === 5) {
-                document.getElementById(`view-${targetIdx}`).classList.remove("visible-view");
+                document.getElementById("interactive-view-block").style.display = "none";
+                document.getElementById("arena-options-container").style.display = "none";
                 document.getElementById("victory-overlay-panel").style.display = "none";
                 document.getElementById("campaign-clear-panel").style.display = "flex";
                 return;
@@ -539,7 +476,9 @@
                 const activeTab = document.getElementById(`tab-${activeStageIdx}`);
                 activeTab.classList.add("mastered-tab");
 
-                document.getElementById(`view-${activeStageIdx}`).classList.remove("visible-view");
+                document.getElementById("interactive-view-block").style.display = "none";
+                document.getElementById("arena-options-container").style.display = "none";
+
                 if (solvedCount === 5) {
                     document.getElementById("campaign-clear-panel").style.display = "flex";
                 } else {
@@ -552,6 +491,9 @@
                 setTimeout(() => windowBoard.style.backgroundColor = "#ffffff", 350);
             }
         }
+
+        // Initialize setup on run load configurations
+        loadSimulationStage();
     </script>
 </body>
 </html>
