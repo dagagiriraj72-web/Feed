@@ -3,12 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Choosing the Right Framework</title>
+    <title>Choosing the Right Framework - Interactive Discovery</title>
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body {
             font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
-            background-color: #f8fafc;
+            background-color: #f0f4f8;
             color: #1a2a3a;
             width: 100vw;
             height: 100vh;
@@ -16,129 +16,139 @@
             display: flex;
             justify-content: center;
             align-items: center;
+            padding: 5px;
         }
         .slide-container {
+            background-color: #fafcfe;
             width: 1280px;
             height: 720px;
-            padding: 40px 50px 35px 50px;
-            background-color: #f8fafc;
+            padding: 30px 45px 20px 45px;
             display: flex;
             flex-direction: column;
+            justify-content: space-between;
             overflow: hidden;
         }
         .slide-header {
-            height: 90px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px solid #e1e8f0;
+            padding-bottom: 8px;
+            height: 65px;
             flex-shrink: 0;
         }
-        .main-title {
-            font-size: 2.6rem;
-            font-weight: 800;
-            color: #1c3d5a;
-            line-height: 1.1;
+        .main-title { font-size: 2.2rem; font-weight: 800; color: #123456; }
+        .metric-pill {
+            background-color: #eaf1f8;
+            padding: 5px 12px;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: #123456;
+            border: 1px solid #ccdbe8;
         }
-        .subtitle {
-            font-size: 1.1rem;
-            color: #718096;
-            margin-top: 8px;
-            font-weight: 500;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        .subtitle::before {
-            content: "•";
-            color: #e67e22;
-            font-size: 1.8rem;
-            line-height: 0;
-        }
-        .gameplay-arena {
+        .framework-tabs-dock {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 40px;
-            height: 510px;
+            gap: 16px;
             margin-top: 15px;
-            min-height: 0;
-        }
-        .framework-target-card {
-            background-color: #ffffff;
-            border: 1px solid #e2e8f0;
-            border-radius: 4px;
-            display: flex;
-            flex-direction: column;
-            overflow: hidden;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.01);
-            height: 100%;
-        }
-        .card-banner-header {
-            padding: 22px 40px;
-            font-size: 1.7rem;
-            font-weight: 700;
-            color: #ffffff;
+            height: 50px;
             flex-shrink: 0;
         }
-        .ooda-theme .card-banner-header { background-color: #4a80b5; }
-        .rapid-theme .card-banner-header { background-color: #1c3d5a; }
-
-        .card-inner-features {
-            padding: 45px;
-            display: flex;
-            flex-direction: column;
+        .tab-trigger-btn {
+            background-color: #ffffff;
+            border: 1px solid #e1e8f0;
+            border-bottom: 4px solid #cbd5e1;
+            border-radius: 6px;
+            font-family: inherit;
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #4b5a6a;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .tab-trigger-btn.active-tab[data-target="ooda"] { border-bottom-color: #3b75af; color: #3b75af; background-color: #f4f8fb; }
+        .tab-trigger-btn.active-tab[data-target="rapid"] { border-bottom-color: #1a365d; color: #1a365d; background-color: #f0f4f8; }
+        .content-viewport-panel {
             flex: 1;
-        }
-        .criteria-bullet-list {
-            list-style-type: none;
+            background-color: #ffffff;
+            border: 1px solid #e1e8f0;
+            border-radius: 8px;
+            padding: 30px 40px;
+            margin: 20px 0;
             display: flex;
             flex-direction: column;
-            gap: 22px;
+            justify-content: center;
+            min-height: 0;
         }
-        .criteria-bullet-list li {
+        .framework-content-pane { display: none; flex-direction: column; gap: 20px; }
+        .framework-content-pane.visible-pane { display: flex; }
+        .criteria-bullet-matrix {
+            list-style-type: none;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px 40px;
+        }
+        .criteria-bullet-matrix li {
             font-size: 1.1rem;
             line-height: 1.45;
-            color: #4a5568;
+            color: #334455;
             position: relative;
-            padding-left: 30px;
+            padding-left: 24px;
             font-weight: 600;
         }
-        .criteria-bullet-list li::before {
-            content: "•";
-            position: absolute;
-            left: 0;
-            font-size: 1.8rem;
-            top: -4px;
-            color: #4a5568;
-        }
+        .criteria-bullet-matrix li::before { content: "•"; position: absolute; left: 0; font-size: 1.6rem; top: -2px; }
+        #pane-ooda .criteria-bullet-matrix li::before { color: #3b75af; }
+        #pane-rapid .criteria-bullet-matrix li::before { color: #1a365d; }
+        .slide-footer { border-top: 1px solid #e1e8f0; padding-top: 8px; text-align: center; height: 35px; flex-shrink: 0; }
+        .slide-footer p { font-size: 0.85rem; color: #6a7b8c; font-style: italic; }
     </style>
 </head>
 <body>
     <div class="slide-container">
         <header class="slide-header">
             <h1 class="main-title">Choosing the Right Framework</h1>
-            <p class="subtitle">Different decisions call for different approaches</p>
-        </header>
-        <main class="gameplay-arena">
-            <div class="framework-target-card ooda-theme">
-                <div class="card-banner-header">OODA Loop</div>
-                <div class="card-inner-features">
-                    <ul class="criteria-bullet-list">
-                        <li>Competitive strategy and market response</li>
-                        <li>Fast-moving, dynamic environments</li>
-                        <li>Individual or small team decisions</li>
-                        <li>Continuous cycling for rapid adaptation</li>
-                    </ul>
-                </div>
+            <div class="hud-metrics">
+                <div class="metric-pill">Review Progress: <span id="review-counter" style="color: #e67e22;">1 / 2 Explored</span></div>
             </div>
-            <div class="framework-target-card rapid-theme">
-                <div class="card-banner-header">RAPID</div>
-                <div class="card-inner-features">
-                    <ul class="criteria-bullet-list">
-                        <li>Internal governance and transformation</li>
-                        <li>Complex, multi-stakeholder decisions</li>
-                        <li>Cross-functional or matrixed orgs</li>
-                        <li>High-value or high-frequency decisions</li>
-                    </ul>
-                </div>
+        </header>
+        <nav class="framework-tabs-dock">
+            <button class="tab-trigger-btn active-tab" data-target="ooda" onclick="switchFrameworkTab('ooda', this)">OODA Loop</button>
+            <button class="tab-trigger-btn" data-target="rapid" onclick="switchFrameworkTab('rapid', this)">RAPID</button>
+        </nav>
+        <main class="content-viewport-panel">
+            <div class="framework-content-pane visible-pane" id="pane-ooda">
+                <ul class="criteria-bullet-matrix">
+                    <li>Competitive strategy and market response</li>
+                    <li>Fast-moving, dynamic environments</li>
+                    <li>Individual or small team decisions</li>
+                    <li>Continuous cycling for rapid adaptation</li>
+                </ul>
+            </div>
+            <div class="framework-content-pane" id="pane-rapid">
+                <ul class="criteria-bullet-matrix">
+                    <li>Internal governance and transformation</li>
+                    <li>Complex, multi-stakeholder decisions</li>
+                    <li>Cross-functional or matrixed orgs</li>
+                    <li>High-value or high-frequency decisions</li>
+                </ul>
             </div>
         </main>
+        <footer class="slide-footer">
+            <p id="footer-text">Select a strategic framework tab above to verify its application parameters.</p>
+        </footer>
     </div>
+    <script>
+        const stateRegister = { ooda: true, rapid: false };
+        function switchFrameworkTab(key, element) {
+            document.querySelectorAll('.tab-trigger-btn').forEach(t => t.classList.remove('active-tab'));
+            document.querySelectorAll('.framework-content-pane').forEach(p => p.classList.remove('visible-pane'));
+            element.classList.add('active-tab');
+            document.getElementById(`pane-${key}`).classList.add('visible-pane');
+            stateRegister[key] = true;
+            const count = Object.values(stateRegister).filter(Boolean).length;
+            document.getElementById('review-counter').textContent = count === 2 ? "Complete" : "1 / 2 Explored";
+        }
+    </script>
 </body>
 </html>
