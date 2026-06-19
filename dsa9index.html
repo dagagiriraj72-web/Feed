@@ -76,7 +76,7 @@
         }
 
         /* ==========================================================================
-           3. Core Gameplay Arena Framework (Restructured to Multi-Layer Horizontal)
+           3. Core Gameplay Arena Framework (Horizontal Split-Grid)
            ========================================================================== */
         .gameplay-arena {
             display: flex;
@@ -228,7 +228,7 @@
             padding: 0 0 0 18px !important;
             transform: none !important;
         }
-        .mastery-dashboard-overlay .criteria-bullet-list li::before {
+        .mastery-dashboard-overlay .matrix-column-card .criteria-bullet-list li::before {
             left: 0 !important;
             top: -2px !important;
             color: #9e9587 !important;
@@ -292,11 +292,11 @@
                     <div class="card-banner-header">Solutions</div>
                     <div class="card-inner-features">
                         <ul class="criteria-bullet-list">
-                            <li class="sol-btn" data-key="dynamics" onclick="routeSolution('dynamics', this)">Set decision deadlines for every open item</li>
-                            <li class="sol-btn" data-key="trust" onclick="routeSolution('trust', this)">Separate veto from advisory input</li>
-                            <li class="sol-btn" data-key="conflict" onclick="routeSolution('conflict', this)">Make decision authority explicit and visible</li>
-                            <li class="sol-btn" data-key="structures" onclick="routeSolution('structures', this)">Map decision rights using RAPID or similar</li>
-                            <li class="sol-btn" data-key="fear" onclick="routeSolution('fear', this)">Establish escalation paths with time limits</li>
+                            <li class="sol-btn" data-key="deadlines" onclick="routeSolution('deadlines', this)">Set decision deadlines for every open item</li>
+                            <li class="sol-btn" data-key="veto" onclick="routeSolution('veto', this)">Separate veto from advisory input</li>
+                            <li class="sol-btn" data-key="explicit" onclick="routeSolution('explicit', this)">Make decision authority explicit and visible</li>
+                            <li class="sol-btn" data-key="rapid" onclick="routeSolution('rapid', this)">Map decision rights using RAPID or similar</li>
+                            <li class="sol-btn" data-key="escalation" onclick="routeSolution('escalation', this)">Establish escalation paths with time limits</li>
                         </ul>
                     </div>
                 </div>
@@ -342,12 +342,13 @@
     </div>
 
     <script>
+        // Perfect 1:1 data matrix configuration mapping exactly onto unique individual pathology indices
         const frameworkDataMatrix = [
-            { key: "structures", causeNodeIndex: 0, text: '"Our business units are frozen because multiple department heads hold overlapping authority over the exact same structural milestones."' },
-            { key: "dynamics", causeNodeIndex: 1, text: '"Unspoken political alignments and informal power sub-channels are overriding our standardized project sign-off pipelines."' },
-            { key: "trust", causeNodeIndex: 2, text: '"Executive progress is completely blocked because senior stakeholders refuse to clear project steps without micro-managing every variance."' },
-            { key: "fear", causeNodeIndex: 3, text: '"Product updates are stalled indefinitely because team managers are terrified of taking direct responsibility if launch metrics turn sub-optimal."' },
-            { key: "conflict", causeNodeIndex: 4, text: '"Decisions are being kicked down the line continuously because leaders default to conflict avoidance inside our highly political environment."' }
+            { key: "rapid", causeNodeIndex: 0, text: '"Our business units are frozen because multiple department heads hold overlapping authority over the exact same structural milestones."' },
+            { key: "deadlines", causeNodeIndex: 1, text: '"Unspoken political alignments and informal power sub-channels are overriding our standardized project sign-off pipelines."' },
+            { key: "veto", causeNodeIndex: 2, text: '"Executive progress is completely blocked because senior stakeholders refuse to clear project steps without micro-managing every variance."' },
+            { key: "escalation", causeNodeIndex: 3, text: '"Product updates are stalled indefinitely because team managers are terrified of taking direct responsibility if launch metrics turn sub-optimal."' },
+            { key: "explicit", causeNodeIndex: 4, text: '"Decisions are being kicked down the line continuously because leaders default to conflict avoidance inside our highly political environment."' }
         ];
 
         let internalLoopIndex = 0;
@@ -374,6 +375,10 @@
                 diagnosticFailuresCount++;
                 const adjustedAccuracy = Math.max(0, Math.round((successfulCuresCount / (successfulCuresCount + diagnosticFailuresCount)) * 100));
                 document.getElementById('accuracy-score').textContent = `${adjustedAccuracy}%`;
+                
+                // Indicated warning flash logic
+                buttonElement.style.borderColor = '#c0392b';
+                setTimeout(() => { buttonElement.style.borderColor = '#e1e8f0'; }, 500);
             }
         }
 
@@ -386,6 +391,7 @@
             document.getElementById('footer-text').textContent = "Framework modeling finalized. You can now pass forward cleanly.";
         }
 
+        // Initialize active first instance query text strings mapping rules on load
         document.getElementById('pathology-text').textContent = frameworkDataMatrix[0].text;
     </script>
 </body>
