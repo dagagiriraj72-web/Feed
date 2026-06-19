@@ -3,317 +3,388 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>OODA Loop - Tactical Simulator</title>
+    <title>OODA Loop Strategic Simulator - Stable Console</title>
     <style>
-        /* ==========================================================================
-           1. Absolute Boundary Reset (Strict Widescreen Bounds Locking)
-           ========================================================================== */
-        * {
-            box-sizing: border-box;
+        /* FORCE WINDOW METRICS TO OCCUPY 100% OF THE IFRAME PORT WITHOUT ACCIDENTALLY COLLAPSING */
+        html, body {
             margin: 0;
             padding: 0;
-        }
-
-        body {
-            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
-            background-color: #fafcfe;
-            color: #1a2a3a;
-            width: 100vw;
-            height: 100vh;
+            width: 100%;
+            height: 100%;
+            background-color: #fcf8f2;
+            font-family: 'Segoe UI', Arial, sans-serif;
             overflow: hidden;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 5px;
         }
 
-        /* Fixed 16:9 Slide Canvas Framework */
-        .slide-container {
-            width: 1280px;
-            height: 720px;
-            padding: 25px 45px 20px 45px;
-            background-color: #fafcfe;
+        /* 16:9 VIEWPORT CANVAS FOOTPRINT
+           Locks layout bounds at 1280x720 to permanently eliminate empty space drops,
+           text box clashing, or footer metrics line truncation inside Storyline web objects.
+        */
+        .slide-wrapper {
+            width: 100%;
+            height: 100%;
+            max-width: 1280px;
+            max-height: 720px;
+            aspect-ratio: 16 / 9;
+            padding: 2.2rem 3.5rem 1.5rem 3.5rem;
+            background-color: #fdfaf6;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
-            overflow: hidden; 
+            box-sizing: border-box;
+            position: relative;
         }
 
-        /* ==========================================================================
-           2. Slide Title Header Zone
-           ========================================================================== */
-        .slide-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-bottom: 2px solid #e1e8f0;
-            padding-bottom: 6px;
-            height: 55px;
+        /* Slide Top Title Header Row */
+        .header-section {
+            border-bottom: 2px solid #e2dbd5;
+            padding-bottom: 0.5rem;
+            margin-bottom: 1rem;
             flex-shrink: 0;
         }
 
         .main-title {
-            font-size: 2.1rem;
+            font-size: 2.4rem;
+            color: #1a365d;
             font-weight: 800;
-            color: #123456;
+            line-height: 1.1;
         }
 
-        .metric-pill {
-            background-color: #eaf1f8;
-            padding: 4px 12px;
-            border-radius: 4px;
-            font-size: 0.78rem;
-            font-weight: 700;
-            color: #123456;
-            border: 1px solid #ccdbe8;
-        }
-
-        /* ==========================================================================
-           3. Core Simulation Workspace
-           ========================================================================== */
-        .gameplay-arena {
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-            flex: 1;
-            margin: 15px 0;
-            min-height: 0;
-        }
-
-        /* Prompt Console Display Box */
-        .mission-command-deck {
-            background-color: #123456;
-            border-radius: 6px;
-            padding: 15px 20px;
-            color: #ffffff;
-            flex-shrink: 0;
-            min-height: 90px;
-        }
-
-        .mission-card h3 {
-            font-size: 0.75rem;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            color: #e67e22;
-            margin-bottom: 4px;
-        }
-
-        .mission-card p {
+        .sub-directive-row {
             font-size: 1.05rem;
-            line-height: 1.4;
-            color: #ffffff;
-            font-weight: 600;
+            color: #718096;
+            margin-top: 0.2rem;
         }
 
-        /* Stage Display Progress Matrix Columns */
-        .ooda-process-stack {
+        /* MASTER DUAL-ZONE SIDE-BY-SIDE MATRIX LAYOUT 
+           Core Fix: Splits content elements horizontally so text structures never crowd lower margins.
+        */
+        .workspace-matrix {
             display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 15px;
-            flex-shrink: 0;
-            height: 135px;
+            grid-template-columns: 0.95fr 1.05fr; /* Protects left/right structural alignment balance */
+            gap: 2.5rem;
+            flex-grow: 1;
+            min-height: 0; /* Dynamic height buffer safety guardrail */
+            margin: 0.8rem 0;
+            align-items: center;
         }
 
-        .ooda-row-node {
-            background-color: #ffffff;
-            border: 1px solid #e1e8f0;
-            border-bottom: 4px solid #cbd5e1;
-            border-radius: 6px;
-            padding: 12px 16px;
+        /* Left Split Column: Incident Case Log Viewer with Dedicated Scroll Safety Lane */
+        .arena-brief-column {
             display: flex;
             flex-direction: column;
+            gap: 1rem;
+            max-height: 440px; /* Locked frame ceiling shields stats panel from text overflows */
+            overflow-y: auto;
+            padding-right: 0.5rem;
             height: 100%;
-            opacity: 0.35;
-            transition: all 0.3s ease;
+            justify-content: center;
         }
 
-        .node-observe { border-bottom-color: #3b75af; }
-        .node-orient  { border-bottom-color: #3b75af; }
-        .node-decide  { border-bottom-color: #e67e22; }
-        .node-act     { border-bottom-color: #123456; }
+        .arena-brief-column::-webkit-scrollbar { width: 4px; }
+        .arena-brief-column::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 2px; }
 
-        .ooda-row-node.unlocked {
-            opacity: 1;
-            background-color: #fffbf7;
-        }
-
-        .node-heading-zone {
-            font-size: 1.2rem;
-            font-weight: 800;
-            color: #123456;
-            margin-bottom: 6px;
-        }
-
-        .node-description-zone {
+        .arena-tag-heading {
             font-size: 0.85rem;
-            line-height: 1.35;
-            color: #4b5a6a;
-            display: none;
+            font-weight: 700;
+            color: #e67e22;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
 
-        .ooda-row-node.unlocked .node-description-zone {
-            display: block;
+        /* Blueprint Framework Context Rule Box */
+        .framework-criterion-box {
+            font-size: 1rem;
+            font-weight: 600;
+            color: #4a5568;
+            background-color: #ffffff;
+            padding: 1rem 1.4rem;
+            border-left: 5px solid #1a365d;
+            border-radius: 4px;
+            line-height: 1.5;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.02);
         }
 
-        /* Fixed: Vertical stack gives option sentences 1200px of width to keep lines clean and short */
-        .options-matrix-stack {
+        .challenge-statement-text {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: #2d3748;
+            line-height: 1.45;
+            margin: 0;
+        }
+
+        /* Right Split Column: Interactive Choice Options Stacking Pipeline */
+        .arena-input-column {
             display: flex;
             flex-direction: column;
-            gap: 8px;
-            flex-shrink: 0;
-            margin-top: auto;
-        }
-
-        .option-action-btn {
-            background-color: #ffffff;
-            border: 1px solid #ccdbe8;
-            color: #2c3e50;
-            border-radius: 6px;
-            padding: 12px 20px;
-            font-family: inherit;
-            font-size: 0.95rem;
-            line-height: 1.3;
-            font-weight: 600;
-            text-align: left;
-            cursor: pointer;
+            gap: 0.8rem;
             width: 100%;
-            transition: all 0.2s ease;
+            background-color: #ffffff;
+            border: 1px solid rgba(61, 35, 20, 0.06);
+            border-radius: 12px;
+            padding: 1.8rem;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.01);
+            box-sizing: border-box;
         }
 
-        .option-action-btn:hover {
-            background-color: #f7fafc;
-            border-color: #e67e22;
+        .choice-interaction-card {
+            background-color: #fdfbf9;
+            border: 1px solid #cbd5e1;
+            padding: 1.2rem 1.4rem;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: #334155;
+            cursor: pointer;
+            text-align: left;
+            line-height: 1.45;
+            transition: all 0.25s cubic-bezier(0.165, 0.84, 0.44, 1);
+            width: 100%;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .choice-interaction-card:hover {
+            background-color: #fffbf7;
+            border-color: #1a365d;
+            color: #1a365d;
             transform: translateX(4px);
         }
 
-        /* ==========================================================================
-           4. Presentation Slide Footer
-           ========================================================================== */
-        .slide-footer {
-            border-top: 1px solid #e1e8f0;
-            padding-top: 8px;
-            text-align: center;
+        /* High-contrast specific color badges derived from OODA loop profiles */
+        .phase-indicator-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
             flex-shrink: 0;
-            height: 35px;
+        }
+        .dot-observe { background-color: #3498db; }
+        .dot-orient { background-color: #2980b9; }
+        .dot-decide { background-color: #e67e22; }
+        .dot-act { background-color: #2c3e50; }
+
+        /* Stage Transition Complete Success Sheets Overlays */
+        .stage-success-overlay {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            width: 100%;
+            height: 100%;
+            gap: 0.6rem;
         }
 
-        .slide-footer p {
+        .success-heading-text {
+            font-size: 1.4rem;
+            font-weight: 800;
+            color: #2a9d8f;
+        }
+
+        /* Bottom Fixed Corporate Progress Tracking Status Footer Row Bar */
+        .footer-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-shrink: 0;
+            border-top: 1px solid rgba(61, 35, 20, 0.08);
+            padding-top: 0.6rem;
+            margin-top: 0.2rem;
+        }
+
+        .score-tracker-badge {
             font-size: 0.85rem;
-            color: #6a7b8c;
+            font-weight: 700;
+            color: #ffffff;
+            background-color: #1a365d;
+            padding: 0.3rem 0.9rem;
+            border-radius: 20px;
+            font-variant-numeric: tabular-nums;
+            box-shadow: 0 4px 10px rgba(26, 54, 93, 0.15);
+        }
+
+        .instruction-tag {
+            font-size: 0.85rem;
+            color: #a39389;
             font-style: italic;
         }
     </style>
 </head>
 <body>
 
-    <div class="slide-container">
-        
-        <!-- Header -->
-        <header class="slide-header">
+    <div class="slide-wrapper">
+        <!-- Main Branded Title Section Header -->
+        <div class="header-section">
             <h1 class="main-title">OODA Loop in Business</h1>
-            <div class="hud-metrics">
-                <div class="metric-pill">Loop Stage: <span id="loop-stage-text">1 / 4</span></div>
-            </div>
-        </header>
+            <div class="sub-directive-row">Applying military-grade decision speed to competitive strategy</div>
+        </div>
 
-        <!-- Simulation Interface Arena -->
-        <div class="gameplay-arena" id="main-play-arena">
+        <!-- Balanced Anti-Overlap Side-by-Side Playground Workspace Matrix -->
+        <div class="workspace-matrix" id="main-workspace-frame">
             
-            <!-- Context Prompter Panel -->
-            <div class="mission-command-deck">
-                <div class="mission-card">
-                    <h3 id="step-tag-heading">Task 01: Initial Response</h3>
-                    <p id="challenge-prompt-text">A direct regional competitor unexpectedly slashes prices across their entire product ecosystem by 15%. What is your immediate opening operational baseline move?</p>
+            <!-- Left Side Column: Scenario Context Panel View Data Ports -->
+            <div class="arena-brief-column">
+                <div class="arena-tag-heading" id="arena-stage-title">OODA Phase Challenge • 1 of 4</div>
+                <div class="framework-criterion-box" id="arena-brief-text">
+                    Loading tactical criteria definitions...
                 </div>
+                <h2 class="challenge-statement-text" id="arena-challenge-text">
+                    Loading active operational case file variables...
+                </h2>
             </div>
 
-            <!-- Stage Tracks Block -->
-            <div class="ooda-process-stack">
-                <div class="ooda-row-node node-observe" id="row-observe">
-                    <div class="node-heading-zone">Observe</div>
-                    <div class="node-description-zone">Monitor market signals, competitor moves, customer behavior, and internal metrics in real time.</div>
-                </div>
-                <div class="ooda-row-node node-orient" id="row-orient">
-                    <div class="node-heading-zone">Orient</div>
-                    <div class="node-description-zone">Contextualize data against your industry knowledge, organizational culture, and strategic position.</div>
-                </div>
-                <div class="ooda-row-node node-decide" id="row-decide">
-                    <div class="node-heading-zone">Decide</div>
-                    <div class="node-description-zone">Choose the optimal response — enter a market, pivot a product, adjust pricing — with conviction.</div>
-                </div>
-                <div class="ooda-row-node node-act" id="row-act">
-                    <div class="node-heading-zone">Act</div>
-                    <div class="node-description-zone">Execute swiftly and decisively, then immediately begin observing the results to start the next cycle.</div>
-                </div>
+            <!-- Right Side Column: Interactive Action Stack Pipeline -->
+            <div class="arena-input-column" id="arena-options-container">
+                <!-- Rendered dynamically via loop array engines -->
             </div>
 
-            <!-- Vertical Command Stack -->
-            <div class="options-matrix-stack" id="options-box">
-                <button class="option-action-btn" onclick="submitSequence('observe')">Monitor market signals, competitor moves, customer behavior, and internal metrics in real time.</button>
-                <button class="option-action-btn" onclick="submitSequence('decide')">Choose the optimal response — enter a market, pivot a product, adjust pricing — with conviction.</button>
-                <button class="option-action-btn" onclick="submitSequence('orient')">Contextualize data against your industry knowledge, organizational culture, and strategic position.</button>
+            <!-- Step Clear Success Inner Overlay Card Component Sheet -->
+            <div class="stage-success-overlay" id="victory-overlay-panel">
+                <span style="font-size: 3.5rem;">🎯⚡</span>
+                <p class="success-heading-text">Strategic Vector Aligned!</p>
+                <p style="color: #6e5d53; font-size: 0.92rem; margin: 0;">Click the target button below to advance to the subsequent operational OODA cycle phase entry node.</p>
+                <button class="choice-interaction-card" style="justify-content: center; max-width: 200px; margin-top: 10px;" onclick="advanceToNextPhase()">Next Phase</button>
+            </div>
+
+            <!-- Grand Final Simulation Complete Screen Panel -->
+            <div class="stage-success-overlay" id="campaign-clear-panel">
+                <span style="font-size: 4rem;">👑</span>
+                <h2 style="color: #2a9d8f; font-size: 1.8rem; font-weight: 800; margin-top: 0.5rem;">Operational Mastery Achieved!</h2>
+                <p style="color: #1a365d; font-size: 1rem; font-weight: 600; max-width: 460px; line-height: 1.45; margin-top: 0.4rem;">You have successfully navigated the OODA loop workflow. The enterprise tactical velocity parameters are now fully synchronized.</p>
             </div>
 
         </div>
 
-        <!-- Stable Footer Help Track Component -->
-        <footer class="slide-footer">
-            <p id="footer-text">Analyze the active scenario prompt in the upper box, then select the tactical option below that maps onto the logical OODA phase.</p>
-        </footer>
-
+        <!-- Progress Tracking Status Lower Fixed Footer Row Bar -->
+        <div class="footer-bar">
+            <div class="score-tracker-badge">OODA Nodes Mapped: <span id="progress-val">0</span> / 4</div>
+            <div class="instruction-tag">Evaluate the corporate case profile parameters and identify the corresponding action choice step.</div>
+        </div>
     </div>
 
-    <!-- Processing Controller Matrix Logic Routine -->
     <script>
-        const oodaGameSteps = [
-            { expectedKey: "observe", tag: "Task 01: Initial Response", text: "A direct regional competitor unexpectedly slashes prices across their entire product ecosystem by 15%. What is your immediate opening operational baseline move?", options: [{ key: "observe", text: "Monitor market signals, competitor moves, customer behavior, and internal metrics in real time." }, { key: "decide", text: "Choose the optimal response — enter a market, pivot a product, adjust pricing — with conviction." }, { key: "orient", text: "Contextualize data against your industry knowledge, organizational culture, and strategic position." }] },
-            { expectedKey: "orient", tag: "Task 02: Analytical Synthesis", text: "Factual metrics are incoming. To avoid rash, impulsive reactions, how do you diagnose this real-time stream accurately?", options: [{ key: "act", text: "Execute swiftly and decisively, then immediately begin observing the results to start the next cycle." }, { key: "orient", text: "Contextualize data against your industry knowledge, organizational culture, and strategic position." }, { key: "decide", text: "Choose the optimal response — enter a market, pivot a product, adjust pricing — with conviction." }] },
-            { expectedKey: "decide", tag: "Task 03: Determination Execution", text: "The data is contextualized. Your team isolates the margin impact bounds. What is the next logical step in the command velocity sequence?", options: [{ key: "act", text: "Execute swiftly and decisively, then immediately begin observing the results to start the next cycle." }, { key: "observe", text: "Monitor market signals, competitor moves, customer behavior, and internal metrics in real time." }, { key: "decide", text: "Choose the optimal response — enter a market, pivot a product, adjust pricing — with conviction." }] },
-            { expectedKey: "act", tag: "Task 04: Velocity Action Deployment", text: "The targeted pricing counter-adjustment choice has been made. How do you deploy the resource trajectory to close out the loop cycle?", options: [{ key: "act", text: "Execute swiftly and decisively, then immediately begin observing the results to start the next cycle." }, { key: "orient", text: "Contextualize data against your industry knowledge, organizational culture, and strategic position." }, { key: "observe", text: "Monitor market signals, competitor moves, customer behavior, and internal metrics in real time." }] }
+        // High fidelity map integrating verbatim image values into tailored industrial scenarios
+        const oodaSimulationMatrix = [
+            {
+                tag: "OODA Phase Challenge • Observe",
+                rule: "Blueprint Action: Monitor market signals, competitor moves, customer behavior, and internal metrics in real time.",
+                case: "IB Group Case File [Broiler Integration]: A direct regional competitor unexpectedly slashes integration price baselines across their entire retail ecosystem. What is your opening step?",
+                correctKey: "OBSERVE",
+                choices: [
+                    { label: "Observe", text: "Deploy field tracking monitors to audit real-time competitor logistics shifts and consumer intake volume adjustments.", typeClass: "dot-observe" },
+                    { label: "Orient", text: "Map the pricing shifts against your historical database matrices and core feedstock supply chain positions.", typeClass: "dot-orient" },
+                    { label: "Decide", text: "Choose the optimal tactical response path—adjust compound pricing matrices with immediate conviction.", typeClass: "dot-decide" },
+                    { label: "Act", text: "Swiftly distribute updated pricing schedules across all contract farming delivery terminals.", typeClass: "dot-act" }
+                ]
+            },
+            {
+                tag: "OODA Phase Challenge • Orient",
+                rule: "Blueprint Action: Contextualize data against your industry knowledge, organizational culture, and strategic position.",
+                case: "IB Group Case File [Fish Feed Plant]: Live manufacturing logs capture a minor extrusion temperature variance on the production lines. How do you format the problem layer?",
+                correctKey: "ORIENT",
+                choices: [
+                    { label: "Observe", text: "Log the telemetry warnings popping up on the milling automation control panel feeds.", typeClass: "dot-observe" },
+                    { label: "Orient", text: "Analyze the temperature variance variables against your structural plant history records and batch recipe moisture margins.", typeClass: "dot-orient" },
+                    { label: "Decide", text: "Formulate the optimal fix roadmap—choose between running a plant line pause loop or modifying speed parameters.", typeClass: "dot-decide" },
+                    { label: "Act", text: "Execute the mechanical parameter adjustment immediately to balance out the active batch extrusion parameters.", typeClass: "dot-act" }
+                ]
+            },
+            {
+                tag: "OODA Phase Challenge • Decide",
+                rule: "Blueprint Action: Choose the optimal response — enter a market, pivot a product, adjust pricing — with conviction.",
+                case: "IB Group Case Profile [Abis Pro Retail Shop]: Live customer feedback data catches severe transaction bottleneck drop-offs at checkout zones during peak weekend rushes. How do you proceed?",
+                correctKey: "DECIDE",
+                choices: [
+                    { label: "Observe", text: "Track the minute-by-minute shopper transit intervals and line length parameters at front terminals.", typeClass: "dot-observe" },
+                    { label: "Orient", text: "Correlate the checkout log variances against staff scheduling capacities and network link data.", typeClass: "dot-orient" },
+                    { label: "Decide", text: "Select the specific mitigation roadmap path—commit capital budget lines to deploy mobile POS terminals with absolute conviction.", typeClass: "dot-decide" },
+                    { label: "Act", text: "Take the new mobile POS terminals live across crowded floor zones to process customer payments instantly.", typeClass: "dot-act" }
+                ]
+            },
+            {
+                tag: "OODA Phase Challenge • Act",
+                rule: "Blueprint Action: Execute swiftly and decisively, then immediately begin observing the results to start the next cycle.",
+                case: "IB Group Case Profile [Abis Edible Oil]: The executive board has signed off on updating distribution routes to maximize bulk seed transport velocities. What is the execution baseline?",
+                correctKey: "ACT",
+                choices: [
+                    { label: "Observe", text: "Audit live truck dispatch times and watch arrival terminal freight logs across regional depots.", typeClass: "dot-observe" },
+                    { label: "Orient", text: "Process route data parameters against existing fleet fuel budgets and contractual carrier timelines.", typeClass: "dot-orient" },
+                    { label: "Decide", text: "Commit to the final dynamic rerouting manifest map framework option.", typeClass: "dot-decide" },
+                    { label: "Act", text: "Instantly deploy the route adjustment orders across the entire fleet network, then immediately track transit times to spawn the next OODA phase.", typeClass: "dot-act" }
+                ]
+            }
         ];
 
-        let stepIndex = 0;
+        let activePhaseIdx = 0;
+        let solvedMilestonesCount = 0;
 
-        function submitSequence(key) {
-            if (key === oodaGameSteps[stepIndex].expectedKey) {
-                document.getElementById(`row-${key}`).classList.add('unlocked');
-                stepIndex++;
-                if (stepIndex < 4) {
-                    document.getElementById('loop-stage-text').textContent = `${stepIndex + 1} / 4`;
-                    renderActiveChallengeStep();
+        function loadSimulationStage() {
+            const briefColumn = document.querySelector(".arena-brief-column");
+            const optionsContainer = document.getElementById("arena-options-container");
+            const victoryPanel = document.getElementById("victory-overlay-panel");
+            const clearPanel = document.getElementById("campaign-clear-panel");
+
+            // Shield system elements visibility statuses cleanly
+            briefColumn.style.display = "flex";
+            optionsContainer.style.display = "flex";
+            victoryPanel.style.display = "none";
+            clearPanel.style.display = "none";
+
+            const currentData = oodaSimulationMatrix[activePhaseIdx];
+            document.getElementById("arena-stage-title").innerText = currentData.tag;
+            document.getElementById("arena-brief-text").innerText = currentData.rule;
+            document.getElementById("arena-challenge-text").innerText = currentData.case;
+
+            // Generate clean stacking options pipeline to stop dynamic horizontal overlapping
+            optionsContainer.innerHTML = "";
+            currentData.choices.forEach(choice => {
+                const buttonElement = document.createElement("button");
+                buttonElement.className = "choice-interaction-card";
+                buttonElement.innerHTML = `<span class="phase-indicator-dot ${choice.typeClass}"></span><strong>${choice.label}:</strong> ${choice.text}`;
+                buttonElement.onclick = () => evaluateChoiceInput(choice.label.toUpperCase() === currentData.correctKey);
+                optionsContainer.appendChild(buttonElement);
+            });
+
+            // Ensure vertical column resets scroll baseline smoothly
+            briefColumn.scrollTop = 0;
+        }
+
+        function evaluateChoiceInput(isCorrectChoicePath) {
+            const briefColumn = document.querySelector(".arena-brief-column");
+            const optionsContainer = document.getElementById("arena-options-container");
+            const victoryPanel = document.getElementById("victory-overlay-panel");
+            const clearPanel = document.getElementById("campaign-clear-panel");
+
+            if (isCorrectChoicePath) {
+                solvedMilestonesCount++;
+                document.getElementById("progress-val").innerText = solvedMilestonesCount;
+
+                briefColumn.style.display = "none";
+                optionsContainer.style.display = "none";
+
+                if (solvedMilestonesCount === 4) {
+                    clearPanel.style.display = "flex";
                 } else {
-                    document.getElementById('challenge-prompt-text').textContent = "Simulation complete. The tactical framework modeling loop is completely finalized.";
-                    document.getElementById('options-box').style.display = 'none';
-                    document.getElementById('footer-text').textContent = "Loop exploration complete. You can now pass forward cleanly.";
+                    victoryPanel.style.display = "flex";
                 }
             } else {
-                const badButton = document.querySelector(`[onclick="submitSequence('${key}')"]`);
-                if (badButton) {
-                    badButton.style.borderColor = '#c0392b';
-                    setTimeout(() => { badButton.style.borderColor = '#ccdbe8'; }, 500);
-                }
+                // Soft alert indicator flash if selection fails mapping rules logic parameters
+                const workspaceCard = document.getElementById("main-workspace-frame");
+                workspaceCard.style.opacity = "0.5";
+                setTimeout(() => workspaceCard.style.opacity = "1", 300);
             }
         }
 
-        function renderActiveChallengeStep() {
-            const data = oodaGameSteps[stepIndex];
-            document.getElementById('step-tag-heading').textContent = data.tag;
-            document.getElementById('challenge-prompt-text').textContent = data.text;
-            
-            const box = document.getElementById('options-box');
-            box.innerHTML = '';
-            
-            data.options.forEach(opt => {
-                const btn = document.createElement('button');
-                btn.className = 'option-action-btn';
-                btn.textContent = opt.text;
-                btn.setAttribute('onclick', `submitSequence('${opt.key}')`);
-                box.appendChild(btn);
-            });
+        function advanceToNextPhase() {
+            if (activePhaseIdx < 3) {
+                activePhaseIdx++;
+                loadSimulationStage();
+            }
         }
 
-        // Run primary step allocation on framework mount
-        document.getElementById('row-observe').classList.add('unlocked');
+        // Initialize engine loading states natively on run load mount
+        loadSimulationStage();
     </script>
 </body>
 </html>
