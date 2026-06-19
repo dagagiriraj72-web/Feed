@@ -5,7 +5,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>OODA Loop - Tactical Simulator</title>
     <style>
-        * { box-sizing: border-box; margin: 0; padding: 0; }
+        /* ==========================================================================
+           1. Absolute Boundary Reset (Strict Widescreen Bounds Locking)
+           ========================================================================== */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
         body {
             font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
             background-color: #fafcfe;
@@ -18,15 +26,22 @@
             align-items: center;
             padding: 5px;
         }
+
+        /* Fixed 16:9 Slide Canvas Framework */
         .slide-container {
             width: 1280px;
             height: 720px;
-            padding: 25px 40px 15px 40px;
+            padding: 25px 45px 20px 45px;
+            background-color: #fafcfe;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
             overflow: hidden; 
         }
+
+        /* ==========================================================================
+           2. Slide Title Header Zone
+           ========================================================================== */
         .slide-header {
             display: flex;
             justify-content: space-between;
@@ -36,7 +51,13 @@
             height: 55px;
             flex-shrink: 0;
         }
-        .main-title { font-size: 2.1rem; font-weight: 800; color: #123456; }
+
+        .main-title {
+            font-size: 2.1rem;
+            font-weight: 800;
+            color: #123456;
+        }
+
         .metric-pill {
             background-color: #eaf1f8;
             padding: 4px 12px;
@@ -46,11 +67,53 @@
             color: #123456;
             border: 1px solid #ccdbe8;
         }
-        .gameplay-arena { display: flex; flex-direction: column; gap: 12px; flex: 1; margin: 12px 0; min-height: 0; }
-        .mission-command-deck { background-color: #123456; border-radius: 6px; padding: 12px 20px; color: #ffffff; flex-shrink: 0; }
-        .mission-card h3 { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 1px; color: #e67e22; margin-bottom: 2px; }
-        .mission-card p { font-size: 1.05rem; line-height: 1.35; color: #ffffff; font-weight: 600; }
-        .ooda-process-stack { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; flex-shrink: 0; }
+
+        /* ==========================================================================
+           3. Core Simulation Workspace
+           ========================================================================== */
+        .gameplay-arena {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            flex: 1;
+            margin: 15px 0;
+            min-height: 0;
+        }
+
+        /* Prompt Console Display Box */
+        .mission-command-deck {
+            background-color: #123456;
+            border-radius: 6px;
+            padding: 15px 20px;
+            color: #ffffff;
+            flex-shrink: 0;
+            min-height: 90px;
+        }
+
+        .mission-card h3 {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #e67e22;
+            margin-bottom: 4px;
+        }
+
+        .mission-card p {
+            font-size: 1.05rem;
+            line-height: 1.4;
+            color: #ffffff;
+            font-weight: 600;
+        }
+
+        /* Stage Display Progress Matrix Columns */
+        .ooda-process-stack {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+            flex-shrink: 0;
+            height: 135px;
+        }
+
         .ooda-row-node {
             background-color: #ffffff;
             border: 1px solid #e1e8f0;
@@ -59,55 +122,112 @@
             padding: 12px 16px;
             display: flex;
             flex-direction: column;
-            height: 145px;
+            height: 100%;
             opacity: 0.35;
             transition: all 0.3s ease;
         }
+
         .node-observe { border-bottom-color: #3b75af; }
         .node-orient  { border-bottom-color: #3b75af; }
         .node-decide  { border-bottom-color: #e67e22; }
         .node-act     { border-bottom-color: #123456; }
-        .ooda-row-node.unlocked { opacity: 1; background-color: #fffbf7; border-color: #ccdbe8; }
-        .node-heading-zone { font-size: 1.15rem; font-weight: 800; color: #123456; margin-bottom: 4px; }
-        .node-description-zone { font-size: 0.82rem; line-height: 1.35; color: #4b5a6a; display: none; }
-        .ooda-row-node.unlocked .node-description-zone { display: block; }
-        .options-matrix-stack { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; height: 105px; flex-shrink: 0; margin-top: auto; }
+
+        .ooda-row-node.unlocked {
+            opacity: 1;
+            background-color: #fffbf7;
+        }
+
+        .node-heading-zone {
+            font-size: 1.2rem;
+            font-weight: 800;
+            color: #123456;
+            margin-bottom: 6px;
+        }
+
+        .node-description-zone {
+            font-size: 0.85rem;
+            line-height: 1.35;
+            color: #4b5a6a;
+            display: none;
+        }
+
+        .ooda-row-node.unlocked .node-description-zone {
+            display: block;
+        }
+
+        /* Fixed: Vertical stack gives option sentences 1200px of width to keep lines clean and short */
+        .options-matrix-stack {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            flex-shrink: 0;
+            margin-top: auto;
+        }
+
         .option-action-btn {
             background-color: #ffffff;
             border: 1px solid #ccdbe8;
             color: #2c3e50;
             border-radius: 6px;
-            padding: 10px 14px;
+            padding: 12px 20px;
             font-family: inherit;
-            font-size: 0.84rem;
-            line-height: 1.35;
+            font-size: 0.95rem;
+            line-height: 1.3;
             font-weight: 600;
             text-align: left;
             cursor: pointer;
-            display: flex;
-            align-items: center;
+            width: 100%;
             transition: all 0.2s ease;
         }
-        .option-action-btn:hover { background-color: #f7fafc; border-color: #e67e22; }
-        .slide-footer { border-top: 1px solid #e1e8f0; padding-top: 6px; text-align: center; flex-shrink: 0; height: 30px; }
-        .slide-footer p { font-size: 0.8rem; color: #6a7b8c; font-style: italic; }
+
+        .option-action-btn:hover {
+            background-color: #f7fafc;
+            border-color: #e67e22;
+            transform: translateX(4px);
+        }
+
+        /* ==========================================================================
+           4. Presentation Slide Footer
+           ========================================================================== */
+        .slide-footer {
+            border-top: 1px solid #e1e8f0;
+            padding-top: 8px;
+            text-align: center;
+            flex-shrink: 0;
+            height: 35px;
+        }
+
+        .slide-footer p {
+            font-size: 0.85rem;
+            color: #6a7b8c;
+            font-style: italic;
+        }
     </style>
 </head>
 <body>
+
     <div class="slide-container">
+        
+        <!-- Header -->
         <header class="slide-header">
             <h1 class="main-title">OODA Loop in Business</h1>
             <div class="hud-metrics">
                 <div class="metric-pill">Loop Stage: <span id="loop-stage-text">1 / 4</span></div>
             </div>
         </header>
+
+        <!-- Simulation Interface Arena -->
         <div class="gameplay-arena" id="main-play-arena">
+            
+            <!-- Context Prompter Panel -->
             <div class="mission-command-deck">
                 <div class="mission-card">
                     <h3 id="step-tag-heading">Task 01: Initial Response</h3>
                     <p id="challenge-prompt-text">A direct regional competitor unexpectedly slashes prices across their entire product ecosystem by 15%. What is your immediate opening operational baseline move?</p>
                 </div>
             </div>
+
+            <!-- Stage Tracks Block -->
             <div class="ooda-process-stack">
                 <div class="ooda-row-node node-observe" id="row-observe">
                     <div class="node-heading-zone">Observe</div>
@@ -126,16 +246,24 @@
                     <div class="node-description-zone">Execute swiftly and decisively, then immediately begin observing the results to start the next cycle.</div>
                 </div>
             </div>
+
+            <!-- Vertical Command Stack -->
             <div class="options-matrix-stack" id="options-box">
-                <button class="option-action-btn" onclick="submitSequence('observe')">Begin tracking competitor conversion logs, customer behaviors, and internal profit metrics in real-time.</button>
-                <button class="option-action-btn" onclick="submitSequence('decide')">Instantly drop our software subscription rates by 20% across all operational territories to protect baseline volume.</button>
-                <button class="option-action-btn" onclick="submitSequence('orient')">Convene a steering audit committee to evaluate how this price action aligns with our long-term positioning values.</button>
+                <button class="option-action-btn" onclick="submitSequence('observe')">Monitor market signals, competitor moves, customer behavior, and internal metrics in real time.</button>
+                <button class="option-action-btn" onclick="submitSequence('decide')">Choose the optimal response — enter a market, pivot a product, adjust pricing — with conviction.</button>
+                <button class="option-action-btn" onclick="submitSequence('orient')">Contextualize data against your industry knowledge, organizational culture, and strategic position.</button>
             </div>
+
         </div>
+
+        <!-- Stable Footer Help Track Component -->
         <footer class="slide-footer">
             <p id="footer-text">Analyze the active scenario prompt in the upper box, then select the tactical option below that maps onto the logical OODA phase.</p>
         </footer>
+
     </div>
+
+    <!-- Processing Controller Matrix Logic Routine -->
     <script>
         const oodaGameSteps = [
             { expectedKey: "observe", tag: "Task 01: Initial Response", text: "A direct regional competitor unexpectedly slashes prices across their entire product ecosystem by 15%. What is your immediate opening operational baseline move?", options: [{ key: "observe", text: "Monitor market signals, competitor moves, customer behavior, and internal metrics in real time." }, { key: "decide", text: "Choose the optimal response — enter a market, pivot a product, adjust pricing — with conviction." }, { key: "orient", text: "Contextualize data against your industry knowledge, organizational culture, and strategic position." }] },
@@ -143,7 +271,9 @@
             { expectedKey: "decide", tag: "Task 03: Determination Execution", text: "The data is contextualized. Your team isolates the margin impact bounds. What is the next logical step in the command velocity sequence?", options: [{ key: "act", text: "Execute swiftly and decisively, then immediately begin observing the results to start the next cycle." }, { key: "observe", text: "Monitor market signals, competitor moves, customer behavior, and internal metrics in real time." }, { key: "decide", text: "Choose the optimal response — enter a market, pivot a product, adjust pricing — with conviction." }] },
             { expectedKey: "act", tag: "Task 04: Velocity Action Deployment", text: "The targeted pricing counter-adjustment choice has been made. How do you deploy the resource trajectory to close out the loop cycle?", options: [{ key: "act", text: "Execute swiftly and decisively, then immediately begin observing the results to start the next cycle." }, { key: "orient", text: "Contextualize data against your industry knowledge, organizational culture, and strategic position." }, { key: "observe", text: "Monitor market signals, competitor moves, customer behavior, and internal metrics in real time." }] }
         ];
+
         let stepIndex = 0;
+
         function submitSequence(key) {
             if (key === oodaGameSteps[stepIndex].expectedKey) {
                 document.getElementById(`row-${key}`).classList.add('unlocked');
@@ -156,14 +286,23 @@
                     document.getElementById('options-box').style.display = 'none';
                     document.getElementById('footer-text').textContent = "Loop exploration complete. You can now pass forward cleanly.";
                 }
+            } else {
+                const badButton = document.querySelector(`[onclick="submitSequence('${key}')"]`);
+                if (badButton) {
+                    badButton.style.borderColor = '#c0392b';
+                    setTimeout(() => { badButton.style.borderColor = '#ccdbe8'; }, 500);
+                }
             }
         }
+
         function renderActiveChallengeStep() {
             const data = oodaGameSteps[stepIndex];
             document.getElementById('step-tag-heading').textContent = data.tag;
             document.getElementById('challenge-prompt-text').textContent = data.text;
+            
             const box = document.getElementById('options-box');
             box.innerHTML = '';
+            
             data.options.forEach(opt => {
                 const btn = document.createElement('button');
                 btn.className = 'option-action-btn';
@@ -172,6 +311,9 @@
                 box.appendChild(btn);
             });
         }
+
+        // Run primary step allocation on framework mount
+        document.getElementById('row-observe').classList.add('unlocked');
     </script>
 </body>
 </html>
