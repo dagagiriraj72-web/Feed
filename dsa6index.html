@@ -3,12 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RAPID in Practice</title>
+    <title>RAPID in Practice - Interactive Explorer</title>
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body {
             font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
-            background-color: #f8fafc;
+            background-color: #f0f4f8;
             color: #1a2a3a;
             width: 100vw;
             height: 100vh;
@@ -18,126 +18,92 @@
             align-items: center;
         }
         .slide-container {
+            background-color: #fafcfe;
             width: 1280px;
             height: 720px;
-            padding: 40px 50px 35px 50px;
-            transform: scale(1); 
-    transform-origin: center center;
-            background-color: #f8fafc;
+            padding: 30px 45px 20px 45px;
             display: flex;
             flex-direction: column;
+            justify-content: space-between;
             overflow: hidden;
         }
         .slide-header {
-            height: 90px;
+            border-bottom: 2px solid #e1e8f0;
+            padding-bottom: 8px;
+            height: 55px;
             flex-shrink: 0;
         }
-        .main-title {
-            font-size: 2.6rem;
-            font-weight: 800;
-            color: #1c3d5a;
-            line-height: 1.1;
-        }
-        .subtitle {
-            font-size: 1.1rem;
-            color: #718096;
-            margin-top: 8px;
-            font-weight: 500;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        .subtitle::before {
-            content: "•";
-            color: #e67e22;
-            font-size: 1.8rem;
-            line-height: 0;
-        }
+        .main-title { font-size: 2.2rem; font-weight: 800; color: #123456; }
         .table-panel-container {
             background-color: #ffffff;
-            border-radius: 4px;
-            padding: 30px 40px;
-            height: 510px;
-            margin-top: 15px;
+            border: 1px solid #e1e8f0;
+            border-radius: 6px;
+            padding: 20px 30px;
+            height: 480px;
+            margin: 20px 0;
             display: flex;
             flex-direction: column;
             justify-content: center;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.01);
         }
-        .rapid-matrix-table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-        .rapid-matrix-table th {
-            text-align: left;
-            font-size: 1.25rem;
-            font-weight: 800;
-            color: #1c3d5a;
-            padding-bottom: 20px;
-            border-bottom: 2px solid #e2e8f0;
-        }
-        .rapid-matrix-table td {
-            font-size: 1.05rem;
-            font-weight: 600;
-            color: #4a5568;
-            padding: 18px 10px;
-        }
-        .rapid-matrix-table tr:not(:last-child) td {
-            border-bottom: 1px solid #edf2f7;
-        }
-        .rapid-matrix-table tr.highlight-row td {
-            background-color: #f7fafc;
-        }
-        .benefit-callout {
-            color: #2b6cb0;
-            font-weight: 700;
-        }
+        .rapid-matrix-table { width: 100%; border-collapse: collapse; }
+        .rapid-matrix-table th { text-align: left; font-size: 1.2rem; font-weight: 800; color: #123456; padding-bottom: 12px; border-bottom: 2px solid #e1e8f0; }
+        .rapid-matrix-table tr { cursor: pointer; transition: background-color 0.15s ease; }
+        .rapid-matrix-table tr:hover { background-color: #f7fafc; }
+        .rapid-matrix-table td { font-size: 1rem; font-weight: 600; color: #4b5a6a; padding: 14px 10px; }
+        .rapid-matrix-table tr:not(:last-child) td { border-bottom: 1px solid #edf2f7; }
+        .solution-cell, .benefit-cell { visibility: hidden; opacity: 0; transition: opacity 0.3s ease; }
+        tr.revealed .solution-cell, tr.revealed .benefit-cell { visibility: visible; opacity: 1; }
+        .benefit-cell { color: #2b6cb0; font-weight: 700; }
+        .slide-footer { border-top: 1px solid #e1e8f0; padding-top: 8px; text-align: center; height: 35px; flex-shrink: 0; }
+        .slide-footer p { font-size: 0.85rem; color: #6a7b8c; font-style: italic; }
     </style>
 </head>
 <body>
     <div class="slide-container">
         <header class="slide-header">
             <h1 class="main-title">RAPID in Practice</h1>
-            <p class="subtitle">How clear decision roles eliminate ambiguity and accelerate execution</p>
         </header>
         <main class="table-panel-container">
             <table class="rapid-matrix-table">
                 <thead>
                     <tr>
-                        <th style="width: 32%;">Challenge</th>
-                        <th style="width: 43%;">RAPID Solution</th>
+                        <th style="width: 30%;">Challenge</th>
+                        <th style="width: 45%;">RAPID Solution</th>
                         <th style="width: 25%;">Benefit</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr class="highlight-row">
+                    <tr onclick="this.classList.add('revealed')">
                         <td>"Too many cooks"</td>
-                        <td>Assign one Recommender per decision</td>
-                        <td class="benefit-callout">Single accountability</td>
+                        <td class="solution-cell">Assign one Recommender per decision</td>
+                        <td class="benefit-cell">Single accountability</td>
                     </tr>
-                    <tr>
+                    <tr onclick="this.classList.add('revealed')">
                         <td>"Decision by committee"</td>
-                        <td>Name one Decider with final authority</td>
-                        <td class="benefit-callout">Clear ownership</td>
+                        <td class="solution-cell">Name one Decider with final authority</td>
+                        <td class="benefit-cell">Clear ownership</td>
                     </tr>
-                    <tr class="highlight-row">
+                    <tr onclick="this.classList.add('revealed')">
                         <td>"Approval loops"</td>
-                        <td>Limit Agree roles to legal/regulatory</td>
-                        <td class="benefit-callout">Faster throughput</td>
+                        <td class="solution-cell">Limit Agree roles to legal/regulatory</td>
+                        <td class="benefit-cell">Faster throughput</td>
                     </tr>
-                    <tr>
+                    <tr onclick="this.classList.add('revealed')">
                         <td>"Everyone has an opinion"</td>
-                        <td>Distinguish Input from Agree</td>
-                        <td class="benefit-callout">Focused feedback</td>
+                        <td class="solution-cell">Distinguish Input from Agree</td>
+                        <td class="benefit-cell">Focused feedback</td>
                     </tr>
-                    <tr class="highlight-row">
+                    <tr onclick="this.classList.add('revealed')">
                         <td>"Who's doing it?"</td>
-                        <td>Assign Perform role at decision time</td>
-                        <td class="benefit-callout">Immediate execution</td>
+                        <td class="solution-cell">Assign Perform role at decision time</td>
+                        <td class="benefit-cell">Immediate execution</td>
                     </tr>
                 </tbody>
             </table>
         </main>
+        <footer class="slide-footer">
+            <p>Click on individual operational Challenge rows to deploy the corresponding RAPID solution parameters.</p>
+        </footer>
     </div>
 </body>
 </html>
