@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>OODA Loop in Business - Flat Layout Fit</title>
+    <title>OODA Loop in Business - Optimized Fit</title>
     
     <style>
         /* ==========================================================================
@@ -28,11 +28,11 @@
             padding: 5px;
         }
 
-        /* Fixed 16:9 Presentation Canvas Container - Strict Padding Limits Prevent Cuts */
+        /* Fixed 16:9 Presentation Canvas Container - Prevent Vertical Cuts */
         .slide-container {
             width: 1280px;
             height: 720px;
-            padding: 25px 40px 15px 40px;
+            padding: 20px 40px 10px 40px;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
@@ -47,30 +47,16 @@
             justify-content: space-between;
             align-items: center;
             border-bottom: 2px solid #e1e8f0;
-            padding-bottom: 8px;
-            height: 65px;
+            padding-bottom: 6px;
+            height: 55px;
             flex-shrink: 0;
         }
 
         .main-title {
-            font-size: 2.2rem;
+            font-size: 2.1rem;
             font-weight: 800;
             color: #123456;
             line-height: 1.1;
-        }
-
-        .subtitle {
-            font-size: 0.95rem;
-            color: #6a7b8c;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-
-        .subtitle::before {
-            content: "•";
-            color: #e67e22;
-            font-size: 1.4rem;
         }
 
         .hud-metrics {
@@ -80,37 +66,37 @@
 
         .metric-pill {
             background-color: #eaf1f8;
-            padding: 5px 12px;
+            padding: 4px 12px;
             border-radius: 4px;
-            font-size: 0.8rem;
+            font-size: 0.78rem;
             font-weight: 700;
             color: #123456;
             border: 1px solid #ccdbe8;
         }
 
         /* ==========================================================================
-           3. Core Gameplay Arena Framework (Restructured to Compact Low-Profile)
+           3. Core Gameplay Arena Framework (Restructured for Extreme Vertical Safety)
            ========================================================================== */
         .gameplay-arena {
             display: flex;
             flex-direction: column;
             gap: 12px;
             flex: 1;
-            margin: 15px 0;
+            margin: 12px 0;
             min-height: 0;
         }
 
-        /* Task Box Monitor */
+        /* Task Box Monitor Banner */
         .mission-command-deck {
             background-color: #123456;
             border-radius: 6px;
-            padding: 15px 25px;
+            padding: 12px 20px;
             color: #ffffff;
             flex-shrink: 0;
         }
 
         .mission-card h3 {
-            font-size: 0.75rem;
+            font-size: 0.72rem;
             text-transform: uppercase;
             letter-spacing: 1px;
             color: #e67e22;
@@ -119,16 +105,16 @@
 
         .mission-card p {
             font-size: 1.05rem;
-            line-height: 1.4;
+            line-height: 1.35;
             color: #ffffff;
             font-weight: 600;
         }
 
-        /* Target List Progress Rows */
+        /* Horizontal Loop State Track Matrix Panels */
         .ooda-process-stack {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
-            gap: 10px;
+            gap: 12px;
             flex-shrink: 0;
         }
 
@@ -137,11 +123,11 @@
             border: 1px solid #e1e8f0;
             border-bottom: 4px solid #cbd5e1;
             border-radius: 6px;
-            padding: 10px 15px;
+            padding: 12px 16px;
             display: flex;
             flex-direction: column;
             justify-content: flex-start;
-            height: 140px; /* Locked to safeguard height constraints */
+            height: 145px; /* Firm layout block boundary protects space metrics */
             opacity: 0.35;
             transition: all 0.3s ease;
         }
@@ -158,15 +144,15 @@
         }
 
         .node-heading-zone {
-            font-size: 1.1rem;
+            font-size: 1.15rem;
             font-weight: 800;
             color: #123456;
             margin-bottom: 4px;
         }
 
         .node-description-zone {
-            font-size: 0.8rem;
-            line-height: 1.3;
+            font-size: 0.82rem;
+            line-height: 1.35;
             color: #4b5a6a;
             display: none;
         }
@@ -175,12 +161,12 @@
             display: block;
         }
 
-        /* Horizontal Layout Options Row - This completely guarantees zero cuts */
+        /* Horizontal Layout Options Row - Safeguards Against Bottom Truncation */
         .options-matrix-stack {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
             gap: 12px;
-            height: 110px;
+            height: 105px;
             flex-shrink: 0;
             margin-top: auto;
         }
@@ -190,9 +176,9 @@
             border: 1px solid #ccdbe8;
             color: #2c3e50;
             border-radius: 6px;
-            padding: 10px 15px;
+            padding: 10px 14px;
             font-family: inherit;
-            font-size: 0.85rem;
+            font-size: 0.84rem;
             line-height: 1.35;
             font-weight: 600;
             text-align: left;
@@ -208,7 +194,7 @@
         }
 
         /* ==========================================================================
-           4. Game End Mastery Summary Dashboard Layout
+           4. Game End Mastery View Summary Framework
            ========================================================================== */
         .mastery-dashboard-view {
             display: none;
@@ -221,7 +207,7 @@
         .mastery-dashboard-view .ooda-row-node {
             opacity: 1;
             background-color: #ffffff;
-            height: 160px;
+            height: 165px;
         }
 
         .mastery-dashboard-view .node-description-zone {
@@ -233,14 +219,14 @@
            ========================================================================== */
         .slide-footer {
             border-top: 1px solid #e1e8f0;
-            padding-top: 8px;
+            padding-top: 6px;
             text-align: center;
             flex-shrink: 0;
-            height: 35px;
+            height: 30px;
         }
 
         .slide-footer p {
-            font-size: 0.85rem;
+            font-size: 0.8rem;
             color: #6a7b8c;
             font-style: italic;
         }
@@ -250,6 +236,7 @@
 
     <div class="slide-container">
         
+        <!-- Header -->
         <header class="slide-header">
             <div class="title-group">
                 <h1 class="main-title" id="dynamic-title">OODA Loop in Business</h1>
@@ -260,8 +247,10 @@
             </div>
         </header>
 
+        <!-- Main Play Field Area Workspace -->
         <div class="gameplay-arena" id="main-play-arena">
             
+            <!-- Upper Monitor -->
             <div class="mission-command-deck">
                 <div class="mission-card">
                     <h3 id="step-tag-heading">Task 01: Initial Response</h3>
@@ -269,6 +258,7 @@
                 </div>
             </div>
 
+            <!-- Loop State Visualizer Progress Blocks -->
             <div class="ooda-process-stack">
                 <div class="ooda-row-node node-observe" id="row-observe">
                     <div class="node-heading-zone">Observe</div>
@@ -288,6 +278,7 @@
                 </div>
             </div>
 
+            <!-- Flat Lower Options Horizontal Stack -->
             <div class="options-matrix-stack" id="options-box">
                 <button class="option-action-btn" onclick="submitSequence('observe')">Begin tracking competitor conversion logs, customer behaviors, and internal profit metrics in real-time.</button>
                 <button class="option-action-btn" onclick="submitSequence('decide')">Instantly drop our software subscription rates by 20% across all operational territories to protect baseline volume.</button>
@@ -296,6 +287,7 @@
 
         </div>
 
+        <!-- Hidden End-Game Master Infographic Dashboard Layout -->
         <div class="mastery-dashboard-view" id="mastery-screen">
             <div class="ooda-process-stack" style="grid-template-columns: repeat(4, 1fr); gap: 15px;">
                 <div class="ooda-row-node node-observe">
@@ -317,12 +309,16 @@
             </div>
         </div>
 
+        <!-- Stable Footer Help Component -->
         <footer class="slide-footer">
             <p id="footer-text">Analyze the active step in the dark upper box, then select the option below that maps to the next logical OODA phase.</p>
         </footer>
 
     </div>
 
+    <!-- ==========================================================================
+       4. State Routing Logic Matrix Script
+       ========================================================================== -->
     <script>
         const oodaGameSteps = [
             {
@@ -421,7 +417,7 @@
 
             document.getElementById('dynamic-title').textContent = "OODA Loop Paradigm Mastered";
             document.getElementById('mastery-screen').style.display = 'flex';
-            document.getElementById('footer-text').textContent = "Simulation complete. The framework is fully unlocked.";
+            document.getElementById('footer-text').textContent = "Simulation complete. The framework modeling loop is fully unlocked.";
         }
     </script>
 </body>
