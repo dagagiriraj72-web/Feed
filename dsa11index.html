@@ -3,8 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>5 Principles of a Decisive Culture - Absolute Fit</title>
-    
+    <title>5 Principles of a Decisive Culture</title>
     <style>
         /* ==========================================================================
            1. Absolute Boundary Reset (Strict No-Scroll, No-Cut, No-Overlap)
@@ -17,240 +16,90 @@
 
         body {
             font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
-            background-color: #0f2537; /* Deep slate blue theme match */
+            background-color: #0f2537; /* Deep slate blue matching background */
             color: #ffffff;
+            width: 100vw;
+            height: 100vh;
+            overflow: hidden;
             display: flex;
             justify-content: center;
             align-items: center;
-            min-height: 100vh;
-            overflow: hidden;
             padding: 5px;
         }
 
-        /* Fixed 16:9 Slide Canvas Framework - Height Protection Buffers */
+        /* Fixed 16:9 Presentation Canvas Container - Strict Height Cushioning */
         .slide-container {
-            background-color: #162e44;
+            background-color: #0f2537;
             width: 1280px;
             height: 720px;
-            padding: 30px 45px 20px 45px;
-            border-radius: 8px;
-            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
+            padding: 50px 60px 45px 60px;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
-            overflow: hidden; 
+            overflow: hidden;
         }
 
         /* ==========================================================================
-           2. Slide Header and Interactive HUD Panel
+           2. Slide Header Section
            ========================================================================== */
         .slide-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            border-bottom: 2px solid rgba(255, 255, 255, 0.1);
-            padding-bottom: 10px;
+            height: 70px;
             flex-shrink: 0;
-            height: 75px;
+            display: flex;
+            align-items: center;
         }
 
         .main-title {
-            font-size: 2.4rem;
-            font-weight: 800;
+            font-size: 3rem;
+            font-weight: 700;
             color: #ffffff;
             line-height: 1.1;
         }
 
-        .hud-metrics {
-            display: flex;
-            gap: 12px;
-        }
-
-        .metric-pill {
-            background-color: rgba(255, 255, 255, 0.08);
-            padding: 6px 14px;
-            border-radius: 6px;
-            font-size: 0.8rem;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            color: #e67e22;
-            border: 1px solid rgba(230, 126, 34, 0.3);
-        }
-
         /* ==========================================================================
-           3. Core Gameplay Arena Framework (Side-by-Side Horizontal Balance)
+           3. Core Content Matrix Rows Block (Defensive Geometry Controls Height)
            ========================================================================== */
-        .gameplay-arena {
-            display: flex;
-            gap: 25px;
-            flex: 1;
-            margin: 20px 0 15px 0;
-            align-items: stretch;
-            height: calc(100% - 135px);
-        }
-
-        /* Left Split: Dynamic Friction Sidebar Monitor Column */
-        .sidebar-friction-panel {
-            flex: 0.85;
-            background-color: rgba(0, 0, 0, 0.2);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 8px;
-            padding: 25px;
+        .principles-container {
             display: flex;
             flex-direction: column;
+            gap: 14px; /* Rigid spacing block avoids vertical accumulation */
+            height: 520px;
+            margin-top: 25px;
             justify-content: center;
-            box-shadow: inset 0 0 20px rgba(0,0,0,0.2);
+            min-height: 0;
         }
 
-        .sidebar-friction-panel h3 {
-            font-size: 0.75rem;
-            text-transform: uppercase;
-            letter-spacing: 1.5px;
-            color: #e67e22;
-            margin-bottom: 6px;
-        }
-
-        .sidebar-friction-panel p {
-            font-size: 1.12rem;
-            line-height: 1.45;
-            color: #ffffff;
-            font-weight: 600;
-        }
-
-        /* Right Split: Target Principles Interactive Row Stack */
-        .principles-sidebar {
-            flex: 1.15;
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            justify-content: center;
-        }
-
-        .principle-node-btn {
-            background-color: rgba(255, 255, 255, 0.04);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+        .principle-row {
+            background-color: rgba(255, 255, 255, 0.08);
             border-radius: 4px;
-            padding: 12px 20px;
+            height: 82px; /* Rigid pixel height limits eliminate bottom-overflow cuts */
             display: flex;
             align-items: center;
-            gap: 15px;
-            cursor: pointer;
-            width: 100%;
-            text-align: left;
-            font-family: inherit;
-            transition: all 0.2s ease;
+            padding: 0 45px;
         }
 
-        .principle-node-btn:hover {
-            background-color: rgba(255, 255, 255, 0.08);
-            border-color: #e67e22;
-            transform: translateX(4px);
-        }
-
-        .node-number {
-            font-size: 1.4rem;
+        .principle-num {
+            font-size: 2.1rem;
             font-weight: 800;
-            color: #e67e22;
-            width: 25px;
+            color: #e67e22; /* Signature accent orange contrast */
+            width: 80px;
             flex-shrink: 0;
         }
 
-        .node-text {
-            font-size: 1.1rem;
+        .principle-title {
+            font-size: 1.55rem;
             font-weight: 700;
             color: #ffffff;
-        }
-
-        /* Solved State active styles lock rules */
-        .principle-node-btn.solved-complete {
-            background-color: rgba(46, 204, 113, 0.1);
-            border-color: #2ecc71;
-            cursor: default;
-            pointer-events: none;
-            transform: none;
-        }
-        .principle-node-btn.solved-complete .node-number {
-            color: #2ecc71;
-        }
-
-        /* ==========================================================================
-           4. Game End Mastery Split Dashboard (Reclaims Center Void & Controls Height)
-           ========================================================================== */
-        .mastery-dashboard-overlay {
-            display: none; /* Controlled strictly by script */
-            grid-template-columns: 1fr 1fr; /* Uses horizontal space to block text clipping */
-            gap: 15px 25px;
-            flex: 1;
-            margin: 20px 0 15px 0;
-            align-content: center;
-            animation: overlayEntrance 0.4s ease-out both;
-        }
-
-        .static-framework-row {
-            background-color: rgba(255, 255, 255, 0.04);
-            border-radius: 4px;
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            padding: 14px 20px;
-            display: flex;
-            align-items: center;
-            min-height: 72px;
-        }
-
-        /* Double span wide on fifth final block entry balances geometry grid */
-        .static-framework-row.span-wide {
-            grid-column: span 2;
-            max-width: 600px;
-            margin: 0 auto;
-            width: 100%;
-        }
-
-        .static-num {
-            font-size: 1.4rem;
-            font-weight: 800;
-            color: #e67e22;
-            width: 40px;
+            width: 400px;
             flex-shrink: 0;
+            padding-right: 20px;
         }
 
-        .static-text-block {
-            display: flex;
-            flex-direction: column;
-            gap: 2px;
-        }
-
-        .static-title {
+        .principle-desc {
             font-size: 1.1rem;
-            font-weight: 700;
-            color: #ffffff;
-        }
-
-        .static-desc {
-            font-size: 0.88rem;
-            line-height: 1.35;
-            color: rgba(255, 255, 255, 0.65);
-        }
-
-        /* ==========================================================================
-           5. Slide Footer Component
-           ========================================================================== */
-        .slide-footer {
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
-            padding-top: 10px;
-            text-align: center;
-            flex-shrink: 0;
-            height: 35px;
-        }
-
-        .slide-footer p {
-            font-size: 0.85rem;
-            color: rgba(255, 255, 255, 0.5);
-            font-style: italic;
-        }
-
-        @keyframes overlayEntrance {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
+            line-height: 1.4;
+            color: rgba(255, 255, 255, 0.75);
+            font-weight: 500;
         }
     </style>
 </head>
@@ -258,141 +107,52 @@
 
     <div class="slide-container">
         
+        <!-- Header -->
         <header class="slide-header">
-            <h1 class="main-title" id="dynamic-title">5 Principles of a Decisive Culture</h1>
-            <div class="hud-metrics" id="game-hud">
-                <div class="metric-pill">Aligned: <span id="resolved-count">0 / 5</span></div>
-            </div>
+            <h1 class="main-title">5 Principles of a Decisive Culture</h1>
         </header>
 
-        <div class="gameplay-arena" id="main-play-arena">
+        <!-- Static Framework Row Chassis -->
+        <main class="principles-container">
             
-            <div class="sidebar-friction-panel">
-                <h3>Operational Friction Dilemma</h3>
-                <p id="scenario-text">"Our rollout is frozen because teams are locked in endless steering committees, trying to make sure absolutely everyone agrees before moving forward."</p>
+            <!-- Row 1 -->
+            <div class="principle-row">
+                <div class="principle-num">01</div>
+                <div class="principle-title">Clarity Over Consensus</div>
+                <div class="principle-desc">One decider, clear roles, explicit criteria</div>
             </div>
 
-            <nav class="principles-sidebar">
-                <button class="principle-node-btn" id="btn-node-1" onclick="routeScenario('clarity')">
-                    <div class="node-number">01</div>
-                    <div class="node-text">Clarity Over Consensus</div>
-                </button>
-                <button class="principle-node-btn" id="btn-node-2" onclick="routeScenario('speed')">
-                    <div class="node-number">02</div>
-                    <div class="node-text">Speed Over Perfection</div>
-                </button>
-                <button class="principle-node-btn" id="btn-node-3" onclick="routeScenario('accountability')">
-                    <div class="node-number">03</div>
-                    <div class="node-text">Accountability Over Blame</div>
-                </button>
-                <button class="principle-node-btn" id="btn-node-4" onclick="routeScenario('action')">
-                    <div class="node-number">04</div>
-                    <div class="node-text">Action Over Analysis</div>
-                </button>
-                <button class="principle-node-btn" id="btn-node-5" onclick="routeScenario('learning')">
-                    <div class="node-number">05</div>
-                    <div class="node-text">Learning Over Certainty</div>
-                </button>
-            </nav>
-
-        </div>
-
-        <div class="mastery-dashboard-overlay" id="mastery-screen">
-            
-            <div class="static-framework-row">
-                <div class="static-num">01</div>
-                <div class="static-text-block">
-                    <div class="static-title">Clarity Over Consensus</div>
-                    <div class="static-desc">One decider, clear roles, explicit criteria</div>
-                </div>
+            <!-- Row 2 -->
+            <div class="principle-row">
+                <div class="principle-num">02</div>
+                <div class="principle-title">Speed Over Perfection</div>
+                <div class="principle-desc">Move fast on reversible decisions, deliberate on irreversible ones</div>
             </div>
 
-            <div class="static-framework-row">
-                <div class="static-num">02</div>
-                <div class="static-title-block">
-                    <div class="static-title">Speed Over Perfection</div>
-                    <div class="static-desc">Move fast on reversible decisions, deliberate on irreversible ones</div>
-                </div>
+            <!-- Row 3 -->
+            <div class="principle-row">
+                <div class="principle-num">03</div>
+                <div class="principle-title">Accountability Over Blame</div>
+                <div class="principle-desc">Own outcomes, learn from mistakes, never punish well-reasoned risk</div>
             </div>
 
-            <div class="static-framework-row">
-                <div class="static-num">03</div>
-                <div class="static-text-block">
-                    <div class="static-title">Accountability Over Blame</div>
-                    <div class="static-desc">Own outcomes, learn from mistakes, never punish well-reasoned risk</div>
-                </div>
+            <!-- Row 4 -->
+            <div class="principle-row">
+                <div class="principle-num">04</div>
+                <div class="principle-title">Action Over Analysis</div>
+                <div class="principle-desc">Default to doing — the best insights come from execution, not meetings</div>
             </div>
 
-            <div class="static-framework-row">
-                <div class="static-num">04</div>
-                <div class="static-text-block">
-                    <div class="static-title">Action Over Analysis</div>
-                    <div class="static-desc">Default to doing — the best insights come from execution, not meetings</div>
-                </div>
+            <!-- Row 5 -->
+            <div class="principle-row">
+                <div class="principle-num">05</div>
+                <div class="principle-title">Learning Over Certainty</div>
+                <div class="principle-desc">Treat every decision as a hypothesis to test, not a bet to win</div>
             </div>
 
-            <div class="static-framework-row span-wide">
-                <div class="static-num">05</div>
-                <div class="static-text-block">
-                    <div class="static-title">Learning Over Certainty</div>
-                    <div class="static-desc">Treat every decision as a hypothesis to test, not a bet to win</div>
-                </div>
-            </div>
-
-        </div>
-
-        <footer class="slide-footer">
-            <p id="footer-text">Analyze the live Operational Friction Dilemma inside the left sidebar panel, then select the matching core culture card block from the right stack.</p>
-        </footer>
+        </main>
 
     </div>
 
-    <script>
-        const challengeDeck = [
-            { key: "clarity", node: "btn-node-1", text: '"Our rollout is frozen because teams are locked in endless steering committees, trying to make sure absolutely everyone agrees before moving forward."' },
-            { key: "speed", node: "btn-node-2", text: '"We are missing critical market windows on easily undoable feature changes because managers are treating them with heavy deliberation rules."' },
-            { key: "accountability", node: "btn-node-3", text: '"Innovation has completely stopped because employees are terrified that any calculated operational risk will result in strict penalties if it fails."' },
-            { key: "action", node: "btn-node-4", text: '"Our teams default to setting up secondary follow-up meetings to talk instead of launching field experiments to discover what works."' },
-            { key: "learning", node: "btn-node-5", text: '"Project updates are paralyzed because leadership treats every deployment path like an permanent bet to win instead of an experimental hypothesis."' }
-        ];
-
-        let activeIndex = 0;
-        let successfulMatches = 0;
-
-        function routeScenario(userCardChoice) {
-            const currentItem = challengeDeck[activeIndex];
-
-            if (userCardChoice === currentItem.key) {
-                successfulMatches++;
-                document.getElementById('resolved-count').textContent = `${successfulMatches} / 5`;
-
-                // Permanent victory state flag lock
-                document.getElementById(currentItem.node).classList.add('solved-complete');
-
-                if (successfulMatches < 5) {
-                    activeIndex++;
-                    document.getElementById('scenario-text').textContent = challengeDeck[activeIndex].text;
-                } else {
-                    displayFinalDashboard();
-                }
-            } else {
-                const badButton = document.querySelector(`[onclick="routeScenario('${userCardChoice}')"]`);
-                if (badButton) {
-                    badButton.style.borderColor = '#c0392b';
-                    setTimeout(() => { badButton.style.borderColor = 'rgba(255,255,255,0.1)'; }, 600);
-                }
-            }
-        }
-
-        function displayFinalDashboard() {
-            document.getElementById('main-play-arena').style.display = 'none';
-            document.getElementById('game-hud').style.display = 'none';
-
-            document.getElementById('dynamic-title').textContent = "Decisive Culture Archetypes Unlocked";
-
-            document.getElementById('mastery-screen').style.display = 'grid';
-            document.getElementById('footer-text').textContent = "Review complete. All 5 fundamental corporate culture principles are now successfully deployed.";
-        }
-    </script>
 </body>
 </html>
