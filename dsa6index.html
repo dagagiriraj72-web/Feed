@@ -3,21 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>The Strategic Cost - Absolute Widescreen Fit</title>
-    
+    <title>RAPID in Practice</title>
     <style>
-        /* ==========================================================================
-           1. Absolute Boundary Reset (Strict No-Scroll, No-Cut, No-Overlap)
-           ========================================================================= */
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
-
+        * { box-sizing: border-box; margin: 0; padding: 0; }
         body {
             font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
-            background-color: #f0f4f8;
+            background-color: #f8fafc;
             color: #1a2a3a;
             width: 100vw;
             height: 100vh;
@@ -25,234 +16,126 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            padding: 5px;
         }
-
-        /* Fixed 16:9 Presentation Canvas Container - Strict Padding Limits Prevent Cuts */
         .slide-container {
-            background-color: #fafcfe;
             width: 1280px;
             height: 720px;
-            padding: 30px 45px 20px 45px; /* Highly optimized padding boundaries protect against bottom-cuts */
-            border-radius: 8px;
-            box-shadow: 0 20px 50px rgba(18, 52, 86, 0.12);
+            padding: 40px 50px 35px 50px;
+            background-color: #f8fafc;
             display: flex;
             flex-direction: column;
-            justify-content: space-between;
-            overflow: hidden; 
+            overflow: hidden;
         }
-
-        /* ==========================================================================
-           2. Slide Header and Real-time HUD Metrics Bar
-           ========================================================================== */
         .slide-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-bottom: 2px solid #e1e8f0;
-            padding-bottom: 8px;
-            height: 65px;
+            height: 90px;
             flex-shrink: 0;
         }
-
         .main-title {
-            font-size: 2.2rem;
+            font-size: 2.6rem;
             font-weight: 800;
-            color: #123456;
+            color: #1c3d5a;
             line-height: 1.1;
         }
-
         .subtitle {
-            font-size: 0.95rem;
-            color: #6a7b8c;
+            font-size: 1.1rem;
+            color: #718096;
+            margin-top: 8px;
+            font-weight: 500;
             display: flex;
             align-items: center;
-            gap: 6px;
+            gap: 10px;
         }
-
         .subtitle::before {
             content: "•";
             color: #e67e22;
-            font-size: 1.4rem;
+            font-size: 1.8rem;
+            line-height: 0;
         }
-
-        .hud-metrics {
-            display: flex;
-            gap: 10px;
-        }
-
-        .metric-pill {
-            background-color: #eaf1f8;
-            padding: 5px 12px;
-            border-radius: 4px;
-            font-size: 0.8rem;
-            font-weight: 700;
-            color: #123456;
-            border: 1px solid #ccdbe8;
-        }
-
-        /* ==========================================================================
-           3. Core Gameplay Arena Framework (Restructured to Compressed Flow)
-           ========================================================================== */
-        .gameplay-arena {
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-            flex: 1;
-            margin: 20px 0;
-            min-height: 0; /* Clear block breaks flex vertical over-expansion bugs */
-        }
-
-        /* Upper Strategic Audit Card Display (Locked height boundary protects space) */
-        .audit-terminal-card {
-            background-color: #123456;
-            border-radius: 6px;
-            padding: 22px 30px;
-            color: #ffffff;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
-            flex-shrink: 0;
-        }
-
-        .terminal-prompt-box h3 {
-            font-size: 0.75rem;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            color: #e67e22;
-            margin-bottom: 3px;
-        }
-
-        .terminal-prompt-box p {
-            font-size: 1.18rem;
-            line-height: 1.45;
-            color: #ffffff;
-            font-weight: 600;
-        }
-
-        /* 4-Column Unified Grid Platform Console (Combines Tree Progress & Button functions) */
-        .framework-interactive-console {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 16px;
-            flex: 1;
-            min-height: 0;
-        }
-
-        .tactical-classification-block {
+        .table-panel-container {
             background-color: #ffffff;
-            border: 1px solid #e1e8f0;
-            border-bottom: 5px solid #cbd5e1;
-            border-radius: 6px;
-            padding: 22px;
+            border-radius: 4px;
+            padding: 30px 40px;
+            height: 510px;
+            margin-top: 15px;
             display: flex;
             flex-direction: column;
-            justify-content: flex-start;
-            cursor: pointer;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.01);
-            transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
-            height: 100%;
+            justify-content: center;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.01);
         }
-
-        .tactical-classification-block:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 8px 20px rgba(18, 52, 86, 0.08);
-            background-color: #fffbf7;
+        .rapid-matrix-table {
+            width: 100%;
+            border-collapse: collapse;
         }
-
-        /* Interactive ribbon branding paths */
-        #block-share   { border-bottom-color: #3b75af; }
-        #block-window  { border-bottom-color: #3b75af; }
-        #block-infra   { border-bottom-color: #e67e22; }
-        #block-leader  { border-bottom-color: #123456; }
-
-        .block-title {
+        .rapid-matrix-table th {
+            text-align: left;
             font-size: 1.25rem;
             font-weight: 800;
-            color: #123456;
-            margin-bottom: 10px;
-            line-height: 1.2;
+            color: #1c3d5a;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #e2e8f0;
         }
-
-        .block-desc-text {
-            font-size: 0.92rem;
-            line-height: 1.45;
-            color: #4b5a6a;
-            display: none; /* Appears smoothly when paired correctly */
-            animation: textRevealKey 0.35s ease forwards;
+        .rapid-matrix-table td {
+            font-size: 1.05rem;
+            font-weight: 600;
+            color: #4a5568;
+            padding: 18px 10px;
         }
-
-        /* Solved State styling parameters lock rules */
-        .tactical-classification-block.unlocked-node {
-            background-color: #f4fbf7 !important;
-            border-color: #2ecc71 !important;
-            border-bottom-color: #2ecc71 !important;
-            cursor: default;
-            pointer-events: none;
-            transform: none !important;
-            box-shadow: none !important;
+        .rapid-matrix-table tr:not(:last-child) td {
+            border-bottom: 1px solid #edf2f7;
         }
-
-        .tactical-classification-block.unlocked-node .block-title {
-            color: #27ae60;
+        .rapid-matrix-table tr.highlight-row td {
+            background-color: #f7fafc;
         }
-
-        .tactical-classification-block.unlocked-node .block-desc-text {
-            display: block;
-        }
-
-        /* ==========================================================================
-           4. Slide Footer Component
-           ========================================================================== */
-        .slide-footer {
-            border-top: 1px solid #e1e8f0;
-            padding-top: 8px;
-            text-align: center;
-            flex-shrink: 0;
-            height: 35px;
-        }
-
-        .slide-footer p {
-            font-size: 0.85rem;
-            color: #6a7b8c;
-            font-style: italic;
-        }
-
-        @keyframes textRevealKey {
-            from { opacity: 0; transform: translateY(4px); }
-            to { opacity: 1; transform: translateY(0); }
+        .benefit-callout {
+            color: #2b6cb0;
+            font-weight: 700;
         }
     </style>
 </head>
 <body>
-
     <div class="slide-container">
-        
         <header class="slide-header">
-            <div class="title-group">
-                <h1 class="main-title" id="dynamic-title">The Strategic Cost</h1>
-                <p class="subtitle" id="dynamic-subtitle">Every delayed decision is a competitive advantage surrendered.</p>
-            </div>
-            <div class="hud-metrics" id="game-hud">
-                <div class="metric-pill">Audited Variables: <span id="audit-count">0 / 4</span></div>
-                <div class="metric-pill">Audit Status: <span id="accuracy-score" style="color: #e67e22;">Analyzing</span></div>
-            </div>
+            <h1 class="main-title">RAPID in Practice</h1>
+            <p class="subtitle">How clear decision roles eliminate ambiguity and accelerate execution</p>
         </header>
-
-        <div class="gameplay-arena" id="main-play-arena">
-            
-            <div class="audit-terminal-card">
-                <div class="terminal-prompt-box">
-                    <h3 id="step-tag-heading">Case Audit Alpha</h3>
-                    <p id="challenge-prompt-text">"Competitors who act first capture customers and brand loyalty that are nearly impossible to reclaim."</p>
-                </div>
-            </div>
-
-            <main class="framework-interactive-console">
-                
-                <div class="tactical-classification-block" id="block-share" onclick="submitAssessment('share')">
-                    <h2 class="block-title">Lost Market Share</h2>
-                    <p class="block-desc-text">Competitors who act first capture customers and brand loyalty that are nearly impossible to reclaim.</p>
-                </div>
-
-                <div class="tactical-classification-block" id="block-window" onclick="submitAssessment('window')">
-                    <h2 class="block-title">Missed Innovation Windows</h2>
-                    <p class="block-desc-text">Innovation depends on action — waiting for perfect certainty
+        <main class="table-panel-container">
+            <table class="rapid-matrix-table">
+                <thead>
+                    <tr>
+                        <th style="width: 32%;">Challenge</th>
+                        <th style="width: 43%;">RAPID Solution</th>
+                        <th style="width: 25%;">Benefit</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="highlight-row">
+                        <td>"Too many cooks"</td>
+                        <td>Assign one Recommender per decision</td>
+                        <td class="benefit-callout">Single accountability</td>
+                    </tr>
+                    <tr>
+                        <td>"Decision by committee"</td>
+                        <td>Name one Decider with final authority</td>
+                        <td class="benefit-callout">Clear ownership</td>
+                    </tr>
+                    <tr class="highlight-row">
+                        <td>"Approval loops"</td>
+                        <td>Limit Agree roles to legal/regulatory</td>
+                        <td class="benefit-callout">Faster throughput</td>
+                    </tr>
+                    <tr>
+                        <td>"Everyone has an opinion"</td>
+                        <td>Distinguish Input from Agree</td>
+                        <td class="benefit-callout">Focused feedback</td>
+                    </tr>
+                    <tr class="highlight-row">
+                        <td>"Who's doing it?"</td>
+                        <td>Assign Perform role at decision time</td>
+                        <td class="benefit-callout">Immediate execution</td>
+                    </tr>
+                </tbody>
+            </table>
+        </main>
+    </div>
+</body>
+</html>
