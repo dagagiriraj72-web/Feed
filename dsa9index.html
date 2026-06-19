@@ -3,217 +3,277 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Clear Decision Rights - Interactive Simulation</title>
+    <title>Clear Decision Rights - Interactive Matrix</title>
     <style>
-        * { box-sizing: border-box; margin: 0; padding: 0; }
-        body {
-            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
-            background-color: #f8fafc;
-            color: #1a2a3a;
-            width: 100vw;
-            height: 100vh;
+        /* BASE RESET & ANTI-COLLAPSE RESTRAINT ENGINE
+           Locks parent bounds to fill the iframe cleanly, preventing dynamic 
+           collapses or hidden text artifacts within Storyline Web Objects.
+        */
+        html, body {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #f8f9fa;
+            font-family: 'Segoe UI', Arial, sans-serif;
             overflow: hidden;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 5px;
         }
-        .slide-container {
-            background-color: #fafcfe;
-            width: 1280px;
-            height: 720px;
-            padding: 30px 45px 20px 45px;
+
+        /* 16:9 FIXED CANVAS LAYERFOOTPRINT
+           Enforces structural barriers to neutralize text bleeding into lower margins.
+        */
+        .slide-wrapper {
+            width: 100%;
+            height: 100%;
+            max-width: 1280px;
+            max-height: 720px;
+            aspect-ratio: 16 / 9;
+            padding: 3rem 4.5rem 2.5rem 4.5rem;
+            background-color: #f8f9fa; /* Sleek light canvas finish matching image_637c06.png */
             display: flex;
             flex-direction: column;
             justify-content: space-between;
-            overflow: hidden; 
+            box-sizing: border-box;
+            position: relative;
         }
-        .slide-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-bottom: 2px solid #e1e8f0;
-            padding-bottom: 8px;
-            height: 65px;
+
+        /* Top Header Presentation Row */
+        .header-section {
+            margin-bottom: 1.5rem;
             flex-shrink: 0;
         }
+
         .main-title {
-            font-size: 2.2rem;
-            font-weight: 800;
-            color: #123456;
-            line-height: 1.1;
-        }
-        .hud-metrics { display: flex; gap: 12px; }
-        .metric-pill {
-            background-color: #eaf1f8;
-            padding: 5px 12px;
-            border-radius: 4px;
-            font-size: 0.8rem;
+            font-size: 2.8rem;
+            color: #1a365d; /* Dark corporate primary tone from image_637c06.png */
             font-weight: 700;
-            color: #123456;
-            border: 1px solid #ccdbe8;
+            margin: 0 0 0.6rem 0;
+            letter-spacing: -0.5px;
         }
-        .gameplay-arena {
+
+        .sub-directive-row {
             display: flex;
-            flex-direction: column;
-            gap: 15px;
-            flex: 1;
-            margin: 15px 0;
-            min-height: 0;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.15rem;
+            color: #718096; /* Subtle steel gray text from image_637c06.png */
         }
-        .sidebar-diagnostic-desk {
-            background-color: #123456;
-            border-radius: 6px;
-            padding: 15px 25px;
-            color: #ffffff;
-            flex-shrink: 0;
+
+        .accent-bullet {
+            width: 10px;
+            height: 10px;
+            background-color: #e67e22; /* Pure orange icon indicator from image_637c06.png */
+            border-radius: 50%;
+            display: inline-block;
         }
-        .sidebar-diagnostic-desk h3 {
-            font-size: 0.75rem;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            color: #e67e22;
-            margin-bottom: 2px;
-        }
-        .sidebar-diagnostic-desk p {
-            font-size: 1.05rem;
-            line-height: 1.4;
-            color: #ffffff;
-            font-weight: 600;
-        }
-        .matrix-split-grid {
+
+        /* LATERAL SPLIT ARCHITECTURE COCKPIT
+           Distributes text nodes evenly over two parallel data column panels.
+        */
+        .workspace-split-matrix {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 20px;
-            flex: 1;
-            min-height: 0;
+            gap: 2.5rem;
+            flex-grow: 1;
+            min-height: 0; /* Anti-overflow containment line */
+            align-items: stretch;
+            margin-bottom: 1rem;
         }
-        .matrix-column-card {
+
+        /* Symmetrical Content Board Bases */
+        .presentation-column-card {
             background-color: #ffffff;
-            border: 1px solid #e1e8f0;
-            border-radius: 6px;
+            border-radius: 4px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.04);
             display: flex;
             flex-direction: column;
             overflow: hidden;
             height: 100%;
         }
-        .card-banner-header {
-            padding: 10px 20px;
-            font-size: 1.1rem;
+
+        /* Colored Panel Header Elements */
+        .card-header-banner {
+            padding: 1.2rem 2rem;
+            font-size: 1.45rem;
             font-weight: 700;
             color: #ffffff;
             flex-shrink: 0;
         }
-        .root-causes-card .card-banner-header { background-color: #c0392b; }
-        .solutions-card .card-banner-header { background-color: #2ecc71; }
-        .card-inner-features {
-            padding: 15px 20px;
+
+        /* Verbatim specific color maps from image_637c06.png */
+        .bg-root-causes { background-color: #c0392b; } /* Deep Rust-Red */
+        .bg-solutions { background-color: #27ae60; }   /* Emerald Green */
+
+        /* Inner List Matrix Pipelines */
+        .card-content-stack {
+            padding: 2.5rem 2rem;
             display: flex;
             flex-direction: column;
-            justify-content: space-between;
-            flex: 1;
-            min-height: 0;
+            justify-content: space-around;
+            flex-grow: 1;
+            list-style: none;
+            margin: 0;
         }
-        .criteria-bullet-list {
-            list-style-type: none;
+
+        /* Interactive Text Node Targets */
+        .matrix-bullet-node {
             display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
-        .criteria-bullet-list li {
-            font-size: 0.9rem;
-            line-height: 1.35;
-            color: #4b5a6a;
-            position: relative;
-            padding-left: 20px;
-            font-weight: 600;
-            transition: all 0.2s ease;
-        }
-        .criteria-bullet-list li::before {
-            content: "•";
-            position: absolute;
-            left: 0;
-            font-size: 1.3rem;
-            top: -2px;
-            color: #cbd5e1;
-        }
-        .solutions-card .criteria-bullet-list li {
-            background-color: #f7fafc;
-            border: 1px solid #e1e8f0;
-            padding: 10px 12px 10px 25px;
-            border-radius: 4px;
+            align-items: flex-start;
+            gap: 1.2rem;
+            font-size: 1.05rem;
+            color: #4a5568;
+            line-height: 1.45;
+            padding: 0.8rem 1rem;
+            border-radius: 6px;
             cursor: pointer;
+            transition: all 0.2s ease;
+            font-weight: 500;
         }
-        .solutions-card .criteria-bullet-list li::before { left: 10px; top: 8px; }
-        .solutions-card .criteria-bullet-list li:hover {
-            background-color: #ffffff;
-            border-color: #2ecc71;
-            transform: translateX(3px);
-        }
-        .root-causes-card .criteria-bullet-list li { opacity: 0.25; }
-        .root-causes-card .criteria-bullet-list li.active-revealed {
-            opacity: 1;
-            color: #c0392b;
-        }
-        .root-causes-card .criteria-bullet-list li.active-revealed::before { color: #c0392b; }
-        .solutions-card .criteria-bullet-list li.resolved-matched {
-            background-color: #f4fbf7;
-            border-color: #2ecc71;
-            color: #27ae60;
-            cursor: default;
-            pointer-events: none;
-            transform: none;
-        }
-        .solutions-card .criteria-bullet-list li.resolved-matched::before { color: #2ecc71; }
-        .slide-footer {
-            border-top: 1px solid #e1e8f0;
-            padding-top: 8px;
-            text-align: center;
+
+        .bullet-dot-indicator {
+            width: 6px;
+            height: 6px;
+            background-color: #4a5568; /* Solid charcoal bullet point matching image_637c06.png */
+            border-radius: 50%;
+            margin-top: 0.6rem;
             flex-shrink: 0;
-            height: 35px;
+            transition: transform 0.2s ease, background-color 0.2s ease;
         }
-        .slide-footer p { font-size: 0.85rem; color: #6a7b8c; font-style: italic; }
+
+        /* HIGHLIGHT SYNCHRONIZATION MODIFIERS
+           When a node is hovered/clicked, both the problem and its solution update simultaneously.
+        */
+        .matrix-bullet-node.highlighted-cause {
+            background-color: rgba(192, 57, 43, 0.05);
+            color: #c0392b;
+            font-weight: 600;
+            transform: translateX(4px);
+        }
+        .matrix-bullet-node.highlighted-cause .bullet-dot-indicator {
+            background-color: #c0392b;
+            transform: scale(1.4);
+        }
+
+        .matrix-bullet-node.highlighted-solution {
+            background-color: rgba(39, 174, 96, 0.05);
+            color: #27ae60;
+            font-weight: 600;
+            transform: translateX(4px);
+        }
+        .matrix-bullet-node.highlighted-solution .bullet-dot-indicator {
+            background-color: #27ae60;
+            transform: scale(1.4);
+        }
+
+        /* Lower Operational Context Guidance Bar Strip */
+        .footer-bar {
+            border-top: 1px solid #e2dbd5;
+            padding-top: 0.6rem;
+            flex-shrink: 0;
+        }
+
+        .instruction-tag {
+            font-size: 0.88rem;
+            color: #a0aec0;
+            font-style: italic;
+            text-align: left;
+        }
     </style>
 </head>
 <body>
-    <div class="slide-container">
-        <header class="slide-header">
-            <h1 class="main-title" id="dynamic-title">Clear Decision Rights</h1>
-            <div class="hud-metrics">
-                <div class="metric-pill">Cures Deployed: <span id="resolved-count">0 / 5</span></div>
-            </div>
-        </header>
-        <div class="gameplay-arena">
-            <div class="sidebar-diagnostic-desk">
-                <h3>Organizational Pathology Log</h3>
-                <p id="pathology-text">Loading case profile log variables...</p>
-            </div>
-            <div class="matrix-split-grid">
-                <div class="matrix-column-card root-causes-card">
-                    <div class="card-banner-header">Root Causes of Indecision</div>
-                    <div class="card-inner-features">
-                        <ul class="criteria-bullet-list">
-                            <li class="cause-node-0 active-revealed">Complex structures and overlapping responsibilities</li>
-                            <li class="cause-node-1">Informal power dynamics and politics</li>
-                            <li class="cause-node-2">Lack of trust among senior leaders</li>
-                            <li class="cause-node-3">Fear of failure or accountability</li>
-                            <li class="cause-node-4">Conflict avoidance in political environments</li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="matrix-column-card solutions-card">
-                    <div class="card-banner-header">Solutions</div>
-                    <div class="card-inner-features">
-                        <ul class="criteria-bullet-list">
-                            <li onclick="routeSolution('deadlines', this)">Set decision deadlines for every open item</li>
-                            <li onclick="routeSolution('veto', this)">Separate veto from advisory input</li>
-                            <li onclick="routeSolution('explicit', this)">Make decision authority explicit and visible</li>
-                            <li onclick="routeSolution('rapid', this)">Map decision rights using RAPID or similar</li>
-                            <li onclick="routeSolution('escalation', this)">Establish escalation paths with time limits</li>
-                        </ul>
-                    </div>
-                </div>
+
+    <div class="slide-wrapper">
+        <!-- Interactive Header Banner -->
+        <div class="header-section">
+            <h1 class="main-title">Clear Decision Rights</h1>
+            <div class="sub-directive-row">
+                <span class="accent-bullet"></span>
+                <span>Ambiguity about who decides is the primary source of organizational indecision</span>
             </div>
         </div>
-        <footer class="slide-footer">
-            <p id="footer-text">Analyze the active Pathology statement
+
+        <!-- Balanced Sidebar Matrix Workspace Area -->
+        <div class="workspace-split-matrix">
+            
+            <!-- LEFT PANEL: ROOT CAUSES -->
+            <div class="presentation-column-card">
+                <div class="card-header-banner bg-root-causes">Root Causes of Indecision</div>
+                <ul class="card-content-stack">
+                    <li class="matrix-bullet-node" id="cause-0" onmouseenter="syncHighlight(0, true)" onmouseleave="syncHighlight(0, false)">
+                        <span class="bullet-dot-indicator"></span>
+                        <span>Complex structures and overlapping responsibilities</span>
+                    </li>
+                    <li class="matrix-bullet-node" id="cause-1" onmouseenter="syncHighlight(1, true)" onmouseleave="syncHighlight(1, false)">
+                        <span class="bullet-dot-indicator"></span>
+                        <span>Informal power dynamics and politics</span>
+                    </li>
+                    <li class="matrix-bullet-node" id="cause-2" onmouseenter="syncHighlight(2, true)" onmouseleave="syncHighlight(2, false)">
+                        <span class="bullet-dot-indicator"></span>
+                        <span>Lack of trust among senior leaders</span>
+                    </li>
+                    <li class="matrix-bullet-node" id="cause-3" onmouseenter="syncHighlight(3, true)" onmouseleave="syncHighlight(3, false)">
+                        <span class="bullet-dot-indicator"></span>
+                        <span>Fear of failure or accountability</span>
+                    </li>
+                    <li class="matrix-bullet-node" id="cause-4" onmouseenter="syncHighlight(4, true)" onmouseleave="syncHighlight(4, false)">
+                        <span class="bullet-dot-indicator"></span>
+                        <span>Conflict avoidance in political environments</span>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- RIGHT PANEL: SOLUTIONS -->
+            <div class="presentation-column-card">
+                <div class="card-header-banner bg-solutions">Solutions</div>
+                <ul class="card-content-stack">
+                    <li class="matrix-bullet-node" id="sol-0" onmouseenter="syncHighlight(0, true)" onmouseleave="syncHighlight(0, false)">
+                        <span class="bullet-dot-indicator"></span>
+                        <span>Map decision rights using RAPID or similar</span>
+                    </li>
+                    <li class="matrix-bullet-node" id="sol-1" onmouseenter="syncHighlight(1, true)" onmouseleave="syncHighlight(1, false)">
+                        <span class="bullet-dot-indicator"></span>
+                        <span>Set decision deadlines for every open item</span>
+                    </li>
+                    <li class="matrix-bullet-node" id="sol-2" onmouseenter="syncHighlight(2, true)" onmouseleave="syncHighlight(2, false)">
+                        <span class="bullet-dot-indicator"></span>
+                        <span>Separate veto from advisory input</span>
+                    </li>
+                    <li class="matrix-bullet-node" id="sol-3" onmouseenter="syncHighlight(3, true)" onmouseleave="syncHighlight(3, false)">
+                        <span class="bullet-dot-indicator"></span>
+                        <span>Establish escalation paths with time limits</span>
+                    </li>
+                    <li class="matrix-bullet-node" id="sol-4" onmouseenter="syncHighlight(4, true)" onmouseleave="syncHighlight(4, false)">
+                        <span class="bullet-dot-indicator"></span>
+                        <span>Make decision authority explicit and visible</span>
+                    </li>
+                </ul>
+            </div>
+
+        </div>
+
+        <!-- Lower Instructional Prompt Strip -->
+        <div class="footer-bar">
+            <span class="instruction-tag">Hover your cursor over any framework variable to dynamically audit corresponding problem-to-solution operational maps.</span>
+        </div>
+    </div>
+
+    <script>
+        /**
+         * Cross-Panel Symmetrical Highlight Engine
+         * Couples opposing list elements to draw immediate relational connections.
+         */
+        function syncHighlight(indexKey, shouldTurnOnHighlight) {
+            const causeNode = document.getElementById(`cause-${indexKey}`);
+            const solutionNode = document.getElementById(`sol-${indexKey}`);
+
+            if (shouldTurnOnHighlight) {
+                causeNode.classList.add("highlighted-cause");
+                solutionNode.classList.add("highlighted-solution");
+            } else {
+                causeNode.classList.remove("highlighted-cause");
+                solutionNode.classList.remove("highlighted-solution");
+            }
+        }
+    </script>
+</body>
+</html>
