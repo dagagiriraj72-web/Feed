@@ -3,12 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>OODA Loop in Business</title>
+    <title>OODA Loop - Tactical Simulator</title>
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body {
             font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
-            background-color: #f8fafc;
+            background-color: #fafcfe;
             color: #1a2a3a;
             width: 100vw;
             height: 100vh;
@@ -16,104 +16,162 @@
             display: flex;
             justify-content: center;
             align-items: center;
+            padding: 5px;
         }
         .slide-container {
             width: 1280px;
             height: 720px;
-            padding: 40px 50px 35px 50px;
-            background-color: #f8fafc;
+            padding: 25px 40px 15px 40px;
             display: flex;
             flex-direction: column;
-            overflow: hidden;
+            justify-content: space-between;
+            overflow: hidden; 
         }
         .slide-header {
-            height: 90px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px solid #e1e8f0;
+            padding-bottom: 6px;
+            height: 55px;
             flex-shrink: 0;
         }
-        .main-title {
-            font-size: 2.6rem;
-            font-weight: 800;
-            color: #1c3d5a;
-            line-height: 1.1;
+        .main-title { font-size: 2.1rem; font-weight: 800; color: #123456; }
+        .metric-pill {
+            background-color: #eaf1f8;
+            padding: 4px 12px;
+            border-radius: 4px;
+            font-size: 0.78rem;
+            font-weight: 700;
+            color: #123456;
+            border: 1px solid #ccdbe8;
         }
-        .subtitle {
-            font-size: 1.1rem;
-            color: #718096;
-            margin-top: 8px;
-            font-weight: 500;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        .subtitle::before {
-            content: "•";
-            color: #e67e22;
-            font-size: 1.8rem;
-            line-height: 0;
-        }
-        .ooda-process-stack {
-            display: flex;
-            flex-direction: column;
-            gap: 14px;
-            margin-top: 15px;
-            height: 510px;
-            justify-content: center;
-        }
+        .gameplay-arena { display: flex; flex-direction: column; gap: 12px; flex: 1; margin: 12px 0; min-height: 0; }
+        .mission-command-deck { background-color: #123456; border-radius: 6px; padding: 12px 20px; color: #ffffff; flex-shrink: 0; }
+        .mission-card h3 { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 1px; color: #e67e22; margin-bottom: 2px; }
+        .mission-card p { font-size: 1.05rem; line-height: 1.35; color: #ffffff; font-weight: 600; }
+        .ooda-process-stack { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; flex-shrink: 0; }
         .ooda-row-node {
             background-color: #ffffff;
-            border: 1px solid #e2e8f0;
-            border-left: 6px solid #cbd5e1;
-            border-radius: 4px;
-            height: 92px;
+            border: 1px solid #e1e8f0;
+            border-bottom: 4px solid #cbd5e1;
+            border-radius: 6px;
+            padding: 12px 16px;
+            display: flex;
+            flex-direction: column;
+            height: 145px;
+            opacity: 0.35;
+            transition: all 0.3s ease;
+        }
+        .node-observe { border-bottom-color: #3b75af; }
+        .node-orient  { border-bottom-color: #3b75af; }
+        .node-decide  { border-bottom-color: #e67e22; }
+        .node-act     { border-bottom-color: #123456; }
+        .ooda-row-node.unlocked { opacity: 1; background-color: #fffbf7; border-color: #ccdbe8; }
+        .node-heading-zone { font-size: 1.15rem; font-weight: 800; color: #123456; margin-bottom: 4px; }
+        .node-description-zone { font-size: 0.82rem; line-height: 1.35; color: #4b5a6a; display: none; }
+        .ooda-row-node.unlocked .node-description-zone { display: block; }
+        .options-matrix-stack { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; height: 105px; flex-shrink: 0; margin-top: auto; }
+        .option-action-btn {
+            background-color: #ffffff;
+            border: 1px solid #ccdbe8;
+            color: #2c3e50;
+            border-radius: 6px;
+            padding: 10px 14px;
+            font-family: inherit;
+            font-size: 0.84rem;
+            line-height: 1.35;
+            font-weight: 600;
+            text-align: left;
+            cursor: pointer;
             display: flex;
             align-items: center;
-            padding: 0 30px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.01);
+            transition: all 0.2s ease;
         }
-        .node-observe { border-left-color: #3182ce; }
-        .node-orient  { border-left-color: #3182ce; }
-        .node-decide  { border-left-color: #e67e22; }
-        .node-act     { border-left-color: #1c3d5a; }
-
-        .node-heading-zone {
-            width: 180px;
-            font-size: 1.45rem;
-            font-weight: 800;
-            color: #1c3d5a;
-            flex-shrink: 0;
-        }
-        .node-description-zone {
-            font-size: 1.05rem;
-            line-height: 1.45;
-            color: #4a5568;
-            font-weight: 500;
-        }
+        .option-action-btn:hover { background-color: #f7fafc; border-color: #e67e22; }
+        .slide-footer { border-top: 1px solid #e1e8f0; padding-top: 6px; text-align: center; flex-shrink: 0; height: 30px; }
+        .slide-footer p { font-size: 0.8rem; color: #6a7b8c; font-style: italic; }
     </style>
 </head>
 <body>
     <div class="slide-container">
         <header class="slide-header">
             <h1 class="main-title">OODA Loop in Business</h1>
-            <p class="subtitle">Applying military-grade decision speed to competitive strategy</p>
+            <div class="hud-metrics">
+                <div class="metric-pill">Loop Stage: <span id="loop-stage-text">1 / 4</span></div>
+            </div>
         </header>
-        <main class="ooda-process-stack">
-            <div class="ooda-row-node node-observe">
-                <div class="node-heading-zone">Observe</div>
-                <div class="node-description-zone">Monitor market signals, competitor moves, customer behavior, and internal metrics in real time</div>
+        <div class="gameplay-arena" id="main-play-arena">
+            <div class="mission-command-deck">
+                <div class="mission-card">
+                    <h3 id="step-tag-heading">Task 01: Initial Response</h3>
+                    <p id="challenge-prompt-text">A direct regional competitor unexpectedly slashes prices across their entire product ecosystem by 15%. What is your immediate opening operational baseline move?</p>
+                </div>
             </div>
-            <div class="ooda-row-node node-orient">
-                <div class="node-heading-zone">Orient</div>
-                <div class="node-description-zone">Contextualize data against your industry knowledge, organizational culture, and strategic position</div>
+            <div class="ooda-process-stack">
+                <div class="ooda-row-node node-observe" id="row-observe">
+                    <div class="node-heading-zone">Observe</div>
+                    <div class="node-description-zone">Monitor market signals, competitor moves, customer behavior, and internal metrics in real time.</div>
+                </div>
+                <div class="ooda-row-node node-orient" id="row-orient">
+                    <div class="node-heading-zone">Orient</div>
+                    <div class="node-description-zone">Contextualize data against your industry knowledge, organizational culture, and strategic position.</div>
+                </div>
+                <div class="ooda-row-node node-decide" id="row-decide">
+                    <div class="node-heading-zone">Decide</div>
+                    <div class="node-description-zone">Choose the optimal response — enter a market, pivot a product, adjust pricing — with conviction.</div>
+                </div>
+                <div class="ooda-row-node node-act" id="row-act">
+                    <div class="node-heading-zone">Act</div>
+                    <div class="node-description-zone">Execute swiftly and decisively, then immediately begin observing the results to start the next cycle.</div>
+                </div>
             </div>
-            <div class="ooda-row-node node-decide">
-                <div class="node-heading-zone">Decide</div>
-                <div class="node-description-zone">Choose the optimal response — enter a market, pivot a product, adjust pricing — with conviction</div>
+            <div class="options-matrix-stack" id="options-box">
+                <button class="option-action-btn" onclick="submitSequence('observe')">Begin tracking competitor conversion logs, customer behaviors, and internal profit metrics in real-time.</button>
+                <button class="option-action-btn" onclick="submitSequence('decide')">Instantly drop our software subscription rates by 20% across all operational territories to protect baseline volume.</button>
+                <button class="option-action-btn" onclick="submitSequence('orient')">Convene a steering audit committee to evaluate how this price action aligns with our long-term positioning values.</button>
             </div>
-            <div class="ooda-row-node node-act">
-                <div class="node-heading-zone">Act</div>
-                <div class="node-description-zone">Execute swiftly and decisively, then immediately begin observing the results to start the next cycle</div>
-            </div>
-        </main>
+        </div>
+        <footer class="slide-footer">
+            <p id="footer-text">Analyze the active scenario prompt in the upper box, then select the tactical option below that maps onto the logical OODA phase.</p>
+        </footer>
     </div>
+    <script>
+        const oodaGameSteps = [
+            { expectedKey: "observe", tag: "Task 01: Initial Response", text: "A direct regional competitor unexpectedly slashes prices across their entire product ecosystem by 15%. What is your immediate opening operational baseline move?", options: [{ key: "observe", text: "Monitor market signals, competitor moves, customer behavior, and internal metrics in real time." }, { key: "decide", text: "Choose the optimal response — enter a market, pivot a product, adjust pricing — with conviction." }, { key: "orient", text: "Contextualize data against your industry knowledge, organizational culture, and strategic position." }] },
+            { expectedKey: "orient", tag: "Task 02: Analytical Synthesis", text: "Factual metrics are incoming. To avoid rash, impulsive reactions, how do you diagnose this real-time stream accurately?", options: [{ key: "act", text: "Execute swiftly and decisively, then immediately begin observing the results to start the next cycle." }, { key: "orient", text: "Contextualize data against your industry knowledge, organizational culture, and strategic position." }, { key: "decide", text: "Choose the optimal response — enter a market, pivot a product, adjust pricing — with conviction." }] },
+            { expectedKey: "decide", tag: "Task 03: Determination Execution", text: "The data is contextualized. Your team isolates the margin impact bounds. What is the next logical step in the command velocity sequence?", options: [{ key: "act", text: "Execute swiftly and decisively, then immediately begin observing the results to start the next cycle." }, { key: "observe", text: "Monitor market signals, competitor moves, customer behavior, and internal metrics in real time." }, { key: "decide", text: "Choose the optimal response — enter a market, pivot a product, adjust pricing — with conviction." }] },
+            { expectedKey: "act", tag: "Task 04: Velocity Action Deployment", text: "The targeted pricing counter-adjustment choice has been made. How do you deploy the resource trajectory to close out the loop cycle?", options: [{ key: "act", text: "Execute swiftly and decisively, then immediately begin observing the results to start the next cycle." }, { key: "orient", text: "Contextualize data against your industry knowledge, organizational culture, and strategic position." }, { key: "observe", text: "Monitor market signals, competitor moves, customer behavior, and internal metrics in real time." }] }
+        ];
+        let stepIndex = 0;
+        function submitSequence(key) {
+            if (key === oodaGameSteps[stepIndex].expectedKey) {
+                document.getElementById(`row-${key}`).classList.add('unlocked');
+                stepIndex++;
+                if (stepIndex < 4) {
+                    document.getElementById('loop-stage-text').textContent = `${stepIndex + 1} / 4`;
+                    renderActiveChallengeStep();
+                } else {
+                    document.getElementById('challenge-prompt-text').textContent = "Simulation complete. The tactical framework modeling loop is completely finalized.";
+                    document.getElementById('options-box').style.display = 'none';
+                    document.getElementById('footer-text').textContent = "Loop exploration complete. You can now pass forward cleanly.";
+                }
+            }
+        }
+        function renderActiveChallengeStep() {
+            const data = oodaGameSteps[stepIndex];
+            document.getElementById('step-tag-heading').textContent = data.tag;
+            document.getElementById('challenge-prompt-text').textContent = data.text;
+            const box = document.getElementById('options-box');
+            box.innerHTML = '';
+            data.options.forEach(opt => {
+                const btn = document.createElement('button');
+                btn.className = 'option-action-btn';
+                btn.textContent = opt.text;
+                btn.setAttribute('onclick', `submitSequence('${opt.key}')`);
+                box.appendChild(btn);
+            });
+        }
+    </script>
 </body>
 </html>
