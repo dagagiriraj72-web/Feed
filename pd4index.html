@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Decision Fatigue - Interactive Diurnal Console</title>
+    <style>
+        /* FORCE WINDOW CONTRAINTS TO OCCUPY 100% OF THE IFRAME VIEWPORT BOUNDS */
+        html, body {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #ffffff;
+            font-family: 'Segoe UI', Arial, sans-serif;
+            overflow: hidden;
+        }
+
+        /* STRICT 16:9 ASPECT RATIO PLAYBACK FRAME
+           Locks workspace coordinates strictly at a fluid maximum baseline 
+           to completely stop vertical layout bleeding or element crushing.
+        */
+        .slide-wrapper {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 95%;
+            height: 92%;
+            max-width: 1200px;
+            aspect-ratio: 16 / 9;
+            padding: 2rem 2.5rem;
+            background-color: #ffffff;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            box-sizing: border-box;
+        }
+
+        /* Top Branded Header Row */
+        .header-section {
+            display: flex;
+            align-items: center;
+            gap: 1.2rem;
+            border-bottom: 2px solid #f0f4f8;
+            padding-bottom: 0.8rem;
+            margin-bottom: 1.2rem;
+            flex-shrink: 0;
+        }
+
+        .badge-index {
+            width: 45px;
+            height: 45px;
+            background-color: #2980b9; /* Distinct blue theme circle matching image_c8c883.png */
+            color: #ffffff;
+            border-radius: 50%;
+            font-size: 1.2rem;
+            font-weight: 700;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-shrink: 0;
+            font-variant-numeric: tabular-nums;
+        }
+
+        .title-block {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .main-title {
+            font-size: 2.6rem;
+            color: #1a365d; /* Dark primary slate blue from image_c8c883.png */
+            font-weight: 800;
+            margin: 0;
+            line-height: 1.1;
+        }
+
+        .sub-title {
+            font-size: 1.1rem;
+            color: #718096; /* Soft steel description subtitle text from image_c8c883.png */
+            margin: 0.2rem 0 0 0;
+        }
+
+        /* LATERAL SPLIT WORKSPACE CONSOLE
+           Separates data components horizontally into distinct, non-overlapping tracks.
+        */
+        .workspace-matrix {
+            display: grid;
+            grid-template-columns: 1.05fr 0.95fr; /* Holds fixed clearance ratio metrics */
+            gap: 3rem;
+            flex-grow: 1;
+            min-height: 0; /* Anti-collapse vertical barrier guardrail */
+            align-items: center;
+        }
+
+        /* Left Side: Text Payload and Symptoms Stack */
+        .info-brief-column {
+            display: flex;
+            flex-direction: column;
+            gap: 1.2rem;
+            max-height: 440px;
+            overflow-y: auto;
+            padding-right: 0.5rem;
+        }
+
+        .info-brief-column::-webkit-scrollbar { width: 4px; }
+        .info-brief-column::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 2px; }
+
+        .narrative-paragraph {
+            font-size: 1.15rem;
+            color: #2d3748;
+            line-height: 1.55;
+            margin: 0;
+        }
+
+        .symptoms-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 0.85rem;
+        }
+
+        .symptom-node {
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+            font-size: 1.1rem;
+            color: #2d3748;
+            line-height: 1.4;
+            font-weight: 500;
+        }
+
+        .square-bullet {
+            width: 14px;
+            height: 14px;
+            background-color: #2980b9; /* Flat cyan-blue square bullet matching image_c8c883.png */
+            border-radius: 2px;
+            margin-top: 0.35rem;
+            flex-shrink: 0;
+        }
+
+        /* Right Side: Interactive Diurnal Quality Terminal */
+        .interactive-terminal-deck {
+            background-color: #f4f7f9; /* Soft light-blue background tint card from image_c8c883.png */
+            border-radius: 8px;
+            padding: 2rem;
+            height: 100%;
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+        }
+
+        .terminal-header-lbl {
+            font-size: 0.85rem;
+            font-weight: 800;
+            color: #2980b9;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 1.5rem;
+            flex-shrink: 0;
+        }
+
+        /* Interactive Time Block Node Cards */
+        .diurnal-interactive-node {
+            background-color: transparent;
+            border: 2px solid transparent;
+            border-radius: 6px;
+            padding: 1rem 2rem;
+            width: 85%;
+            text-align: center;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.25s cubic-bezier(0.165, 0.84, 0.44, 1);
+        }
+
+        .diurnal-interactive-node:hover {
+            background-color: rgba(255, 255, 255, 0.6);
+            transform: scale(1.02);
+        }
+
+        .node-title-lbl {
+            font-size: 2.1rem;
+            font-weight: 800;
+            color: #a0aec0; /* Default deactivated grey status state from image_c8c883.png */
+            margin: 0;
+            transition: color 0.2s ease;
+        }
+
+        .node-status-lbl {
+            font-size: 1rem;
+            color: #a0aec0;
+            margin-top: 0.2rem;
+            font-weight: 600;
+            transition: color 0.2s ease;
+        }
+
+        /* Connecting Directional Indicator Icon Line */
+        .flow-vector-arrow {
+            font-size: 1.5rem;
+            color: #a0aec0;
+            margin: 0.6rem 0;
+            flex-shrink: 0;
+            font-weight: 900;
+        }
+
+        /* HIGH-CONTRAST SELECTION HIGH-LIGHT MODIFIERS */
+        .diurnal-interactive-node.active-phase {
+            background-color: #ffffff;
+            border-color: rgba(41, 128, 185, 0.15);
+            box-shadow: 0 6px 20px rgba(26, 54, 93, 0.06);
+        }
+        
+        .diurnal-interactive-node.active-phase#node-morning .node-title-lbl { color: #1a365d; } /* Morning Active Slate Blue */
+        .diurnal-interactive-node.active-phase#node-morning .node-status-lbl { color: #4a5568; }
+
+        .diurnal-interactive-node.active-phase#node-evening .node-title-lbl { color: #4a5568; } /* Evening Active Neutral Grey */
+        .diurnal-interactive-node.active-phase#node-evening .node-status-lbl { color: #718096; }
+
+        /* Bottom Fixed Structural Prompt Bar Strip Row */
+        .footer-bar {
+            border-top: 1px solid #f0f4f8;
+            padding-top: 0.6rem;
+            flex-shrink: 0;
+        }
+
+        .instruction-tag {
+            font-size: 0.85rem;
+            color: #a0aec0;
+            font-style: italic;
+            text-align: left;
+            display: block;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="slide-wrapper">
+        <!-- Interactive Header Banner -->
+        <div class="header-section">
+            <div class="badge-index">02</div>
+            <div class="title-block">
+                <h1 class="main-title">Decision Fatigue</h1>
+                <p class="sub-title">The Silent Productivity Killer</p>
+            </div>
+        </div>
+
+        <!-- Balanced Anti-Overlap Workspace Split Console Grid Area -->
+        <div class="workspace-matrix">
+            
+            <!-- Left Side: Static Text Context Payload & Symptoms -->
+            <div class="info-brief-column">
+                <p class="narrative-paragraph">
+                    The average executive makes over 35,000 decisions per day. Each one depleletes cognitive resources, leading to progressively poorer choices.
+                </p>
+                
+                <ul class="symptoms-list">
+                    <li class="symptom-node">
+                        <span class="square-bullet"></span>
+                        <span>Procrastinating on important choices</span>
+                    </li>
+                    <li class="symptom-node">
+                        <span class="square-bullet"></span>
+                        <span>Defaulting to the status quo</span>
+                    </li>
+                    <li class="symptom-node">
+                        <span class="square-bullet"></span>
+                        <span>Making impulsive decisions late in the day</span>
+                    </li>
+                    <li class="symptom-node">
+                        <span class="square-bullet"></span>
+                        <span>Avoiding decisions altogether</span>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Right Side: Interactive Time Deck Node Blocks -->
+            <div class="interactive-terminal-deck">
+                <span class="terminal-header-lbl">Decision Quality</span>
+                
+                <!-- Morning Node Module -->
+                <div class="diurnal-interactive-node active-phase" id="node-morning" onclick="toggleDiurnalPhase('morning')">
+                    <h2 class="node-title-lbl">Morning</h2>
+                    <span class="node-status-tag node-status-lbl">Peak Performance</span>
+                </div>
+                
+                <!-- Down Directional Vector Arrow Graphic -->
+                <div class="flow-vector-arrow">↓</div>
+                
+                <!-- Evening Node Module -->
+                <div class="diurnal-interactive-node" id="node-evening" onclick="toggleDiurnalPhase('evening')">
+                    <h2 class="node-title-lbl">Evening</h2>
+                    <span class="node-status-tag node-status-lbl">Depleted Resources</span>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Lower Instructional Prompt Strip -->
+        <div class="footer-bar">
+            <span class="instruction-tag">Click either the Morning or Evening performance card blocks directly to cycle decision capability matrices.</span>
+        </div>
+    </div>
+
+    <script>
+        /**
+         * Diurnal Quality Interactive Toggle Engine
+         * Switches high-fidelity highlight modifiers and active tags symmetrically.
+         */
+        function toggleDiurnalPhase(selectedPhaseKey) {
+            const morningNode = document.getElementById("node-morning");
+            const eveningNode = document.getElementById("node-evening");
+
+            if (selectedPhaseKey === 'morning') {
+                morningNode.classList.add("active-phase");
+                eveningNode.classList.remove("active-phase");
+            } 
+            else if (selectedPhaseKey === 'evening') {
+                eveningNode.classList.add("active-phase");
+                morningNode.classList.remove("active-phase");
+            }
+        }
+    </script>
+</body>
+</html>
