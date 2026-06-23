@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Decision Fatigue - Immersive Light/Dark Simulation Console</title>
+    <style>
+        /* FORCE WINDOW CONSTRAINTS TO OCCUPY 100% OF THE IFRAME VIEWPORT BOUNDS */
+        html, body {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #ffffff;
+            font-family: 'Segoe UI', Arial, sans-serif;
+            overflow: hidden;
+            transition: background-color 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+
+        /* IMMERSIVE ACTIVE DIURNAL BACKGROUND STATES */
+        body.state-morning { background-color: #fdfbf7; } /* Warm dawn glow */
+        body.state-evening { background-color: #0b1320; } /* Deep cognitive depletion dark night */
+
+        /* STRICT 16:9 VIEWPORT PRESTRAINT CANOPY */
+        .slide-wrapper {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 95%;
+            height: 92%;
+            max-width: 1200px;
+            aspect-ratio: 16 / 9;
+            padding: 2rem 2.5rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            box-sizing: border-box;
+            transition: color 0.6s ease;
+        }
+
+        /* Top Branded Header Presentation Row Block */
+        .header-section {
+            display: flex;
+            align-items: center;
+            gap: 1.2rem;
+            border-bottom: 2px solid #edf2f7;
+            padding-bottom: 0.8rem;
+            margin-bottom: 1.2rem;
+            flex-shrink: 0;
+            transition: border-color 0.6s ease;
+        }
+        body.state-evening .header-section { border-color: rgba(255, 255, 255, 0.08); }
+
+        .badge-index {
+            width: 45px;
+            height: 45px;
+            background-color: #2980b9; /* Distinct blue index theme circle */
+            color: #ffffff;
+            border-radius: 50%;
+            font-size: 1.2rem;
+            font-weight: 700;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-shrink: 0;
+            font-variant-numeric: tabular-nums;
+            box-shadow: 0 4px 10px rgba(41, 128, 185, 0.15);
+        }
+
+        .title-block {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .main-title {
+            font-size: 2.5rem;
+            color: #1a365d; /* Dark slate blue text from source */
+            font-weight: 800;
+            margin: 0;
+            line-height: 1.1;
+            transition: color 0.6s ease;
+        }
+        body.state-evening .main-title { color: #ffffff; }
+
+        .sub-title {
+            font-size: 1.1rem;
+            color: #718096; /* Subtle subtitle label description */
+            margin: 0.2rem 0 0 0;
+            transition: color 0.6s ease;
+        }
+        body.state-evening .sub-title { color: #94a3b8; }
+
+        /* LATERAL SPLIT WORKSPACE MATRIX CONSOLE 
+           Core Fix: Drops competitive horizontal structures to eradicate vertical bleeding bugs.
+        */
+        .workspace-matrix {
+            display: grid;
+            grid-template-columns: 1.05fr 0.95fr;
+            gap: 3rem;
+            flex-grow: 1;
+            min-height: 0; /* Dynamic height buffer safety guardrail */
+            align-items: center;
+        }
+
+        /* Left Side: Context Narrative & Warning Symptom Nodes Track */
+        .info-brief-column {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+            max-height: 420px; /* Locked maximum viewport ceiling prevents text overflows */
+            overflow-y: auto;
+            padding-right: 0.5rem;
+        }
+
+        .info-brief-column::-webkit-scrollbar { width: 4px; }
+        .info-brief-column::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 2px; }
+
+        .narrative-paragraph {
+            font-size: 1.15rem;
+            color: #2d3748;
+            line-height: 1.6;
+            margin: 0;
+            transition: color 0.6s ease;
+        }
+        body.state-evening .narrative-paragraph { color: #e2e8f0; }
+
+        .symptoms-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 0.95rem;
+        }
+
+        .symptom-node {
+            display: flex;
+            align-items: center;
+            gap: 1.1rem;
+            font-size: 1.1rem;
+            color: #2d3748;
+            font-weight: 600;
+            transition: color 0.6s ease, transform 0.3s ease;
+        }
+        body.state-evening .symptom-node { color: #cbd5e1; }
+
+        .square-bullet {
+            width: 14px;
+            height: 14px;
+            background-color: #2980b9; /* Flat cyan-blue square bullet element */
+            border-radius: 2px;
+            flex-shrink: 0;
+            transition: background-color 0.6s ease, transform 0.3s ease;
+        }
+        body.state-evening .square-bullet { background-color: #f39c12; } /* Shifts to caution amber on depletion state */
+
+        /* Right Side: Interactive Diurnal Quality Animation Control Deck */
+        .interactive-terminal-deck {
+            background-color: #f4f7f9; /* Soft default container grey block */
+            border-radius: 12px;
+            padding: 2.5rem 2rem;
+            height: 100%;
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.02);
+            transition: background-color 0.6s ease, box-shadow 0.6s ease;
+        }
+        body.state-evening .interactive-terminal-deck { 
+            background-color: #111c2e; 
+            box-shadow: 0 8px 25px rgba(0,0,0,0.4);
+        }
+
+        .terminal-header-lbl {
+            font-size: 0.85rem;
+            font-weight: 800;
+            color: #2980b9; /* Theme subtitle alignment banner */
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 1.5rem;
+            flex-shrink: 0;
+            transition: color 0.6s ease;
+        }
+        body.state-evening .terminal-header-lbl { color: #94a3b8; }
+
+        /* Dynamic Time Phase Trigger Target Cards */
+        .diurnal-interactive-node {
+            background-color: transparent;
+            border: 2px solid transparent;
+            border-radius: 8px;
+            padding: 1.1rem 2rem;
+            width: 85%;
+            text-align: center;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            box-sizing: border-box;
+            transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+        }
+
+        .node-title-lbl {
+            font-size: 2.2rem;
+            font-weight: 800;
+            color: #a0aec0; /* Inactive grey indicator state color */
+            margin: 0;
+            transition: color 0.4s ease;
+        }
+
+        .node-status-lbl {
+            font-size: 1rem;
+            color: #a0aec0;
+            margin-top: 0.2rem;
+            font-weight: 600;
+            transition: color 0.4s ease;
+        }
+
+        /* Vertical Flow Vector Arrow Connection Element */
+        .flow-vector-arrow {
+            font-size: 1.6rem;
+            color: #a0aec0;
+            margin: 0.6rem 0;
+            flex-shrink: 0;
+            font-weight: 900;
+            transition: color 0.6s ease, transform 0.4s ease;
+        }
+        body.state-evening .flow-vector-arrow { color: #f39c12; transform: rotate(180deg); } /* Arrow rotates down on night shift click */
+
+        /* IMMERSIVE SELECTION FOCUS ANIMATION HIGHLIGHT STATES */
+        .diurnal-interactive-node.active-phase#node-morning {
+            background-color: #ffffff;
+            border-color: rgba(41, 128, 185, 0.15);
+            box-shadow: 0 6px 20px rgba(26, 54, 93, 0.05);
+        }
+        .diurnal-interactive-node.active-phase#node-morning .node-title-lbl { color: #1a365d; } /* Morning Highlight Active Color */
+        .diurnal-interactive-node.active-phase#node-morning .node-status-lbl { color: #2980b9; }
+
+        .diurnal-interactive-node.active-phase#node-evening {
+            background-color: #1b2a4a;
+            border-color: rgba(243, 156, 18, 0.3);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+        }
+        .diurnal-interactive-node.active-phase#node-evening .node-title-lbl { color: #ffffff; } /* Evening Highlight Active Color */
+        .diurnal-interactive-node.active-phase#node-evening .node-status-lbl { color: #f39c12; }
+
+        /* Bottom Fixed Structural Prompt Bar Strip Row */
+        .footer-bar {
+            border-top: 1px solid #edf2f7;
+            padding-top: 0.6rem;
+            flex-shrink: 0;
+            transition: border-color 0.6s ease;
+        }
+        body.state-evening .footer-bar { border-color: rgba(255, 255, 255, 0.08); }
+
+        .instruction-tag {
+            font-size: 0.85rem;
+            color: #a0aec0;
+            font-style: italic;
+            text-align: left;
+            display: block;
+            transition: color 0.6s ease;
+        }
+        body.state-evening .instruction-tag { color: #64748b; }
+    </style>
+</head>
+<body class="state-morning"> <div class="slide-wrapper">
+        <div class="header-section">
+            <div class="badge-index">02</div>
+            <div class="title-block">
+                <h1 class="main-title">Decision Fatigue</h1>
+                <p class="sub-title">The Silent Productivity Killer</p>
+            </div>
+        </div>
+
+        <div class="workspace-matrix">
+            
+            <div class="info-brief-column">
+                <p class="narrative-paragraph">
+                    The average executive makes over 35,000 decisions per day. Each one depletes cognitive resources, leading to progressively poorer choices.
+                </p>
+                
+                <ul class="symptoms-list">
+                    <li class="symptom-node" id="symp-0">
+                        <span class="square-bullet"></span>
+                        <span>Procrastinating on important choices</span>
+                    </li>
+                    <li class="symptom-node" id="symp-1">
+                        <span class="square-bullet"></span>
+                        <span>Defaulting to the status quo</span>
+                    </li>
+                    <li class="symptom-node" id="symp-2">
+                        <span class="square-bullet"></span>
+                        <span>Making impulsive decisions late in the day</span>
+                    </li>
+                    <li class="symptom-node" id="symp-3">
+                        <span class="square-bullet"></span>
+                        <span>Avoiding decisions altogether</span>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="interactive-terminal-deck">
+                <span class="terminal-header-lbl">Decision Quality</span>
+                
+                <div class="diurnal-interactive-node active-phase" id="node-morning" onclick="executeDiurnalTransition('morning')">
+                    <h2 class="node-title-lbl">Morning</h2>
+                    <span class="node-status-lbl">Peak Performance</span>
+                </div>
+                
+                <div class="flow-vector-arrow">↓</div>
+                
+                <div class="diurnal-interactive-node" id="node-evening" onclick="executeDiurnalTransition('evening')">
+                    <h2 class="node-title-lbl">Evening</h2>
+                    <span class="node-status-lbl">Depleted Resources</span>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="footer-bar">
+            <span class="instruction-tag">Isolate day intervals across the terminal layout menu block to simulate active executive cognitive loading.</span>
+        </div>
+    </div>
+
+    <script>
+        /**
+         * Immersive Diurnal Transition Animation Engine
+         * Coordinates page themes, highlights, and subtle bullet step scales cleanly.
+         */
+        function executeDiurnalTransition(targetPhaseString) {
+            const bodyNode = document.body;
+            const morningNode = document.getElementById("node-morning");
+            const eveningNode = document.getElementById("node-evening");
+
+            if (targetPhaseString === 'morning') {
+                bodyNode.className = "state-morning";
+                morningNode.classList.add("active-phase");
+                eveningNode.classList.remove("active-phase");
+
+                // Restores standard baseline alignment scale metrics safely
+                for (let i = 0; i < 4; i++) {
+                    const symptom = document.getElementById(`symp-${i}`);
+                    if (symptom) {
+                        symptom.style.transform = "translateX(0) scale(1)";
+                        symptom.style.opacity = "1";
+                    }
+                }
+            } 
+            else if (targetPhaseString === 'evening') {
+                bodyNode.className = "state-evening";
+                eveningNode.classList.add("active-phase");
+                morningNode.classList.remove("active-phase");
+
+                // Highlight the late-day symptoms dynamically by applying subtle translations
+                for (let i = 0; i < 4; i++) {
+                    const symptom = document.getElementById(`symp-${i}`);
+                    if (symptom) {
+                        if (i >= 2) { // Focus explicitly on late-day fatigue vectors
+                            symptom.style.transform = "translateX(6px) scale(1.03)";
+                            symptom.style.opacity = "1";
+                        } else {
+                            symptom.style.transform = "translateX(0) scale(0.96)";
+                            symptom.style.opacity = "0.6";
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+</body>
+</html>
