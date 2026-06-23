@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Common Decision Traps - Interactive Dashboard</title>
+    <style>
+        /* FORCE GLOBAL CONTAINER TO STRETCH TO FULL IFRAME BOUNDS NATIVELY */
+        html, body {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #f8fafc;
+            font-family: 'Segoe UI', Arial, sans-serif;
+            overflow: hidden;
+        }
+
+        /* STRICT 16:9 ASPECT RATIO PLAYBACK FRAME
+           Locks canvas metrics to standard player slide layout bounds to fully 
+           neutralize lower margin text bleeding, element crushing, or footer cutoff errors.
+        */
+        .slide-wrapper {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 96%;
+            height: 94%;
+            max-width: 1200px;
+            aspect-ratio: 16 / 9;
+            padding: 2.2rem 3rem;
+            background-color: #ffffff;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            box-sizing: border-box;
+            border-radius: 8px;
+            box-shadow: 0 4px 25px rgba(0, 0, 0, 0.04);
+        }
+
+        /* Top Branded Header Row Block */
+        .header-section {
+            border-bottom: 2px solid #e2e8f0;
+            padding-bottom: 0.6rem;
+            margin-bottom: 1.2rem;
+            flex-shrink: 0;
+        }
+
+        .main-title {
+            font-size: 2.6rem;
+            color: #1e3a8a; /* Deep elegant corporate navy blue matching image_d5156b.png */
+            font-weight: 800;
+            margin: 0;
+            line-height: 1.1;
+        }
+
+        .title-underline {
+            width: 65px;
+            height: 4px;
+            background-color: #3a86c8; /* Light teal underline color matching image_d5156b.png */
+            margin-top: 0.6rem;
+            border-radius: 2px;
+        }
+
+        /* LATERAL SPLIT WORKSPACE PIPELINE 
+           Core Fix: Pulls the traps into a clean vertical list sidebar 
+           to eliminate horizontal squeezing and truncation bugs.
+        */
+        .workspace-matrix {
+            display: grid;
+            grid-template-columns: 340px 1fr;
+            gap: 2.5rem;
+            flex-grow: 1;
+            min-height: 0; /* Dynamic height buffer safety guardrail */
+            align-items: stretch;
+        }
+
+        /* Left Side Sidebar Menu Track (Holds all 6 traps seamlessly) */
+        .tabs-vertical-stack {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            justify-content: center;
+        }
+
+        .trap-nav-btn {
+            background-color: #fdfdfd; 
+            border: 1px solid #e2e8f0;
+            border-left: 4px solid #cbd5e1;
+            border-radius: 6px;
+            padding: 1rem 1.4rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            transition: all 0.25s cubic-bezier(0.165, 0.84, 0.44, 1);
+            text-align: left;
+            width: 100%;
+            box-sizing: border-box;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.01);
+        }
+
+        .trap-nav-btn:hover {
+            background-color: #f8fafc;
+            border-left-color: #3182ce;
+            transform: translateX(4px);
+        }
+
+        .btn-title-lbl {
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: #1e3a8a; /* Styled text layout from image_d5156b.png */
+        }
+
+        .btn-action-arrow {
+            color: #cbd5e1;
+            font-weight: 800;
+            font-size: 1.1rem;
+            transition: color 0.2s ease, transform 0.2s ease;
+        }
+
+        /* Active Navigation Tab Highlighting States */
+        .trap-nav-btn.active-tab {
+            background-color: #ffffff !important;
+            border-color: #e2e8f0;
+            border-left-color: #3182ce; /* Highlight line match */
+            box-shadow: 0 4px 15px rgba(49, 130, 206, 0.12);
+        }
+        .trap-nav-btn.active-tab .btn-title-lbl { color: #3182ce; }
+        .trap-nav-btn.active-tab .btn-action-arrow { 
+            color: #3182ce; 
+            transform: translateX(2px);
+        }
+
+        /* Right Side Content Reveal Display Terminal Deck */
+        .unified-arena-card {
+            background-color: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 2.5rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            min-height: 0;
+            box-sizing: border-box;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.02);
+        }
+
+        /* Bounded vertical protection zone isolating textual descriptors from layout limits */
+        .reveal-data-panel {
+            display: none;
+            flex-direction: column;
+            gap: 1rem;
+            max-height: 380px; /* Locked framing ceiling shields stats panel from text overflows */
+            overflow-y: auto;
+            padding-right: 0.5rem;
+        }
+
+        .reveal-data-panel.panel-visible {
+            display: flex;
+            animation: panelFadeIn 0.3s cubic-bezier(0.165, 0.84, 0.44, 1) forwards;
+        }
+
+        .reveal-data-panel::-webkit-scrollbar { width: 4px; }
+        .reveal-data-panel::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 2px; }
+
+        @keyframes panelFadeIn {
+            from { opacity: 0; transform: translateY(4px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .panel-header-badge {
+            font-size: 0.85rem;
+            font-weight: 800;
+            color: #718096; 
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+        }
+
+        .panel-heading-text {
+            font-size: 2.2rem;
+            font-weight: 800;
+            color: #1e3a8a;
+            margin: 0;
+        }
+
+        .panel-description-text {
+            font-size: 1.35rem;
+            color: #4a5568;
+            line-height: 1.6;
+            margin: 0;
+            font-weight: 500;
+            padding-top: 0.8rem;
+            border-top: 1px solid #edf2f7;
+        }
+
+        /* Bottom Fixed Corporate Metrics Row Status Bar */
+        .footer-bar {
+            border-top: 1px solid #e2e8f0;
+            padding-top: 0.6rem;
+            margin-top: 1rem;
+            flex-shrink: 0;
+        }
+
+        .instruction-tag {
+            font-size: 0.88rem;
+            color: #94a3b8;
+            font-style: italic;
+            text-align: left;
+            display: block;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="slide-wrapper">
+        <!-- Interactive Header Banner -->
+        <div class="header-section">
+            <h1 class="main-title">Common Decision Traps</h1>
+            <div class="title-underline"></div>
+        </div>
+
+        <!-- Balanced Sidebar Matrix Workspace Area -->
+        <div class="workspace-matrix">
+            
+            <!-- Left Side Sidebar Menu Track (All 6 Traps) -->
+            <div class="tabs-vertical-stack">
+                <button class="trap-nav-btn active-tab" id="tab-0" onclick="revealDecisionTrap(0)">
+                    <span class="btn-title-lbl">Anchoring Bias</span>
+                    <span class="btn-action-arrow">➔</span>
+                </button>
+                <button class="trap-nav-btn" id="tab-1" onclick="revealDecisionTrap(1)">
+                    <span class="btn-title-lbl">Sunk Cost Fallacy</span>
+                    <span class="btn-action-arrow">➔</span>
+                </button>
+                <button class="trap-nav-btn" id="tab-2" onclick="revealDecisionTrap(2)">
+                    <span class="btn-title-lbl">Groupthink</span>
+                    <span class="btn-action-arrow">➔</span>
+                </button>
+                <button class="trap-nav-btn" id="tab-3" onclick="revealDecisionTrap(3)">
+                    <span class="btn-title-lbl">Status Quo Bias</span>
+                    <span class="btn-action-arrow">➔</span>
+                </button>
+                <button class="trap-nav-btn" id="tab-4" onclick="revealDecisionTrap(4)">
+                    <span class="btn-title-lbl">Confirmation Bias</span>
+                    <span class="btn-action-arrow">➔</span>
+                </button>
+                <button class="trap-nav-btn" id="tab-5" onclick="revealDecisionTrap(5)">
+                    <span class="btn-title-lbl">Analysis Paralysis</span>
+                    <span class="btn-action-arrow">➔</span>
+                </button>
+            </div>
+
+            <!-- Right Side Dashboard: Content Reveal Presentation Card -->
+            <div class="unified-arena-card">
+                
+                <!-- Panel 01: Anchoring Bias -->
+                <div class="reveal-data-panel panel-visible" id="view-panel-0">
+                    <span class="panel-header-badge">Cognitive Trap 01</span>
+                    <h2 class="panel-heading-text">Anchoring Bias</h2>
+                    <p class="panel-description-text">Over-relying on the first piece of information encountered, even if irrelevant.</p>
+                </div>
+
+                <!-- Panel 02: Sunk Cost Fallacy -->
+                <div class="reveal-data-panel" id="view-panel-1">
+                    <span class="panel-header-badge">Cognitive Trap 02</span>
+                    <h2 class="panel-heading-text">Sunk Cost Fallacy</h2>
+                    <p class="panel-description-text">Continuing a failing path because of past investment rather than future potential.</p>
+                </div>
+
+                <!-- Panel 03: Groupthink -->
+                <div class="reveal-data-panel" id="view-panel-2">
+                    <span class="panel-header-badge">Cognitive Trap 03</span>
+                    <h2 class="panel-heading-text">Groupthink</h2>
+                    <p class="panel-description-text">Prioritizing consensus over critical evaluation of alternatives.</p>
+                </div>
+
+                <!-- Panel 04: Status Quo Bias -->
+                <div class="reveal-data-panel" id="view-panel-3">
+                    <span class="panel-header-badge">Cognitive Trap 04</span>
+                    <h2 class="panel-heading-text">Status Quo Bias</h2>
+                    <p class="panel-description-text">Defaulting to existing conditions because change feels risky.</p>
+                </div>
+
+                <!-- Panel 05: Confirmation Bias -->
+                <div class="reveal-data-panel" id="view-panel-4">
+                    <span class="panel-header-badge">Cognitive Trap 05</span>
+                    <h2 class="panel-heading-text">Confirmation Bias</h2>
+                    <p class="panel-description-text">Seeking only information that supports a preferred conclusion.</p>
+                </div>
+
+                <!-- Panel 06: Analysis Paralysis -->
+                <div class="reveal-data-panel" id="view-panel-5">
+                    <span class="panel-header-badge">Cognitive Trap 06</span>
+                    <h2 class="panel-heading-text">Analysis Paralysis</h2>
+                    <p class="panel-description-text">Endlessly researching without ever committing to action.</p>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Lower Instructional Prompt Strip -->
+        <div class="footer-bar">
+            <span class="instruction-tag">Select an item on the left sidebar track to audit corresponding behavioral alignment definitions.</span>
+        </div>
+    </div>
+
+    <script>
+        let structuralActiveIdx = 0;
+
+        function revealDecisionTrap(targetIdx) {
+            if (targetIdx === structuralActiveIdx) return;
+
+            // Clear active highlighting from previous element arrays safely
+            document.getElementById(`tab-${structuralActiveIdx}`).classList.remove("active-tab");
+            document.getElementById(`view-panel-${structuralActiveIdx}`).classList.remove("panel-visible");
+
+            // Re-route structural indexing pointers
+            structuralActiveIdx = targetIdx;
+
+            // Activate newly targeted workspace nodes cleanly
+            document.getElementById(`tab-${structuralActiveIdx}`).classList.add("active-tab");
+            document.getElementById(`view-panel-${structuralActiveIdx}`).classList.add("panel-visible");
+        }
+    </script>
+</body>
+</html>
