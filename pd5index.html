@@ -11,7 +11,7 @@
             padding: 0;
             width: 100%;
             height: 100%;
-            background-color: #f4f7f9; /* Soft light-blue background tint matching image_d47fa0.png */
+            background-color: #f4f7f9; /* Soft light-blue background tint matching reference visuals */
             font-family: 'Segoe UI', Arial, sans-serif;
             overflow: hidden;
         }
@@ -53,7 +53,7 @@
         .badge-index {
             width: 45px;
             height: 45px;
-            background-color: #2980b9; /* Distinct blue theme circle matching image_d47fa0.png */
+            background-color: #2980b9; /* Distinct blue theme circle from source architecture */
             color: #ffffff;
             border-radius: 50%;
             font-size: 1.2rem;
@@ -67,7 +67,7 @@
 
         .main-title {
             font-size: 2.5rem;
-            color: #1a365d; /* Dark primary slate blue from image_d47fa0.png */
+            color: #1a365d; /* Dark primary slate blue */
             font-weight: 800;
             margin: 0;
             line-height: 1.1;
@@ -107,7 +107,7 @@
             width: 28px;
             height: 28px;
             border-radius: 50%;
-            background-color: #2980b9; /* Cyan-blue accent circle from image_d47fa0.png */
+            background-color: #2980b9; /* Cyan-blue accent circle color hook */
             color: #ffffff;
             font-size: 0.95rem;
             font-weight: 700;
@@ -163,7 +163,7 @@
             display: none;
             flex-direction: column;
             gap: 1rem;
-            max-height: 260px; /* Locked maximum viewport ceiling prevents structural overlaps */
+            max-height: 260px; /* Locked maximum viewport ceiling prevents structural overflows */
             overflow-y: auto;
             padding-right: 0.5rem;
         }
@@ -229,85 +229,70 @@
 <body>
 
     <div class="slide-wrapper">
-        <!-- Main Framework Header Title Row -->
         <div class="header-section">
             <div class="badge-index">03</div>
             <h1 class="main-title">The Decision-Making Framework</h1>
         </div>
 
-        <!-- Horizontal Step Progress Badge Ribbon -->
         <div class="ribbon-navigation-track">
-            <!-- Node 1 -->
             <button class="step-nav-node active-node" id="node-0" onclick="revealFrameworkStage(0)">
                 <div class="node-badge-circle">1</div>
                 <span class="node-title-lbl">Define</span>
             </button>
-            <!-- Node 2 -->
             <button class="step-nav-node" id="node-1" onclick="revealFrameworkStage(1)">
                 <div class="node-badge-circle">2</div>
                 <span class="node-title-lbl">Gather</span>
             </button>
-            <!-- Node 3 -->
             <button class="step-nav-node" id="node-2" onclick="revealFrameworkStage(2)">
                 <div class="node-badge-circle">3</div>
                 <span class="node-title-lbl">Evaluate</span>
             </button>
-            <!-- Node 4 -->
             <button class="step-nav-node" id="node-3" onclick="revealFrameworkStage(3)">
                 <div class="node-badge-circle">4</div>
                 <span class="node-title-lbl">Decide</span>
             </button>
-            <!-- Node 5 -->
             <button class="step-nav-node" id="node-4" onclick="revealFrameworkStage(4)">
                 <div class="node-badge-circle">5</div>
                 <span class="node-title-lbl">Act</span>
             </button>
-            <!-- Node 6 -->
             <button class="step-nav-node" id="node-5" onclick="revealFrameworkStage(5)">
                 <div class="node-badge-circle">6</div>
                 <span class="node-title-lbl">Review</span>
             </button>
         </div>
 
-        <!-- Master Presentation Deck Display Terminal Panel Card -->
         <div class="unified-arena-card">
             
-            <!-- Panel View 1: DEFINE -->
             <div class="reveal-data-panel panel-visible" id="view-panel-0">
                 <span class="panel-header-badge">Framework Milestone 01</span>
                 <h2 class="panel-heading-text">DEFINE</h2>
                 <p class="panel-description-text">What exactly needs to be decided? Frame the question clearly.</p>
             </div>
 
-            <!-- Panel View 2: GATHER -->
             <div class="reveal-data-panel" id="view-panel-1">
                 <span class="panel-header-badge">Framework Milestone 02</span>
                 <h2 class="panel-heading-text">GATHER</h2>
                 <p class="panel-description-text">Collect essential inputs. Consult 2–3 key perspectives.</p>
             </div>
 
-            <!-- Panel View 3: EVALUATE -->
             <div class="reveal-data-panel" id="view-panel-2">
                 <span class="panel-header-badge">Framework Milestone 03</span>
                 <h2 class="panel-heading-text">EVALUATE</h2>
                 <p class="panel-description-text">Weigh options against your criteria and values.</p>
             </div>
 
-            <!-- Panel View 4: DECIDE -->
             <div class="reveal-data-panel" id="view-panel-3">
                 <span class="panel-header-badge">Framework Milestone 04</span>
                 <h2 class="panel-heading-text">DECIDE</h2>
                 <p class="panel-description-text">Choose. Document your rationale for future reference.</p>
             </div>
 
-            <!-- Panel View 5: ACT -->
             <div class="reveal-data-panel" id="view-panel-4">
                 <span class="panel-header-badge">Framework Milestone 05</span>
                 <h2 class="panel-heading-text">ACT</h2>
                 <p class="panel-description-text">Communicate and execute with full commitment.</p>
             </div>
 
-            <!-- Panel View 6: REVIEW -->
             <div class="reveal-data-panel" id="view-panel-5">
                 <span class="panel-header-badge">Framework Milestone 06</span>
                 <h2 class="panel-heading-text">REVIEW</h2>
@@ -316,7 +301,6 @@
 
         </div>
 
-        <!-- Lower Prompting Guideline Row Strip -->
         <div class="footer-bar">
             <span class="instruction-tag">Select individual progressive workflow tabs along the upper menu block to cycle phase operational criteria definitions.</span>
         </div>
@@ -336,9 +320,9 @@
             // Map new array path indices
             progressiveActiveIdx = targetIdx;
 
-            // Activate and illuminate selected target nodes cleanly
-            document.getElementById(`node-${progressiveActiveIdx}`).add("active-node");
-            document.getElementById(`view-panel-${progressiveActiveIdx}`).add("panel-visible");
+            // Activate and illuminate selected target nodes cleanly using correct classList definitions
+            document.getElementById(`node-${progressiveActiveIdx}`).classList.add("active-node");
+            document.getElementById(`view-panel-${progressiveActiveIdx}`).classList.add("panel-visible");
         }
     </script>
 </body>
