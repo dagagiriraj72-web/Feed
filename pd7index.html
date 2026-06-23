@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>What Makes a Decisive Leader - Strategic Console</title>
+    <style>
+        /* FORCE GLOBAL CONTAINER TO STRETCH TO FULL IFRAME BOUNDS */
+        html, body {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #f8fafc;
+            font-family: 'Segoe UI', Arial, sans-serif;
+            overflow: hidden;
+        }
+
+        /* STRICT 16:9 ASPECT RATIO SLIDE VIEWPORT
+           Locks canvas metrics to standard player slide layout bounds to fully 
+           neutralize lower margin text bleeding, element crushing, or footer cutoff errors.
+        */
+        .slide-wrapper {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 96%;
+            height: 94%;
+            max-width: 1200px;
+            aspect-ratio: 16 / 9;
+            padding: 2.2rem 3rem;
+            background-color: #ffffff;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            box-sizing: border-box;
+            border-radius: 8px;
+            box-shadow: 0 4px 25px rgba(0, 0, 0, 0.04);
+        }
+
+        /* Top Branded Header Row Block */
+        .header-section {
+            border-bottom: 2px solid #e2e8f0;
+            padding-bottom: 0.6rem;
+            margin-bottom: 1.2rem;
+            flex-shrink: 0;
+        }
+
+        .main-tag-lbl {
+            font-size: 0.85rem;
+            font-weight: 800;
+            color: #3182ce;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+        }
+
+        .main-title {
+            font-size: 2.5rem;
+            color: #1a365d; /* Elegant deep corporate slate blue */
+            font-weight: 800;
+            margin: 0.2rem 0 0 0;
+            line-height: 1.1;
+        }
+
+        /* LATERAL SPLIT WORKSPACE PIPELINE 
+           Core Fix: Pulls the 6 metrics into a clean vertical list sidebar 
+           to eliminate horizontal squeezing and right-side truncation bugs.
+        */
+        .workspace-matrix {
+            display: grid;
+            grid-template-columns: 320px 1fr;
+            gap: 2.5rem;
+            flex-grow: 1;
+            min-height: 0; /* Dynamic height buffer safety guardrail */
+            align-items: stretch;
+        }
+
+        /* Left Side Sidebar Menu Track (Holds all 6 traits seamlessly) */
+        .tabs-vertical-stack {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            overflow-y: auto;
+            padding-right: 0.3rem;
+        }
+
+        .tabs-vertical-stack::-webkit-scrollbar { width: 3px; }
+        .tabs-vertical-stack::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 2px; }
+
+        .trait-nav-btn {
+            background-color: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 6px;
+            padding: 0.8rem 1.1rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 1.2rem;
+            transition: all 0.2s ease;
+            text-align: left;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .trait-nav-btn:hover {
+            background-color: #edf2f7;
+            transform: translateX(4px);
+        }
+
+        .btn-badge-circle {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background-color: #3182ce; /* Crisp blue index circle */
+            color: #ffffff;
+            font-size: 0.95rem;
+            font-weight: 700;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-shrink: 0;
+            font-variant-numeric: tabular-nums;
+        }
+
+        .btn-title-lbl {
+            font-size: 1.05rem;
+            font-weight: 700;
+            color: #2d3748;
+        }
+
+        /* Active Navigation Tab Highlighting States */
+        .trait-nav-btn.active-tab {
+            background-color: #1a365d !important;
+            border-color: #1a365d;
+            box-shadow: 0 4px 12px rgba(26, 54, 93, 0.12);
+        }
+        .trait-nav-btn.active-tab .btn-title-lbl { color: #ffffff; }
+        .trait-nav-btn.active-tab .btn-badge-circle { background-color: #ffffff; color: #1a365d; }
+
+        /* Right Side Content Reveal Display Terminal Deck */
+        .unified-arena-card {
+            background-color: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 2.5rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            min-height: 0;
+            box-sizing: border-box;
+        }
+
+        /* Bounded vertical protection zone isolating textual descriptors from layout limits */
+        .reveal-data-panel {
+            display: none;
+            flex-direction: column;
+            gap: 1.2rem;
+            max-height: 400px; /* Locked framing ceiling shields stats panel from text overflows */
+            overflow-y: auto;
+            padding-right: 0.5rem;
+        }
+
+        .reveal-data-panel.panel-visible {
+            display: flex;
+            animation: panelFadeIn 0.35s cubic-bezier(0.165, 0.84, 0.44, 1) forwards;
+        }
+
+        .reveal-data-panel::-webkit-scrollbar { width: 4px; }
+        .reveal-data-panel::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 2px; }
+
+        @keyframes panelFadeIn {
+            from { opacity: 0; transform: translateY(6px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .panel-header-badge {
+            font-size: 0.85rem;
+            font-weight: 800;
+            color: #3182ce;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+        }
+
+        .panel-heading-text {
+            font-size: 2.2rem;
+            font-weight: 800;
+            color: #1a365d;
+            margin: 0;
+        }
+
+        .panel-description-text {
+            font-size: 1.4rem;
+            color: #4a5568;
+            line-height: 1.6;
+            background-color: #ffffff;
+            padding: 1.5rem 2rem;
+            border-left: 5px solid #1a365d;
+            border-radius: 4px;
+            margin: 0;
+            font-weight: 500;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.01);
+        }
+
+        /* Bottom Fixed Corporate Metrics Row Status Bar */
+        .footer-bar {
+            border-top: 1px solid #e2e8f0;
+            padding-top: 0.6rem;
+            margin-top: 1rem;
+            flex-shrink: 0;
+        }
+
+        .instruction-tag {
+            font-size: 0.88rem;
+            color: #a0aec0;
+            font-style: italic;
+            text-align: left;
+            display: block;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="slide-wrapper">
+        <div class="header-section">
+            <span class="main-tag-lbl">Key Traits</span>
+            <h1 class="main-title">What Makes a Decisive Leader</h1>
+        </div>
+
+        <div class="workspace-matrix">
+            
+            <div class="tabs-vertical-stack">
+                <button class="trait-nav-btn active-tab" id="tab-0" onclick="revealTraitPillar(0)">
+                    <div class="btn-badge-circle">01</div>
+                    <span class="btn-title-lbl">Clarity of Values</span>
+                </button>
+                <button class="trait-nav-btn" id="tab-1" onclick="revealTraitPillar(1)">
+                    <div class="btn-badge-circle">02</div>
+                    <span class="btn-title-lbl">Comfort with Imperfection</span>
+                </button>
+                <button class="trait-nav-btn" id="tab-2" onclick="revealTraitPillar(2)">
+                    <div class="btn-badge-circle">03</div>
+                    <span class="btn-title-lbl">Speed of Processing</span>
+                </button>
+                <button class="trait-nav-btn" id="tab-3" onclick="revealTraitPillar(3)">
+                    <div class="btn-badge-circle">04</div>
+                    <span class="btn-title-lbl">Accountability Mindset</span>
+                </button>
+                <button class="trait-nav-btn" id="tab-4" onclick="revealTraitPillar(4)">
+                    <div class="btn-badge-circle">05</div>
+                    <span class="btn-title-lbl">Adaptive Thinking</span>
+                </button>
+                <button class="trait-nav-btn" id="tab-5" onclick="revealTraitPillar(5)">
+                    <div class="btn-badge-circle">06</div>
+                    <span class="btn-title-lbl">Bias for Action</span>
+                </button>
+            </div>
+
+            <div class="unified-arena-card">
+                
+                <div class="reveal-data-panel panel-visible" id="view-panel-0">
+                    <span class="panel-header-badge">Core Competency 01</span>
+                    <h2 class="panel-heading-text">Clarity of Values</h2>
+                    <p class="panel-description-text">Decisions align with a clear personal and organizational compass.</p>
+                </div>
+
+                <div class="reveal-data-panel" id="view-panel-1">
+                    <span class="panel-header-badge">Core Competency 02</span>
+                    <h2 class="panel-heading-text">Comfort with Imperfection</h2>
+                    <p class="panel-description-text">Accept that 80% confidence is often enough to act.</p>
+                </div>
+
+                <div class="reveal-data-panel" id="view-panel-2">
+                    <span class="panel-header-badge">Core Competency 03</span>
+                    <h2 class="panel-heading-text">Speed of Processing</h2>
+                    <p class="panel-description-text">Rapidly distinguish signal from noise in complex situations.</p>
+                </div>
+
+                <div class="reveal-data-panel" id="view-panel-3">
+                    <span class="panel-header-badge">Core Competency 04</span>
+                    <h2 class="panel-heading-text">Accountability Mindset</h2>
+                    <p class="panel-description-text">Own outcomes fully — whether the decision succeeds or stumbles.</p>
+                </div>
+
+                <div class="reveal-data-panel" id="view-panel-4">
+                    <span class="panel-header-badge">Core Competency 05</span>
+                    <h2 class="panel-heading-text">Adaptive Thinking</h2>
+                    <p class="panel-description-text">Course-correct quickly when new information contradicts initial assumptions.</p>
+                </div>
+
+                <div class="reveal-data-panel" id="view-panel-5">
+                    <span class="panel-header-badge">Core Competency 06</span>
+                    <h2 class="panel-heading-text">Bias for Action</h2>
+                    <p class="panel-description-text">Default to moving forward rather than waiting for perfect conditions.</p>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="footer-bar">
+            <span class="instruction-tag">Select an item on the sidebar to audit corresponding leadership core competency parameters.</span>
+        </div>
+    </div>
+
+    <script>
+        let operationalActiveIdx = 0;
+
+        function revealTraitPillar(targetIdx) {
+            if (targetIdx === operationalActiveIdx) return;
+
+            // Clear current highlight class parameters from the preceding sidebar node
+            document.getElementById(`tab-${operationalActiveIdx}`).classList.remove("active-tab");
+            // Turn off visibility flags for the preceding text briefing card panel
+            document.getElementById(`view-panel-${operationalActiveIdx}`).classList.remove("panel-visible");
+
+            // Assign targeted operational index
+            operationalActiveIdx = targetIdx;
+
+            // Activate and illuminate selected target nodes cleanly
+            document.getElementById(`tab-${operationalActiveIdx}`).classList.add("active-tab");
+            document.getElementById(`view-panel-${operationalActiveIdx}`).classList.add("panel-visible");
+        }
+    </script>
+</body>
+</html>
