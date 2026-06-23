@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Cost of Indecision - Interactive Analysis Console</title>
+    <style>
+        /* FORCE WINDOW METRICS TO OCCUPY 100% OF THE IFRAME CANVAS NATIVELY */
+        html, body {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #0f1d2a; /* Deep navy background from image_c8c0be.png */
+            font-family: 'Segoe UI', Arial, sans-serif;
+            overflow: hidden;
+        }
+
+        /* FLUID 16:9 VIEWPORT PRESTRAINT HULL
+           Replaces rigid pixel grids with an aspect-ratio boundary. 
+           Leaves a padding safety buffer to prevent right-margin cutting.
+        */
+        .slide-wrapper {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 96%;
+            height: 94%;
+            max-width: 1200px;
+            aspect-ratio: 16 / 9;
+            padding: 2.2rem 2.5rem;
+            background-color: #0f1d2a;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            box-sizing: border-box;
+        }
+
+        /* Slide Title Header */
+        .header-section {
+            border-bottom: 2px solid rgba(255, 255, 255, 0.08);
+            padding-bottom: 0.6rem;
+            margin-bottom: 1.5rem;
+            flex-shrink: 0;
+        }
+
+        .main-title {
+            font-size: 2.6rem;
+            color: #ffffff;
+            font-weight: 700;
+            line-height: 1.1;
+            margin: 0;
+        }
+
+        .sub-directive-row {
+            font-size: 1.1rem;
+            color: #718096;
+            margin-top: 0.3rem;
+        }
+
+        /* LATERAL SPLIT ARCHITECTURE PLAYGROUND
+           Pulls metrics into a clean vertical sidebar layout so they cannot 
+           crowd each other or spill off the right edge of the slide canvas.
+        */
+        .workspace-matrix {
+            display: grid;
+            grid-template-columns: 280px 1fr;
+            gap: 2.5rem;
+            flex-grow: 1;
+            min-height: 0;
+        }
+
+        /* Left Column Sidebar: Metric Navigation Selector Stack */
+        .tabs-vertical-stack {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            width: 100%;
+        }
+
+        .metric-nav-btn {
+            background-color: #1b3249; /* Muted blue-grey card base from image_c8c0be.png */
+            border: 2px solid transparent;
+            border-radius: 8px;
+            padding: 1.1rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s cubic-bezier(0.165, 0.84, 0.44, 1);
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .metric-nav-btn:hover {
+            background-color: #233e5b;
+            transform: translateX(4px);
+        }
+
+        .btn-metric-display {
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: #3498db; /* High-contrast bright blue metric accent from image_c8c0be.png */
+            letter-spacing: -0.5px;
+        }
+
+        /* Active Navigation Tab Highlighting */
+        .metric-nav-btn.active-tab {
+            background-color: #ffffff !important;
+            border-color: #3498db;
+            box-shadow: 0 4px 15px rgba(52, 152, 219, 0.2);
+        }
+        .metric-nav-btn.active-tab .btn-metric-display { color: #0f1d2a; }
+
+        /* Right Column Dashboard: Content Reveal Presentation Card */
+        .unified-arena-card {
+            background-color: #1b3249;
+            border-radius: 12px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+            padding: 2.5rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            min-height: 0;
+            box-sizing: border-box;
+        }
+
+        /* Internal vertical scroll protection zone to isolate texts from panel bounds */
+        .reveal-data-panel {
+            display: none;
+            flex-direction: column;
+            gap: 1.2rem;
+            animation: panelFadeIn 0.35s cubic-bezier(0.165, 0.84, 0.44, 1) forwards;
+            max-height: 380px;
+            overflow-y: auto;
+            padding-right: 0.5rem;
+        }
+
+        .reveal-data-panel.panel-visible {
+            display: flex;
+        }
+
+        .reveal-data-panel::-webkit-scrollbar { width: 4px; }
+        .reveal-data-panel::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.1); border-radius: 2px; }
+
+        @keyframes panelFadeIn {
+            from { opacity: 0; transform: translateY(8px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .panel-header-badge {
+            font-size: 0.85rem;
+            font-weight: 800;
+            color: #718096;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+        }
+
+        .panel-big-metric {
+            font-size: 4rem;
+            font-weight: 800;
+            color: #3498db;
+            line-height: 1;
+            margin: 0;
+        }
+
+        .panel-divider-line {
+            width: 80px;
+            height: 3px;
+            background-color: #3498db;
+            border-radius: 2px;
+        }
+
+        .panel-description-text {
+            font-size: 1.4rem;
+            color: #ffffff;
+            line-height: 1.55;
+            margin: 0;
+            font-weight: 500;
+        }
+
+        /* Bottom Fixed Structural Prompt Bar Strip Row */
+        .footer-bar {
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+            padding-top: 0.8rem;
+            margin-top: 1rem;
+            flex-shrink: 0;
+        }
+
+        .instruction-tag {
+            font-size: 0.88rem;
+            color: #718096;
+            font-style: italic;
+            text-align: left;
+            display: block;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="slide-wrapper">
+        <!-- Header Section -->
+        <div class="header-section">
+            <h1 class="main-title">The Cost of Indecision</h1>
+            <div class="sub-directive-row">What happens when leaders hesitate</div>
+        </div>
+
+        <!-- Stable Symmetrical Workspace Grid Area -->
+        <div class="workspace-matrix">
+            
+            <!-- Left Side Sidebar Menu Track -->
+            <div class="tabs-vertical-stack">
+                <button class="metric-nav-btn active-tab" id="tab-0" onclick="revealImpactData(0)">
+                    <span class="btn-metric-display">$250K+</span>
+                </button>
+                <button class="metric-nav-btn" id="tab-1" onclick="revealImpactData(1)">
+                    <span class="btn-metric-display">37%</span>
+                </button>
+                <button class="metric-nav-btn" id="tab-2" onclick="revealImpactData(2)">
+                    <span class="btn-metric-display">72%</span>
+                </button>
+                <button class="metric-nav-btn" id="tab-3" onclick="revealImpactData(3)">
+                    <span class="btn-metric-display">4.7x</span>
+                </button>
+            </div>
+
+            <!-- Right Side Display Content Window Deck -->
+            <div class="unified-arena-card">
+                
+                <!-- Panel View 1: Financial Impact -->
+                <div class="reveal-data-panel panel-visible" id="view-panel-0">
+                    <span class="panel-header-badge">Financial Impact Profile</span>
+                    <h2 class="panel-big-metric">$250K+</h2>
+                    <div class="panel-divider-line"></div>
+                    <p class="panel-description-text">Average cost per month of delayed strategic decisions in mid-size firms.</p>
+                </div>
+
+                <!-- Panel View 2: Project Attrition -->
+                <div class="reveal-data-panel" id="view-panel-1">
+                    <span class="panel-header-badge">Project Operational Performance</span>
+                    <h2 class="panel-big-metric">37%</h2>
+                    <div class="panel-divider-line"></div>
+                    <p class="panel-description-text">Of projects fail due to lack of clear decision-making authority.</p>
+                </div>
+
+                <!-- Panel View 3: Organizational Culture -->
+                <div class="reveal-data-panel" id="view-panel-2">
+                    <span class="panel-header-badge">Employee Sentiment Index</span>
+                    <h2 class="panel-big-metric">72%</h2>
+                    <div class="panel-divider-line"></div>
+                    <p class="panel-description-text">Of employees report frustration with slow organizational decisions.</p>
+                </div>
+
+                <!-- Panel View 4: Talent Retention -->
+                <div class="reveal-data-panel" id="view-panel-3">
+                    <span class="panel-header-badge">Retention Metrics</span>
+                    <h2 class="panel-big-metric">4.7x</h2>
+                    <div class="panel-divider-line"></div>
+                    <p class="panel-description-text">Higher turnover in teams with indecisive leadership.</p>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Lower Instructional Prompt Strip -->
+        <div class="footer-bar">
+            <span class="instruction-tag">Select individual impact indicators on the left dashboard sidebar to analyze standard executive friction metrics.</span>
+        </div>
+    </div>
+
+    <script>
+        let operationalActiveIdx = 0;
+
+        function revealImpactData(targetIdx) {
+            if (targetIdx === operationalActiveIdx) return;
+
+            // Clear current highlight styles rules from previous tab configurations
+            document.getElementById(`tab-${operationalActiveIdx}`).classList.remove("active-tab");
+            // Hide previous active panel view
+            document.getElementById(`view-panel-${operationalActiveIdx}`).classList.remove("panel-visible");
+
+            // Re-route operational index pointers
+            operationalActiveIdx = targetIdx;
+
+            // Apply highlight states variables to selected data targets blocks
+            document.getElementById(`tab-${operationalActiveIdx}`).classList.add("active-tab");
+            document.getElementById(`view-panel-${operationalActiveIdx}`).classList.add("panel-visible");
+        }
+    </script>
+</body>
+</html>
