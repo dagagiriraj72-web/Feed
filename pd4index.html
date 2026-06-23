@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Decision Fatigue - Interactive Diurnal Console</title>
+    <title>Decision Leadership Principles</title>
     <style>
         /* FORCE WINDOW CONTRAINTS TO OCCUPY 100% OF THE IFRAME VIEWPORT BOUNDS */
         html, body {
@@ -11,223 +11,253 @@
             padding: 0;
             width: 100%;
             height: 100%;
-            background-color: #ffffff;
+            background-color: #f4f7f9;
             font-family: 'Segoe UI', Arial, sans-serif;
             overflow: hidden;
         }
 
-        /* STRICT 16:9 ASPECT RATIO PLAYBACK FRAME
-           Locks workspace coordinates strictly at a fluid maximum baseline 
-           to completely stop vertical layout bleeding or element crushing.
+        /* 16:9 FIXED PRESENTATION CANVAS 
+           Locks coordinates strictly at a fluid maximum baseline to stop layout bleeding.
         */
         .slide-wrapper {
             position: absolute;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            width: 95%;
-            height: 92%;
+            width: 96%;
+            height: 94%;
             max-width: 1200px;
             aspect-ratio: 16 / 9;
-            padding: 2rem 2.5rem;
+            padding: 2rem;
             background-color: #ffffff;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
             box-sizing: border-box;
-        }
-
-        /* Top Branded Header Row */
-        .header-section {
-            display: flex;
-            align-items: center;
-            gap: 1.2rem;
-            border-bottom: 2px solid #f0f4f8;
-            padding-bottom: 0.8rem;
-            margin-bottom: 1.2rem;
-            flex-shrink: 0;
-        }
-
-        .badge-index {
-            width: 45px;
-            height: 45px;
-            background-color: #2980b9; /* Distinct blue theme circle matching image_c8c883.png */
-            color: #ffffff;
-            border-radius: 50%;
-            font-size: 1.2rem;
-            font-weight: 700;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            flex-shrink: 0;
-            font-variant-numeric: tabular-nums;
-        }
-
-        .title-block {
-            display: flex;
-            flex-direction: column;
-        }
-
-        .main-title {
-            font-size: 2.6rem;
-            color: #1a365d; /* Dark primary slate blue from image_c8c883.png */
-            font-weight: 800;
-            margin: 0;
-            line-height: 1.1;
-        }
-
-        .sub-title {
-            font-size: 1.1rem;
-            color: #718096; /* Soft steel description subtitle text from image_c8c883.png */
-            margin: 0.2rem 0 0 0;
-        }
-
-        /* LATERAL SPLIT WORKSPACE CONSOLE
-           Separates data components horizontally into distinct, non-overlapping tracks.
-        */
-        .workspace-matrix {
-            display: grid;
-            grid-template-columns: 1.05fr 0.95fr; /* Holds fixed clearance ratio metrics */
-            gap: 3rem;
-            flex-grow: 1;
-            min-height: 0; /* Anti-collapse vertical barrier guardrail */
-            align-items: center;
-        }
-
-        /* Left Side: Text Payload and Symptoms Stack */
-        .info-brief-column {
-            display: flex;
-            flex-direction: column;
-            gap: 1.2rem;
-            max-height: 440px;
-            overflow-y: auto;
-            padding-right: 0.5rem;
-        }
-
-        .info-brief-column::-webkit-scrollbar { width: 4px; }
-        .info-brief-column::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 2px; }
-
-        .narrative-paragraph {
-            font-size: 1.15rem;
-            color: #2d3748;
-            line-height: 1.55;
-            margin: 0;
-        }
-
-        .symptoms-list {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-            display: flex;
-            flex-direction: column;
-            gap: 0.85rem;
-        }
-
-        .symptom-node {
-            display: flex;
-            align-items: flex-start;
-            gap: 1rem;
-            font-size: 1.1rem;
-            color: #2d3748;
-            line-height: 1.4;
-            font-weight: 500;
-        }
-
-        .square-bullet {
-            width: 14px;
-            height: 14px;
-            background-color: #2980b9; /* Flat cyan-blue square bullet matching image_c8c883.png */
-            border-radius: 2px;
-            margin-top: 0.35rem;
-            flex-shrink: 0;
-        }
-
-        /* Right Side: Interactive Diurnal Quality Terminal */
-        .interactive-terminal-deck {
-            background-color: #f4f7f9; /* Soft light-blue background tint card from image_c8c883.png */
             border-radius: 8px;
-            padding: 2rem;
-            height: 100%;
-            box-sizing: border-box;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            position: relative;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
         }
 
-        .terminal-header-lbl {
-            font-size: 0.85rem;
-            font-weight: 800;
-            color: #2980b9;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            margin-bottom: 1.5rem;
+        /* MASTER PILLAR SELECTION RIBBON TRACK */
+        .ribbon-navigation-track {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+            width: 100%;
             flex-shrink: 0;
+            border-bottom: 2px solid #e2dbd5;
+            padding-bottom: 0.8rem;
         }
 
-        /* Interactive Time Block Node Cards */
-        .diurnal-interactive-node {
-            background-color: transparent;
-            border: 2px solid transparent;
+        .pillar-nav-btn {
+            background-color: #f8fafc;
+            border: 1px solid #e2e8f0;
             border-radius: 6px;
-            padding: 1rem 2rem;
-            width: 85%;
-            text-align: center;
+            padding: 0.8rem;
             cursor: pointer;
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: center;
-            transition: all 0.25s cubic-bezier(0.165, 0.84, 0.44, 1);
+            transition: all 0.2s ease;
         }
 
-        .diurnal-interactive-node:hover {
-            background-color: rgba(255, 255, 255, 0.6);
-            transform: scale(1.02);
+        .pillar-nav-btn:hover {
+            background-color: #edf2f7;
         }
 
-        .node-title-lbl {
-            font-size: 2.1rem;
+        .pillar-lbl {
+            font-size: 0.75rem;
             font-weight: 800;
-            color: #a0aec0; /* Default deactivated grey status state from image_c8c883.png */
-            margin: 0;
-            transition: color 0.2s ease;
+            color: #718096;
+            text-transform: uppercase;
+            letter-spacing: 1px;
         }
 
-        .node-status-lbl {
-            font-size: 1rem;
-            color: #a0aec0;
-            margin-top: 0.2rem;
-            font-weight: 600;
-            transition: color 0.2s ease;
+        .pillar-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #1a365d;
+            margin-top: 0.15rem;
         }
 
-        /* Connecting Directional Indicator Icon Line */
-        .flow-vector-arrow {
-            font-size: 1.5rem;
-            color: #a0aec0;
-            margin: 0.6rem 0;
+        /* Active Ribbon States */
+        .pillar-nav-btn.active-pillar {
+            background-color: #1a365d;
+            border-color: #1a365d;
+        }
+        .pillar-nav-btn.active-pillar .pillar-lbl { color: #cbd5e1; }
+        .pillar-nav-btn.active-pillar .pillar-title { color: #ffffff; }
+
+        /* MAIN PRESENTATION CONSOLE HOUSING */
+        .console-workspace-deck {
+            flex-grow: 1;
+            min-height: 0;
+            margin-top: 1.2rem;
+            display: none;
+            flex-direction: column;
+        }
+
+        .console-workspace-deck.active-workspace {
+            display: flex;
+        }
+
+        /* Pillar Introduction Context Ribbon */
+        .pillar-intro-banner {
+            margin-bottom: 1.2rem;
             flex-shrink: 0;
-            font-weight: 900;
         }
 
-        /* HIGH-CONTRAST SELECTION HIGH-LIGHT MODIFIERS */
-        .diurnal-interactive-node.active-phase {
+        .intro-heading-text {
+            font-size: 2.2rem;
+            font-weight: 800;
+            color: #1a365d;
+            margin: 0;
+        }
+
+        .intro-subtitle-text {
+            font-size: 1.1rem;
+            font-style: italic;
+            color: #4a5568;
+            margin: 0.3rem 0 0 0;
+        }
+
+        /* LATERAL SPLIT ARCHITECTURE BOARD (Used for Pillars 1 & 2) */
+        .split-interactive-grid {
+            display: grid;
+            grid-template-columns: 280px 1fr;
+            gap: 2rem;
+            flex-grow: 1;
+            min-height: 0;
+        }
+
+        .sidebar-tabs-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .sub-tab-node {
+            background-color: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-left: 4px solid #718096;
+            padding: 1rem;
+            border-radius: 4px;
+            font-size: 1rem;
+            font-weight: 700;
+            color: #2d3748;
+            cursor: pointer;
+            text-align: left;
+            transition: all 0.2s ease;
+        }
+
+        .sub-tab-node:hover {
+            background-color: #edf2f7;
+            transform: translateX(3px);
+        }
+
+        .sub-tab-node.active-node {
             background-color: #ffffff;
-            border-color: rgba(41, 128, 185, 0.15);
-            box-shadow: 0 6px 20px rgba(26, 54, 93, 0.06);
+            border-color: #3182ce;
+            border-left-color: #3182ce;
+            color: #3182ce;
+            box-shadow: 0 4px 12px rgba(49, 130, 206, 0.08);
         }
-        
-        .diurnal-interactive-node.active-phase#node-morning .node-title-lbl { color: #1a365d; } /* Morning Active Slate Blue */
-        .diurnal-interactive-node.active-phase#node-morning .node-status-lbl { color: #4a5568; }
 
-        .diurnal-interactive-node.active-phase#node-evening .node-title-lbl { color: #4a5568; } /* Evening Active Neutral Grey */
-        .diurnal-interactive-node.active-phase#node-evening .node-status-lbl { color: #718096; }
+        /* Information Reveal Terminal Sheet */
+        .info-reveal-terminal {
+            background-color: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 2rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            min-height: 0;
+        }
 
-        /* Bottom Fixed Structural Prompt Bar Strip Row */
+        .reveal-text-panel {
+            display: none;
+            max-height: 250px;
+            overflow-y: auto;
+            padding-right: 0.5rem;
+            font-size: 1.25rem;
+            color: #4a5568;
+            line-height: 1.6;
+        }
+
+        .reveal-text-panel.visible-panel {
+            display: block;
+            animation: fadeIn 0.3s ease forwards;
+        }
+
+        /* CHRONOLOGICAL TIMELINE VERTICAL STACK (Used for Pillar 3) */
+        .timeline-scroll-matrix {
+            flex-grow: 1;
+            min-height: 0;
+            max-height: 320px;
+            overflow-y: auto;
+            padding-right: 0.5rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.8rem;
+        }
+
+        .timeline-scroll-matrix::-webkit-scrollbar,
+        .reveal-text-panel::-webkit-scrollbar { width: 4px; }
+        .timeline-scroll-matrix::-webkit-scrollbar-thumb,
+        .reveal-text-panel::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 2px; }
+
+        .timeline-process-row {
+            background-color: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 1rem 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            transition: background-color 0.2s ease;
+        }
+
+        .timeline-process-row:hover {
+            background-color: #f1f5f9;
+        }
+
+        .step-badge-circle {
+            width: 40px;
+            height: 40px;
+            background-color: #1a365d;
+            color: #ffffff;
+            font-size: 1.1rem;
+            font-weight: 700;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-shrink: 0;
+        }
+
+        .step-badge-circle.accent-step {
+            background-color: #2b6cb0;
+        }
+
+        .step-title-lbl {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: #1a365d;
+            width: 140px;
+            flex-shrink: 0;
+        }
+
+        .step-desc-lbl {
+            font-size: 1.05rem;
+            color: #4a5568;
+            line-height: 1.45;
+            margin: 0;
+        }
+
+        /* Lower Structural Prompt Footer Row */
         .footer-bar {
-            border-top: 1px solid #f0f4f8;
+            border-top: 1px solid #e2e8f0;
             padding-top: 0.6rem;
             flex-shrink: 0;
         }
@@ -236,96 +266,176 @@
             font-size: 0.85rem;
             color: #a0aec0;
             font-style: italic;
-            text-align: left;
-            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(4px); }
+            to { opacity: 1; transform: translateY(0); }
         }
     </style>
 </head>
 <body>
 
     <div class="slide-wrapper">
-        <!-- Interactive Header Banner -->
-        <div class="header-section">
-            <div class="badge-index">02</div>
-            <div class="title-block">
-                <h1 class="main-title">Decision Fatigue</h1>
-                <p class="sub-title">The Silent Productivity Killer</p>
+        <!-- Master Horizontal Ribbon Navigation Track -->
+        <div class="ribbon-navigation-track">
+            <button class="pillar-nav-btn active-pillar" id="ribbon-btn-0" onclick="switchStrategicPillar(0)">
+                <span class="pillar-lbl">Pillar 1</span>
+                <span class="pillar-title">Clarity of Purpose</span>
+            </button>
+            <button class="pillar-nav-btn" id="ribbon-btn-1" onclick="switchStrategicPillar(1)">
+                <span class="pillar-lbl">Pillar 2</span>
+                <span class="pillar-title">Informed Confidence</span>
+            </button>
+            <button class="pillar-nav-btn" id="ribbon-btn-2" onclick="switchStrategicPillar(2)">
+                <span class="pillar-lbl">Pillar 3</span>
+                <span class="pillar-title">Bias for Action</span>
+            </button>
+        </div>
+
+        <!-- CONSOLE WORKSPACE DECK: PILLAR 1 -->
+        <div class="console-workspace-deck active-workspace" id="deck-0">
+            <div class="pillar-intro-banner">
+                <h2 class="intro-heading-text">Clarity of Purpose</h2>
+                <p class="intro-subtitle-text">Knowing your destination makes every choice along the way simpler and faster.</p>
+            </div>
+            <div class="split-interactive-grid">
+                <div class="sidebar-tabs-list">
+                    <button class="sub-tab-node active-node" id="tab-p1-0" onclick="revealSubContent(1, 0)">Define Your North Star</button>
+                    <button class="sub-tab-node" id="tab-p1-1" onclick="revealSubContent(1, 1)">Align Values to Actions</button>
+                    <button class="sub-tab-node" id="tab-p1-2" onclick="revealSubContent(1, 2)">Communicate the Why</button>
+                </div>
+                <div class="info-reveal-terminal">
+                    <div class="reveal-text-panel visible-panel" id="panel-p1-0">
+                        Establish clear, measurable goals that anchor every decision. When priorities compete, your north star breaks the tie.
+                    </div>
+                    <div class="reveal-text-panel" id="panel-p1-1">
+                        Map your core values to decision criteria. This creates a repeatable filter that eliminates guesswork.
+                    </div>
+                    <div class="reveal-text-panel" id="panel-p1-2">
+                        Share your decision rationale with the team. Transparent reasoning builds trust and empowers others to decide.
+                    </div>
+                </div>
             </div>
         </div>
 
-        <!-- Balanced Anti-Overlap Workspace Split Console Grid Area -->
-        <div class="workspace-matrix">
-            
-            <!-- Left Side: Static Text Context Payload & Symptoms -->
-            <div class="info-brief-column">
-                <p class="narrative-paragraph">
-                    The average executive makes over 35,000 decisions per day. Each one depleletes cognitive resources, leading to progressively poorer choices.
-                </p>
-                
-                <ul class="symptoms-list">
-                    <li class="symptom-node">
-                        <span class="square-bullet"></span>
-                        <span>Procrastinating on important choices</span>
-                    </li>
-                    <li class="symptom-node">
-                        <span class="square-bullet"></span>
-                        <span>Defaulting to the status quo</span>
-                    </li>
-                    <li class="symptom-node">
-                        <span class="square-bullet"></span>
-                        <span>Making impulsive decisions late in the day</span>
-                    </li>
-                    <li class="symptom-node">
-                        <span class="square-bullet"></span>
-                        <span>Avoiding decisions altogether</span>
-                    </li>
-                </ul>
+        <!-- CONSOLE WORKSPACE DECK: PILLAR 2 -->
+        <div class="console-workspace-deck" id="deck-1">
+            <div class="pillar-intro-banner">
+                <h2 class="intro-heading-text">Informed Confidence</h2>
+                <p class="intro-subtitle-text">Confidence without information is recklessness. Information without confidence is paralysis. Great decision-makers live at the intersection.</p>
             </div>
-
-            <!-- Right Side: Interactive Time Deck Node Blocks -->
-            <div class="interactive-terminal-deck">
-                <span class="terminal-header-lbl">Decision Quality</span>
-                
-                <!-- Morning Node Module -->
-                <div class="diurnal-interactive-node active-phase" id="node-morning" onclick="toggleDiurnalPhase('morning')">
-                    <h2 class="node-title-lbl">Morning</h2>
-                    <span class="node-status-tag node-status-lbl">Peak Performance</span>
+            <div class="split-interactive-grid">
+                <div class="sidebar-tabs-list">
+                    <button class="sub-tab-node active-node" id="tab-p2-0" onclick="revealSubContent(2, 0)">Seek Diverse Perspectives</button>
+                    <button class="sub-tab-node" id="tab-p2-1" onclick="revealSubContent(2, 1)">Trust Your Experience</button>
+                    <button class="sub-tab-node" id="tab-p2-2" onclick="revealSubContent(2, 2)">Set Information Thresholds</button>
+                    <button class="sub-tab-node" id="tab-p2-3" onclick="revealSubContent(2, 3)">Accept Imperfection</button>
                 </div>
-                
-                <!-- Down Directional Vector Arrow Graphic -->
-                <div class="flow-vector-arrow">↓</div>
-                
-                <!-- Evening Node Module -->
-                <div class="diurnal-interactive-node" id="node-evening" onclick="toggleDiurnalPhase('evening')">
-                    <h2 class="node-title-lbl">Evening</h2>
-                    <span class="node-status-tag node-status-lbl">Depleted Resources</span>
+                <div class="info-reveal-terminal">
+                    <div class="reveal-text-panel visible-panel" id="panel-p2-0">
+                        Surround yourself with dissenting voices. The best decisions survive challenge.
+                    </div>
+                    <div class="reveal-text-panel" id="panel-p2-1">
+                        Pattern recognition from past decisions is a valid input. Honor your instinct.
+                    </div>
+                    <div class="reveal-text-panel" id="panel-p2-2">
+                        Define what "enough data" looks like before you start gathering it.
+                    </div>
+                    <div class="reveal-text-panel" id="panel-p2-3">
+                        No decision will ever have 100% certainty. Learn to move forward with 70%.
+                    </div>
                 </div>
             </div>
-
         </div>
 
-        <!-- Lower Instructional Prompt Strip -->
+        <!-- CONSOLE WORKSPACE DECK: PILLAR 3 -->
+        <div class="console-workspace-deck" id="deck-2">
+            <div class="pillar-intro-banner">
+                <h2 class="intro-heading-text">Bias for Action</h2>
+                <p class="intro-subtitle-text">Applying operational velocity and intent to enterprise execution roadmaps.</p>
+            </div>
+            <div class="timeline-scroll-matrix">
+                <!-- Step 1 -->
+                <div class="timeline-process-row">
+                    <div class="step-badge-circle">1</div>
+                    <div class="step-title-lbl">Recognize</div>
+                    <p class="step-desc-lbl">Identify the decision that needs to be made. Name it explicitly.</p>
+                </div>
+                <!-- Step 2 -->
+                <div class="timeline-process-row">
+                    <div class="step-badge-circle">2</div>
+                    <div class="step-title-lbl">Timebox</div>
+                    <p class="step-desc-lbl">Set a clear deadline. Most decisions don't improve with infinite deliberation.</p>
+                </div>
+                <!-- Step 3 -->
+                <div class="timeline-process-row">
+                    <div class="step-badge-circle accent-step">3</div>
+                    <div class="step-title-lbl">Commit</div>
+                    <p class="step-desc-lbl">Make the call. Announce it. Write it down. Remove the option to waffle.</p>
+                </div>
+                <!-- Step 4 -->
+                <div class="timeline-process-row">
+                    <div class="step-badge-circle">4</div>
+                    <div class="step-title-lbl">Execute</div>
+                    <p class="step-desc-lbl">Pour your energy into making the decision work, not second-guessing it.</p>
+                </div>
+                <!-- Step 5 -->
+                <div class="timeline-process-row">
+                    <div class="step-badge-circle">5</div>
+                    <div class="step-title-lbl">Learn</div>
+                    <p class="step-desc-lbl">Review outcomes. Extract lessons. Feed them into your next decision cycle.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Lower Fixed Operational Prompt Guidance Bar Strip -->
         <div class="footer-bar">
-            <span class="instruction-tag">Click either the Morning or Evening performance card blocks directly to cycle decision capability matrices.</span>
+            <span class="instruction-tag">Select a main strategic corporate pillar tab above, then explore underlying organizational parameters.</span>
         </div>
     </div>
 
     <script>
-        /**
-         * Diurnal Quality Interactive Toggle Engine
-         * Switches high-fidelity highlight modifiers and active tags symmetrically.
-         */
-        function toggleDiurnalPhase(selectedPhaseKey) {
-            const morningNode = document.getElementById("node-morning");
-            const eveningNode = document.getElementById("node-evening");
+        let globalPillarIdx = 0;
+        let activeP1SubIdx = 0;
+        let activeP2SubIdx = 0;
 
-            if (selectedPhaseKey === 'morning') {
-                morningNode.classList.add("active-phase");
-                eveningNode.classList.remove("active-phase");
-            } 
-            else if (selectedPhaseKey === 'evening') {
-                eveningNode.classList.add("active-phase");
-                morningNode.classList.remove("active-phase");
+        function switchStrategicPillar(targetPillarIdx) {
+            if (targetPillarIdx === globalPillarIdx) return;
+
+            // Remove active status highlights from prior components
+            document.getElementById(`ribbon-btn-${globalPillarIdx}`).classList.remove("active-pillar");
+            document.getElementById(`deck-${globalPillarIdx}`).classList.remove("active-workspace");
+
+            globalPillarIdx = targetPillarIdx;
+
+            // Activate newly targeted framework workspace elements
+            document.getElementById(`ribbon-btn-${globalPillarIdx}`).classList.add("active-pillar");
+            document.getElementById(`deck-${globalPillarIdx}`).classList.add("active-workspace");
+        }
+
+        function revealSubContent(pillarNum, targetSubIdx) {
+            if (pillarNum === 1) {
+                if (targetSubIdx === activeP1SubIdx) return;
+                document.getElementById(`tab-p1-${activeP1SubIdx}`).classList.remove("active-node");
+                document.getElementById("panel-p1-0").classList.remove("visible-panel");
+                document.getElementById("panel-p1-1").classList.remove("visible-panel");
+                document.getElementById("panel-p1-2").classList.remove("visible-panel");
+
+                activeP1SubIdx = targetSubIdx;
+                document.getElementById(`tab-p1-${activeP1SubIdx}`).classList.add("active-node");
+                document.getElementById(`panel-p1-${activeP1SubIdx}`).classList.add("visible-panel");
+            } else if (pillarNum === 2) {
+                if (targetSubIdx === activeP2SubIdx) return;
+                document.getElementById(`tab-p2-${activeP2SubIdx}`).classList.remove("active-node");
+                document.getElementById("panel-p2-0").classList.remove("visible-panel");
+                document.getElementById("panel-p2-1").classList.remove("visible-panel");
+                document.getElementById("panel-p2-2").classList.remove("visible-panel");
+                document.getElementById("panel-p2-3").classList.remove("visible-panel");
+
+                activeP2SubIdx = targetSubIdx;
+                document.getElementById(`tab-p2-${activeP2SubIdx}`).classList.add("active-node");
+                document.getElementById(`panel-p2-${activeP2SubIdx}`).classList.add("visible-panel");
             }
         }
     </script>
