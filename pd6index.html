@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Speed vs. Quality - Strategic Slider Dashboard</title>
+    <style>
+        /* FORCE CONTRAINTS TO OCCUPY 100% OF THE IFRAME VIEWPORT BOUNDS */
+        html, body {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #ffffff;
+            font-family: 'Segoe UI', Arial, sans-serif;
+            overflow: hidden;
+        }
+
+        /* STRICT 16:9 ASPECT RATIO PLAYBACK BARRIER
+           Locks workspace bounds strictly to eliminate text cutting or dynamic 
+           collapses inside nested Storyline web object iframe containers.
+        */
+        .slide-wrapper {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 95%;
+            height: 92%;
+            max-width: 1200px;
+            aspect-ratio: 16 / 9;
+            padding: 2rem 2.5rem;
+            background-color: #ffffff;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            box-sizing: border-box;
+        }
+
+        /* Top Branded Corporate Header Row */
+        .header-section {
+            display: flex;
+            flex-direction: column;
+            margin-bottom: 1.5rem;
+            flex-shrink: 0;
+        }
+
+        .main-title {
+            font-size: 2.8rem;
+            color: #1a365d; /* Dark primary slate blue from image_d48382.png */
+            font-weight: 700;
+            margin: 0;
+            line-height: 1.1;
+            letter-spacing: -0.5px;
+        }
+
+        .sub-title {
+            font-size: 1.15rem;
+            color: #718096; /* Steel description subtitle text from image_d48382.png */
+            margin: 0.3rem 0 0 0;
+        }
+
+        /* STRATEGIC SLIDER REGULATION DECK */
+        .slider-regulation-container {
+            width: 80%;
+            margin: 1rem auto 2.5rem auto;
+            position: relative;
+            padding: 0 10px;
+            box-sizing: border-box;
+            flex-shrink: 0;
+        }
+
+        .slider-track-line {
+            width: 100%;
+            height: 6px;
+            background: #e2e8f0; /* Clear inactive rail line */
+            border-radius: 3px;
+            position: relative;
+        }
+
+        .slider-progress-fill {
+            position: absolute;
+            left: 0;
+            top: 0;
+            height: 100%;
+            width: 58%; /* Default anchored state value matching image_d48382.png */
+            background: #2980b9; /* Cyan-blue progress fill from image_d48382.png */
+            border-radius: 3px;
+            transition: width 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
+        }
+
+        /* Dynamic Selector Target Node Handle */
+        .slider-target-handle {
+            width: 32px;
+            height: 32px;
+            background: #1a365d;
+            border-radius: 50%;
+            position: absolute;
+            top: 50%;
+            left: 58%;
+            transform: translate(-50%, -50%);
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(26, 54, 93, 0.25);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #ffffff;
+            font-size: 0.85rem;
+            transition: left 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
+            z-index: 5;
+        }
+
+        /* Axis Alignment Labels */
+        .axis-labels-row {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 0.8rem;
+            position: relative;
+        }
+
+        .axis-lbl-node {
+            font-size: 0.85rem;
+            font-weight: 800;
+            color: #a0aec0;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            cursor: pointer;
+            transition: color 0.2s ease;
+        }
+
+        /* Active label modifiers matched explicitly to handle coordinates */
+        .axis-lbl-node.active-lbl { color: #2980b9; }
+        .axis-lbl-node#lbl-sweet {
+            position: absolute;
+            left: 58%;
+            transform: translateX(-50%);
+            color: #1a365d; /* Hard-anchored default label focus */
+            font-size: 0.9rem;
+            font-weight: 700;
+            text-transform: none;
+            letter-spacing: 0;
+        }
+
+        /* LATERAL SPLIT ARCHITECTURE PLAYGROUND
+           Separates logic tracks horizontally to guarantee clean alignment with zero overlaps.
+        */
+        .workspace-split-matrix {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2.5rem;
+            flex-grow: 1;
+            min-height: 0; /* Dynamic height buffer safety guardrail */
+            align-items: stretch;
+            margin-bottom: 1rem;
+        }
+
+        /* Symmetrical Content Board Bases */
+        .presentation-column-card {
+            background-color: #f8fafc; /* Clean off-white baseline tint card */
+            border: 1px solid #e2e8f0;
+            border-radius: 6px;
+            padding: 2rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+            transition: all 0.3s ease;
+            box-sizing: border-box;
+        }
+
+        .column-heading-text {
+            font-size: 1.45rem;
+            font-weight: 700;
+            margin: 0;
+            transition: color 0.3s ease;
+        }
+        .color-fast { color: #2980b9; } /* Cyan-blue accent label */
+        .color-thorough { color: #1a365d; } /* Dark slate blue label */
+
+        /* Inner Content Stack List Matrix Pipelines */
+        .criterion-list-stack {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 1.1rem;
+            max-height: 240px; /* Locked viewport ceiling layer stops lower cuts */
+            overflow-y: auto;
+        }
+
+        .criterion-list-stack::-webkit-scrollbar { width: 4px; }
+        .criterion-list-stack::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 2px; }
+
+        .criterion-node {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.8rem;
+            font-size: 1.1rem;
+            color: #4a5568;
+            line-height: 1.45;
+            font-weight: 500;
+            transition: opacity 0.25s ease, transform 0.25s ease;
+        }
+
+        /* High-contrast arrow icons */
+        .vector-arrow-icon {
+            font-weight: 700;
+            flex-shrink: 0;
+            transition: transform 0.2s ease;
+        }
+        .color-arrow-fast { color: #2980b9; }
+        .color-arrow-thorough { color: #1a365d; }
+
+        /* OPACITY MATRIX MODIFIERS BASED ON ACTIVE STATE SELECTION */
+        .presentation-column-card.dimmed-card {
+            opacity: 0.35;
+            transform: scale(0.99);
+            background-color: #f1f5f9;
+        }
+
+        /* Lower Structural Prompt Bar Strip Row */
+        .footer-bar {
+            border-top: 1px solid #edf2f7;
+            padding-top: 0.6rem;
+            flex-shrink: 0;
+        }
+
+        .instruction-tag {
+            font-size: 0.85rem;
+            color: #a0aec0;
+            font-style: italic;
+            text-align: left;
+            display: block;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="slide-wrapper">
+        <!-- Interactive Header Banner -->
+        <div class="header-section">
+            <h1 class="main-title">Speed vs. Quality</h1>
+            <p class="sub-title">Finding the right balance</p>
+        </div>
+
+        <!-- Interactive Tri-State Slider Node Controller -->
+        <div class="slider-regulation-container">
+            <div class="slider-track-line" id="slider-track" onclick="handleTrackClick(event)">
+                <div class="slider-progress-fill" id="slider-fill"></div>
+                <div class="slider-target-handle" id="slider-handle">✓</div>
+            </div>
+            <div class="axis-labels-row">
+                <span class="axis-lbl-node" id="lbl-fast" onclick="updateSliderState('fast')">Fast</span>
+                <span class="axis-lbl-node" id="lbl-sweet" onclick="updateSliderState('sweet')">Sweet Spot</span>
+                <span class="axis-lbl-node" id="lbl-thorough" onclick="updateSliderState('thorough')">Thorough</span>
+            </div>
+        </div>
+
+        <!-- Symmetrical Anti-Overlap Side-by-Side Parameter Workspace -->
+        <div class="workspace-split-matrix">
+            
+            <!-- LEFT PANEL: WHEN TO DECIDE FASTER -->
+            <div class="presentation-column-card" id="card-fast-pane">
+                <h2 class="column-heading-text color-fast">When to Decide Faster</h2>
+                <ul class="criterion-list-stack">
+                    <li class="criterion-node">
+                        <span class="vector-arrow-icon color-arrow-fast">➔</span>
+                        <span>Reversible decisions</span>
+                    </li>
+                    <li class="criterion-node">
+                        <span class="vector-arrow-icon color-arrow-fast">➔</span>
+                        <span>Low stakes / contained impact</span>
+                    </li>
+                    <li class="criterion-node">
+                        <span class="vector-arrow-icon color-arrow-fast">➔</span>
+                        <span>Team is blocked waiting</span>
+                    </li>
+                    <li class="criterion-node">
+                        <span class="vector-arrow-icon color-arrow-fast">➔</span>
+                        <span>Data won't improve with time</span>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- RIGHT PANEL: WHEN TO SLOW DOWN -->
+            <div class="presentation-column-card" id="card-thorough-pane">
+                <h2 class="column-heading-text color-thorough">When to Slow Down</h2>
+                <ul class="criterion-list-stack">
+                    <li class="criterion-node">
+                        <span class="vector-arrow-icon color-arrow-thorough">➔</span>
+                        <span>Irreversible consequences</span>
+                    </li>
+                    <li class="criterion-node">
+                        <span class="vector-arrow-icon color-arrow-thorough">➔</span>
+                        <span>Major financial commitment</span>
+                    </li>
+                    <li class="criterion-node">
+                        <span class="vector-arrow-icon color-arrow-thorough">➔</span>
+                        <span>People's careers or safety at stake</span>
+                    </li>
+                    <li class="criterion-node">
+                        <span class="vector-arrow-icon color-arrow-thorough">➔</span>
+                        <span>Legal or compliance implications</span>
+                    </li>
+                </ul>
+            </div>
+
+        </div>
+
+        <!-- Lower Instructional Prompt Strip -->
+        <div class="footer-bar">
+            <span class="instruction-tag">Interact with the custom framework tracking slider or tap individual alignment labels directly to evaluate tactical parameters.</span>
+        </div>
+    </div>
+
+    <script>
+        // Set coordinate nodes mapping arrays natively
+        const positionCoordinates = {
+            'fast': { left: '0%', fill: '0%' },
+            'sweet': { left: '58%', fill: '58%' },
+            'thorough': { left: '100%', fill: '100%' }
+        };
+
+        let currentActiveKey = 'sweet';
+
+        function updateSliderState(targetStateKey) {
+            const handle = document.getElementById("slider-handle");
+            const fill = document.getElementById("slider-fill");
+            const fastCard = document.getElementById("card-fast-pane");
+            const thoroughCard = document.getElementById("card-thorough-pane");
+            
+            const fastLbl = document.getElementById("lbl-fast");
+            const thoroughLbl = document.getElementById("lbl-thorough");
+
+            currentActiveKey = targetStateKey;
+
+            // Shift node positioning tracks values smoothly
+            handle.style.left = positionCoordinates[targetStateKey].left;
+            fill.style.width = positionCoordinates[targetStateKey].fill;
+
+            // Standardize card presentation dims based on selection values
+            if (targetStateKey === 'fast') {
+                fastCard.classList.remove("dimmed-card");
+                thoroughCard.classList.add("dimmed-card");
+                fastLbl.classList.add("active-lbl");
+                thoroughLbl.classList.remove("active-lbl");
+            } 
+            else if (targetStateKey === 'thorough') {
+                thoroughCard.classList.remove("dimmed-card");
+                fastCard.classList.add("dimmed-card");
+                thoroughLbl.classList.add("active-lbl");
+                fastLbl.classList.remove("active-lbl");
+            } 
+            else {
+                // 'sweet' spot illuminates both boards equally with clear structural visibility
+                fastCard.classList.remove("dimmed-card");
+                thoroughCard.classList.remove("dimmed-card");
+                fastLbl.classList.remove("active-lbl");
+                thoroughLbl.classList.remove("active-lbl");
+            }
+        }
+
+        function handleTrackClick(event) {
+            const track = document.getElementById("slider-track");
+            const boundingBox = track.getBoundingClientRect();
+            const clickPercentValue = (event.clientX - boundingBox.left) / boundingBox.width;
+
+            // Map segment positions cleanly based on input threshold coordinates
+            if (clickPercentValue < 0.3) {
+                updateSliderState('fast');
+            } else if (clickPercentValue > 0.75) {
+                updateSliderState('thorough');
+            } else {
+                updateSliderState('sweet');
+            }
+        }
+    </script>
+</body>
+</html>
