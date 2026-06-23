@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>The Power of Decisiveness - 5-Stage Simulator</title>
+    <title>The Power of Decisiveness - Business Simulation</title>
     <style>
         /* FORCE GLOBAL CONTAINER TO STRETCH TO FULL IFRAME BOUNDS */
         html, body {
@@ -17,8 +17,8 @@
         }
 
         /* STRICT 16:9 ASPECT RATIO SLIDE VIEWPORT
-           Locks coordinates at standard player boundaries to completely neutralize 
-           lower margin text bleeding, element crushing, or footer cutoff errors.
+           Enforces structural boundary barriers to permanently eliminate lower text bleeding,
+           overlapping cards, or footer truncation errors inside Storyline web objects.
         */
         .slide-wrapper {
             position: absolute;
@@ -66,7 +66,9 @@
             border-radius: 4px;
         }
 
-        /* MASTER SINGLE-COLUMN PIPELINE WORKSPACE */
+        /* MASTER SINGLE-COLUMN PIPELINE WORKSPACE 
+           Arranges sections vertically to isolate choice blocks from dynamic text expansions.
+        */
         .workspace-matrix {
             display: flex;
             flex-direction: column;
@@ -75,7 +77,9 @@
             margin: 0.8rem 0;
         }
 
-        /* UNIFIED WORKSPACE DESK ARENA CARD */
+        /* UNIFIED WORKSPACE DESK ARENA CARD
+           Houses content in a clean, vertical scrollable dock to guarantee zero overlaps.
+        */
         .unified-arena-card {
             background-color: #ffffff;
             border: 1px solid rgba(61, 35, 20, 0.08);
@@ -127,10 +131,10 @@
         }
 
         .challenge-statement-text {
-            font-size: 1.22rem;
+            font-size: 1.25rem;
             font-weight: 700;
             color: #3d2314;
-            line-height: 1.42;
+            line-height: 1.45;
             margin: 0;
         }
 
@@ -192,7 +196,7 @@
             color: #4a382c;
             font-size: 1.05rem;
             font-weight: 600;
-            max-width: 550px;
+            max-width: 500px;
             line-height: 1.5;
             margin: 0;
         }
@@ -215,4 +219,94 @@
             background-color: #fff8eb;
             padding: 0.25rem 0.8rem;
             border-radius: 20px;
-            border: 1px solid #f4a2
+            border: 1px solid #f4a261;
+            font-variant-numeric: tabular-nums;
+        }
+
+        .instruction-tag {
+            font-size: 0.85rem;
+            color: #a39389;
+            font-style: italic;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="slide-wrapper">
+        <!-- Dashboard Title Header Row -->
+        <div class="header-section">
+            <h1 class="main-title">Leading with Decisiveness</h1>
+            <span class="company-branding">Leadership Case Study</span>
+        </div>
+
+        <!-- Master Workspace Dashboard Matrix Area -->
+        <div class="workspace-matrix">
+            <div class="unified-arena-card" id="sandbox-container">
+                
+                <!-- Internal vertical scroll safety sandbox layer -->
+                <div class="terminal-scroll-sandbox" id="interactive-view-block">
+                    <div class="arena-tag-heading">Case Narrative Summary</div>
+                    
+                    <div class="case-narrative-box">
+                        Raj was leading a critical enterprise project. His team successfully completed an exhaustive operational analysis and presented the single best implementation path forward. All that was left to do was pull the trigger on the decision. However, Raj hesitated and delayed, waiting for more data. 
+                        <br><br>
+                        While Raj waited, a fast-moving competitor made a quick, decisive market move. As time passed, Raj's team lost their momentum, and the window closed—Raj missed the entire opportunity. Raj painfully realized that waiting for perfect information has a much higher cost than making an informed decision under uncertainty. He learned that speed is a vital parameter in modern Business.
+                    </div>
+
+                    <h2 class="challenge-statement-text">
+                        Strategic Dilemma: What core leadership principle must Raj internalize from this project outcome to optimize his future management execution?
+                    </h2>
+                </div>
+
+                <!-- Lower isolated choice option pipeline container fields -->
+                <div class="choices-stack-pipeline" id="arena-options-container">
+                    <button class="choice-interaction-card" onclick="evaluateChoiceInput(true)">
+                        <strong>Speed Over Perfection:</strong> Recognize that a good, swift decision executed with momentum is vastly superior to a perfect decision made too late.
+                    </button>
+                    <button class="choice-interaction-card" onclick="evaluateChoiceInput(false)">
+                        <strong>Analysis Over Action:</strong> Prioritize structural risk mitigation by keeping operations on hold until 100% of data points are fully validated.
+                    </button>
+                </div>
+
+                <!-- Master Success Overlay Panel Sheet -->
+                <div class="stage-success-overlay" id="campaign-clear-panel">
+                    <span style="font-size: 4rem;">👑</span>
+                    <h2 class="success-heading-text">Core Concept Mastered!</h2>
+                    <p class="success-desc-text">
+                        Excellent choice. Waiting for absolute certainty leads to analysis paralysis. In competitive markets, maintaining team momentum and leveraging execution speed is an essential baseline operational advantage.
+                    </p>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Progress Tracking Status Lower Fixed Footer Row Bar -->
+        <div class="footer-bar">
+            <div class="score-tracker-badge">Case Status: <span id="progress-val">Analyzing Matrix</span></div>
+            <div class="instruction-tag">Evaluate the leadership scenario parameters and select the optimal management principle.</div>
+        </div>
+    </div>
+
+    <script>
+        function evaluateChoiceInput(isCorrectChoicePath) {
+            const scrollSandbox = document.getElementById("interactive-view-block");
+            const optionsContainer = document.getElementById("arena-options-container");
+            const clearPanel = document.getElementById("campaign-clear-panel");
+
+            if (isCorrectChoicePath) {
+                document.getElementById("progress-val").innerText = "Optimized";
+                document.getElementById("progress-val").style.color = "#27ae60";
+
+                scrollSandbox.style.display = "none";
+                optionsContainer.style.display = "none";
+                clearPanel.style.display = "flex";
+            } else {
+                // Instantly flash bounding card background soft red to report an alignment mismatch error
+                const windowBoard = document.getElementById("sandbox-container");
+                windowBoard.style.backgroundColor = "#faeae1";
+                setTimeout(() => windowBoard.style.backgroundColor = "#ffffff", 350);
+            }
+        }
+    </script>
+</body>
+</html>
