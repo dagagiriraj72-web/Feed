@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Measuring Decision Effectiveness - Interactive Dashboard</title>
+    <style>
+        /* BASE RESET & ANTI-COLLAPSE RESTRAINT ENGINE */
+        html, body {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #0f1d2a; /* Deep navy tone matching image_d5dc06.png */
+            font-family: 'Segoe UI', Arial, sans-serif;
+            overflow: hidden;
+        }
+
+        /* FIXED 16:9 VIEWPORT CANVAS RESTRICTION HULL
+           Prevents horizontal layout fractures, empty center space gaps, 
+           or lower margin text bleeding inside Storyline iframe bounds.
+        */
+        .slide-wrapper {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 96%;
+            height: 94%;
+            max-width: 1200px;
+            aspect-ratio: 16 / 9;
+            padding: 2.2rem 3rem;
+            background-color: #122232; /* Rich dark canvas backdrop finish */
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            box-sizing: border-box;
+            border-radius: 8px;
+        }
+
+        /* Top Branded Corporate Header Row */
+        .header-section {
+            border-bottom: 2px solid rgba(255, 255, 255, 0.08);
+            padding-bottom: 0.6rem;
+            margin-bottom: 1.2rem;
+            flex-shrink: 0;
+        }
+
+        .main-title {
+            font-size: 2.6rem;
+            color: #ffffff;
+            font-weight: 800;
+            margin: 0;
+            line-height: 1.1;
+        }
+
+        .sub-directive-row {
+            font-size: 1.1rem;
+            color: #718096; /* Soft gray-blue metric description subtext from image_d5dc06.png */
+            margin-top: 0.3rem;
+        }
+
+        /* LATERAL SPLIT WORKSPACE COCKPIT
+           Core Fix: Pulls individual columns into a vertical left-sidebar matrix 
+           so descriptions can expand fully without colliding horizontally.
+        */
+        .workspace-matrix {
+            display: grid;
+            grid-template-columns: 340px 1fr;
+            gap: 2.5rem;
+            flex-grow: 1;
+            min-height: 0; /* Dynamic height buffer safety guardrail */
+            align-items: stretch;
+        }
+
+        /* Left Column Sidebar: Interactive Metric Selector Navigation Stack */
+        .tabs-vertical-stack {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            justify-content: center;
+        }
+
+        .metric-nav-btn {
+            background-color: #1b3249; /* Distinct slate card base blue from image_d5dc06.png */
+            border: 2px solid transparent;
+            border-radius: 6px;
+            padding: 1.1rem 1.4rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            transition: all 0.25s cubic-bezier(0.165, 0.84, 0.44, 1);
+            text-align: left;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .metric-nav-btn:hover {
+            background-color: #233e5b;
+            transform: translateX(4px);
+        }
+
+        .btn-title-lbl {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: #ffffff;
+        }
+
+        .btn-action-arrow {
+            color: #4a5568;
+            font-weight: 800;
+            font-size: 1.1rem;
+            transition: color 0.2s ease, transform 0.2s ease;
+        }
+
+        /* Active Highlighting Matrix States */
+        .metric-nav-btn.active-tab {
+            background-color: #ffffff !important;
+            border-color: #2980b9; /* Crisp accent boundary from image_d55dc06.png */
+            box-shadow: 0 4px 15px rgba(41, 128, 185, 0.15);
+        }
+        .metric-nav-btn.active-tab .btn-title-lbl { color: #122232; }
+        .metric-nav-btn.active-tab .btn-action-arrow { 
+            color: #2980b9; 
+            transform: translateX(2px);
+        }
+
+        /* Right Column Dashboard: Content Reveal Presentation Card */
+        .unified-arena-card {
+            background-color: #1b3249; /* Styled layout match */
+            border-radius: 8px;
+            padding: 2.5rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            min-height: 0;
+            box-sizing: border-box;
+            box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.15);
+        }
+
+        /* Bounded vertical protection zone isolating textual metrics from frame limits */
+        .reveal-data-panel {
+            display: none;
+            flex-direction: column;
+            gap: 1.2rem;
+            max-height: 380px; /* Locked frame ceiling blocks lower text collisions */
+            overflow-y: auto;
+            padding-right: 0.5rem;
+        }
+
+        .reveal-data-panel.panel-visible {
+            display: flex;
+            animation: panelFadeIn 0.3s cubic-bezier(0.165, 0.84, 0.44, 1) forwards;
+        }
+
+        .reveal-data-panel::-webkit-scrollbar { width: 4px; }
+        .reveal-data-panel::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.12); border-radius: 2px; }
+
+        @keyframes panelFadeIn {
+            from { opacity: 0; transform: translateY(4px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .panel-header-badge {
+            font-size: 0.85rem;
+            font-weight: 800;
+            color: #718096;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+        }
+
+        .panel-heading-text {
+            font-size: 2.4rem;
+            font-weight: 800;
+            color: #ffffff;
+            margin: 0;
+        }
+
+        .panel-underline-accent {
+            width: 50px;
+            height: 3px;
+            background-color: #2980b9; /* Flat cyan-blue ribbon highlight row matching image_d5dc06.png */
+            border-radius: 2px;
+            margin-top: -0.4rem;
+        }
+
+        .panel-description-text {
+            font-size: 1.3rem;
+            color: #cbd5e1;
+            line-height: 1.6;
+            margin: 0;
+            font-weight: 500;
+        }
+
+        /* High contrast contextual target benchmark box derived from original footer panels */
+        .panel-target-box {
+            background-color: rgba(41, 128, 185, 0.12);
+            border: 1px solid rgba(41, 128, 185, 0.25);
+            padding: 1.2rem 1.6rem;
+            border-radius: 6px;
+            margin-top: 0.5rem;
+        }
+
+        .target-lbl-prefix {
+            font-size: 0.9rem;
+            font-weight: 800;
+            color: #2980b9; /* Distinct bright blue identifier text from image_d5dc06.png */
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            display: block;
+            margin-bottom: 0.2rem;
+        }
+
+        .target-value-text {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: #38bdf8; /* Soft blue focus metric target accent text */
+            margin: 0;
+        }
+
+        /* Bottom Fixed Structural Prompt Bar Strip Row */
+        .footer-bar {
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+            padding-top: 0.6rem;
+            margin-top: 1rem;
+            flex-shrink: 0;
+        }
+
+        .instruction-tag {
+            font-size: 0.88rem;
+            color: #718096;
+            font-style: italic;
+            text-align: left;
+            display: block;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="slide-wrapper">
+        <!-- Interactive Header Banner -->
+        <div class="header-section">
+            <h1 class="main-title">Measuring Decision Effectiveness</h1>
+            <div class="sub-directive-row">Key metrics to track your decisiveness</div>
+        </div>
+
+        <!-- Balanced Sidebar Matrix Workspace Area -->
+        <div class="workspace-matrix">
+            
+            <!-- Left Side Sidebar Menu Track -->
+            <div class="tabs-vertical-stack">
+                <button class="metric-nav-btn active-tab" id="tab-0" onclick="revealPerformanceMetric(0)">
+                    <span class="btn-title-lbl">Decision Velocity</span>
+                    <span class="btn-action-arrow">➔</span>
+                </button>
+                <button class="metric-nav-btn" id="tab-1" onclick="revealPerformanceMetric(1)">
+                    <span class="btn-title-lbl">Hit Rate</span>
+                    <span class="btn-action-arrow">➔</span>
+                </button>
+                <button class="metric-nav-btn" id="tab-2" onclick="revealPerformanceMetric(2)">
+                    <span class="btn-title-lbl">Escalation Ratio</span>
+                    <span class="btn-action-arrow">➔</span>
+                </button>
+                <button class="metric-nav-btn" id="tab-3" onclick="revealPerformanceMetric(3)">
+                    <span class="btn-title-lbl">Reversal Rate</span>
+                    <span class="btn-action-arrow">➔</span>
+                </button>
+            </div>
+
+            <!-- Right Side Dashboard: Content Reveal Presentation Card -->
+            <div class="unified-arena-card">
+                
+                <!-- Panel 01: Decision Velocity -->
+                <div class="reveal-data-panel panel-visible" id="view-panel-0">
+                    <span class="panel-header-badge">Performance Matrix 01</span>
+                    <h2 class="panel-heading-text">Decision Velocity</h2>
+                    <div class="panel-underline-accent"></div>
+                    <p class="panel-description-text">Time from problem identification to committed action.</p>
+                    <div class="panel-target-box">
+                        <span class="target-lbl-prefix">Target Threshold</span>
+                        <p class="target-value-text">&lt;48 hrs for reversible decisions</p>
+                    </div>
+                </div>
+
+                <!-- Panel 02: Hit Rate -->
+                <div class="reveal-data-panel" id="view-panel-1">
+                    <span class="panel-header-badge">Performance Matrix 02</span>
+                    <h2 class="panel-heading-text">Hit Rate</h2>
+                    <div class="panel-underline-accent"></div>
+                    <p class="panel-description-text">Percentage of decisions that achieve desired outcome.</p>
+                    <div class="panel-target-box">
+                        <span class="target-lbl-prefix">Target Threshold</span>
+                        <p class="target-value-text">65–75% is excellent</p>
+                    </div>
+                </div>
+
+                <!-- Panel 03: Escalation Ratio -->
+                <div class="reveal-data-panel" id="view-panel-2">
+                    <span class="panel-header-badge">Performance Matrix 03</span>
+                    <h2 class="panel-heading-text">Escalation Ratio</h2>
+                    <div class="panel-underline-accent"></div>
+                    <p class="panel-description-text">How often decisions get pushed up the chain.</p>
+                    <div class="panel-target-box">
+                        <span class="target-lbl-prefix">Target Threshold</span>
+                        <p class="target-value-text">&lt;15% of team decisions escalated</p>
+                    </div>
+                </div>
+
+                <!-- Panel 04: Reversal Rate -->
+                <div class="reveal-data-panel" id="view-panel-3">
+                    <span class="panel-header-badge">Performance Matrix 04</span>
+                    <h2 class="panel-heading-text">Reversal Rate</h2>
+                    <div class="panel-underline-accent"></div>
+                    <p class="panel-description-text">How often decisions need to be reversed or significantly changed.</p>
+                    <div class="panel-target-box">
+                        <span class="target-lbl-prefix">Target Threshold</span>
+                        <p class="target-value-text">&lt;10% for well-framed choices</p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Lower Instructional Prompt Strip -->
+        <div class="footer-bar">
+            <span class="instruction-tag">Select individual capability trackers along the left dashboard sidebar to evaluate corresponding alignment targets.</span>
+        </div>
+    </div>
+
+    <script>
+        let trackingActiveIdx = 0;
+
+        function revealPerformanceMetric(targetIdx) {
+            if (targetIdx === trackingActiveIdx) return;
+
+            // Clear highlight classes from preceding sidebar button elements
+            document.getElementById(`tab-${trackingActiveIdx}`).classList.remove("active-tab");
+            // Turn off visibility flags for the active info layout view panel
+            document.getElementById(`view-panel-${trackingActiveIdx}`).classList.remove("panel-visible");
+
+            // Re-route operational indexing pointers
+            trackingActiveIdx = targetIdx;
+
+            // Activate and illuminate newly selected parameters cleanly
+            document.getElementById(`tab-${trackingActiveIdx}`).classList.add("active-tab");
+            document.getElementById(`view-panel-${trackingActiveIdx}`).classList.add("panel-visible");
+        }
+    </script>
+</body>
+</html>
