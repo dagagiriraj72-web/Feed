@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Strategic Thinking Simulation Console</title>
+    <title>Strategic Thinking Simulator</title>
     <style>
         /* FORCE ROOT WINDOW CONTAINMENT TO MATCH 100% OF IFRAME BOUNDS */
         html, body {
@@ -16,9 +16,8 @@
             overflow: hidden;
         }
 
-        /* IMMERSIVE 16:9 VIEWPORT PRESTRAINT ENGINE
-           Locks dimensions safely at player bounds to eliminate lower text bleeding 
-           or footer tracker cutoff errors inside Storyline web objects.
+        /* STRICT 16:9 VIEWPORT PRESTRAINT HULL
+           Compact layout footprint fixes the severe vertical cutting shown in image_896366.png
         */
         .slide-wrapper {
             position: absolute;
@@ -27,77 +26,72 @@
             transform: translate(-50%, -50%);
             width: 96%;
             height: 94%;
-            max-width: 1200px;
+            max-width: 1150px;
             aspect-ratio: 16 / 9;
-            padding: 2.2rem 3rem;
+            padding: 1.2rem 2rem;
             background-color: #ffffff;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
             box-sizing: border-box;
             border-radius: 8px;
-            box-shadow: 0 4px 25px rgba(0, 0, 0, 0.05);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
         }
 
-        /* Top Branded Header Row Block */
+        /* Top Branded Header Row Block with Minimal Vertical Spacing */
         .header-section {
             border-bottom: 2px solid #e2e8f0;
-            padding-bottom: 0.6rem;
-            margin-bottom: 1.2rem;
+            padding-bottom: 0.4rem;
+            margin-bottom: 0.6rem;
             flex-shrink: 0;
         }
 
         .main-title {
-            font-size: 2.4rem;
-            color: #1e3a8a; /* Elegant corporate navy blue */
+            font-size: 2.1rem;
+            color: #1e3a8a;
             font-weight: 800;
             margin: 0;
             line-height: 1.1;
         }
 
-        /* LATERAL SPLIT WORKSPACE COCKPIT 
-           Core Fix: Pulls the 5 progression milestones into a left sidebar track 
-           to eliminate horizontal layout crowding and edge text truncation.
-        */
+        /* TWO-COLUMN CONFIGURATION FOR PERFECT FIT */
         .workspace-matrix {
             display: grid;
-            grid-template-columns: 280px 1fr;
-            gap: 2.5rem;
+            grid-template-columns: 240px 1fr;
+            gap: 1.5rem;
             flex-grow: 1;
-            min-height: 0; /* Dynamic height buffer safety guardrail */
-            align-items: stretch;
+            min-height: 0;
+            align-items: center;
         }
 
-        /* Left Side Sidebar Menu Track (Holds milestones securely) */
+        /* Compact Left Sidebar Track Container */
         .tabs-vertical-stack {
             display: flex;
             flex-direction: column;
-            gap: 10px;
-            justify-content: center;
+            gap: 8px;
         }
 
         .milestone-nav-btn {
             background-color: #f8fafc;
             border: 1px solid #e2e8f0;
             border-radius: 6px;
-            padding: 0.85rem 1.1rem;
-            cursor: pointer;
+            padding: 0.65rem 0.9rem;
             display: flex;
             align-items: center;
-            gap: 1rem;
-            transition: all 0.22s cubic-bezier(0.165, 0.84, 0.44, 1);
+            gap: 0.8rem;
             text-align: left;
             width: 100%;
             box-sizing: border-box;
+            cursor: pointer;
         }
 
         .btn-badge-circle {
-            width: 26px;
-            height: 26px;
+            width: 24px;
+            height: 24px;
             border-radius: 50%;
-            background-color: #cbd5e1; /* Pending grey color state */
+            background-color: #cbd5e1;
             color: #ffffff;
-            font-size: 0.85rem;
+            font-size: 0.8rem;
             font-weight: 700;
             display: flex;
             justify-content: center;
@@ -106,7 +100,7 @@
         }
 
         .btn-title-lbl {
-            font-size: 0.95rem;
+            font-size: 0.85rem;
             font-weight: 700;
             color: #64748b;
         }
@@ -115,12 +109,11 @@
         .milestone-nav-btn.active-tab {
             background-color: #1e3a8a !important;
             border-color: #1e3a8a;
-            box-shadow: 0 4px 12px rgba(26, 54, 93, 0.12);
+            box-shadow: 0 2px 8px rgba(26, 54, 93, 0.12);
         }
         .milestone-nav-btn.active-tab .btn-title-lbl { color: #ffffff; }
         .milestone-nav-btn.active-tab .btn-badge-circle { background-color: #ffffff; color: #1e3a8a; }
 
-        /* Mastered Level Node State Complete Modifiers */
         .milestone-nav-btn.mastered-tab {
             border-color: #2a9d8f !important;
             background-color: rgba(42, 157, 143, 0.05);
@@ -128,86 +121,69 @@
         .milestone-nav-btn.mastered-tab .btn-title-lbl { color: #2a9d8f; text-decoration: line-through; opacity: 0.7; }
         .milestone-nav-btn.mastered-tab .btn-badge-circle { background-color: #2a9d8f; color: #ffffff; }
 
-        /* Right Side Content Reveal Display Terminal Deck */
+        /* Right Display Terminal Deck Card */
         .unified-arena-card {
             background-color: #ffffff;
             border: 1px solid #e2e8f0;
-            border-radius: 12px;
-            padding: 2.2rem;
-            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.01);
+            border-radius: 8px;
+            padding: 1.2rem;
             display: flex;
             flex-direction: column;
-            justify-content: space-between;
-            min-height: 0;
+            justify-content: center;
+            height: 90%;
             box-sizing: border-box;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.01);
         }
-
-        /* Bounded vertical protection zone isolating text inputs from panel bounds */
-        .terminal-scroll-sandbox {
-            flex-grow: 1;
-            min-height: 0;
-            max-height: 380px; /* Locked frame ceiling shields footer tracker row from text overflows */
-            overflow-y: auto;
-            padding-right: 0.5rem;
-            display: flex;
-            flex-direction: column;
-            gap: 1rem;
-        }
-
-        .terminal-scroll-sandbox::-webkit-scrollbar { width: 4px; }
-        .terminal-scroll-sandbox::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 2px; }
 
         .arena-tag-heading {
-            font-size: 0.85rem;
+            font-size: 0.75rem;
             font-weight: 800;
-            color: #e67e22; /* Vibrant accent header color */
+            color: #e67e22;
             text-transform: uppercase;
             letter-spacing: 0.5px;
+            margin-bottom: 0.4rem;
         }
 
-        /* Case Narrative Profile Description Box */
+        /* Compact Case Context Text Boxes */
         .framework-criterion-box {
-            font-size: 1rem;
+            font-size: 0.9rem;
             font-weight: 600;
             color: #4a5568;
             background-color: #f8fafc;
-            padding: 1rem 1.4rem;
-            border-left: 5px solid #1e3a8a;
+            padding: 0.6rem 1rem;
+            border-left: 4px solid #1e3a8a;
             border-radius: 4px;
-            line-height: 1.5;
+            line-height: 1.4;
+            margin-bottom: 0.6rem;
         }
 
         .challenge-statement-text {
-            font-size: 1.22rem;
+            font-size: 1.05rem;
             font-weight: 700;
             color: #1a202c;
-            line-height: 1.42;
-            margin: 0;
+            line-height: 1.35;
+            margin: 0 0 0.8rem 0;
         }
 
-        /* Stacking Interactive Choice Options Fields Pipeline */
+        /* Dense Options Layout Pipeline Wrapper */
         .choices-stack-pipeline {
             display: flex;
             flex-direction: column;
-            gap: 0.6rem;
-            margin-top: auto;
-            padding-top: 1rem;
-            flex-shrink: 0;
+            gap: 0.5rem;
             width: 100%;
-            box-sizing: border-box;
         }
 
         .choice-interaction-card {
             background-color: #ffffff;
-            border: 2px solid #e2e8f0;
-            padding: 1.1rem 1.4rem;
-            border-radius: 8px;
-            font-size: 0.95rem;
+            border: 1px solid #e2e8f0;
+            padding: 0.75rem 1.1rem;
+            border-radius: 6px;
+            font-size: 0.9rem;
             font-weight: 600;
             color: #334155;
             cursor: pointer;
             text-align: left;
-            line-height: 1.45;
+            line-height: 1.35;
             transition: all 0.2s ease;
             width: 100%;
             box-sizing: border-box;
@@ -217,23 +193,20 @@
             background-color: #fffbf7;
             border-color: #1e3a8a;
             color: #1e3a8a;
-            transform: translateX(4px);
         }
 
-        /* Intermediate Success Feedback Overlay Sheet Layer */
+        /* Intermediate Success Feedback Overlay Sheet */
         .stage-success-overlay {
             display: none;
             flex-direction: column;
             align-items: center;
             justify-content: center;
             text-align: center;
-            width: 100%;
-            height: 100%;
-            gap: 0.8rem;
+            gap: 0.5rem;
         }
 
         .success-heading-text {
-            font-size: 1.5rem;
+            font-size: 1.3rem;
             font-weight: 800;
             color: #2a9d8f;
             margin: 0;
@@ -241,12 +214,32 @@
 
         .success-desc-text {
             color: #4a5568;
-            font-size: 1.05rem;
+            font-size: 0.95rem;
             font-weight: 600;
-            max-width: 550px;
-            line-height: 1.5;
+            max-width: 500px;
+            line-height: 1.4;
             margin: 0;
         }
+
+        /* FINAL COMPLETE SUMMARY CARDS GRID OVERLAY (NO SCROLLING REQUIRED) */
+        .summary-dashboard-layout {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.6rem;
+            width: 100%;
+            text-align: left;
+            margin-top: 0.4rem;
+        }
+
+        .summary-box {
+            padding: 0.6rem 0.9rem;
+            border-radius: 6px;
+            background-color: #f8fafc;
+            border: 1px solid #e2e8f0;
+            box-sizing: border-box;
+        }
+        .summary-box h4 { margin: 0 0 0.2rem 0; font-size: 0.95rem; font-weight: 800; color: #1e3a8a; }
+        .summary-box p { margin: 0; font-size: 0.8rem; line-height: 1.3; color: #4a5568; font-weight: 500; }
 
         /* Bottom Fixed Corporate Metrics Row Status Bar */
         .footer-bar {
@@ -255,23 +248,21 @@
             align-items: center;
             flex-shrink: 0;
             border-top: 1px solid #e2e8f0;
-            padding-top: 0.6rem;
-            margin-top: 0.5rem;
+            padding-top: 0.4rem;
+            margin-top: 0.4rem;
         }
 
         .score-tracker-badge {
-            font-size: 0.85rem;
+            font-size: 0.8rem;
             font-weight: 700;
             color: #ffffff;
             background-color: #1e3a8a;
-            padding: 0.25rem 0.8rem;
+            padding: 0.2rem 0.6rem;
             border-radius: 20px;
-            font-variant-numeric: tabular-nums;
-            box-shadow: 0 4px 10px rgba(30, 58, 138, 0.15);
         }
 
         .instruction-tag {
-            font-size: 0.85rem;
+            font-size: 0.8rem;
             color: #a0aec0;
             font-style: italic;
         }
@@ -280,12 +271,15 @@
 <body>
 
     <div class="slide-wrapper">
+        <!-- Main Header Banner Title -->
         <div class="header-section">
             <h1 class="main-title">Strategic Thinking Simulator</h1>
         </div>
 
+        <!-- Symmetrical Non-Overlapping Workspace Lateral Matrix -->
         <div class="workspace-matrix">
             
+            <!-- Left Side Sidebar Menu Track (The 5 Milestones) -->
             <div class="tabs-vertical-stack">
                 <button class="milestone-nav-btn active-tab" id="tab-0" onclick="switchMilestoneTab(0)">
                     <div class="btn-badge-circle" id="badge-0">1</div>
@@ -303,41 +297,65 @@
                     <span class="btn-badge-circle" id="badge-3">4</span>
                     <span class="btn-title-lbl">Resource Pivot</span>
                 </button>
-                <button class="milestone-nav-btn" id="tab-4" onclick="switchMilestoneTab(4)">
+                <button class="milestone-nav-btn" id="tab-4" onclick="switchSimulationTab(4)">
                     <span class="btn-badge-circle" id="badge-4">5</span>
                     <span class="btn-title-lbl">The Alignment</span>
                 </button>
             </div>
 
+            <!-- Right Side Dashboard Display Card Terminal Workspace -->
             <div class="unified-arena-card" id="sandbox-container">
                 
-                <div class="terminal-scroll-sandbox" id="interactive-view-block">
+                <!-- Main Interaction Block Area Container -->
+                <div id="interactive-view-block" style="display: flex; flex-direction: column;">
                     <div class="arena-tag-heading" id="arena-stage-title">Strategic Case Profile • Scenario 1 of 5</div>
-                    <div class="framework-criterion-box" id="arena-brief-text">Loading baseline story matrix...</div>
-                    <h2 class="challenge-statement-text" id="arena-challenge-text">Loading question variables...</h2>
+                    <div class="framework-criterion-box" id="arena-brief-text">Loading baseline scenario data...</div>
+                    <h2 class="challenge-statement-text" id="arena-challenge-text">Loading problem question layers...</h2>
+                    
+                    <div class="choices-stack-pipeline" id="arena-options-container">
+                        <!-- Options generated dynamically -->
+                    </div>
                 </div>
 
-                <div class="choices-stack-pipeline" id="arena-options-container">
-                    </div>
-
+                <!-- Milestone Validated Intermediate Feedback Overlay Panel -->
                 <div class="stage-success-overlay" id="victory-overlay-panel">
-                    <span style="font-size: 3.5rem;">🎯⚡</span>
+                    <span style="font-size: 2.2rem; line-height: 1;">➔</span>
                     <p class="success-heading-text">Strategic Goal Aligned!</p>
                     <p class="success-desc-text" id="victory-desc-text">Loading feedback details...</p>
-                    <button class="choice-interaction-card" style="justify-content: center; max-width: 220px; margin-top: 10px; border-color: #1e3a8a; color: #1e3a8a;" onclick="advanceToNextMilestone()">Next Milestone</button>
+                    <button class="choice-interaction-card" style="text-align: center; max-width: 200px; margin-top: 0.4rem; border-color: #1e3a8a; color: #1e3a8a; padding: 0.5rem;" onclick="advanceToNextMilestone()">Next Milestone</button>
                 </div>
 
+                <!-- Grand Final Simulation Complete Summary Framework Overlays -->
                 <div class="stage-success-overlay" id="campaign-clear-panel">
-                    <span style="font-size: 4rem;">👑</span>
-                    <h2 class="success-heading-text" style="color: #2a9d8f;">Decisive Mastery Achieved!</h2>
-                    <p class="success-desc-text">
-                        Congratulations! You have successfully guided Rahul through his analytical pivot loops. The enterprise long-term vision parameters, competitive edge tracking arrays, and strategic positioning frameworks are now fully synchronized.
+                    <h3 class="success-heading-text" style="color: #1e3a8a; font-size: 1.4rem; margin: 0 0 0.1rem 0;">Pillars of Strategic Thinking Executive Summary</h3>
+                    <p class="success-desc-text" style="font-size: 0.85rem; max-width: 650px;">
+                        Strategic thinking centers on moving beyond day-to-day tactical turbulence to purposefully establish a long-term competitive edge.
                     </p>
+                    
+                    <div class="summary-dashboard-layout">
+                        <div class="summary-box">
+                            <h4>1. Macro Vision &amp; Framing</h4>
+                            <p>Intentionally pausing reactive loops to audit the broader industry market trajectory and ask larger questions.</p>
+                        </div>
+                        <div class="summary-box">
+                            <h4>2. Multi-Domain Synthesis</h4>
+                            <p>Analyzing customer feedback data, competitor market movements, and upcoming macro-trends to reveal unseen connections.</p>
+                        </div>
+                        <div class="summary-box">
+                            <h4>3. Resource Allocation Strategy</h4>
+                            <p>Decisive realignments that shift critical personnel, budgets, and operational bandwidth directly toward highest-growth vectors.</p>
+                        </div>
+                        <div class="summary-box">
+                            <h4>4. Purpose-Driven Alignment</h4>
+                            <p>Unifying the cross-functional team around a definitive long-term roadmap to ensure all execution operates with clear corporate intent.</p>
+                        </div>
+                    </div>
                 </div>
 
             </div>
         </div>
 
+        <!-- Progress Tracking Status Lower Fixed Footer Row Bar -->
         <div class="footer-bar">
             <div class="score-tracker-badge">Milestones Balanced: <span id="progress-val">0</span> / 5</div>
             <div class="instruction-tag">Isolate tactical parameters across the left sidebar tracker to evaluate alignment choices.</div>
@@ -345,7 +363,6 @@
     </div>
 
     <script>
-        // High fidelity map relating image content verbatim to tailored strategic scenarios
         const strategicSimulationMatrix = [
             {
                 tag: "Strategic Case Profile • Scenario 1 of 5",
@@ -404,42 +421,24 @@
         let masteredStateMap = { 0: false, 1: false, 2: false, 3: false, 4: false };
 
         function loadSimulationStage() {
-            const scrollSandbox = document.getElementById("interactive-view-block");
+            document.getElementById("interactive-view-block").style.display = "flex";
+            document.getElementById("victory-overlay-panel").style.display = "none";
+            document.getElementById("campaign-clear-panel").style.display = "none";
+
+            const currentData = strategicSimulationMatrix[activeStageIdx];
+            document.getElementById("arena-stage-title").innerText = currentData.tag;
+            document.getElementById("arena-brief-text").innerText = currentData.brief;
+            document.getElementById("arena-challenge-text").innerText = currentData.case;
+
             const optionsContainer = document.getElementById("arena-options-container");
-            const victoryPanel = document.getElementById("victory-overlay-panel");
-            const clearPanel = document.getElementById("campaign-clear-panel");
-            
-            if (masteredStateMap[activeStageIdx]) {
-                scrollSandbox.style.display = "none";
-                optionsContainer.style.display = "none";
-                victoryPanel.style.display = "flex";
-                clearPanel.style.display = "none";
-                document.getElementById("victory-desc-text").innerText = strategicSimulationMatrix[activeStageIdx].feedback;
-                return;
-            }
-
-            scrollSandbox.style.display = "flex";
-            optionsContainer.style.display = "flex";
-            victoryPanel.style.display = "none";
-            clearPanel.style.display = "none";
-
-            const data = strategicSimulationMatrix[activeStageIdx];
-            document.getElementById("arena-stage-title").innerText = data.tag;
-            document.getElementById("arena-brief-text").innerText = data.brief;
-            document.getElementById("arena-challenge-text").innerText = data.case;
-
-            // Generate option action cards inside the container stack cleanly
             optionsContainer.innerHTML = "";
-            data.choices.forEach(choice => {
+            currentData.choices.forEach(choice => {
                 const btn = document.createElement("button");
                 btn.className = "choice-interaction-card";
                 btn.innerText = choice.text;
                 btn.onclick = () => evaluateChoiceInput(choice.correct);
                 optionsContainer.appendChild(btn);
             });
-
-            // Auto reset scroll box to top boundary when switching content fields
-            scrollSandbox.scrollTop = 0;
         }
 
         function switchMilestoneTab(targetIdx) {
@@ -452,7 +451,6 @@
             const totalClearsCount = Object.values(masteredStateMap).filter(Boolean).length;
             if (totalClearsCount === 5) {
                 document.getElementById("interactive-view-block").style.display = "none";
-                document.getElementById("arena-options-container").style.display = "none";
                 document.getElementById("victory-overlay-panel").style.display = "none";
                 document.getElementById("campaign-clear-panel").style.display = "flex";
                 return;
@@ -467,13 +465,10 @@
                 solvedMilestonesCount = Object.values(masteredStateMap).filter(Boolean).length;
                 document.getElementById("progress-val").innerText = solvedMilestonesCount;
 
-                // Adjust sidebar indicator layout nodes completed states
-                const activeTab = document.getElementById(`tab-${activeStageIdx}`);
-                activeTab.classList.add("mastered-tab");
+                document.getElementById(`tab-${activeStageIdx}`).classList.add("mastered-tab");
                 document.getElementById(`badge-${activeStageIdx}`).innerHTML = "✓";
 
                 document.getElementById("interactive-view-block").style.display = "none";
-                document.getElementById("arena-options-container").style.display = "none";
 
                 if (solvedMilestonesCount === 5) {
                     document.getElementById("campaign-clear-panel").style.display = "flex";
@@ -482,7 +477,6 @@
                     document.getElementById("victory-overlay-panel").style.display = "flex";
                 }
             } else {
-                // Flash bounding card background soft red to report a tactical mismatch
                 const windowBoard = document.getElementById("sandbox-container");
                 windowBoard.style.backgroundColor = "#faeae1";
                 setTimeout(() => windowBoard.style.backgroundColor = "#ffffff", 350);
@@ -498,7 +492,6 @@
             }
         }
 
-        // Initialize setup on run load configurations natively
         loadSimulationStage();
     </script>
 </body>
