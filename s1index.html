@@ -254,3 +254,252 @@
             justify-content: space-between;
             align-items: center;
             flex-shrink: 0;
+            border-top: 1px solid #e2e8f0;
+            padding-top: 0.6rem;
+            margin-top: 0.5rem;
+        }
+
+        .score-tracker-badge {
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: #ffffff;
+            background-color: #1e3a8a;
+            padding: 0.25rem 0.8rem;
+            border-radius: 20px;
+            font-variant-numeric: tabular-nums;
+            box-shadow: 0 4px 10px rgba(30, 58, 138, 0.15);
+        }
+
+        .instruction-tag {
+            font-size: 0.85rem;
+            color: #a0aec0;
+            font-style: italic;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="slide-wrapper">
+        <div class="header-section">
+            <h1 class="main-title">Strategic Thinking Simulator</h1>
+        </div>
+
+        <div class="workspace-matrix">
+            
+            <div class="tabs-vertical-stack">
+                <button class="milestone-nav-btn active-tab" id="tab-0" onclick="switchMilestoneTab(0)">
+                    <div class="btn-badge-circle" id="badge-0">1</div>
+                    <span class="btn-title-lbl">The Pause</span>
+                </button>
+                <button class="milestone-nav-btn" id="tab-1" onclick="switchMilestoneTab(1)">
+                    <div class="btn-badge-circle" id="badge-1">2</div>
+                    <span class="btn-title-lbl">Data Synthesis</span>
+                </button>
+                <button class="milestone-nav-btn" id="tab-2" onclick="switchMilestoneTab(2)">
+                    <span class="btn-badge-circle" id="badge-2">3</span>
+                    <span class="btn-title-lbl">The Insight</span>
+                </button>
+                <button class="milestone-nav-btn" id="tab-3" onclick="switchMilestoneTab(3)">
+                    <span class="btn-badge-circle" id="badge-3">4</span>
+                    <span class="btn-title-lbl">Resource Pivot</span>
+                </button>
+                <button class="milestone-nav-btn" id="tab-4" onclick="switchMilestoneTab(4)">
+                    <span class="btn-badge-circle" id="badge-4">5</span>
+                    <span class="btn-title-lbl">The Alignment</span>
+                </button>
+            </div>
+
+            <div class="unified-arena-card" id="sandbox-container">
+                
+                <div class="terminal-scroll-sandbox" id="interactive-view-block">
+                    <div class="arena-tag-heading" id="arena-stage-title">Strategic Case Profile • Scenario 1 of 5</div>
+                    <div class="framework-criterion-box" id="arena-brief-text">Loading baseline story matrix...</div>
+                    <h2 class="challenge-statement-text" id="arena-challenge-text">Loading question variables...</h2>
+                </div>
+
+                <div class="choices-stack-pipeline" id="arena-options-container">
+                    </div>
+
+                <div class="stage-success-overlay" id="victory-overlay-panel">
+                    <span style="font-size: 3.5rem;">🎯⚡</span>
+                    <p class="success-heading-text">Strategic Goal Aligned!</p>
+                    <p class="success-desc-text" id="victory-desc-text">Loading feedback details...</p>
+                    <button class="choice-interaction-card" style="justify-content: center; max-width: 220px; margin-top: 10px; border-color: #1e3a8a; color: #1e3a8a;" onclick="advanceToNextMilestone()">Next Milestone</button>
+                </div>
+
+                <div class="stage-success-overlay" id="campaign-clear-panel">
+                    <span style="font-size: 4rem;">👑</span>
+                    <h2 class="success-heading-text" style="color: #2a9d8f;">Decisive Mastery Achieved!</h2>
+                    <p class="success-desc-text">
+                        Congratulations! You have successfully guided Rahul through his analytical pivot loops. The enterprise long-term vision parameters, competitive edge tracking arrays, and strategic positioning frameworks are now fully synchronized.
+                    </p>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="footer-bar">
+            <div class="score-tracker-badge">Milestones Balanced: <span id="progress-val">0</span> / 5</div>
+            <div class="instruction-tag">Isolate tactical parameters across the left sidebar tracker to evaluate alignment choices.</div>
+        </div>
+    </div>
+
+    <script>
+        // High fidelity map relating image content verbatim to tailored strategic scenarios
+        const strategicSimulationMatrix = [
+            {
+                tag: "Strategic Case Profile • Scenario 1 of 5",
+                brief: "Rahul, a team leader, noticed sales were steadily declining. While others focused on immediate fire-fighting and reactive tactical problems, he deliberately paused the project line.",
+                case: "Dilemma: What core question must Rahul map to re-orient the brand value trajectory safely?",
+                choices: [
+                    { text: "He asks the bigger question: 'Where is the market heading over the long-term?'", correct: true },
+                    { text: "He asks the reactive question: 'How can we increase the active daily cold-calling parameters by 10% tomorrow?'", correct: false }
+                ],
+                feedback: "Correct! Strategic thinkers intentionally decouple themselves from reactive chaos to analyze overarching trajectories."
+            },
+            {
+                tag: "Strategic Case Profile • Scenario 2 of 5",
+                brief: "Instead of rushing blindly into immediate tactical actions or short-term promotions, Rahul studies customer feedback metrics, industry macro-trends, and competitor positioning moves.",
+                case: "Dilemma: Which coordinate domain represents the primary anchor of an objective strategy review loop?",
+                choices: [
+                    { text: "Relying on legacy assumptions and baseline internal manufacturing quotas to guide output models.", correct: false },
+                    { text: "Looking beyond today's localized challenges to actively search for future macro opportunities.", correct: true }
+                ],
+                feedback: "Correct! Comprehensive data synthesis across user, macro-trend, and competitor fields reveals invisible market shifts."
+            },
+            {
+                tag: "Strategic Case Profile • Scenario 3 of 5",
+                brief: "Rahul's thorough data synthesis and analysis reveal an emerging, unserved customer segment that competitors have overlooked because they are caught in short-term thinking frameworks.",
+                case: "Dilemma: How should Rahul frame this specific discovery pattern to maximize corporate advantage?",
+                choices: [
+                    { text: "Classify the pattern as an actionable strategic insights window and formulate an alternative growth strategy.", correct: true },
+                    { text: "Ignore the data anomaly to preserve current product assortments and defend legacy market boundaries.", correct: false }
+                ],
+                feedback: "Correct. True strategic thinking turns newly identified customer segment parameters into targeted growth opportunities."
+            },
+            {
+                tag: "Strategic Case Profile • Scenario 4 of 5",
+                brief: "Now that the emerging customer segment window is explicitly verified, Rahul shifts key operational resources toward this newly uncovered growth opportunity.",
+                case: "Dilemma: What balancing configuration must govern this physical deployment of resource pools?",
+                choices: [
+                    { text: "Keep capital completely tied up in older, stagnant product tracks to avoid admitting the prior line decline variances.", correct: false },
+                    { text: "Reallocate operational capacity, personnel, and marketing pools explicitly to support the new long-term focus area.", correct: true }
+                ],
+                feedback: "Correct! Strategy is defined by where you put your resources. True change requires moving capacity away from declining lines."
+            },
+            {
+                tag: "Strategic Case Profile • Scenario 5 of 5",
+                brief: "Within a few short months, sales begin to grow steadily and the business gains a durable competitive edge. Rahul's success came entirely from strategic thinking.",
+                case: "Dilemma: What final leadership standard must Rahul solidify to sustain this competitive advantage?",
+                choices: [
+                    { text: "Align the entire team around a clear long-term vision, ensuring everyone acts with shared intent and distinct purpose.", correct: true },
+                    { text: "Keep tactical data signals isolated within management circles to limit ground-floor execution changes.", correct: false }
+                ],
+                feedback: "Perfect! Exceptional leaders don't just find insights—they align the entire team around a clear long-term vision so everyone acts with intent."
+            }
+        ];
+
+        let activeStageIdx = 0;
+        let solvedMilestonesCount = 0;
+        let masteredStateMap = { 0: false, 1: false, 2: false, 3: false, 4: false };
+
+        function loadSimulationStage() {
+            const scrollSandbox = document.getElementById("interactive-view-block");
+            const optionsContainer = document.getElementById("arena-options-container");
+            const victoryPanel = document.getElementById("victory-overlay-panel");
+            const clearPanel = document.getElementById("campaign-clear-panel");
+            
+            if (masteredStateMap[activeStageIdx]) {
+                scrollSandbox.style.display = "none";
+                optionsContainer.style.display = "none";
+                victoryPanel.style.display = "flex";
+                clearPanel.style.display = "none";
+                document.getElementById("victory-desc-text").innerText = strategicSimulationMatrix[activeStageIdx].feedback;
+                return;
+            }
+
+            scrollSandbox.style.display = "flex";
+            optionsContainer.style.display = "flex";
+            victoryPanel.style.display = "none";
+            clearPanel.style.display = "none";
+
+            const data = strategicSimulationMatrix[activeStageIdx];
+            document.getElementById("arena-stage-title").innerText = data.tag;
+            document.getElementById("arena-brief-text").innerText = data.brief;
+            document.getElementById("arena-challenge-text").innerText = data.case;
+
+            // Generate option action cards inside the container stack cleanly
+            optionsContainer.innerHTML = "";
+            data.choices.forEach(choice => {
+                const btn = document.createElement("button");
+                btn.className = "choice-interaction-card";
+                btn.innerText = choice.text;
+                btn.onclick = () => evaluateChoiceInput(choice.correct);
+                optionsContainer.appendChild(btn);
+            });
+
+            // Auto reset scroll box to top boundary when switching content fields
+            scrollSandbox.scrollTop = 0;
+        }
+
+        function switchMilestoneTab(targetIdx) {
+            if (targetIdx === activeStageIdx) return;
+
+            document.getElementById(`tab-${activeStageIdx}`).classList.remove("active-tab");
+            activeStageIdx = targetIdx;
+            document.getElementById(`tab-${activeStageIdx}`).classList.add("active-tab");
+
+            const totalClearsCount = Object.values(masteredStateMap).filter(Boolean).length;
+            if (totalClearsCount === 5) {
+                document.getElementById("interactive-view-block").style.display = "none";
+                document.getElementById("arena-options-container").style.display = "none";
+                document.getElementById("victory-overlay-panel").style.display = "none";
+                document.getElementById("campaign-clear-panel").style.display = "flex";
+                return;
+            }
+
+            loadSimulationStage();
+        }
+
+        function evaluateChoiceInput(isCorrectChoicePath) {
+            if (isCorrectChoicePath) {
+                masteredStateMap[activeStageIdx] = true;
+                solvedMilestonesCount = Object.values(masteredStateMap).filter(Boolean).length;
+                document.getElementById("progress-val").innerText = solvedMilestonesCount;
+
+                // Adjust sidebar indicator layout nodes completed states
+                const activeTab = document.getElementById(`tab-${activeStageIdx}`);
+                activeTab.classList.add("mastered-tab");
+                document.getElementById(`badge-${activeStageIdx}`).innerHTML = "✓";
+
+                document.getElementById("interactive-view-block").style.display = "none";
+                document.getElementById("arena-options-container").style.display = "none";
+
+                if (solvedMilestonesCount === 5) {
+                    document.getElementById("campaign-clear-panel").style.display = "flex";
+                } else {
+                    document.getElementById("victory-desc-text").innerText = strategicSimulationMatrix[activeStageIdx].feedback;
+                    document.getElementById("victory-overlay-panel").style.display = "flex";
+                }
+            } else {
+                // Flash bounding card background soft red to report a tactical mismatch
+                const windowBoard = document.getElementById("sandbox-container");
+                windowBoard.style.backgroundColor = "#faeae1";
+                setTimeout(() => windowBoard.style.backgroundColor = "#ffffff", 350);
+            }
+        }
+
+        function advanceToNextMilestone() {
+            if (activeStageIdx < 4) {
+                document.getElementById(`tab-${activeStageIdx}`).classList.remove("active-tab");
+                activeStageIdx++;
+                document.getElementById(`tab-${activeStageIdx}`).classList.add("active-tab");
+                loadSimulationStage();
+            }
+        }
+
+        // Initialize setup on run load configurations natively
+        loadSimulationStage();
+    </script>
+</body>
+</html>
