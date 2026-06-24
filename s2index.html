@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Why Strategic Thinking Matters - Interactive Console</title>
+    <style>
+        /* BASE RESET & ANTI-COLLAPSE RESTRAINT ENGINE */
+        html, body {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #f8fafc;
+            font-family: 'Segoe UI', Arial, sans-serif;
+            overflow: hidden;
+        }
+
+        /* FIXED 16:9 VIEWPORT CANVAS RESTRICTION HULL
+           Locks slide bounds to completely eliminate lower-margin bleeding,
+           overlapping cards, or text cutoff inside nested Storyline iframes.
+        */
+        .slide-wrapper {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 96%;
+            height: 94%;
+            max-width: 1200px;
+            aspect-ratio: 16 / 9;
+            padding: 2.2rem 3rem;
+            background-color: #ffffff;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            box-sizing: border-box;
+            border-radius: 8px;
+            box-shadow: 0 4px 25px rgba(0, 0, 0, 0.04);
+        }
+
+        /* Slide Top Header Section Row */
+        .header-section {
+            border-bottom: 2px solid #e2e8f0;
+            padding-bottom: 0.6rem;
+            margin-bottom: 1.2rem;
+            flex-shrink: 0;
+        }
+
+        .main-title {
+            font-size: 2.6rem;
+            color: #1e1b4b; /* Deep premium navy heading tone */
+            font-weight: 800;
+            margin: 0;
+            line-height: 1.1;
+        }
+
+        /* LATERAL SPLIT WORKSPACE COCKPIT 
+           Core Fix: Pulls quantitative data columns into a vertical left-sidebar matrix 
+           so associated bullet items expand naturally with zero horizontal squeezing.
+        */
+        .workspace-matrix {
+            display: grid;
+            grid-template-columns: 320px 1fr;
+            gap: 2.5rem;
+            flex-grow: 1;
+            min-height: 0; /* Strict anti-collapse vertical barrier guardrail */
+            align-items: stretch;
+        }
+
+        /* Left Column Sidebar: Metric Selector Navigation Stack */
+        .tabs-vertical-stack {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            justify-content: center;
+        }
+
+        .metric-nav-btn {
+            background-color: #fdfdfd;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 1rem 1.4rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            transition: all 0.25s cubic-bezier(0.165, 0.84, 0.44, 1);
+            width: 100%;
+            box-sizing: border-box;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.01);
+        }
+
+        .metric-nav-btn:hover {
+            background-color: #f8fafc;
+            transform: translateX(4px);
+        }
+
+        .btn-metric-text {
+            font-size: 2.2rem;
+            font-weight: 800;
+            line-height: 1;
+        }
+        
+        /* Exact color values pulled directly from source visual references */
+        .color-purple { color: #8b5cf6; }
+        .color-blue { color: #3b82f6; }
+        .color-coral { color: #ff6b6b; }
+
+        .btn-label-text {
+            font-size: 0.95rem;
+            font-weight: 700;
+            color: #64748b;
+            text-align: right;
+            line-height: 1.2;
+            max-width: 140px;
+        }
+
+        /* Active Selected State Card Highlights */
+        .metric-nav-btn.active-tab {
+            background-color: #ffffff !important;
+            box-shadow: 0 4px 15px rgba(30, 27, 75, 0.08);
+            transform: translateX(6px);
+        }
+        .metric-nav-btn.active-tab#tab-0 { border-color: #8b5cf6; border-left: 5px solid #8b5cf6; }
+        .metric-nav-btn.active-tab#tab-1 { border-color: #3b82f6; border-left: 5px solid #3b82f6; }
+        .metric-nav-btn.active-tab#tab-2 { border-color: #ff6b6b; border-left: 5px solid #ff6b6b; }
+
+        /* Right Column Dashboard: Content Reveal Presentation Arena */
+        .unified-arena-card {
+            background-color: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 2.2rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            min-height: 0;
+            box-sizing: border-box;
+            box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.01);
+        }
+
+        /* Bounded vertical protection scroll-sandbox isolating textual definitions */
+        .reveal-data-panel {
+            display: none;
+            flex-direction: column;
+            gap: 1.2rem;
+            max-height: 380px; /* Secure framing ceiling shields footer from overflows */
+            overflow-y: auto;
+            padding-right: 0.5rem;
+        }
+
+        .reveal-data-panel.panel-visible {
+            display: flex;
+            animation: panelFadeIn 0.3s cubic-bezier(0.165, 0.84, 0.44, 1) forwards;
+        }
+
+        .reveal-data-panel::-webkit-scrollbar { width: 4px; }
+        .reveal-data-panel::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 2px; }
+
+        @keyframes panelFadeIn {
+            from { opacity: 0; transform: translateY(4px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .panel-header-badge {
+            font-size: 0.85rem;
+            font-weight: 800;
+            color: #64748b;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+        }
+
+        .panel-heading-text {
+            font-size: 2.4rem;
+            font-weight: 800;
+            color: #1e1b4b;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .panel-description-text {
+            font-size: 1.3rem;
+            color: #334155;
+            line-height: 1.5;
+            margin: 0;
+            font-weight: 500;
+        }
+
+        /* Strategic Rule/Benefit Framework Content Box */
+        .framework-criterion-box {
+            background-color: #ffffff;
+            border: 1px solid #e2e8f0;
+            padding: 1.2rem 1.6rem;
+            border-radius: 6px;
+            margin-top: 0.4rem;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.01);
+        }
+
+        .framework-lbl-prefix {
+            font-size: 0.85rem;
+            font-weight: 800;
+            color: #4f46e5;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            display: block;
+            margin-bottom: 0.4rem;
+        }
+
+        .benefit-nodes-stack {
+            display: flex;
+            flex-direction: column;
+            gap: 0.6rem;
+            margin: 0;
+            padding: 0;
+            list-style: none;
+        }
+
+        .benefit-item {
+            font-size: 1.05rem;
+            font-weight: 600;
+            color: #475569;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .benefit-dot-icon {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background-color: #4f46e5;
+            flex-shrink: 0;
+        }
+
+        /* Bottom Fixed Structural Prompt Bar Strip Row */
+        .footer-bar {
+            border-top: 1px solid #e2e8f0;
+            padding-top: 0.6rem;
+            margin-top: 1rem;
+            flex-shrink: 0;
+        }
+
+        .instruction-tag {
+            font-size: 0.88rem;
+            color: #94a3b8;
+            font-style: italic;
+            text-align: left;
+            display: block;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="slide-wrapper">
+        <div class="header-section">
+            <h1 class="main-title">Why Strategic Thinking Matters</h1>
+        </div>
+
+        <div class="workspace-matrix">
+            
+            <div class="tabs-vertical-stack">
+                <button class="metric-nav-btn active-tab" id="tab-0" onclick="revealStrategicInsight(0)">
+                    <span class="btn-metric-text color-purple">3.5x</span>
+                    <span class="btn-label-text">Market Leadership Outperformance</span>
+                </button>
+                <button class="metric-nav-btn" id="tab-1" onclick="revealStrategicInsight(1)">
+                    <span class="btn-metric-text color-blue">67%</span>
+                    <span class="btn-label-text">Initiative Attrition & Failure Risk</span>
+                </button>
+                <button class="metric-nav-btn" id="tab-2" onclick="revealStrategicInsight(2)">
+                    <span class="btn-metric-text color-coral">82%</span>
+                    <span class="btn-label-text">Executive Skill Demand</span>
+                </button>
+            </div>
+
+            <div class="unified-arena-card">
+                
+                <div class="reveal-data-panel panel-visible" id="view-panel-0">
+                    <span class="panel-header-badge">Strategic Value Driver 01</span>
+                    <h2 class="panel-heading-text"><span class="color-purple">3.5x</span> Competitive Velocity</h2>
+                    <p class="panel-description-text">Organizations utilizing explicit strategic planning metrics are more likely to outperform industry peers significantly.</p>
+                    <div class="framework-criterion-box">
+                        <span class="framework-lbl-prefix">How Strategic Thinking Helps You:</span>
+                        <ul class="benefit-nodes-stack">
+                            <li class="benefit-item"><span class="benefit-dot-icon"></span>Prioritize effectively amid competing market demands.</li>
+                            <li class="benefit-item"><span class="benefit-dot-icon"></span>Make better, higher-margin resource allocation decisions.</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="reveal-data-panel" id="view-panel-1">
+                    <span class="panel-header-badge">Strategic Value Driver 02</span>
+                    <h2 class="panel-heading-text"><span class="color-blue">67%</span> Mitigation Target</h2>
+                    <p class="panel-description-text">Of all major strategic corporate initiatives crash or fail completely when launched without defined structural frameworks.</p>
+                    <div class="framework-criterion-box">
+                        <span class="framework-lbl-prefix">How Strategic Thinking Helps You:</span>
+                        <ul class="benefit-nodes-stack">
+                            <li class="benefit-item"><span class="benefit-dot-icon"></span>Anticipate critical project roadblocks before they become organizational crises.</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="reveal-data-panel" id="view-panel-2">
+                    <span class="panel-header-badge">Strategic Value Driver 03</span>
+                    <h2 class="panel-heading-text"><span class="color-coral">82%</span> Leadership Consensus</h2>
+                    <p class="panel-description-text">Of top global organizational leaders explicitly cite advanced strategic thinking skills as critical to enterprise growth.</p>
+                    <div class="framework-criterion-box">
+                        <span class="framework-lbl-prefix">How Strategic Thinking Helps You:</span>
+                        <ul class="benefit-nodes-stack">
+                            <li class="benefit-item"><span class="benefit-dot-icon"></span>Align your cross-functional team's daily work directly with long-term goals.</li>
+                        </ul>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="footer-bar">
+            <span class="instruction-tag">Select individual impact indicators along the left sidebar track to analyze standard framework execution parameters.</span>
+        </div>
+    </div>
+
+    <script>
+        let insightActiveIdx = 0;
+
+        function revealStrategicInsight(targetIdx) {
+            if (targetIdx === insightActiveIdx) return;
+
+            // Clear current active tracking highlighting from preceding layout elements
+            document.getElementById(`tab-${insightActiveIdx}`).classList.remove("active-tab");
+            document.getElementById(`view-panel-${insightActiveIdx}`).classList.remove("panel-visible");
+
+            // Re-route active step indexing pointers
+            insightActiveIdx = targetIdx;
+
+            // Activate and animate targeted presentation parameters cleanly
+            document.getElementById(`tab-${insightActiveIdx}`).classList.add("active-tab");
+            document.getElementById(`view-panel-${insightActiveIdx}`).classList.add("panel-visible");
+        }
+    </script>
+</body>
+</html>
