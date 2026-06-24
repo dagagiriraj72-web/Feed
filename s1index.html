@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Strategic Thinking Simulation Console</title>
+    <style>
+        /* FORCE ROOT WINDOW CONTAINMENT TO MATCH 100% OF IFRAME BOUNDS */
+        html, body {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #f4f7f9;
+            font-family: 'Segoe UI', Arial, sans-serif;
+            overflow: hidden;
+        }
+
+        /* IMMERSIVE 16:9 VIEWPORT PRESTRAINT ENGINE
+           Locks dimensions safely at player bounds to eliminate lower text bleeding 
+           or footer tracker cutoff errors inside Storyline web objects.
+        */
+        .slide-wrapper {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 96%;
+            height: 94%;
+            max-width: 1200px;
+            aspect-ratio: 16 / 9;
+            padding: 2.2rem 3rem;
+            background-color: #ffffff;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            box-sizing: border-box;
+            border-radius: 8px;
+            box-shadow: 0 4px 25px rgba(0, 0, 0, 0.05);
+        }
+
+        /* Top Branded Header Row Block */
+        .header-section {
+            border-bottom: 2px solid #e2e8f0;
+            padding-bottom: 0.6rem;
+            margin-bottom: 1.2rem;
+            flex-shrink: 0;
+        }
+
+        .main-title {
+            font-size: 2.4rem;
+            color: #1e3a8a; /* Elegant corporate navy blue */
+            font-weight: 800;
+            margin: 0;
+            line-height: 1.1;
+        }
+
+        /* LATERAL SPLIT WORKSPACE COCKPIT 
+           Core Fix: Pulls the 5 progression milestones into a left sidebar track 
+           to eliminate horizontal layout crowding and edge text truncation.
+        */
+        .workspace-matrix {
+            display: grid;
+            grid-template-columns: 280px 1fr;
+            gap: 2.5rem;
+            flex-grow: 1;
+            min-height: 0; /* Dynamic height buffer safety guardrail */
+            align-items: stretch;
+        }
+
+        /* Left Side Sidebar Menu Track (Holds milestones securely) */
+        .tabs-vertical-stack {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            justify-content: center;
+        }
+
+        .milestone-nav-btn {
+            background-color: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 6px;
+            padding: 0.85rem 1.1rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            transition: all 0.22s cubic-bezier(0.165, 0.84, 0.44, 1);
+            text-align: left;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .btn-badge-circle {
+            width: 26px;
+            height: 26px;
+            border-radius: 50%;
+            background-color: #cbd5e1; /* Pending grey color state */
+            color: #ffffff;
+            font-size: 0.85rem;
+            font-weight: 700;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-shrink: 0;
+        }
+
+        .btn-title-lbl {
+            font-size: 0.95rem;
+            font-weight: 700;
+            color: #64748b;
+        }
+
+        /* Active Navigation Tab Highlighting States */
+        .milestone-nav-btn.active-tab {
+            background-color: #1e3a8a !important;
+            border-color: #1e3a8a;
+            box-shadow: 0 4px 12px rgba(26, 54, 93, 0.12);
+        }
+        .milestone-nav-btn.active-tab .btn-title-lbl { color: #ffffff; }
+        .milestone-nav-btn.active-tab .btn-badge-circle { background-color: #ffffff; color: #1e3a8a; }
+
+        /* Mastered Level Node State Complete Modifiers */
+        .milestone-nav-btn.mastered-tab {
+            border-color: #2a9d8f !important;
+            background-color: rgba(42, 157, 143, 0.05);
+        }
+        .milestone-nav-btn.mastered-tab .btn-title-lbl { color: #2a9d8f; text-decoration: line-through; opacity: 0.7; }
+        .milestone-nav-btn.mastered-tab .btn-badge-circle { background-color: #2a9d8f; color: #ffffff; }
+
+        /* Right Side Content Reveal Display Terminal Deck */
+        .unified-arena-card {
+            background-color: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 2.2rem;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.01);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            min-height: 0;
+            box-sizing: border-box;
+        }
+
+        /* Bounded vertical protection zone isolating text inputs from panel bounds */
+        .terminal-scroll-sandbox {
+            flex-grow: 1;
+            min-height: 0;
+            max-height: 380px; /* Locked frame ceiling shields footer tracker row from text overflows */
+            overflow-y: auto;
+            padding-right: 0.5rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .terminal-scroll-sandbox::-webkit-scrollbar { width: 4px; }
+        .terminal-scroll-sandbox::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 2px; }
+
+        .arena-tag-heading {
+            font-size: 0.85rem;
+            font-weight: 800;
+            color: #e67e22; /* Vibrant accent header color */
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* Case Narrative Profile Description Box */
+        .framework-criterion-box {
+            font-size: 1rem;
+            font-weight: 600;
+            color: #4a5568;
+            background-color: #f8fafc;
+            padding: 1rem 1.4rem;
+            border-left: 5px solid #1e3a8a;
+            border-radius: 4px;
+            line-height: 1.5;
+        }
+
+        .challenge-statement-text {
+            font-size: 1.22rem;
+            font-weight: 700;
+            color: #1a202c;
+            line-height: 1.42;
+            margin: 0;
+        }
+
+        /* Stacking Interactive Choice Options Fields Pipeline */
+        .choices-stack-pipeline {
+            display: flex;
+            flex-direction: column;
+            gap: 0.6rem;
+            margin-top: auto;
+            padding-top: 1rem;
+            flex-shrink: 0;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .choice-interaction-card {
+            background-color: #ffffff;
+            border: 2px solid #e2e8f0;
+            padding: 1.1rem 1.4rem;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: #334155;
+            cursor: pointer;
+            text-align: left;
+            line-height: 1.45;
+            transition: all 0.2s ease;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .choice-interaction-card:hover {
+            background-color: #fffbf7;
+            border-color: #1e3a8a;
+            color: #1e3a8a;
+            transform: translateX(4px);
+        }
+
+        /* Intermediate Success Feedback Overlay Sheet Layer */
+        .stage-success-overlay {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            width: 100%;
+            height: 100%;
+            gap: 0.8rem;
+        }
+
+        .success-heading-text {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: #2a9d8f;
+            margin: 0;
+        }
+
+        .success-desc-text {
+            color: #4a5568;
+            font-size: 1.05rem;
+            font-weight: 600;
+            max-width: 550px;
+            line-height: 1.5;
+            margin: 0;
+        }
+
+        /* Bottom Fixed Corporate Metrics Row Status Bar */
+        .footer-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-shrink: 0;
