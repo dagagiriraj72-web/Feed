@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Porter's Five Forces - Strategic Simulator</title>
+    <title>Porter's Five Forces Simulator</title>
     <style>
         /* FORCE WINDOW CONTRAINTS TO OCCUPY 100% OF THE IFRAME VIEWPORT BOUNDS */
         html, body {
@@ -16,9 +16,8 @@
             overflow: hidden;
         }
 
-        /* IMMERSIVE 16:9 VIEWPORT PRESTRAINT HULL 
-           Locks coordinates strictly to stop layout bleeding, center gaps,
-           or lower footer button cuts inside Storyline player views.
+        /* STRICT 16:9 VIEWPORT PRESTRAINT HULL
+           Compact layout footprint prevents vertical text clipping seen in image_88fac4.png
         */
         .slide-wrapper {
             position: absolute;
@@ -27,28 +26,28 @@
             transform: translate(-50%, -50%);
             width: 96%;
             height: 94%;
-            max-width: 1200px;
+            max-width: 1150px;
             aspect-ratio: 16 / 9;
-            padding: 2.2rem 3rem;
+            padding: 1.2rem 2rem;
             background-color: #ffffff;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
             box-sizing: border-box;
             border-radius: 8px;
-            box-shadow: 0 4px 25px rgba(0, 0, 0, 0.05);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
         }
 
-        /* Top Branded Title Header Section */
+        /* Top Branded Title Header Section with Minimal Vertical Footprint */
         .header-section {
             border-bottom: 2px solid #e2e8f0;
-            padding-bottom: 0.6rem;
-            margin-bottom: 1.2rem;
+            padding-bottom: 0.4rem;
+            margin-bottom: 0.6rem;
             flex-shrink: 0;
         }
 
         .main-title {
-            font-size: 2.4rem;
+            font-size: 2.1rem;
             color: #1a365d;
             font-weight: 800;
             margin: 0;
@@ -56,56 +55,49 @@
         }
 
         .sub-title {
-            font-size: 1.05rem;
+            font-size: 0.95rem;
             color: #718096;
-            margin: 0.2rem 0 0 0;
+            margin: 0.1rem 0 0 0;
         }
 
-        /* LATERAL SPLIT WORKSPACE PIPELINE */
+        /* OPTIMIZED TWO-COLUMN GRID ACCORDING TO SCREEN SPACE METRICS */
         .workspace-matrix {
             display: grid;
-            grid-template-columns: 290px 1fr;
-            gap: 2.5rem;
+            grid-template-columns: 240px 1fr;
+            gap: 1.5rem;
             flex-grow: 1;
-            min-height: 0; /* Dynamic height buffer safety guardrail */
-            align-items: stretch;
+            min-height: 0;
+            align-items: center;
         }
 
-        /* Left Side Sidebar Progress Track (Houses forces metrics step nodes) */
+        /* Compact Vertical Navigation Track */
         .tabs-vertical-stack {
             display: flex;
             flex-direction: column;
             gap: 8px;
-            justify-content: center;
         }
 
         .force-nav-btn {
             background-color: #f8fafc;
             border: 1px solid #e2e8f0;
             border-radius: 6px;
-            padding: 0.85rem 1.1rem;
+            padding: 0.65rem 0.9rem;
             display: flex;
             align-items: center;
-            gap: 1rem;
+            gap: 0.8rem;
             text-align: left;
             width: 100%;
             box-sizing: border-box;
             cursor: pointer;
-            transition: all 0.2s cubic-bezier(0.165, 0.84, 0.44, 1);
-        }
-
-        .force-nav-btn:hover {
-            background-color: #edf2f7;
-            transform: translateX(4px);
         }
 
         .btn-badge-circle {
-            width: 26px;
-            height: 26px;
+            width: 24px;
+            height: 24px;
             border-radius: 50%;
             background-color: #cbd5e1;
             color: #ffffff;
-            font-size: 0.85rem;
+            font-size: 0.8rem;
             font-weight: 700;
             display: flex;
             justify-content: center;
@@ -114,16 +106,16 @@
         }
 
         .btn-title-lbl {
-            font-size: 0.95rem;
+            font-size: 0.85rem;
             font-weight: 700;
             color: #64748b;
         }
 
-        /* Dynamic Highlighting Classes States Rules */
+        /* Active Navigation Highlighting Modifiers */
         .force-nav-btn.active-tab {
             background-color: #1a365d !important;
             border-color: #1a365d;
-            box-shadow: 0 4px 12px rgba(26, 54, 93, 0.12);
+            box-shadow: 0 2px 8px rgba(26, 54, 93, 0.12);
         }
         .force-nav-btn.active-tab .btn-title-lbl { color: #ffffff; }
         .force-nav-btn.active-tab .btn-badge-circle { background-color: #ffffff; color: #1a365d; }
@@ -135,89 +127,71 @@
         .force-nav-btn.completed-tab .btn-title-lbl { color: #2a9d8f; }
         .force-nav-btn.completed-tab .btn-badge-circle { background-color: #2a9d8f; color: #ffffff; }
 
-        /* Right Side Content Reveal Display Terminal Deck */
+        /* Dynamic Presentation Deck Terminal */
         .unified-arena-card {
             background-color: #ffffff;
             border: 1px solid #e2e8f0;
-            border-radius: 12px;
-            padding: 2.2rem;
+            border-radius: 8px;
+            padding: 1.2rem;
             display: flex;
             flex-direction: column;
-            justify-content: space-between;
-            min-height: 0;
+            justify-content: center;
+            height: 90%;
             box-sizing: border-box;
-            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.01);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.01);
         }
-
-        /* Bounded vertical protection zone isolating textual blocks from boundaries */
-        .terminal-scroll-sandbox {
-            flex-grow: 1;
-            min-height: 0;
-            max-height: 400px; /* Secure framing ceiling shields footer layout from overflows */
-            overflow-y: auto;
-            padding-right: 0.5rem;
-            display: flex;
-            flex-direction: column;
-            gap: 1rem;
-        }
-
-        .terminal-scroll-sandbox::-webkit-scrollbar { width: 4px; }
-        .terminal-scroll-sandbox::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 2px; }
 
         .arena-tag-heading {
-            font-size: 0.85rem;
+            font-size: 0.75rem;
             font-weight: 800;
             color: #e67e22;
             text-transform: uppercase;
             letter-spacing: 0.5px;
+            margin-bottom: 0.4rem;
         }
 
-        /* Symmetrical Blue and Pink Info Quadrant Panels matching palette images verbatim */
+        /* Compact Symmetrical Quadrant Panels matching visual reference color maps */
         .framework-criterion-box {
-            font-size: 1rem;
+            font-size: 0.9rem;
             font-weight: 600;
-            padding: 1rem 1.4rem;
+            padding: 0.6rem 1rem;
             border-radius: 4px;
-            line-height: 1.5;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.01);
+            line-height: 1.4;
+            margin-bottom: 0.6rem;
         }
-        .force-entrants { background-color: #f3f0ff; border-left: 5px solid #7c3aed; color: #6b21a8; }
-        .force-suppliers { background-color: #eff6ff; border-left: 5px solid #2563eb; color: #1e40af; }
-        .force-buyers { background-color: #eff6ff; border-left: 5px solid #2563eb; color: #1e40af; }
-        .force-substitutes { background-color: #fff1f2; border-left: 5px solid #e11d48; color: #9f1239; }
-        .force-rivalry { background-color: #f5f3ff; border-left: 5px solid #6d28d9; color: #5b21b6; }
+        .force-entrants { background-color: #f3f0ff; border-left: 4px solid #7c3aed; color: #6b21a8; }
+        .force-suppliers { background-color: #eff6ff; border-left: 4px solid #2563eb; color: #1e40af; }
+        .force-buyers { background-color: #eff6ff; border-left: 4px solid #2563eb; color: #1e40af; }
+        .force-substitutes { background-color: #fff1f2; border-left: 4px solid #e11d48; color: #9f1239; }
+        .force-rivalry { background-color: #f5f3ff; border-left: 4px solid #6d28d9; color: #5b21b6; }
 
         .challenge-statement-text {
-            font-size: 1.22rem;
+            font-size: 1.05rem;
             font-weight: 700;
             color: #1a202c;
-            line-height: 1.42;
-            margin: 0;
+            line-height: 1.35;
+            margin: 0 0 0.8rem 0;
         }
 
-        /* Stacking Options Pipeline Lower Area Section */
+        /* Stacking Interactive Choice Layout Matrix Pipeline */
         .choices-stack-pipeline {
             display: flex;
             flex-direction: column;
-            gap: 0.6rem;
-            margin-top: auto;
-            padding-top: 1rem;
-            flex-shrink: 0;
+            gap: 0.5rem;
             width: 100%;
-            box-sizing: border-box;
         }
 
         .choice-interaction-card {
             background-color: #ffffff;
-            border: 2px solid #e2e8f0;
-            padding: 1.1rem 1.4rem;
-            border-radius: 8px;
-            font-size: 0.95rem;
+            border: 1px solid #e2e8f0;
+            padding: 0.75rem 1.1rem;
+            border-radius: 6px;
+            font-size: 0.9rem;
             font-weight: 600;
             color: #334155;
             cursor: pointer;
             text-align: left;
-            line-height: 1.45;
+            line-height: 1.35;
             transition: all 0.2s ease;
             width: 100%;
             box-sizing: border-box;
@@ -227,23 +201,20 @@
             background-color: #fffbf7;
             border-color: #1a365d;
             color: #1a365d;
-            transform: translateX(4px);
         }
 
-        /* Intermediate Success Feedback Layer Overlay Component Sheet */
+        /* Intermediate Success Overlay Sheet Layer */
         .stage-success-overlay {
             display: none;
             flex-direction: column;
             align-items: center;
             justify-content: center;
             text-align: center;
-            width: 100%;
-            height: 100%;
-            gap: 0.8rem;
+            gap: 0.5rem;
         }
 
         .success-heading-text {
-            font-size: 1.5rem;
+            font-size: 1.3rem;
             font-weight: 800;
             color: #2a9d8f;
             margin: 0;
@@ -251,37 +222,60 @@
 
         .success-desc-text {
             color: #4a5568;
-            font-size: 1.05rem;
+            font-size: 0.95rem;
             font-weight: 600;
-            max-width: 550px;
-            line-height: 1.5;
+            max-width: 500px;
+            line-height: 1.4;
             margin: 0;
         }
 
-        /* Bottom Fixed Corporate Metrics Row Status Bar */
+        /* FINAL COMPLETE SUMMARY CARDS TRACK OVERLAYS (NO SCROLLING) */
+        .forces-summary-layout {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 0.5rem;
+            width: 100%;
+            text-align: left;
+            margin-top: 0.4rem;
+        }
+
+        .forces-summary-layout .wide-summary-box {
+            grid-column: span 3;
+            text-align: center;
+            background-color: #f8fafc;
+            border: 1px solid #e2e8f0;
+        }
+
+        .summary-box {
+            padding: 0.5rem 0.8rem;
+            border-radius: 6px;
+            box-sizing: border-box;
+        }
+        .summary-box h4 { margin: 0 0 0.2rem 0; font-size: 0.85rem; font-weight: 800; }
+        .summary-box p { margin: 0; font-size: 0.78rem; line-height: 1.25; font-weight: 500; }
+
+        /* Bottom Fixed Corporate Metrics Status Bar Row */
         .footer-bar {
             display: flex;
             justify-content: space-between;
             align-items: center;
             flex-shrink: 0;
             border-top: 1px solid #e2e8f0;
-            padding-top: 0.6rem;
-            margin-top: 0.5rem;
+            padding-top: 0.4rem;
+            margin-top: 0.4rem;
         }
 
         .score-tracker-badge {
-            font-size: 0.85rem;
+            font-size: 0.8rem;
             font-weight: 700;
             color: #ffffff;
             background-color: #1a365d;
-            padding: 0.25rem 0.8rem;
+            padding: 0.2rem 0.6rem;
             border-radius: 20px;
-            font-variant-numeric: tabular-nums;
-            box-shadow: 0 4px 10px rgba(26, 54, 93, 0.15);
         }
 
         .instruction-tag {
-            font-size: 0.85rem;
+            font-size: 0.8rem;
             color: #a0aec0;
             font-style: italic;
         }
@@ -290,16 +284,13 @@
 <body>
 
     <div class="slide-wrapper">
-        <!-- Main Title Header Block Row -->
         <div class="header-section">
             <h1 class="main-title">Porter's Five Forces Simulator</h1>
             <p class="sub-title">Analyze competitive dynamics shaping your industry and strategic position</p>
         </div>
 
-        <!-- Stable Non-Overlapping Workspace Lateral Matrix Grid Layout -->
         <div class="workspace-matrix">
             
-            <!-- Left Side Tracks: The Five Forces Milestones Tracker -->
             <div class="tabs-vertical-stack">
                 <button class="force-nav-btn active-tab" id="tab-0" onclick="switchSimulationTab(0)">
                     <div class="btn-badge-circle" id="badge-0">1</div>
@@ -323,44 +314,59 @@
                 </button>
             </div>
 
-            <!-- Right Side Workspace Card Display Deck Arena -->
             <div class="unified-arena-card" id="sandbox-container">
                 
-                <!-- Internal vertical scroll sandbox protective container layer -->
-                <div class="terminal-scroll-sandbox" id="interactive-view-block">
+                <div id="interactive-view-block" style="display: flex; flex-direction: column;">
                     <div class="arena-tag-heading" id="arena-stage-title">Industry Diagnostic • Scenario 1 of 5</div>
                     <div class="framework-criterion-box force-entrants" id="arena-brief-text">
                         New Entrants Parameters: Barriers to entry, capital requirements
                     </div>
-                    <h2 class="challenge-statement-text" id="arena-challenge-text">Loading simulation question...</h2>
+                    <h2 class="challenge-statement-text" id="arena-challenge-text">Loading problem...</h2>
+                    
+                    <div class="choices-stack-pipeline" id="arena-options-container">
+                        </div>
                 </div>
 
-                <!-- Lower isolated choice option pipeline container fields -->
-                <div class="choices-stack-pipeline" id="arena-options-container">
-                    <!-- Populated programmatically via JavaScript engine -->
-                </div>
-
-                <!-- Intermediate Success Feedback Layer Overlay Component Sheet -->
                 <div class="stage-success-overlay" id="victory-overlay-panel">
-                    <span style="font-size: 3.5rem;">🎯⚡</span>
+                    <span style="font-size: 2.2rem; line-height: 1;">➔</span>
                     <p class="success-heading-text">Diagnostic Verified!</p>
                     <p class="success-desc-text" id="victory-desc-text">Loading feedback details...</p>
-                    <button class="choice-interaction-card" style="justify-content: center; max-width: 220px; margin-top: 10px; border-color: #1a365d; color: #1a365d;" onclick="advanceToNextForceStage()">Next Force Matrix</button>
+                    <button class="choice-interaction-card" style="text-align: center; max-width: 200px; margin-top: 0.4rem; border-color: #1a365d; color: #1a365d; padding: 0.5rem;" onclick="advanceToNextForceStage()">Next Force Matrix</button>
                 </div>
 
-                <!-- Grand Final Simulation Complete Screen Panel -->
                 <div class="stage-success-overlay" id="campaign-clear-panel">
-                    <span style="font-size: 4rem;">👑</span>
-                    <h2 class="success-heading-text" style="color: #2a9d8f;">Market Analysis Complete!</h2>
-                    <p class="success-desc-text">
-                        Sensational diagnostic execution! You have audited all competitive pressures using the Porter's framework layout. Your operational pricing vectors, supply boundaries, and market barrier profiles are balanced.
+                    <h3 class="success-heading-text" style="color: #1a365d; font-size: 1.3rem; margin: 0;">Porter's Five Forces Strategic Industry Summary</h3>
+                    <p class="success-desc-text" style="font-size: 0.82rem; max-width: 650px;">
+                        Michael Porter's framework assesses structural profit potential by analyzing external commercial pressures.
                     </p>
+                    
+                    <div class="forces-summary-layout">
+                        <div class="summary-box force-entrants">
+                            <h4>1. Threat of New Entrants</h4>
+                            <p>Determined by production economies of scale, strict capital barriers, and intellectual protections keeping rivals out.</p>
+                        </div>
+                        <div class="summary-box force-suppliers">
+                            <h4>2. Bargaining Power of Suppliers</h4>
+                            <p>Spikes high when supply pipelines are consolidated, switching vendors is costly, and alternate inputs are unavailable.</p>
+                        </div>
+                        <div class="summary-box force-buyers">
+                            <h4>3. Bargaining Power of Buyers</h4>
+                            <p>Driven by customer purchasing volume concentration and the absolute availability of identical alternative products.</p>
+                        </div>
+                        <div class="summary-box force-substitutes">
+                            <h4>4. Threat of Substitutes</h4>
+                            <p>Evaluates competitive solutions outside direct categories that carry better price-to-performance trade-offs.</p>
+                        </div>
+                        <div class="summary-box force-rivalry wide-summary-box">
+                            <h4>5. Intensity of Competitive Rivalry (Central Hub)</h4>
+                            <p>Fueled by industry growth rates, number of equal-sized competitors, and exit barriers that trigger intense margin-slashing pricing wars.</p>
+                        </div>
+                    </div>
                 </div>
 
             </div>
         </div>
 
-        <!-- Progress Tracking Status Lower Fixed Footer Row Bar -->
         <div class="footer-bar">
             <div class="score-tracker-badge">Forces Balanced: <span id="progress-val">0</span> / 5</div>
             <div class="instruction-tag">When entering a new market, evaluate threat barriers and leverage vectors to secure corporate positioning.</div>
@@ -368,7 +374,6 @@
     </div>
 
     <script>
-        // High fidelity map relating images framework text criteria verbatim to interactive operational choices
         const forcesSimulationMatrix = [
             {
                 tag: "Industry Diagnostic • Scenario 1 of 5",
@@ -423,7 +428,7 @@
                     { text: "Rivalry is intense, meaning pricing strategies must factor in direct retaliatory competitor moves.", correct: true },
                     { text: "Rivalry is muted since structural capacity is fixed across current manufacturing facilities.", correct: false }
                 ],
-                feedback: "Perfect execution! Slow growth and fixed competitor size create highly intense competitive rivalry, turning pricing into a tactical battlefield."
+                feedback: "Perfect execution! Slow growth and fixed competitor size create highly intense competitive rivalry, turning pricing into a battlefield."
             }
         ];
 
@@ -432,35 +437,20 @@
         let masteredStateMap = { 0: false, 1: false, 2: false, 3: false, 4: false };
 
         function loadSimulationStage() {
-            const scrollSandbox = document.getElementById("interactive-view-block");
-            const optionsContainer = document.getElementById("arena-options-container");
-            const victoryPanel = document.getElementById("victory-overlay-panel");
-            const clearPanel = document.getElementById("campaign-clear-panel");
-            const briefBox = document.getElementById("arena-brief-text");
-
-            if (masteredStateMap[activeStageIdx]) {
-                scrollSandbox.style.display = "none";
-                optionsContainer.style.display = "none";
-                victoryPanel.style.display = "flex";
-                clearPanel.style.display = "none";
-                document.getElementById("victory-desc-text").innerText = forcesSimulationMatrix[activeStageIdx].feedback;
-                return;
-            }
-
-            scrollSandbox.style.display = "flex";
-            optionsContainer.style.display = "flex";
-            victoryPanel.style.display = "none";
-            clearPanel.style.display = "none";
+            document.getElementById("interactive-view-block").style.display = "flex";
+            document.getElementById("victory-overlay-panel").style.display = "none";
+            document.getElementById("campaign-clear-panel").style.display = "none";
 
             const currentData = forcesSimulationMatrix[activeStageIdx];
             document.getElementById("arena-stage-title").innerText = currentData.tag;
             
-            // Re-apply class styling dynamically to avoid node boundaries crashes
+            const briefBox = document.getElementById("arena-brief-text");
             briefBox.className = `framework-criterion-box ${currentData.typeClass}`;
             briefBox.innerText = currentData.brief;
             
             document.getElementById("arena-challenge-text").innerText = currentData.case;
 
+            const optionsContainer = document.getElementById("arena-options-container");
             optionsContainer.innerHTML = "";
             currentData.choices.forEach(choice => {
                 const btn = document.createElement("button");
@@ -469,8 +459,6 @@
                 btn.onclick = () => evaluateChoiceInput(choice.correct);
                 optionsContainer.appendChild(btn);
             });
-
-            scrollSandbox.scrollTop = 0;
         }
 
         function switchSimulationTab(targetIdx) {
@@ -483,7 +471,6 @@
             const totalClears = Object.values(masteredStateMap).filter(Boolean).length;
             if (totalClears === 5) {
                 document.getElementById("interactive-view-block").style.display = "none";
-                document.getElementById("arena-options-container").style.display = "none";
                 document.getElementById("victory-overlay-panel").style.display = "none";
                 document.getElementById("campaign-clear-panel").style.display = "flex";
                 return;
@@ -493,11 +480,6 @@
         }
 
         function evaluateChoiceInput(isCorrectChoicePath) {
-            const scrollSandbox = document.getElementById("interactive-view-block");
-            const optionsContainer = document.getElementById("arena-options-container");
-            const victoryPanel = document.getElementById("victory-overlay-panel");
-            const clearPanel = document.getElementById("campaign-clear-panel");
-
             if (isCorrectChoicePath) {
                 masteredStateMap[activeStageIdx] = true;
                 document.getElementById(`tab-${activeStageIdx}`).classList.add("completed-tab");
@@ -506,17 +488,15 @@
                 solvedCount = Object.values(masteredStateMap).filter(Boolean).length;
                 document.getElementById("progress-val").innerText = solvedCount;
 
-                scrollSandbox.style.display = "none";
-                optionsContainer.style.display = "none";
+                document.getElementById("interactive-view-block").style.display = "none";
 
                 if (solvedCount === 5) {
-                    clearPanel.style.display = "flex";
+                    document.getElementById("campaign-clear-panel").style.display = "flex";
                 } else {
                     document.getElementById("victory-desc-text").innerText = forcesSimulationMatrix[activeStageIdx].feedback;
-                    victoryPanel.style.display = "flex";
+                    document.getElementById("victory-overlay-panel").style.display = "flex";
                 }
             } else {
-                // Flash warning pulse if input breaks target diagnostic matrix laws
                 const containerDesk = document.getElementById("sandbox-container");
                 containerDesk.style.backgroundColor = "#faeae1";
                 setTimeout(() => containerDesk.style.backgroundColor = "#ffffff", 350);
@@ -532,7 +512,6 @@
             }
         }
 
-        // Initialize setup variables on runtime load mount configurations
         loadSimulationStage();
     </script>
 </body>
