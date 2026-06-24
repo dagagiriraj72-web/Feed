@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Blue Ocean Strategy - Interactive Simulator</title>
+    <title>Blue Ocean Strategy - Interactive Comparison Console</title>
     <style>
-        /* FORCE WINDOW CONSTRAINTS TO OCCUPY 100% OF THE IFRAME VIEWPORT BOUNDS */
+        /* FORCE ROOT WINDOW CONTAINMENT TO MATCH 100% OF IFRAME BOUNDS */
         html, body {
             margin: 0;
             padding: 0;
@@ -16,9 +16,9 @@
             overflow: hidden;
         }
 
-        /* IMMERSIVE 16:9 VIEWPORT PRESTRAINT HULL 
-           Locks coordinates strictly to stop layout bleeding, center gaps,
-           or lower footer button cuts inside Storyline player views.
+        /* IMMERSIVE 16:9 VIEWPORT PRESTRAINT HULL
+           Locks dimensions safely at player bounds to completely stop layout bleeding,
+           element overlapping, or lower footer cutoff errors inside Storyline frames.
         */
         .slide-wrapper {
             position: absolute;
@@ -39,7 +39,7 @@
             box-shadow: 0 4px 25px rgba(0, 0, 0, 0.05);
         }
 
-        /* Top Branded Title Header Section */
+        /* Top Title Header Section Row */
         .header-section {
             border-bottom: 2px solid #e2e8f0;
             padding-bottom: 0.6rem;
@@ -49,7 +49,7 @@
 
         .main-title {
             font-size: 2.4rem;
-            color: #1a365d;
+            color: #1a365d; /* Dark slate blue from image_887acb.png */
             font-weight: 800;
             margin: 0;
             line-height: 1.1;
@@ -57,25 +57,28 @@
 
         .sub-title {
             font-size: 1.05rem;
-            color: #718096;
+            color: #718096; /* Steel description subtitle text from image_887acb.png */
             margin: 0.2rem 0 0 0;
         }
 
-        /* LATERAL SPLIT WORKSPACE PIPELINE */
+        /* LATERAL SPLIT WORKSPACE PIPELINE
+           Core Fix: Pulls core metrics into a left sidebar track to eliminate
+           horizontal layout crowding and edge text truncation errors.
+        */
         .workspace-matrix {
             display: grid;
-            grid-template-columns: 290px 1fr;
+            grid-template-columns: 310px 1fr;
             gap: 2.5rem;
             flex-grow: 1;
             min-height: 0; /* Dynamic height buffer safety guardrail */
             align-items: stretch;
         }
 
-        /* Left Side Sidebar Progress Track (Houses corporate matrix step nodes) */
+        /* Left Side Sidebar Progress Track (Houses comparison strategic tracks) */
         .tabs-vertical-stack {
             display: flex;
             flex-direction: column;
-            gap: 8px;
+            gap: 10px;
             justify-content: center;
         }
 
@@ -83,15 +86,15 @@
             background-color: #f8fafc;
             border: 1px solid #e2e8f0;
             border-radius: 6px;
-            padding: 0.85rem 1.1rem;
+            padding: 0.95rem 1.1rem;
             display: flex;
             align-items: center;
-            gap: 1rem;
+            justify-content: space-between;
             text-align: left;
             width: 100%;
             box-sizing: border-box;
             cursor: pointer;
-            transition: all 0.2s cubic-bezier(0.165, 0.84, 0.44, 1);
+            transition: all 0.25s cubic-bezier(0.165, 0.84, 0.44, 1);
         }
 
         .strategy-nav-btn:hover {
@@ -99,24 +102,17 @@
             transform: translateX(4px);
         }
 
-        .btn-badge-circle {
-            width: 26px;
-            height: 26px;
-            border-radius: 50%;
-            background-color: #cbd5e1;
-            color: #ffffff;
-            font-size: 0.85rem;
+        .btn-title-lbl {
+            font-size: 1.05rem;
             font-weight: 700;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            flex-shrink: 0;
+            color: #4a5568;
         }
 
-        .btn-title-lbl {
-            font-size: 0.95rem;
-            font-weight: 700;
-            color: #64748b;
+        .btn-action-arrow {
+            color: #cbd5e1;
+            font-weight: 800;
+            font-size: 1.1rem;
+            transition: transform 0.2s ease, color 0.2s ease;
         }
 
         /* Dynamic Highlighting Classes States Rules */
@@ -126,411 +122,250 @@
             box-shadow: 0 4px 12px rgba(26, 54, 93, 0.12);
         }
         .strategy-nav-btn.active-tab .btn-title-lbl { color: #ffffff; }
-        .strategy-nav-btn.active-tab .btn-badge-circle { background-color: #ffffff; color: #1a365d; }
-
-        .strategy-nav-btn.completed-tab {
-            border-color: #2a9d8f !important;
-            background-color: rgba(42, 157, 143, 0.05);
-        }
-        .strategy-nav-btn.completed-tab .btn-title-lbl { color: #2a9d8f; }
-        .strategy-nav-btn.completed-tab .btn-badge-circle { background-color: #2a9d8f; color: #ffffff; }
+        .strategy-nav-btn.active-tab .btn-action-arrow { color: #ffffff; transform: translateX(3px); }
 
         /* Right Side Content Reveal Display Terminal Deck */
         .unified-arena-card {
             background-color: #ffffff;
             border: 1px solid #e2e8f0;
             border-radius: 12px;
-            padding: 2.2rem;
+            padding: 2.5rem;
             display: flex;
             flex-direction: column;
-            justify-content: space-between;
+            justify-content: center;
             min-height: 0;
             box-sizing: border-box;
             box-shadow: 0 6px 20px rgba(0, 0, 0, 0.01);
         }
 
         /* Bounded vertical protection zone isolating textual blocks from boundaries */
-        .terminal-scroll-sandbox {
-            flex-grow: 1;
-            min-height: 0;
-            max-height: 390px; /* Secure framing ceiling shields footer layout from overflows */
-            overflow-y: auto;
-            padding-right: 0.5rem;
-            display: flex;
-            flex-direction: column;
-            gap: 1rem;
-        }
-
-        .terminal-scroll-sandbox::-webkit-scrollbar { width: 4px; }
-        .terminal-scroll-sandbox::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 2px; }
-
-        .arena-tag-heading {
-            font-size: 0.85rem;
-            font-weight: 800;
-            color: #e67e22;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        /* Symmetrical Ocean Blueprint Cards matching visual color spaces verbatim */
-        .framework-criterion-box {
-            font-size: 1rem;
-            font-weight: 600;
-            padding: 1rem 1.4rem;
-            border-radius: 4px;
-            line-height: 1.5;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.01);
-        }
-        .ocean-red { background-color: #fff5f5; border-left: 5px solid #e53e3e; color: #c53030; } /* Soft red accent tint */
-        .ocean-blue { background-color: #ebf8ff; border-left: 5px solid #3182ce; color: #2b6cb0; } /* Soft blue accent tint */
-
-        .challenge-statement-text {
-            font-size: 1.22rem;
-            font-weight: 700;
-            color: #1a202c;
-            line-height: 1.42;
-            margin: 0;
-        }
-
-        /* Stacking Options Pipeline Lower Area Section */
-        .choices-stack-pipeline {
-            display: flex;
-            flex-direction: column;
-            gap: 0.6rem;
-            margin-top: auto;
-            padding-top: 1rem;
-            flex-shrink: 0;
-            width: 100%;
-            box-sizing: border-box;
-        }
-
-        .choice-interaction-card {
-            background-color: #ffffff;
-            border: 2px solid #e2e8f0;
-            padding: 1.1rem 1.4rem;
-            border-radius: 8px;
-            font-size: 0.95rem;
-            font-weight: 600;
-            color: #334155;
-            cursor: pointer;
-            text-align: left;
-            line-height: 1.45;
-            transition: all 0.2s ease;
-            width: 100%;
-            box-sizing: border-box;
-        }
-
-        .choice-interaction-card:hover {
-            background-color: #fffbf7;
-            border-color: #1a365d;
-            color: #1a365d;
-            transform: translateX(4px);
-        }
-
-        /* Intermediate Success Feedback Layer Overlay Component Sheet */
-        .stage-success-overlay {
+        .reveal-data-panel {
             display: none;
             flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-            width: 100%;
-            height: 100%;
-            gap: 0.8rem;
+            gap: 1.5rem;
+            max-height: 380px; /* Locked frame vertical safety ceiling avoids text cuts */
+            overflow-y: auto;
+            padding-right: 0.5rem;
         }
 
-        .success-heading-text {
-            font-size: 1.5rem;
+        .reveal-data-panel.panel-visible {
+            display: flex;
+            animation: panelFadeIn 0.3s cubic-bezier(0.165, 0.84, 0.44, 1) forwards;
+        }
+
+        .reveal-data-panel::-webkit-scrollbar { width: 4px; }
+        .reveal-data-panel::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 2px; }
+
+        @keyframes panelFadeIn {
+            from { opacity: 0; transform: translateY(4px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .panel-header-badge {
+            font-size: 0.85rem;
             font-weight: 800;
-            color: #2a9d8f;
-            margin: 0;
+            color: #718096;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
         }
 
-        .success-desc-text {
+        /* Symmetrical Blue and Pink Ocean Info Blocks matching palette visuals verbatim */
+        .ocean-comparison-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+            width: 100%;
+        }
+
+        .ocean-model-card {
+            padding: 1.5rem;
+            border-radius: 8px;
+            border-top: 4px solid transparent;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.01);
+        }
+        
+        .ocean-model-card.red-ocean-theme { 
+            background-color: #fff5f5; /* Soft light-red background matching image_887acb.png */
+            border-top-color: #e53e3e; 
+        }
+        .ocean-model-card.blue-ocean-theme { 
+            background-color: #ebf8ff; /* Soft light-blue background matching image_887acb.png */
+            border-top-color: #3182ce; 
+        }
+
+        .card-heading {
+            font-size: 1.4rem;
+            font-weight: 800;
+            margin: 0 0 0.8rem 0;
+        }
+        .red-ocean-theme .card-heading { color: #c53030; } /* Red Ocean title styling */
+        .blue-ocean-theme .card-heading { color: #2b6cb0; } /* Blue Ocean title styling */
+
+        .card-description-text {
+            font-size: 1.15rem;
             color: #4a5568;
-            font-size: 1.05rem;
-            font-weight: 600;
-            max-width: 550px;
             line-height: 1.5;
             margin: 0;
+            font-weight: 600;
         }
 
         /* Bottom Fixed Corporate Metrics Row Status Bar */
         .footer-bar {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-shrink: 0;
             border-top: 1px solid #e2e8f0;
             padding-top: 0.6rem;
-            margin-top: 0.5rem;
-        }
-
-        .score-tracker-badge {
-            font-size: 0.85rem;
-            font-weight: 700;
-            color: #ffffff;
-            background-color: #1a365d;
-            padding: 0.25rem 0.8rem;
-            border-radius: 20px;
-            font-variant-numeric: tabular-nums;
-            box-shadow: 0 4px 10px rgba(26, 54, 93, 0.15);
+            margin-top: 1rem;
+            flex-shrink: 0;
         }
 
         .instruction-tag {
-            font-size: 0.85rem;
-            color: #a0aec0;
+            font-size: 0.88rem;
+            color: #94a3b8;
             font-style: italic;
+            text-align: left;
+            display: block;
         }
     </style>
 </head>
 <body>
 
     <div class="slide-wrapper">
-        <!-- Main Framework Title Header Block -->
+        <!-- Interactive Header Banner -->
         <div class="header-section">
-            <h1 class="main-title">Blue Ocean Strategy Simulator</h1>
+            <h1 class="main-title">Blue Ocean Strategy</h1>
             <p class="sub-title">Move beyond competing — create uncontested market space</p>
         </div>
 
-        <!-- Stable Non-Overlapping Workspace Lateral Matrix Grid Layout -->
+        <!-- Symmetrical Lateral Layout Workspace -->
         <div class="workspace-matrix">
             
-            <!-- Left Side Tracks: Strategy Milestones Tracker Buttons -->
+            <!-- Left Side Tracks: Strategy Attribute Selection Tabs List -->
             <div class="tabs-vertical-stack">
-                <button class="strategy-nav-btn active-tab" id="tab-0" onclick="switchSimulationTab(0)">
-                    <div class="btn-badge-circle" id="badge-0">1</div>
+                <button class="strategy-nav-btn active-tab" id="tab-0" onclick="revealStrategyPillar(0)">
                     <span class="btn-title-lbl">Market Space</span>
+                    <span class="btn-action-arrow">➔</span>
                 </button>
-                <button class="strategy-nav-btn" id="tab-1" onclick="switchSimulationTab(1)">
-                    <div class="btn-badge-circle" id="badge-1">2</div>
+                <button class="strategy-nav-btn" id="tab-1" onclick="revealStrategyPillar(1)">
                     <span class="btn-title-lbl">Competition Mode</span>
+                    <span class="btn-action-arrow">➔</span>
                 </button>
-                <button class="strategy-nav-btn" id="tab-2" onclick="switchSimulationTab(2)">
-                    <div class="btn-badge-circle" id="badge-2">3</div>
-                    <span class="btn-title-lbl">Demand Focus</span>
+                <button class="strategy-nav-btn" id="tab-2" onclick="revealStrategyPillar(2)">
+                    <span class="btn-title-lbl">Demand Strategy</span>
+                    <span class="btn-action-arrow">➔</span>
                 </button>
-                <button class="strategy-nav-btn" id="tab-3" onclick="switchSimulationTab(3)">
-                    <div class="btn-badge-circle" id="badge-3">4</div>
-                    <span class="btn-title-lbl">Trade-Off Value</span>
+                <button class="strategy-nav-btn" id="tab-3" onclick="revealStrategyPillar(3)">
+                    <span class="btn-title-lbl">Value-Cost Dynamics</span>
+                    <span class="btn-action-arrow">➔</span>
                 </button>
-                <button class="strategy-nav-btn" id="tab-4" onclick="switchSimulationTab(4)">
-                    <div class="btn-badge-circle" id="badge-4">5</div>
-                    <span class="btn-title-lbl">Strategic Sight</span>
+                <button class="strategy-nav-btn" id="tab-4" onclick="revealStrategyPillar(4)">
+                    <span class="btn-title-lbl">Strategic Focus</span>
+                    <span class="btn-action-arrow">➔</span>
                 </button>
             </div>
 
-            <!-- Right Side Workspace Card Display Deck Arena -->
-            <div class="unified-arena-card" id="sandbox-container">
+            <!-- Right Side Dashboard Display Card Terminal -->
+            <div class="unified-arena-card">
                 
-                <!-- Internal vertical scroll sandbox protective container layer -->
-                <div class="terminal-scroll-sandbox" id="interactive-view-block">
-                    <div class="arena-tag-heading" id="arena-stage-title">Strategy Mapping • Scenario 1 of 5</div>
-                    <div class="framework-criterion-box ocean-red" id="arena-brief-text">
-                        Red Ocean Parameter: Compete in existing market space
+                <!-- Panel 01: Market Space -->
+                <div class="reveal-data-panel panel-visible" id="view-panel-0">
+                    <span class="panel-header-badge">Core Dimension 01 • Market Arena</span>
+                    <div class="ocean-comparison-grid">
+                        <div class="ocean-model-card red-ocean-theme">
+                            <h3 class="card-heading">Red Ocean</h3>
+                            <p class="card-description-text">Compete in existing market space.</p>
+                        </div>
+                        <div class="ocean-model-card blue-ocean-theme">
+                            <h3 class="card-heading">Blue Ocean</h3>
+                            <p class="card-description-text">Create uncontested market space.</p>
+                        </div>
                     </div>
-                    <h2 class="challenge-statement-text" id="arena-challenge-text">Loading simulation question...</h2>
                 </div>
 
-                <!-- Lower isolated choice option pipeline container fields -->
-                <div class="choices-stack-pipeline" id="arena-options-container">
-                    <!-- Populated programmatically via JavaScript engine -->
+                <!-- Panel 02: Competition Mode -->
+                <div class="reveal-data-panel" id="view-panel-1">
+                    <span class="panel-header-badge">Core Dimension 02 • Competitive Intent</span>
+                    <div class="ocean-comparison-grid">
+                        <div class="ocean-model-card red-ocean-theme">
+                            <h3 class="card-heading">Red Ocean</h3>
+                            <p class="card-description-text">Beat the competition head-on.</p>
+                        </div>
+                        <div class="ocean-model-card blue-ocean-theme">
+                            <h3 class="card-heading">Blue Ocean</h3>
+                            <p class="card-description-text">Make the competition irrelevant.</p>
+                        </div>
+                    </div>
                 </div>
 
-                <!-- Intermediate Success Feedback Layer Overlay Component Sheet -->
-                <div class="stage-success-overlay" id="victory-overlay-panel">
-                    <span style="font-size: 3.5rem;">🎯⚡</span>
-                    <p class="success-heading-text">Strategic Alignment Verified!</p>
-                    <p class="success-desc-text" id="victory-desc-text">Loading feedback details...</p>
-                    <button class="choice-interaction-card" style="justify-content: center; max-width: 220px; margin-top: 10px; border-color: #1a365d; color: #1a365d;" onclick="advanceToNextStrategyStage()">Next Framework Rule</button>
+                <!-- Panel 03: Demand Strategy -->
+                <div class="reveal-data-panel" id="view-panel-2">
+                    <span class="panel-header-badge">Core Dimension 03 • Demand Alignment</span>
+                    <div class="ocean-comparison-grid">
+                        <div class="ocean-model-card red-ocean-theme">
+                            <h3 class="card-heading">Red Ocean</h3>
+                            <p class="card-description-text">Exploit existing demand.</p>
+                        </div>
+                        <div class="ocean-model-card blue-ocean-theme">
+                            <h3 class="card-heading">Blue Ocean</h3>
+                            <p class="card-description-text">Create and capture new demand.</p>
+                        </div>
+                    </div>
                 </div>
 
-                <!-- Grand Final Simulation Complete Screen Panel -->
-                <div class="stage-success-overlay" id="campaign-clear-panel">
-                    <span style="font-size: 4rem;">👑</span>
-                    <h2 class="success-heading-text" style="color: #2a9d8f;">Value Innovation Achieved!</h2>
-                    <p class="success-desc-text">
-                        Sensational strategic execution! You have successfully mapped all differences between structural market spaces. Your long-term enterprise growth coordinates are fully optimized for blue ocean execution.
-                    </p>
+                <!-- Panel 04: Value-Cost Dynamics -->
+                <div class="reveal-data-panel" id="view-panel-3">
+                    <span class="panel-header-badge">Core Dimension 04 • Economic Boundaries</span>
+                    <div class="ocean-comparison-grid">
+                        <div class="ocean-model-card red-ocean-theme">
+                            <h3 class="card-heading">Red Ocean</h3>
+                            <p class="card-description-text">Make the value-cost trade-off.</p>
+                        </div>
+                        <div class="ocean-model-card blue-ocean-theme">
+                            <h3 class="card-heading">Blue Ocean</h3>
+                            <p class="card-description-text">Break the value-cost trade-off.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Panel 05: Strategic Focus -->
+                <div class="reveal-data-panel" id="view-panel-4">
+                    <span class="panel-header-badge">Core Dimension 05 • Boundary Perspective</span>
+                    <div class="ocean-comparison-grid">
+                        <div class="ocean-model-card red-ocean-theme">
+                            <h3 class="card-heading">Red Ocean</h3>
+                            <p class="card-description-text">Focus on rivals within industry.</p>
+                        </div>
+                        <div class="ocean-model-card blue-ocean-theme">
+                            <h3 class="card-heading">Blue Ocean</h3>
+                            <p class="card-description-text">Focus on the big picture.</p>
+                        </div>
+                    </div>
                 </div>
 
             </div>
         </div>
 
-        <!-- Progress Tracking Status Lower Fixed Footer Row Bar -->
+        <!-- Lower Fixed Instructional Prompt Strip -->
         <div class="footer-bar">
-            <div class="score-tracker-badge">Pillars Aligned: <span id="progress-val">0</span> / 5</div>
-            <div class="instruction-tag">Break out of traditional market rivalries and find the big picture to capture uncontested demand.</div>
+            <span class="instruction-tag">Select individual structural attributes along the left sidebar track to map the core contrasts between red and blue oceans.</span>
         </div>
     </div>
 
     <script>
-        // High fidelity map relating images framework text criteria verbatim to interactive operational choices
-        const strategySimulationMatrix = [
-            {
-                tag: "Strategy Mapping • Scenario 1 of 5",
-                typeClass: "ocean-red",
-                brief: "Red Ocean Target: Compete in existing market space.",
-                case: "Strategic Dilemma: To reverse a margin drop, your advisory board suggests building an identical manufacturing facility in a crowded district to squeeze out traditional operators. What model is this?",
-                choices: [
-                    { text: "Red Ocean Route: Compete head-on in an existing, saturated market space.", correct: true },
-                    { text: "Blue Ocean Route: Break the old framework to instantly launch a new contested space.", correct: false }
-                ],
-                feedback: "Correct! Squeezing into identical geographic or product areas means choosing to compete in existing, bloody market spaces."
-            },
-            {
-                tag: "Strategy Mapping • Scenario 2 of 5",
-                typeClass: "ocean-blue",
-                brief: "Blue Ocean Target: Make the competition irrelevant.",
-                case: "Strategic Dilemma: Instead of matching regional processing prices coin-for-coin, your core team strips out standard functional bells-and-whistles to launch a fully integrated digital asset utility platform. What is the impact?",
-                choices: [
-                    { text: "Red Ocean Impact: Slashes direct rival margins by beating the competition head-on.", correct: false },
-                    { text: "Blue Ocean Impact: Creates a fundamentally unique value curve that makes direct competition irrelevant.", correct: true }
-                ],
-                feedback: "Correct! True value innovation bypasses competitive mimicry entirely to render old market competitors irrelevant."
-            },
-            {
-                tag: "Strategy Mapping • Scenario 3 of 5",
-                typeClass: "ocean-blue",
-                brief: "Blue Ocean Target: Create and capture new demand.",
-                case: "Strategic Dilemma: Growth has flattened because all standard distributors are fully tapped out. Your marketing managers pitch non-customers who previously rejected your industry altogether. What rule applies?",
-                choices: [
-                    { text: "Create and capture entirely new user demand rather than exploiting existing customer pools.", correct: true },
-                    { text: "Exploit current demand parameters by launching a heavy discounting promo loop.", correct: false }
-                ],
-                feedback: "Correct. Turning non-customers into premium buyers expands industry limits, creating and capturing net-new demand pools."
-            },
-            {
-                tag: "Strategy Mapping • Scenario 4 of 5",
-                typeClass: "ocean-red",
-                brief: "Red Ocean Target: Make the value-cost trade-off.",
-                case: "Strategic Dilemma: Your engineering lead warns that you cannot increase product structural durability unless you radically increase sales prices to match the material expense. What choice is being assumed?",
-                choices: [
-                    { text: "Accepting a traditional Red Ocean constraint to work strictly within the standard value-cost trade-off curve.", correct: true },
-                    { text: "Breaking the value-cost trade-off curve completely through simultaneous low-cost differentiation.", correct: false }
-                ],
-                feedback: "Correct! Conventional strategies assume you must pick between high value at a premium cost, or basic utility at low cost. Blue oceans break this barrier."
-            },
-            {
-                tag: "Strategy Mapping • Scenario 5 of 5",
-                typeClass: "ocean-blue",
-                brief: "Blue Ocean Target: Break the value-cost trade-off — focus on the big picture.",
-                case: "Strategic Dilemma: Your division needs a permanent core focus value to guide future project pipelines. What operational standard secures the highest transformation rate?",
-                choices: [
-                    { text: "Focus on the big picture to unlock simultaneous high buyer value and low structural cost lines.", correct: true },
-                    { text: "Focus entirely on rivals within the industry to copy and match margin tracking matrices.", correct: false }
-                ],
-                feedback: "Perfect alignment! Exceptional long-term corporate growth relies on focusing on the big picture to break traditional price-value boundaries cleanly."
-            }
-        ];
+        let structuralActiveIdx = 0;
 
-        let activeStageIdx = 0;
-        let solvedCount = 0;
-        let masteredStateMap = { 0: false, 1: false, 2: false, 3: false, 4: false };
+        function revealStrategyPillar(targetIdx) {
+            if (targetIdx === structuralActiveIdx) return;
 
-        function loadSimulationStage() {
-            const scrollSandbox = document.getElementById("interactive-view-block");
-            const optionsContainer = document.getElementById("arena-options-container");
-            const victoryPanel = document.getElementById("victory-overlay-panel");
-            const clearPanel = document.getElementById("campaign-clear-panel");
-            const briefBox = document.getElementById("arena-brief-text");
+            // Clear active highlighting from previous element arrays safely
+            document.getElementById(`tab-${structuralActiveIdx}`).classList.remove("active-tab");
+            document.getElementById(`view-panel-${structuralActiveIdx}`).classList.remove("panel-visible");
 
-            if (masteredStateMap[activeStageIdx]) {
-                scrollSandbox.style.display = "none";
-                optionsContainer.style.display = "none";
-                victoryPanel.style.display = "flex";
-                clearPanel.style.display = "none";
-                document.getElementById("victory-desc-text").innerText = strategySimulationMatrix[activeStageIdx].feedback;
-                return;
-            }
+            // Re-route structural indexing pointers
+            structuralActiveIdx = targetIdx;
 
-            scrollSandbox.style.display = "flex";
-            optionsContainer.style.display = "flex";
-            victoryPanel.style.display = "none";
-            clearPanel.style.display = "none";
-
-            const currentData = strategySimulationMatrix[activeStageIdx];
-            document.getElementById("arena-stage-title").innerText = currentData.tag;
-            
-            // Re-apply class styling dynamically to avoid node boundaries crashes
-            briefBox.className = `framework-criterion-box ${currentData.typeClass}`;
-            briefBox.innerText = currentData.brief;
-            
-            document.getElementById("arena-challenge-text").innerText = currentData.case;
-
-            optionsContainer.innerHTML = "";
-            currentData.choices.forEach(choice => {
-                const btn = document.createElement("button");
-                btn.className = "choice-interaction-card";
-                btn.innerText = choice.text;
-                btn.onclick = () => evaluateChoiceInput(choice.correct);
-                optionsContainer.appendChild(btn);
-            });
-
-            scrollSandbox.scrollTop = 0;
+            // Activate newly targeted workspace nodes cleanly
+            document.getElementById(`tab-${structuralActiveIdx}`).classList.add("active-tab");
+            document.getElementById(`view-panel-${structuralActiveIdx}`).classList.add("panel-visible");
         }
-
-        function switchSimulationTab(targetIdx) {
-            if (targetIdx === activeStageIdx) return;
-
-            document.getElementById(`tab-${activeStageIdx}`).classList.remove("active-tab");
-            activeStageIdx = targetIdx;
-            document.getElementById(`tab-${activeStageIdx}`).classList.add("active-tab");
-
-            const totalClears = Object.values(masteredStateMap).filter(Boolean).length;
-            if (totalClears === 5) {
-                document.getElementById("interactive-view-block").style.display = "none";
-                document.getElementById("arena-options-container").style.display = "none";
-                document.getElementById("victory-overlay-panel").style.display = "none";
-                document.getElementById("campaign-clear-panel").style.display = "flex";
-                return;
-            }
-
-            loadSimulationStage();
-        }
-
-        function evaluateChoiceInput(isCorrectChoicePath) {
-            const scrollSandbox = document.getElementById("interactive-view-block");
-            const optionsContainer = document.getElementById("arena-options-container");
-            const victoryPanel = document.getElementById("victory-overlay-panel");
-            const clearPanel = document.getElementById("campaign-clear-panel");
-
-            if (isCorrectChoicePath) {
-                masteredStateMap[activeStageIdx] = true;
-                document.getElementById(`tab-${activeStageIdx}`).classList.add("completed-tab");
-                document.getElementById(`badge-${activeStageIdx}`).innerHTML = "✓";
-
-                solvedCount = Object.values(masteredStateMap).filter(Boolean).length;
-                document.getElementById("progress-val").innerText = solvedCount;
-
-                scrollSandbox.style.display = "none";
-                optionsContainer.style.display = "none";
-
-                if (solvedCount === 5) {
-                    clearPanel.style.display = "flex";
-                } else {
-                    document.getElementById("victory-desc-text").innerText = strategySimulationMatrix[activeStageIdx].feedback;
-                    victoryPanel.style.display = "flex";
-                }
-            } else {
-                // Flash warning pulse if input breaks target diagnostic matrix laws
-                const containerDesk = document.getElementById("sandbox-container");
-                containerDesk.style.backgroundColor = "#faeae1";
-                setTimeout(() => containerDesk.style.backgroundColor = "#ffffff", 350);
-            }
-        }
-
-        function advanceToNextStrategyStage() {
-            if (activeStageIdx < 4) {
-                document.getElementById(`tab-${activeStageIdx}`).classList.remove("active-tab");
-                activeStageIdx++;
-                document.getElementById(`tab-${activeStageIdx}`).classList.add("active-tab");
-                loadSimulationStage();
-            }
-        }
-
-        // Initialize setup variables on runtime load mount configurations
-        loadSimulationStage();
     </script>
 </body>
 </html>
