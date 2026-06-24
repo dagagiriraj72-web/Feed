@@ -1,0 +1,586 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scenario Planning - Strategic Simulator</title>
+    <style>
+        /* FORCE WINDOW CONSTRAINTS TO OCCUPY 100% OF THE IFRAME VIEWPORT BOUNDS */
+        html, body {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #f4f7f9;
+            font-family: 'Segoe UI', Arial, sans-serif;
+            overflow: hidden;
+        }
+
+        /* IMMERSIVE 16:9 VIEWPORT PRESTRAINT HULL 
+           Locks dimensions to standard player layout boundaries to neutralize layout bleeding, 
+           center gaps, or lower margin text cutting errors.
+        */
+        .slide-wrapper {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 96%;
+            height: 94%;
+            max-width: 1200px;
+            aspect-ratio: 16 / 9;
+            padding: 2.2rem 3rem;
+            background-color: #ffffff;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            box-sizing: border-box;
+            border-radius: 8px;
+            box-shadow: 0 4px 25px rgba(0, 0, 0, 0.05);
+        }
+
+        /* Top Branded Title Header Section */
+        .header-section {
+            border-bottom: 2px solid #e2e8f0;
+            padding-bottom: 0.6rem;
+            margin-bottom: 1.2rem;
+            flex-shrink: 0;
+        }
+
+        .main-title {
+            font-size: 2.4rem;
+            color: #1a365d; /* Dark primary slate blue verbatim theme */
+            font-weight: 800;
+            margin: 0;
+            line-height: 1.1;
+        }
+
+        .sub-title {
+            font-size: 1.05rem;
+            color: #718096; /* Soft description subtitle text alignment */
+            margin: 0.2rem 0 0 0;
+        }
+
+        /* LATERAL SPLIT WORKSPACE PIPELINE */
+        .workspace-matrix {
+            display: grid;
+            grid-template-columns: 290px 1fr;
+            gap: 2.5rem;
+            flex-grow: 1;
+            min-height: 0; /* Dynamic height buffer safety guardrail */
+            align-items: stretch;
+        }
+
+        /* Left Side Sidebar Progress Track (Houses scenario milestones stack) */
+        .tabs-vertical-stack {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            justify-content: center;
+        }
+
+        .phase-nav-btn {
+            background-color: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 6px;
+            padding: 0.95rem 1.1rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            text-align: left;
+            width: 100%;
+            box-sizing: border-box;
+            cursor: pointer;
+            transition: all 0.2s cubic-bezier(0.165, 0.84, 0.44, 1);
+        }
+
+        .phase-nav-btn:hover {
+            background-color: #edf2f7;
+            transform: translateX(4px);
+        }
+
+        .btn-badge-circle {
+            width: 26px;
+            height: 26px;
+            border-radius: 50%;
+            background-color: #cbd5e1;
+            color: #ffffff;
+            font-size: 0.85rem;
+            font-weight: 700;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-shrink: 0;
+        }
+
+        .btn-title-lbl {
+            font-size: 0.95rem;
+            font-weight: 700;
+            color: #64748b;
+        }
+
+        /* Dynamic Highlighting Menu Selection Modifiers */
+        .phase-nav-btn.active-tab {
+            background-color: #1a365d !important;
+            border-color: #1a365d;
+            box-shadow: 0 4px 12px rgba(26, 20, 93, 0.12);
+        }
+        .phase-nav-btn.active-tab .btn-title-lbl { color: #ffffff; }
+        .phase-nav-btn.active-tab .btn-badge-circle { background-color: #ffffff; color: #1a365d; }
+
+        .phase-nav-btn.completed-tab {
+            border-color: #2a9d8f !important;
+            background-color: rgba(42, 157, 143, 0.05);
+        }
+        .phase-nav-btn.completed-tab .btn-title-lbl { color: #2a9d8f; }
+        .phase-nav-btn.completed-tab .btn-badge-circle { background-color: #2a9d8f; color: #ffffff; }
+
+        /* Right Side Content Reveal Display Terminal Deck */
+        .unified-arena-card {
+            background-color: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 2.2rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            min-height: 0;
+            box-sizing: border-box;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.01);
+        }
+
+        /* Bounded vertical protection zone isolating description blocks from viewport boundaries */
+        .terminal-scroll-sandbox {
+            flex-grow: 1;
+            min-height: 0;
+            max-height: 390px; /* Secure framing ceiling shields footer from overflows */
+            overflow-y: auto;
+            padding-right: 0.5rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1.1rem;
+        }
+
+        .terminal-scroll-sandbox::-webkit-bezier(0.165, 0.84, 0.44, 1) { width: 4px; }
+        .terminal-scroll-sandbox::-webkit-scrollbar { width: 4px; }
+        .terminal-scroll-sandbox::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 2px; }
+
+        .arena-tag-heading {
+            font-size: 0.85rem;
+            font-weight: 800;
+            color: #e67e22;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* Symmetrical Content Phase Quadrants matching color palettes verbatim */
+        .framework-criterion-box {
+            font-size: 1.05rem;
+            font-weight: 600;
+            padding: 1.1rem 1.5rem;
+            border-radius: 4px;
+            line-height: 1.5;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.01);
+        }
+        .box-uncertainties { background-color: #f0f4ff; border-left: 5px solid #2563eb; color: #1e40af; } /* Search blue accent */
+        .box-scenarios { background-color: #f3f0ff; border-left: 5px solid #7c3aed; color: #6b21a8; }     /* Compass purple accent */
+        .box-impact { background-color: #fdf2ff; border-left: 5px solid #d946ef; color: #86198f; }        /* Chart magenta accent */
+        .box-strategies { background-color: #fff1f2; border-left: 5px solid #f43f5e; color: #9f1239; }    /* Rocket red accent */
+
+        /* Best Practices Box styling mapped verbatim to graphic strip */
+        .best-practices-container {
+            background-color: #f3f0ff;
+            border-radius: 6px;
+            padding: 1.1rem 1.5rem;
+            margin-top: 0.2rem;
+        }
+        
+        .best-practices-title {
+            font-size: 1.1rem;
+            font-weight: 800;
+            color: #7c3aed;
+            margin: 0 0 0.6rem 0;
+        }
+
+        .best-practices-list {
+            margin: 0;
+            padding: 0 0 0 1.2rem;
+            color: #4a5568;
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+
+        .best-practices-list li {
+            margin-bottom: 0.4rem;
+        }
+
+        .challenge-statement-text {
+            font-size: 1.22rem;
+            font-weight: 700;
+            color: #1a202c;
+            line-height: 1.45;
+            margin: 0;
+        }
+
+        /* Stacking Options Pipeline Lower Area Section */
+        .choices-stack-pipeline {
+            display: flex;
+            flex-direction: column;
+            gap: 0.6rem;
+            margin-top: auto;
+            padding-top: 1rem;
+            flex-shrink: 0;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .choice-interaction-card {
+            background-color: #ffffff;
+            border: 2px solid #e2e8f0;
+            padding: 1.1rem 1.4rem;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: #334155;
+            cursor: pointer;
+            text-align: left;
+            line-height: 1.45;
+            transition: all 0.2s ease;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .choice-interaction-card:hover {
+            background-color: #fffbf7;
+            border-color: #1a365d;
+            color: #1a365d;
+            transform: translateX(4px);
+        }
+
+        /* Intermediate Success Feedback Layer Overlay Component Sheet */
+        .stage-success-overlay {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            width: 100%;
+            height: 100%;
+            gap: 0.8rem;
+        }
+
+        .success-heading-text {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: #2a9d8f;
+            margin: 0;
+        }
+
+        .success-desc-text {
+            color: #4a5568;
+            font-size: 1.05rem;
+            font-weight: 600;
+            max-width: 550px;
+            line-height: 1.5;
+            margin: 0;
+        }
+
+        /* Bottom Fixed Corporate Metrics Row Status Bar */
+        .footer-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-shrink: 0;
+            border-top: 1px solid #e2e8f0;
+            padding-top: 0.6rem;
+            margin-top: 0.5rem;
+        }
+
+        .score-tracker-badge {
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: #ffffff;
+            background-color: #1a365d;
+            padding: 0.25rem 0.8rem;
+            border-radius: 20px;
+            font-variant-numeric: tabular-nums;
+            box-shadow: 0 4px 10px rgba(26, 54, 93, 0.15);
+        }
+
+        .instruction-tag {
+            font-size: 0.85rem;
+            color: #a0aec0;
+            font-style: italic;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="slide-wrapper">
+        <!-- Main Framework Title Header Block -->
+        <div class="header-section">
+            <h1 class="main-title">Scenario Planning Simulation</h1>
+            <p class="sub-title">Prepare for multiple futures instead of betting on one prediction</p>
+        </div>
+
+        /* Balanced Non-Overlapping Lateral Workspace Matrix Grid Layout */
+        <div class="workspace-matrix">
+            
+            <!-- Left Side Tracks: Phase Selection Progressive Step Button Stack -->
+            <div class="tabs-vertical-stack">
+                <button class="phase-nav-btn active-tab" id="tab-0" onclick="switchSimulationTab(0)">
+                    <div class="btn-badge-circle" id="badge-0">1</div>
+                    <span class="btn-title-lbl">Identify Uncertainties</span>
+                </button>
+                <button class="phase-nav-btn" id="tab-1" onclick="switchSimulationTab(1)">
+                    <div class="btn-badge-circle" id="badge-1">2</div>
+                    <span class="btn-title-lbl">Define Scenarios</span>
+                </button>
+                <button class="phase-nav-btn" id="tab-2" onclick="switchSimulationTab(2)">
+                    <div class="btn-badge-circle" id="badge-2">3</div>
+                    <span class="btn-title-lbl">Assess Impact</span>
+                </button>
+                <button class="phase-nav-btn" id="tab-3" onclick="switchSimulationTab(3)">
+                    <div class="btn-badge-circle" id="badge-3">4</div>
+                    <span class="btn-title-lbl">Develop Strategies</span>
+                </button>
+            </div>
+
+            <!-- Right Side Workspace Card Display Deck Arena -->
+            <div class="unified-arena-card" id="sandbox-container">
+                
+                <!-- Internal vertical scroll sandbox protective container layer -->
+                <div class="terminal-scroll-sandbox" id="interactive-view-block">
+                    <div class="arena-tag-heading" id="arena-stage-title">Future Preparedness Diagnostic • Scenario 1 of 4</div>
+                    <div class="framework-criterion-box box-uncertainties" id="arena-brief-text">
+                        Identify Uncertainties: Isolate critical driving forces and fluctuating variables.
+                    </div>
+                    
+                    <!-- Best Practices Strip Component rendered inside the scroll lane -->
+                    <div class="best-practices-container" id="best-practices-panel">
+                        <p class="best-practices-title">Best Practices</p>
+                        <ul class="best-practices-list" id="best-practices-bullets">
+                            <li>Create 3-4 distinct scenarios covering a range of possible futures</li>
+                        </ul>
+                    </div>
+                    
+                    <h2 class="challenge-statement-text" id="arena-challenge-text">Loading simulation question...</h2>
+                </div>
+
+                <!-- Lower isolated choice option pipeline container fields -->
+                <div class="choices-stack-pipeline" id="arena-options-container">
+                    <!-- Populated programmatically via arrays execution loop below -->
+                </div>
+
+                <!-- Intermediate Success Feedback Layer Overlay Component Sheet -->
+                <div class="stage-success-overlay" id="victory-overlay-panel">
+                    <span style="font-size: 3.5rem;">🎯⚡</span>
+                    <p class="success-heading-text">Strategic Uncertainty Aligned!</p>
+                    <p class="success-desc-text" id="victory-desc-text">Loading feedback details...</p>
+                    <button class="choice-interaction-card" style="justify-content: center; max-width: 240px; margin-top: 10px; border-color: #1a365d; color: #1a365d;" onclick="advanceToNextActionStage()">Advance Corporate Alignment</button>
+                </div>
+
+                <!-- Grand Final Simulation Complete Screen Panel Overrides -->
+                <div class="stage-success-overlay" id="campaign-clear-panel">
+                    <span style="font-size: 4rem;">👑</span>
+                    <h2 class="success-heading-text" style="color: #2a9d8f;">Decisive Modeling Complete!</h2>
+                    <p class="success-desc-text">
+                        Superb foresight planning! You have audited and stress-tested enterprise operational models across multiple diverging future pathways. Corporate resilience vectors are active and optimized.
+                    </p>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Progress Tracking Status Lower Fixed Footer Row Bar -->
+        <div class="footer-bar">
+            <div class="score-tracker-badge">Phases Mapped: <span id="progress-val">0</span> / 4</div>
+            <div class="instruction-tag">Revisit scenarios quarterly as new macro information cascades to continuously refine parameters.</div>
+        </div>
+    </div>
+
+    <script>
+        // High fidelity map relating image criteria parameters verbatim to interactive operational choices
+        const actionsSimulationMatrix = [
+            {
+                tag: "Future Preparedness Diagnostic • Scenario 1 of 4",
+                typeClass: "box-uncertainties",
+                brief: "Identify Uncertainties: Uncover highly unpredictable forces that will alter market parameters.",
+                bullets: [
+                    "Isolate long-term variables that single-prediction logic models routinely ignore.",
+                    "Audit critical technical and logistical macro shifts currently happening outsideDirect oversight fields."
+                ],
+                case: "Strategic Dilemma: Your enterprise utility planning board needs to prepare for a multi-year grid expansion. A sudden shift in clean energy import tariffs remains highly volatile and unquantified. What is the proper initialization rule?",
+                choices: [
+                    { text: "Log the volatile clean energy import tariff parameter as a fundamental underlying uncertainty node.", correct: true },
+                    { text: "Dismiss the variable and proceed with standard baseline output trend line predictions.", correct: false }
+                ],
+                feedback: "Correct! Isolating severe external dependencies as structural uncertainties prevents single-prediction blindness."
+            },
+            {
+                tag: "Future Preparedness Diagnostic • Scenario 2 of 4",
+                typeClass: "box-scenarios",
+                brief: "Define Scenarios: Create 3-4 distinct scenarios covering a range of possible futures.",
+                bullets: [
+                    "Create 3-4 distinct scenarios covering a range of possible futures",
+                    "Include both optimistic and pessimistic cases to stress-test assumptions"
+                ],
+                case: "Strategic Dilemma: To adequately stress-test next year's logistics budget model, your operations manager requests built-out projection variations. What matrix design fits standard best practices?",
+                choices: [
+                    { text: "Develop a singular optimistic case to maintain cross-functional team morale parameters.", correct: false },
+                    { text: "Construct distinct models including both optimistic and pessimistic cases to stress-test operational parameters.", correct: true }
+                ],
+                feedback: "Correct! Crafting balanced optimistic and pessimistic cases exposes hidden system vulnerabilities."
+            },
+            {
+                tag: "Future Preparedness Diagnostic • Scenario 3 of 4",
+                typeClass: "box-impact",
+                brief: "Assess Impact: Audit how each distinct future model directly impacts organizational lines.",
+                bullets: [
+                    "Trace specific financial and physical operational dependencies.",
+                    "Determine exact breaking thresholds across active processing pipelines."
+                ],
+                case: "Strategic Dilemma: Under a severe pessimistic scenario where raw ingredient costs spike by 40%, your main distributor pipeline becomes highly fragile. How must this risk factor be addressed?",
+                choices: [
+                    { text: "Trace and map out the exact line margin degradation threshold to proactively identify plant breaking points.", correct: true },
+                    { text: "Assume current capital reserves will absorb variance fluctuations dynamically.", correct: false }
+                ],
+                feedback: "Correct! Assessing exact impact variables uncovers localized vulnerability points before macro crises unfold."
+            },
+            {
+                tag: "Future Preparedness Diagnostic • Scenario 4 of 4",
+                typeClass: "box-strategies",
+                brief: "Develop Strategies: Establish flexible operational frameworks to ensure quick tactical pivots.",
+                bullets: [
+                    "Formulate robust conditional action triggers across separate tracks.",
+                    "Revisit scenarios quarterly as new information emerges"
+                ],
+                case: "Strategic Dilemma: You must finalize the final playbook layout response. What operational loop secures the highest resilience metrics over a multi-year window?",
+                choices: [
+                    { text: "Deploy pre-approved multi-track responses and commit to revisit scenarios quarterly as new information emerges.", correct: true },
+                    { text: "Lock in a rigid execution roadmap to prevent team deviation during market shifts.", correct: false }
+                ],
+                feedback: "Perfect alignment! Continuous adaptation through quarterly reviews ensures corporate choices remain highly relevant as market conditions evolve."
+            }
+        ];
+
+        let activeStageIdx = 0;
+        let solvedCount = 0;
+        let masteredStateMap = { 0: false, 1: false, 2: false, 3: false };
+
+        function loadSimulationStage() {
+            const scrollSandbox = document.getElementById("interactive-view-block");
+            const optionsContainer = document.getElementById("arena-options-container");
+            const victoryPanel = document.getElementById("victory-overlay-panel");
+            const clearPanel = document.getElementById("campaign-clear-panel");
+            const briefBox = document.getElementById("arena-brief-text");
+            const bPanel = document.getElementById("best-practices-panel");
+            const bBullets = document.getElementById("best-practices-bullets");
+
+            if (masteredStateMap[activeStageIdx]) {
+                scrollSandbox.style.display = "none";
+                optionsContainer.style.display = "none";
+                victoryPanel.style.display = "flex";
+                clearPanel.style.display = "none";
+                document.getElementById("victory-desc-text").innerText = actionsSimulationMatrix[activeStageIdx].feedback;
+                return;
+            }
+
+            scrollSandbox.style.display = "flex";
+            optionsContainer.style.display = "flex";
+            victoryPanel.style.display = "none";
+            clearPanel.style.display = "none";
+
+            const currentData = actionsSimulationMatrix[activeStageIdx];
+            document.getElementById("arena-stage-title").innerText = currentData.tag;
+            
+            // Re-apply class styling dynamically to avoid node boundaries crashes
+            briefBox.className = `framework-criterion-box ${currentData.typeClass}`;
+            briefBox.innerText = currentData.brief;
+            
+            // Re-render best practices contextual list inside scroll Sandbox
+            bBullets.innerHTML = "";
+            currentData.bullets.forEach(txt => {
+                const li = document.createElement("li");
+                li.innerText = txt;
+                bBullets.appendChild(li);
+            });
+
+            document.getElementById("arena-challenge-text").innerText = currentData.case;
+
+            optionsContainer.innerHTML = "";
+            currentData.choices.forEach(choice => {
+                const btn = document.createElement("button");
+                btn.className = "choice-interaction-card";
+                btn.innerText = choice.text;
+                btn.onclick = () => evaluateChoiceInput(choice.correct);
+                optionsContainer.appendChild(btn);
+            });
+
+            scrollSandbox.scrollTop = 0;
+        }
+
+        function switchSimulationTab(targetIdx) {
+            if (targetIdx === activeStageIdx) return;
+
+            document.getElementById(`tab-${activeStageIdx}`).classList.remove("active-tab");
+            activeStageIdx = targetIdx;
+            document.getElementById(`tab-${activeStageIdx}`).classList.add("active-tab");
+
+            const totalClears = Object.values(masteredStateMap).filter(Boolean).length;
+            if (totalClears === 4) {
+                document.getElementById("interactive-view-block").style.display = "none";
+                document.getElementById("arena-options-container").style.display = "none";
+                document.getElementById("victory-overlay-panel").style.display = "none";
+                document.getElementById("campaign-clear-panel").style.display = "flex";
+                return;
+            }
+
+            loadSimulationStage();
+        }
+
+        function evaluateChoiceInput(isCorrectChoicePath) {
+            const scrollSandbox = document.getElementById("interactive-view-block");
+            const optionsContainer = document.getElementById("arena-options-container");
+            const victoryPanel = document.getElementById("victory-overlay-panel");
+            const clearPanel = document.getElementById("campaign-clear-panel");
+
+            if (isCorrectChoicePath) {
+                masteredStateMap[activeStageIdx] = true;
+                document.getElementById(`tab-${activeStageIdx}`).classList.add("completed-tab");
+                document.getElementById(`badge-${activeStageIdx}`).innerHTML = "✓";
+
+                solvedCount = Object.values(masteredStateMap).filter(Boolean).length;
+                document.getElementById("progress-val").innerText = solvedCount;
+
+                scrollSandbox.style.display = "none";
+                optionsContainer.style.display = "none";
+
+                if (solvedCount === 4) {
+                    clearPanel.style.display = "flex";
+                } else {
+                    document.getElementById("victory-desc-text").innerText = actionsSimulationMatrix[activeStageIdx].feedback;
+                    victoryPanel.style.display = "flex";
+                }
+            } else {
+                // Flash warning pulse if input breaks target diagnostic matrix laws
+                const containerDesk = document.getElementById("sandbox-container");
+                containerDesk.style.backgroundColor = "#faeae1";
+                setTimeout(() => containerDesk.style.backgroundColor = "#ffffff", 350);
+            }
+        }
+
+        function advanceToNextActionStage() {
+            if (activeStageIdx < 3) {
+                document.getElementById(`tab-${activeStageIdx}`).classList.remove("active-tab");
+                activeStageIdx++;
+                document.getElementById(`tab-${activeStageIdx}`).classList.add("active-tab");
+                loadSimulationStage();
+            }
+        }
+
+        // Initialize setup variables on runtime load mount configurations
+        loadSimulationStage();
+    </script>
+</body>
+</html>
