@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Porter's Five Forces - Strategic Simulator</title>
+    <style>
+        /* FORCE WINDOW CONTRAINTS TO OCCUPY 100% OF THE IFRAME VIEWPORT BOUNDS */
+        html, body {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #f4f7f9;
+            font-family: 'Segoe UI', Arial, sans-serif;
+            overflow: hidden;
+        }
+
+        /* IMMERSIVE 16:9 VIEWPORT PRESTRAINT HULL 
+           Locks coordinates strictly to stop layout bleeding, center gaps,
+           or lower footer button cuts inside Storyline player views.
+        */
+        .slide-wrapper {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 96%;
+            height: 94%;
+            max-width: 1200px;
+            aspect-ratio: 16 / 9;
+            padding: 2.2rem 3rem;
+            background-color: #ffffff;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            box-sizing: border-box;
+            border-radius: 8px;
+            box-shadow: 0 4px 25px rgba(0, 0, 0, 0.05);
+        }
+
+        /* Top Branded Title Header Section */
+        .header-section {
+            border-bottom: 2px solid #e2e8f0;
+            padding-bottom: 0.6rem;
+            margin-bottom: 1.2rem;
+            flex-shrink: 0;
+        }
+
+        .main-title {
+            font-size: 2.4rem;
+            color: #1a365d;
+            font-weight: 800;
+            margin: 0;
+            line-height: 1.1;
+        }
+
+        .sub-title {
+            font-size: 1.05rem;
+            color: #718096;
+            margin: 0.2rem 0 0 0;
+        }
+
+        /* LATERAL SPLIT WORKSPACE PIPELINE */
+        .workspace-matrix {
+            display: grid;
+            grid-template-columns: 290px 1fr;
+            gap: 2.5rem;
+            flex-grow: 1;
+            min-height: 0; /* Dynamic height buffer safety guardrail */
+            align-items: stretch;
+        }
+
+        /* Left Side Sidebar Progress Track (Houses forces metrics step nodes) */
+        .tabs-vertical-stack {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            justify-content: center;
+        }
+
+        .force-nav-btn {
+            background-color: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 6px;
+            padding: 0.85rem 1.1rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            text-align: left;
+            width: 100%;
+            box-sizing: border-box;
+            cursor: pointer;
+            transition: all 0.2s cubic-bezier(0.165, 0.84, 0.44, 1);
+        }
+
+        .force-nav-btn:hover {
+            background-color: #edf2f7;
+            transform: translateX(4px);
+        }
+
+        .btn-badge-circle {
+            width: 26px;
+            height: 26px;
+            border-radius: 50%;
+            background-color: #cbd5e1;
+            color: #ffffff;
+            font-size: 0.85rem;
+            font-weight: 700;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-shrink: 0;
+        }
+
+        .btn-title-lbl {
+            font-size: 0.95rem;
+            font-weight: 700;
+            color: #64748b;
+        }
+
+        /* Dynamic Highlighting Classes States Rules */
+        .force-nav-btn.active-tab {
+            background-color: #1a365d !important;
+            border-color: #1a365d;
+            box-shadow: 0 4px 12px rgba(26, 54, 93, 0.12);
+        }
+        .force-nav-btn.active-tab .btn-title-lbl { color: #ffffff; }
+        .force-nav-btn.active-tab .btn-badge-circle { background-color: #ffffff; color: #1a365d; }
+
+        .force-nav-btn.completed-tab {
+            border-color: #2a9d8f !important;
+            background-color: rgba(42, 157, 143, 0.05);
+        }
+        .force-nav-btn.completed-tab .btn-title-lbl { color: #2a9d8f; }
+        .force-nav-btn.completed-tab .btn-badge-circle { background-color: #2a9d8f; color: #ffffff; }
+
+        /* Right Side Content Reveal Display Terminal Deck */
+        .unified-arena-card {
+            background-color: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 2.2rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            min-height: 0;
+            box-sizing: border-box;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.01);
+        }
+
+        /* Bounded vertical protection zone isolating textual blocks from boundaries */
+        .terminal-scroll-sandbox {
+            flex-grow: 1;
+            min-height: 0;
+            max-height: 400px; /* Secure framing ceiling shields footer layout from overflows */
+            overflow-y: auto;
+            padding-right: 0.5rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .terminal-scroll-sandbox::-webkit-scrollbar { width: 4px; }
+        .terminal-scroll-sandbox::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 2px; }
+
+        .arena-tag-heading {
+            font-size: 0.85rem;
+            font-weight: 800;
+            color: #e67e22;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* Symmetrical Blue and Pink Info Quadrant Panels matching palette images verbatim */
+        .framework-criterion-box {
+            font-size: 1rem;
+            font-weight: 600;
+            padding: 1rem 1.4rem;
+            border-radius: 4px;
+            line-height: 1.5;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.01);
+        }
+        .force-entrants { background-color: #f3f0ff; border-left: 5px solid #7c3aed; color: #6b21a8; }
+        .force-suppliers { background-color: #eff6ff; border-left: 5px solid #2563eb; color: #1e40af; }
+        .force-buyers { background-color: #eff6ff; border-left: 5px solid #2563eb; color: #1e40af; }
+        .force-substitutes { background-color: #fff1f2; border-left: 5px solid #e11d48; color: #9f1239; }
+        .force-rivalry { background-color: #f5f3ff; border-left: 5px solid #6d28d9; color: #5b21b6; }
+
+        .challenge-statement-text {
+            font-size: 1.22rem;
+            font-weight: 700;
+            color: #1a202c;
+            line-height: 1.42;
+            margin: 0;
+        }
+
+        /* Stacking Options Pipeline Lower Area Section */
+        .choices-stack-pipeline {
+            display: flex;
+            flex-direction: column;
+            gap: 0.6rem;
+            margin-top: auto;
+            padding-top: 1rem;
+            flex-shrink: 0;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .choice-interaction-card {
+            background-color: #ffffff;
+            border: 2px solid #e2e8f0;
+            padding: 1.1rem 1.4rem;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: #334155;
+            cursor: pointer;
+            text-align: left;
+            line-height: 1.45;
+            transition: all 0.2s ease;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .choice-interaction-card:hover {
+            background-color: #fffbf7;
+            border-color: #1a365d;
+            color: #1a365d;
+            transform: translateX(4px);
+        }
+
+        /* Intermediate Success Feedback Layer Overlay Component Sheet */
+        .stage-success-overlay {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            width: 100%;
+            height: 100%;
+            gap: 0.8rem;
+        }
+
+        .success-heading-text {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: #2a9d8f;
+            margin: 0;
+        }
+
+        .success-desc-text {
+            color: #4a5568;
+            font-size: 1.05rem;
+            font-weight: 600;
+            max-width: 550px;
+            line-height: 1.5;
+            margin: 0;
+        }
+
+        /* Bottom Fixed Corporate Metrics Row Status Bar */
+        .footer-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-shrink: 0;
+            border-top: 1px solid #e2e8f0;
+            padding-top: 0.6rem;
+            margin-top: 0.5rem;
+        }
+
+        .score-tracker-badge {
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: #ffffff;
+            background-color: #1a365d;
+            padding: 0.25rem 0.8rem;
+            border-radius: 20px;
+            font-variant-numeric: tabular-nums;
+            box-shadow: 0 4px 10px rgba(26, 54, 93, 0.15);
+        }
+
+        .instruction-tag {
+            font-size: 0.85rem;
+            color: #a0aec0;
+            font-style: italic;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="slide-wrapper">
+        <!-- Main Title Header Block Row -->
+        <div class="header-section">
+            <h1 class="main-title">Porter's Five Forces Simulator</h1>
+            <p class="sub-title">Analyze competitive dynamics shaping your industry and strategic position</p>
+        </div>
+
+        <!-- Stable Non-Overlapping Workspace Lateral Matrix Grid Layout -->
+        <div class="workspace-matrix">
+            
+            <!-- Left Side Tracks: The Five Forces Milestones Tracker -->
+            <div class="tabs-vertical-stack">
+                <button class="force-nav-btn active-tab" id="tab-0" onclick="switchSimulationTab(0)">
+                    <div class="btn-badge-circle" id="badge-0">1</div>
+                    <span class="btn-title-lbl">New Entrants</span>
+                </button>
+                <button class="force-nav-btn" id="tab-1" onclick="switchSimulationTab(1)">
+                    <div class="btn-badge-circle" id="badge-1">2</div>
+                    <span class="btn-title-lbl">Suppliers</span>
+                </button>
+                <button class="force-nav-btn" id="tab-2" onclick="switchSimulationTab(2)">
+                    <div class="btn-badge-circle" id="badge-2">3</div>
+                    <span class="btn-title-lbl">Buyers</span>
+                </button>
+                <button class="force-nav-btn" id="tab-3" onclick="switchSimulationTab(3)">
+                    <div class="btn-badge-circle" id="badge-3">4</div>
+                    <span class="btn-title-lbl">Substitutes</span>
+                </button>
+                <button class="force-nav-btn" id="tab-4" onclick="switchSimulationTab(4)">
+                    <div class="btn-badge-circle" id="badge-4">5</div>
+                    <span class="btn-title-lbl">Competitive Rivalry</span>
+                </button>
+            </div>
+
+            <!-- Right Side Workspace Card Display Deck Arena -->
+            <div class="unified-arena-card" id="sandbox-container">
+                
+                <!-- Internal vertical scroll sandbox protective container layer -->
+                <div class="terminal-scroll-sandbox" id="interactive-view-block">
+                    <div class="arena-tag-heading" id="arena-stage-title">Industry Diagnostic • Scenario 1 of 5</div>
+                    <div class="framework-criterion-box force-entrants" id="arena-brief-text">
+                        New Entrants Parameters: Barriers to entry, capital requirements
+                    </div>
+                    <h2 class="challenge-statement-text" id="arena-challenge-text">Loading simulation question...</h2>
+                </div>
+
+                <!-- Lower isolated choice option pipeline container fields -->
+                <div class="choices-stack-pipeline" id="arena-options-container">
+                    <!-- Populated programmatically via JavaScript engine -->
+                </div>
+
+                <!-- Intermediate Success Feedback Layer Overlay Component Sheet -->
+                <div class="stage-success-overlay" id="victory-overlay-panel">
+                    <span style="font-size: 3.5rem;">🎯⚡</span>
+                    <p class="success-heading-text">Diagnostic Verified!</p>
+                    <p class="success-desc-text" id="victory-desc-text">Loading feedback details...</p>
+                    <button class="choice-interaction-card" style="justify-content: center; max-width: 220px; margin-top: 10px; border-color: #1a365d; color: #1a365d;" onclick="advanceToNextForceStage()">Next Force Matrix</button>
+                </div>
+
+                <!-- Grand Final Simulation Complete Screen Panel -->
+                <div class="stage-success-overlay" id="campaign-clear-panel">
+                    <span style="font-size: 4rem;">👑</span>
+                    <h2 class="success-heading-text" style="color: #2a9d8f;">Market Analysis Complete!</h2>
+                    <p class="success-desc-text">
+                        Sensational diagnostic execution! You have audited all competitive pressures using the Porter's framework layout. Your operational pricing vectors, supply boundaries, and market barrier profiles are balanced.
+                    </p>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Progress Tracking Status Lower Fixed Footer Row Bar -->
+        <div class="footer-bar">
+            <div class="score-tracker-badge">Forces Balanced: <span id="progress-val">0</span> / 5</div>
+            <div class="instruction-tag">When entering a new market, evaluate threat barriers and leverage vectors to secure corporate positioning.</div>
+        </div>
+    </div>
+
+    <script>
+        // High fidelity map relating images framework text criteria verbatim to interactive operational choices
+        const forcesSimulationMatrix = [
+            {
+                tag: "Industry Diagnostic • Scenario 1 of 5",
+                typeClass: "force-entrants",
+                brief: "New Entrants Parameters: Barriers to entry, capital requirements.",
+                case: "Strategic Dilemma: Your division is evaluating entering a new market segment. You discover that establishing operations requires massive proprietary processing technology assets and rigid compliance certifications. How is this force cataloged?",
+                choices: [
+                    { text: "High Entry Barriers: Entry threat is low due to severe capital requirements and tech constraints.", correct: true },
+                    { text: "Low Entry Barriers: Entry threat is high because the market is unserved.", correct: false }
+                ],
+                feedback: "Correct! High capital requirements and complex technical assets act as structural entry barriers, keeping the threat of new entrants low."
+            },
+            {
+                tag: "Industry Diagnostic • Scenario 2 of 5",
+                typeClass: "force-suppliers",
+                brief: "Suppliers Parameters: Bargaining power, switching costs.",
+                case: "Strategic Dilemma: Your primary raw ingredient is controlled by a tightly unified group of niche vendors, and migrating to alternative solutions requires a complete restructuring of the plant pipeline. Do suppliers have leverage?",
+                choices: [
+                    { text: "No Leverage: Switching costs are neutral since alternative components exist globally.", correct: false },
+                    { text: "High Leverage: Suppliers have immense bargaining power due to high switching costs and concentration.", correct: true }
+                ],
+                feedback: "Correct. When switching solutions causes high processing costs, suppliers retain immense bargaining power over pricing."
+            },
+            {
+                tag: "Industry Diagnostic • Scenario 3 of 5",
+                typeClass: "force-buyers",
+                brief: "Buyers Parameters: Price sensitivity, alternatives available.",
+                case: "Strategic Dilemma: Your corporate clients are highly consolidated, have extreme volume price sensitivity, and can easily switch to standard marketplace alternatives without system friction. How do you respond?",
+                choices: [
+                    { text: "Acknowledge high buyer power and develop differentiation strategies to protect margin.", correct: true },
+                    { text: "Assume low buyer power since your sales team maintains strong relationship history loops.", correct: false }
+                ],
+                feedback: "Correct! When corporate buyers have abundant alternatives available and high price sensitivity, buyer bargaining power is extremely strong."
+            },
+            {
+                tag: "Industry Diagnostic • Scenario 4 of 5",
+                typeClass: "force-substitutes",
+                brief: "Substitutes Parameters: Alternative solutions, performance trade-offs.",
+                case: "Strategic Dilemma: A different technology industry launches a completely alternate solution format that fulfills your exact client function at a better performance trade-off ratio. What occurs?",
+                choices: [
+                    { text: "The threat of substitutes spikes because clients prioritize superior performance trade-offs over brand history.", correct: true },
+                    { text: "The substitute threat is neutral because the alternative belongs to a completely separate industry category.", correct: false }
+                ],
+                feedback: "Correct. Substitute threats look outside direct competitors to alternative industry solutions that satisfy user needs with superior performance trade-offs."
+            },
+            {
+                tag: "Industry Diagnostic • Scenario 5 of 5",
+                typeClass: "force-rivalry",
+                brief: "Competitive Rivalry: Internal core dynamic tracking sector.",
+                case: "Strategic Dilemma: Your industry is packed with numerous equal-sized firms experiencing slow sector growth, causing aggressive price-cutting wars to steal volume market share. How intense is current rivalry?",
+                choices: [
+                    { text: "Rivalry is intense, meaning pricing strategies must factor in direct retaliatory competitor moves.", correct: true },
+                    { text: "Rivalry is muted since structural capacity is fixed across current manufacturing facilities.", correct: false }
+                ],
+                feedback: "Perfect execution! Slow growth and fixed competitor size create highly intense competitive rivalry, turning pricing into a tactical battlefield."
+            }
+        ];
+
+        let activeStageIdx = 0;
+        let solvedCount = 0;
+        let masteredStateMap = { 0: false, 1: false, 2: false, 3: false, 4: false };
+
+        function loadSimulationStage() {
+            const scrollSandbox = document.getElementById("interactive-view-block");
+            const optionsContainer = document.getElementById("arena-options-container");
+            const victoryPanel = document.getElementById("victory-overlay-panel");
+            const clearPanel = document.getElementById("campaign-clear-panel");
+            const briefBox = document.getElementById("arena-brief-text");
+
+            if (masteredStateMap[activeStageIdx]) {
+                scrollSandbox.style.display = "none";
+                optionsContainer.style.display = "none";
+                victoryPanel.style.display = "flex";
+                clearPanel.style.display = "none";
+                document.getElementById("victory-desc-text").innerText = forcesSimulationMatrix[activeStageIdx].feedback;
+                return;
+            }
+
+            scrollSandbox.style.display = "flex";
+            optionsContainer.style.display = "flex";
+            victoryPanel.style.display = "none";
+            clearPanel.style.display = "none";
+
+            const currentData = forcesSimulationMatrix[activeStageIdx];
+            document.getElementById("arena-stage-title").innerText = currentData.tag;
+            
+            // Re-apply class styling dynamically to avoid node boundaries crashes
+            briefBox.className = `framework-criterion-box ${currentData.typeClass}`;
+            briefBox.innerText = currentData.brief;
+            
+            document.getElementById("arena-challenge-text").innerText = currentData.case;
+
+            optionsContainer.innerHTML = "";
+            currentData.choices.forEach(choice => {
+                const btn = document.createElement("button");
+                btn.className = "choice-interaction-card";
+                btn.innerText = choice.text;
+                btn.onclick = () => evaluateChoiceInput(choice.correct);
+                optionsContainer.appendChild(btn);
+            });
+
+            scrollSandbox.scrollTop = 0;
+        }
+
+        function switchSimulationTab(targetIdx) {
+            if (targetIdx === activeStageIdx) return;
+
+            document.getElementById(`tab-${activeStageIdx}`).classList.remove("active-tab");
+            activeStageIdx = targetIdx;
+            document.getElementById(`tab-${activeStageIdx}`).classList.add("active-tab");
+
+            const totalClears = Object.values(masteredStateMap).filter(Boolean).length;
+            if (totalClears === 5) {
+                document.getElementById("interactive-view-block").style.display = "none";
+                document.getElementById("arena-options-container").style.display = "none";
+                document.getElementById("victory-overlay-panel").style.display = "none";
+                document.getElementById("campaign-clear-panel").style.display = "flex";
+                return;
+            }
+
+            loadSimulationStage();
+        }
+
+        function evaluateChoiceInput(isCorrectChoicePath) {
+            const scrollSandbox = document.getElementById("interactive-view-block");
+            const optionsContainer = document.getElementById("arena-options-container");
+            const victoryPanel = document.getElementById("victory-overlay-panel");
+            const clearPanel = document.getElementById("campaign-clear-panel");
+
+            if (isCorrectChoicePath) {
+                masteredStateMap[activeStageIdx] = true;
+                document.getElementById(`tab-${activeStageIdx}`).classList.add("completed-tab");
+                document.getElementById(`badge-${activeStageIdx}`).innerHTML = "✓";
+
+                solvedCount = Object.values(masteredStateMap).filter(Boolean).length;
+                document.getElementById("progress-val").innerText = solvedCount;
+
+                scrollSandbox.style.display = "none";
+                optionsContainer.style.display = "none";
+
+                if (solvedCount === 5) {
+                    clearPanel.style.display = "flex";
+                } else {
+                    document.getElementById("victory-desc-text").innerText = forcesSimulationMatrix[activeStageIdx].feedback;
+                    victoryPanel.style.display = "flex";
+                }
+            } else {
+                // Flash warning pulse if input breaks target diagnostic matrix laws
+                const containerDesk = document.getElementById("sandbox-container");
+                containerDesk.style.backgroundColor = "#faeae1";
+                setTimeout(() => containerDesk.style.backgroundColor = "#ffffff", 350);
+            }
+        }
+
+        function advanceToNextForceStage() {
+            if (activeStageIdx < 4) {
+                document.getElementById(`tab-${activeStageIdx}`).classList.remove("active-tab");
+                activeStageIdx++;
+                document.getElementById(`tab-${activeStageIdx}`).classList.add("active-tab");
+                loadSimulationStage();
+            }
+        }
+
+        // Initialize setup variables on runtime load mount configurations
+        loadSimulationStage();
+    </script>
+</body>
+</html>
