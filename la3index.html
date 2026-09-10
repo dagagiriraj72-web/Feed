@@ -3,446 +3,674 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
 <title>Burke Learning Agility Inventory</title>
 
 <style>
-
 *{
-margin:0;
-padding:0;
-box-sizing:border-box;
-font-family:Segoe UI,sans-serif;
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family:"Segoe UI", -apple-system, BlinkMacSystemFont, Roboto, sans-serif;
 }
 
 body{
-width:100vw;
-height:100vh;
-overflow:hidden;
-background:#f4f5f8;
-display:flex;
-justify-content:center;
-align-items:center;
+  width:100vw;
+  height:100vh;
+  overflow:hidden;
+  background:#0f172a;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+}
+
+#slide-wrapper{
+  width:100%;
+  height:100%;
+  display:flex;
+  justify-content:center;
+  align-items:center;
 }
 
 #slide{
-width:1280px;
-height:720px;
-background:#f4f5f8;
-overflow:hidden;
-position:relative;
-padding:15px;
+  width:1280px;
+  height:720px;
+  background:radial-gradient(circle at 50% 10%, #1e293b 0%, #0f172a 100%);
+  position:relative;
+  overflow:hidden;
+  padding:24px 36px;
+  flex-shrink:0;
+  transform-origin:center center;
+  display:flex;
+  flex-direction:column;
+  justify-content:space-between;
 }
 
 /* HEADER */
+.header{
+  position:relative;
+  text-align:center;
+}
 
 .title{
-font-size:34px;
-font-weight:800;
-color:#1d1b5d;
-text-align:center;
+  font-size:34px;
+  font-weight:800;
+  color:#ffffff;
+  letter-spacing:-0.5px;
 }
 
 .subtitle{
-font-size:15px;
-text-align:center;
-color:#8b92a6;
-font-style:italic;
-margin-top:4px;
-margin-bottom:12px;
+  font-size:15px;
+  color:#94a3b8;
+  margin-top:3px;
 }
 
 /* PROGRESS */
-
 .progressBox{
-position:absolute;
-top:15px;
-right:20px;
-width:180px;
+  position:absolute;
+  top:2px;
+  right:0;
+  width:190px;
+  background:rgba(255,255,255,0.06);
+  border:1px solid rgba(255,255,255,0.12);
+  border-radius:14px;
+  padding:8px 14px;
+  backdrop-filter:blur(6px);
 }
 
 .progressLabel{
-font-size:14px;
-font-weight:700;
-text-align:right;
-color:#1d1b5d;
-margin-bottom:5px;
+  font-size:13px;
+  font-weight:700;
+  color:#e2e8f0;
+  display:flex;
+  justify-content:space-between;
+  margin-bottom:6px;
 }
 
 .progressBar{
-height:10px;
-background:#d8dceb;
-border-radius:20px;
-overflow:hidden;
+  height:8px;
+  background:rgba(255,255,255,0.12);
+  border-radius:10px;
+  overflow:hidden;
 }
 
 .progressFill{
-height:100%;
-width:0%;
-background:linear-gradient(90deg,#7c4dff,#3b82f6);
-transition:.4s;
+  height:100%;
+  width:0%;
+  background:linear-gradient(90deg, #6366f1, #38bdf8);
+  transition:width .4s ease;
 }
 
-/* GRID */
-
+/* 3x3 GRID */
 .grid{
-margin-top:15px;
-display:grid;
-grid-template-columns:repeat(3,1fr);
-grid-template-rows:repeat(3,1fr);
-gap:15px;
-height:560px;
+  display:grid;
+  grid-template-columns:repeat(3, 1fr);
+  grid-template-rows:repeat(3, 1fr);
+  gap:14px;
+  height:540px;
+  margin-top:12px;
 }
 
 .card{
-background:#dde3ef;
-border:none;
-border-left:8px solid #7c4dff;
-border-radius:12px;
-padding:18px;
-cursor:pointer;
-text-align:left;
-transition:.25s;
+  background:rgba(255,255,255,0.05);
+  border:1.5px solid rgba(255,255,255,0.1);
+  border-left:6px solid #6366f1;
+  border-radius:14px;
+  padding:16px 18px;
+  cursor:pointer;
+  text-align:left;
+  transition:all .22s ease;
+  display:flex;
+  flex-direction:column;
+  justify-content:space-between;
+  position:relative;
 }
 
 .card:hover{
-transform:translateY(-4px);
-box-shadow:0 8px 18px rgba(0,0,0,.12);
+  background:rgba(255,255,255,0.09);
+  transform:translateY(-3px);
+  border-color:rgba(255,255,255,0.25);
+  border-left-color:#818cf8;
+  box-shadow:0 8px 20px rgba(0,0,0,0.3);
 }
 
 .card.visited{
-border-left-color:#00c853;
+  border-left-color:#10b981;
+  background:rgba(16,185,129,0.06);
+}
+
+.card-top{
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-start;
+}
+
+.card-icon{
+  font-size:22px;
+  background:rgba(255,255,255,0.08);
+  width:42px;
+  height:42px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  border-radius:10px;
+  margin-bottom:8px;
+}
+
+.status-badge{
+  font-size:11px;
+  font-weight:700;
+  text-transform:uppercase;
+  letter-spacing:0.5px;
+  color:#94a3b8;
+  background:rgba(255,255,255,0.08);
+  padding:3px 8px;
+  border-radius:8px;
+}
+
+.card.visited .status-badge{
+  color:#10b981;
+  background:rgba(16,185,129,0.15);
 }
 
 .card h3{
-font-size:24px;
-font-weight:800;
-color:#1d1b5d;
-margin-bottom:12px;
+  font-size:18px;
+  font-weight:700;
+  color:#ffffff;
+  margin-bottom:4px;
+  line-height:1.2;
 }
 
 .card p{
-font-size:17px;
-line-height:1.4;
-color:#4b5563;
+  font-size:13.5px;
+  line-height:1.4;
+  color:#cbd5e1;
 }
 
-/* POPUP */
-
+/* MODAL OVERLAY */
 .overlay{
-position:absolute;
-inset:0;
-background:rgba(0,0,0,.65);
-display:none;
-z-index:100;
+  position:absolute;
+  inset:0;
+  background:rgba(15,23,42,0.75);
+  backdrop-filter:blur(4px);
+  display:none;
+  z-index:100;
 }
 
 .popup{
-position:absolute;
-top:50%;
-left:50%;
-transform:translate(-50%,-50%);
-width:700px;
-background:white;
-border-radius:18px;
-padding:30px;
-display:none;
-z-index:101;
-box-shadow:0 15px 40px rgba(0,0,0,.3);
+  position:absolute;
+  top:50%;
+  left:50%;
+  transform:translate(-50%,-50%);
+  width:650px;
+  background:#ffffff;
+  border-radius:20px;
+  padding:30px 34px;
+  display:none;
+  z-index:101;
+  box-shadow:0 20px 45px rgba(0,0,0,0.5);
+}
+
+.modal-header{
+  display:flex;
+  align-items:center;
+  gap:14px;
+  margin-bottom:12px;
+}
+
+.modal-icon{
+  width:48px;
+  height:48px;
+  border-radius:12px;
+  background:#e0e7ff;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:24px;
+  flex-shrink:0;
 }
 
 .badge{
-display:inline-block;
-padding:8px 14px;
-background:#eef2ff;
-border-radius:30px;
-color:#4f46e5;
-font-weight:700;
-margin-bottom:15px;
+  display:inline-block;
+  font-size:11px;
+  font-weight:700;
+  text-transform:uppercase;
+  letter-spacing:0.6px;
+  color:#4f46e5;
+  background:#eef2ff;
+  padding:3px 10px;
+  border-radius:12px;
 }
 
 .popupTitle{
-font-size:34px;
-font-weight:800;
-color:#1d1b5d;
-margin-bottom:10px;
+  font-size:24px;
+  font-weight:800;
+  color:#0f172a;
+  line-height:1.2;
 }
 
 .popupDesc{
-font-size:20px;
-color:#6b7280;
-margin-bottom:20px;
+  font-size:15px;
+  color:#475569;
+  line-height:1.45;
+  margin-bottom:14px;
 }
 
 .section{
-font-size:22px;
-font-weight:800;
-color:#1d1b5d;
-margin-bottom:10px;
+  font-size:13px;
+  font-weight:800;
+  color:#0f172a;
+  text-transform:uppercase;
+  letter-spacing:0.5px;
+  margin-bottom:6px;
 }
 
 .popup ul{
-padding-left:25px;
-margin-bottom:20px;
+  list-style:none;
+  display:flex;
+  flex-direction:column;
+  gap:6px;
+  margin-bottom:14px;
 }
 
 .popup li{
-font-size:18px;
-margin-bottom:8px;
-line-height:1.5;
+  font-size:14.5px;
+  color:#334155;
+  line-height:1.4;
+  display:flex;
+  align-items:flex-start;
+  gap:8px;
+}
+
+.popup li::before{
+  content:"✓";
+  color:#4f46e5;
+  font-weight:800;
+  font-size:13px;
 }
 
 .example{
-background:#f5f3ff;
-padding:15px;
-border-radius:12px;
-font-size:17px;
-line-height:1.5;
+  background:#f8fafc;
+  border-left:4px solid #6366f1;
+  padding:10px 14px;
+  border-radius:8px;
+  font-size:14px;
+  line-height:1.45;
+  color:#334155;
+  margin-bottom:18px;
 }
 
 .closeBtn{
-margin-top:20px;
-padding:12px 25px;
-border:none;
-border-radius:30px;
-background:#4f46e5;
-color:white;
-cursor:pointer;
-font-size:16px;
+  width:100%;
+  padding:12px;
+  border:none;
+  border-radius:10px;
+  background:#0f172a;
+  color:white;
+  font-size:15px;
+  font-weight:700;
+  cursor:pointer;
+  transition:background .2s;
 }
 
-/* COMPLETE */
+.closeBtn:hover{
+  background:#1e293b;
+}
 
+/* COMPLETE OVERLAY */
 .complete{
-position:absolute;
-inset:0;
-background:rgba(20,20,60,.96);
-display:none;
-justify-content:center;
-align-items:center;
-flex-direction:column;
-color:white;
-z-index:200;
+  position:absolute;
+  inset:0;
+  background:rgba(15,23,42,0.96);
+  display:none;
+  justify-content:center;
+  align-items:center;
+  flex-direction:column;
+  color:white;
+  z-index:200;
+  text-align:center;
+  padding:20px;
 }
 
 .complete h2{
-font-size:52px;
-margin-bottom:15px;
+  font-size:42px;
+  font-weight:800;
+  margin-bottom:10px;
 }
 
 .complete p{
-font-size:24px;
-margin-bottom:20px;
+  font-size:18px;
+  color:#cbd5e1;
+  max-width:600px;
+  line-height:1.5;
+  margin-bottom:20px;
 }
 
 .complete button{
-padding:12px 28px;
-border:none;
-border-radius:10px;
-background:#3b82f6;
-color:white;
-font-size:18px;
-cursor:pointer;
+  padding:12px 30px;
+  border:none;
+  border-radius:10px;
+  background:#10b981;
+  color:#064e3b;
+  font-size:17px;
+  font-weight:700;
+  cursor:pointer;
+  transition:.2s;
 }
 
+.complete button:hover{
+  transform:scale(1.04);
+}
 </style>
 </head>
 
 <body>
 
+<div id="slide-wrapper">
 <div id="slide">
 
-<div class="title">Burke Learning Agility Inventory</div>
-<div class="subtitle">Nine behavioral dimensions that can be measured and developed</div>
+  <div class="header">
+    <div class="title">Burke Learning Agility Inventory (Burke LAI)</div>
+    <div class="subtitle">Nine empirically measured behavioral dimensions for agile leadership</div>
 
-<div class="progressBox">
-<div class="progressLabel">
-Viewed: <span id="count">0</span>/9
+    <div class="progressBox">
+      <div class="progressLabel">
+        <span>Progress</span>
+        <span><span id="count">0</span>/9</span>
+      </div>
+      <div class="progressBar">
+        <div class="progressFill" id="progressFill"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="grid">
+
+    <div class="card" onclick="showInfo(0,this)">
+      <div class="card-top">
+        <div class="card-icon">🧩</div>
+        <span class="status-badge">Dimension 1</span>
+      </div>
+      <div>
+        <h3>Flexibility</h3>
+        <p>Welcomes alternative options and adapts rapidly when initial assumptions break down.</p>
+      </div>
+    </div>
+
+    <div class="card" onclick="showInfo(1,this)">
+      <div class="card-top">
+        <div class="card-icon">⚡</div>
+        <span class="status-badge">Dimension 2</span>
+      </div>
+      <div>
+        <h3>Speed</h3>
+        <p>Acts promptly to test ideas and maintain execution momentum without analysis paralysis.</p>
+      </div>
+    </div>
+
+    <div class="card" onclick="showInfo(2,this)">
+      <div class="card-top">
+        <div class="card-icon">🧪</div>
+        <span class="status-badge">Dimension 3</span>
+      </div>
+      <div>
+        <h3>Experimenting</h3>
+        <p>Pilots unproven methods and embraces ambiguity through disciplined trial-and-error.</p>
+      </div>
+    </div>
+
+    <div class="card" onclick="showInfo(3,this)">
+      <div class="card-top">
+        <div class="card-icon">🎯</div>
+        <span class="status-badge">Dimension 4</span>
+      </div>
+      <div>
+        <h3>Performance Risk</h3>
+        <p>Volunteers for challenging first-time assignments where success is not pre-scripted.</p>
+      </div>
+    </div>
+
+    <div class="card" onclick="showInfo(4,this)">
+      <div class="card-top">
+        <div class="card-icon">💬</div>
+        <span class="status-badge">Dimension 5</span>
+      </div>
+      <div>
+        <h3>Interpersonal Risk</h3>
+        <p>Leans directly into difficult conversations, productive debate, and conflict resolution.</p>
+      </div>
+    </div>
+
+    <div class="card" onclick="showInfo(5,this)">
+      <div class="card-top">
+        <div class="card-icon">🤝</div>
+        <span class="status-badge">Dimension 6</span>
+      </div>
+      <div>
+        <h3>Collaborating</h3>
+        <p>Crosses functional silos to leverage diverse competencies and co-create solutions.</p>
+      </div>
+    </div>
+
+    <div class="card" onclick="showInfo(6,this)">
+      <div class="card-top">
+        <div class="card-icon">🔍</div>
+        <span class="status-badge">Dimension 7</span>
+      </div>
+      <div>
+        <h3>Information Gathering</h3>
+        <p>Scans wide, non-traditional channels to uncover nascent patterns and insights.</p>
+      </div>
+    </div>
+
+    <div class="card" onclick="showInfo(7,this)">
+      <div class="card-top">
+        <div class="card-icon">👂</div>
+        <span class="status-badge">Dimension 8</span>
+      </div>
+      <div>
+        <h3>Feedback Seeking</h3>
+        <p>Proactively asks stakeholders for critical appraisal to isolate real blind spots.</p>
+      </div>
+    </div>
+
+    <div class="card" onclick="showInfo(8,this)">
+      <div class="card-top">
+        <div class="card-icon">🪞</div>
+        <span class="status-badge">Dimension 9</span>
+      </div>
+      <div>
+        <h3>Reflecting</h3>
+        <p>Critically assesses successes and setbacks to systematically adjust future actions.</p>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- POPUP MODAL -->
+  <div class="overlay" id="overlay"></div>
+
+  <div class="popup" id="popup">
+    <div class="modal-header">
+      <div class="modal-icon" id="modalIcon">🧩</div>
+      <div>
+        <div class="badge">Burke LAI Assessment Dimension</div>
+        <div class="popupTitle" id="titleText"></div>
+      </div>
+    </div>
+
+    <div class="popupDesc" id="descText"></div>
+
+    <div class="section">Observable Behavioral Indicators</div>
+    <ul id="behaviorList"></ul>
+
+    <div class="section">Workplace Scenario</div>
+    <div class="example" id="exampleText"></div>
+
+    <button class="closeBtn" onclick="closePopup()">Continue Review</button>
+  </div>
+
+  <!-- COMPLETION SCREEN -->
+  <div class="complete" id="complete">
+    <div style="font-size:70px; margin-bottom:10px;">🏆</div>
+    <h2>Inventory Review Complete!</h2>
+    <p>You explored all 9 dimensions of the Burke Learning Agility Inventory. Leaders who score high across these behaviors consistently outperform in high-uncertainty environments.</p>
+    <button onclick="location.reload()">Explore Again</button>
+  </div>
+
 </div>
-
-<div class="progressBar">
-<div class="progressFill" id="progressFill"></div>
-</div>
-</div>
-
-<div class="grid">
-
-<button class="card" onclick="showInfo(0,this)">
-<h3>Flexibility</h3>
-<p>Openness to new ideas and solutions</p>
-</button>
-
-<button class="card" onclick="showInfo(1,this)">
-<h3>Speed</h3>
-<p>Acting quickly to test what works</p>
-</button>
-
-<button class="card" onclick="showInfo(2,this)">
-<h3>Experimenting</h3>
-<p>Trying approaches with unknowns</p>
-</button>
-
-<button class="card" onclick="showInfo(3,this)">
-<h3>Performance Risk-Taking</h3>
-<p>Stepping beyond comfort zones</p>
-</button>
-
-<button class="card" onclick="showInfo(4,this)">
-<h3>Interpersonal Risk-Taking</h3>
-<p>Leaning into tough conversations</p>
-</button>
-
-<button class="card" onclick="showInfo(5,this)">
-<h3>Collaborating</h3>
-<p>Seeking ways to work together</p>
-</button>
-
-<button class="card" onclick="showInfo(6,this)">
-<h3>Information Gathering</h3>
-<p>Using diverse sources frequently</p>
-</button>
-
-<button class="card" onclick="showInfo(7,this)">
-<h3>Feedback Seeking</h3>
-<p>Asking others for honest input</p>
-</button>
-
-<button class="card" onclick="showInfo(8,this)">
-<h3>Reflecting</h3>
-<p>Evaluating one's own actions</p>
-</button>
-
-</div>
-
-<div class="overlay" id="overlay"></div>
-
-<div class="popup" id="popup">
-
-<div class="badge">Learning Agility Dimension</div>
-
-<div class="popupTitle" id="titleText"></div>
-
-<div class="popupDesc" id="descText"></div>
-
-<div class="section">Key Behaviors</div>
-
-<ul id="behaviorList"></ul>
-
-<div class="section">Workplace Example</div>
-
-<div class="example" id="exampleText"></div>
-
-<button class="closeBtn" onclick="closePopup()">
-Continue
-</button>
-
-</div>
-
-<div class="complete" id="complete">
-
-<h2>🏆 Learning Agility Master</h2>
-
-<p>
-You explored all 9 dimensions.
-</p>
-
-<button onclick="location.reload()">
-Play Again
-</button>
-
-</div>
-
 </div>
 
 <script>
+function scaleSlide() {
+  const slide = document.getElementById('slide');
+  const targetW = 1280;
+  const targetH = 720;
+  const scale = Math.min(window.innerWidth / targetW, window.innerHeight / targetH);
+  slide.style.transform = `scale(${scale})`;
+}
+window.addEventListener('resize', scaleSlide);
+window.addEventListener('DOMContentLoaded', scaleSlide);
 
-const data=[
-
-["Flexibility","Openness to new ideas and solutions",
-["Adapts quickly","Considers alternatives","Welcomes change"],
-"A leader changes direction after finding a better solution."],
-
-["Speed","Acting quickly to test what works",
-["Makes timely decisions","Acts rapidly","Maintains momentum"],
-"A team launches a pilot within days."],
-
-["Experimenting","Trying approaches with unknowns",
-["Tests ideas","Learns by doing","Accepts uncertainty"],
-"A manager pilots a new process."],
-
-["Performance Risk-Taking","Stepping beyond comfort zones",
-["Accepts challenges","Pushes limits","Builds confidence"],
-"An employee volunteers to lead a project."],
-
-["Interpersonal Risk-Taking","Leaning into tough conversations",
-["Gives feedback","Addresses conflict","Builds trust"],
-"A supervisor discusses performance concerns."],
-
-["Collaborating","Seeking ways to work together",
-["Builds partnerships","Shares knowledge","Values viewpoints"],
-"Teams work together on a customer issue."],
-
-["Information Gathering","Using diverse sources frequently",
-["Researches widely","Seeks perspectives","Questions assumptions"],
-"A leader gathers employee and customer insights."],
-
-["Feedback Seeking","Asking others for honest input",
-["Requests feedback","Listens openly","Improves continuously"],
-"An employee asks peers for suggestions."],
-
-["Reflecting","Evaluating one's own actions",
-["Reviews outcomes","Identifies lessons","Adjusts behavior"],
-"A team conducts a lessons learned review."]
+const data = [
+  {
+    icon: "🧩",
+    title: "Flexibility",
+    desc: "The willingness to adapt quickly when situations shift and pivot away from strategies that no longer produce outcomes.",
+    behaviors: [
+      "Readily shifts operational course without defensiveness when data invalidates a plan.",
+      "Considers multiple competing perspectives before locking in an execution strategy.",
+      "Reframes unexpected changes as tactical opportunities rather than roadblocks."
+    ],
+    example: "When supply chain tariffs suddenly disrupt product margins, an operations manager abandons the annual procurement plan and sources domestic supplier alternatives within two weeks."
+  },
+  {
+    icon: "⚡",
+    title: "Speed",
+    desc: "The ability to act with urgency, avoiding analysis paralysis while keeping operational decision-making crisp.",
+    behaviors: [
+      "Reaches sound 80% confidence decisions rapidly rather than delaying for perfection.",
+      "Advances projects through short sprint milestones to maintain momentum.",
+      "Executes quick course-corrections immediately when progress stalls."
+    ],
+    example: "Rather than spending six months conducting customer surveys, a team lead releases a lightweight prototype within 72 hours to gather live behavioral metrics."
+  },
+  {
+    icon: "🧪",
+    title: "Experimenting",
+    desc: "Engaging in unproven initiatives and novel tests where positive outcomes cannot be guaranteed.",
+    behaviors: [
+      "Routinely pilots unfamiliar workflows to find productivity breakthroughs.",
+      "Treats early implementation mistakes as essential diagnostic intelligence.",
+      "Challenges team conventions: 'Why do we continue doing it this way?'"
+    ],
+    example: "A marketing manager tests an interactive AI-driven onboarding sequence on 10% of new signups, using outcome data to overhaul their entire retention roadmap."
+  },
+  {
+    icon: "🎯",
+    title: "Performance Risk-Taking",
+    desc: "Volunteering for high-stakes, first-time assignments with significant visibility and personal accountability.",
+    behaviors: [
+      "Actively raises hand for ambiguity-heavy projects outside traditional domain expertise.",
+      "Manages the pressure of potential public failure without retreating into comfort zones.",
+      "Transforms high-pressure assignments into accelerated career growth opportunities."
+    ],
+    example: "A senior software engineer steps into an interim Director role during an unexpected leadership vacancy, successfully coordinating an enterprise product launch."
+  },
+  {
+    icon: "💬",
+    title: "Interpersonal Risk-Taking",
+    desc: "Directly confronting interpersonal conflict, giving frank feedback, and addressing political sensitivities.",
+    behaviors: [
+      "Respectfully challenges executive consensus when crucial operational risks are ignored.",
+      "Addresses peer friction and performance bottlenecks early instead of avoiding conflict.",
+      "Admits personal mistakes publicly to establish team psychological safety."
+    ],
+    example: "During a cross-functional steerco, a project manager diplomatically challenges the VP's unrealistic launch date, presenting data that averts an operational bottleneck."
+  },
+  {
+    icon: "🤝",
+    title: "Collaborating",
+    desc: "Leveraging diverse functional disciplines and building alignment across department boundaries.",
+    behaviors: [
+      "Proactively partners across organizational silos to solve shared problems.",
+      "Creates working conditions where divergent opinions are systematically evaluated.",
+      "Shares critical team resources and learnings unselfishly across business units."
+    ],
+    example: "A finance lead builds a joint task force with engineering and sales to rework SaaS pricing tiers, resolving billing disputes before rollout."
+  },
+  {
+    icon: "🔍",
+    title: "Information Gathering",
+    desc: "Continually scanning diverse and unconventional information sources to anticipate emerging trends.",
+    behaviors: [
+      "Consults external industry benchmarks, academic research, and competitor trends.",
+      "Regularly queries frontline employees and clients directly to uncover hidden friction points.",
+      "Synthesizes disparate findings into practical recommendations for the team."
+    ],
+    example: "An HR manager studies operational logisticians and sports psychology playbooks to re-architect their technical team's shift-work patterns."
+  },
+  {
+    icon: "👂",
+    title: "Feedback Seeking",
+    desc: "Consistently soliciting candid critiques and performance appraisals from peers, managers, and subordinates.",
+    behaviors: [
+      "Actively probes for critical feedback rather than generic praise.",
+      "Listens non-defensively during performance critiques and asks clarifying questions.",
+      "Implements tangible behavioral changes based on peer and stakeholder input."
+    ],
+    example: "Following an intense cross-department rollout, a director conducts an anonymous 360-review specifically asking: 'What did my leadership style slow down or complicate?'"
+  },
+  {
+    icon: "🪞",
+    title: "Reflecting",
+    desc: "Deliberately pausing to analyze experiences, assess underlying causes, and extract durable principles.",
+    behaviors: [
+      "Conducts rigorous, blameless post-mortems on both successful and failed initiatives.",
+      "Examines personal decision-making biases after major project milestones.",
+      "Documents key operational takeaways so organizational knowledge is not lost."
+    ],
+    example: "After a key client account is lost, an account executive writes an objective breakdown analyzing which conversational signals and early flags were overlooked."
+  }
 ];
 
-let visited=[];
+let visited = [];
 
-function showInfo(i,card){
+function showInfo(i, card) {
+  const item = data[i];
 
-document.getElementById("titleText").innerHTML=data[i][0];
-document.getElementById("descText").innerHTML=data[i][1];
+  document.getElementById("modalIcon").innerText = item.icon;
+  document.getElementById("titleText").innerText = item.title;
+  document.getElementById("descText").innerText = item.desc;
 
-let list="";
-data[i][2].forEach(item=>{
-list+=`<li>${item}</li>`;
-});
+  let list = "";
+  item.behaviors.forEach(b => {
+    list += `<li>${b}</li>`;
+  });
+  document.getElementById("behaviorList").innerHTML = list;
+  document.getElementById("exampleText").innerText = item.example;
 
-document.getElementById("behaviorList").innerHTML=list;
-document.getElementById("exampleText").innerHTML=data[i][3];
+  document.getElementById("popup").style.display = "block";
+  document.getElementById("overlay").style.display = "block";
 
-document.getElementById("popup").style.display="block";
-document.getElementById("overlay").style.display="block";
+  if (!visited.includes(i)) {
+    visited.push(i);
+    card.classList.add("visited");
 
-if(!visited.includes(i)){
+    document.getElementById("count").innerText = visited.length;
+    document.getElementById("progressFill").style.width = (visited.length / 9 * 100) + "%";
 
-visited.push(i);
-
-card.classList.add("visited");
-
-document.getElementById("count").innerHTML=visited.length;
-
-document.getElementById("progressFill").style.width=
-(visited.length/9*100)+"%";
-
-if(visited.length===9){
-
-setTimeout(()=>{
-document.getElementById("complete").style.display="flex";
-},800);
-
+    if (visited.length === 9) {
+      setTimeout(() => {
+        document.getElementById("complete").style.display = "flex";
+      }, 700);
+    }
+  }
 }
 
+function closePopup() {
+  document.getElementById("popup").style.display = "none";
+  document.getElementById("overlay").style.display = "none";
 }
-
-}
-
-function closePopup(){
-
-document.getElementById("popup").style.display="none";
-document.getElementById("overlay").style.display="none";
-
-}
-
 </script>
 
 </body>
