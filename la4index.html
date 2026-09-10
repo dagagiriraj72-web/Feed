@@ -7,377 +7,600 @@
 
 <style>
 *{
-margin:0;
-padding:0;
-box-sizing:border-box;
-font-family:"Segoe UI",sans-serif;
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family:"Segoe UI", -apple-system, BlinkMacSystemFont, Roboto, sans-serif;
 }
 
 body{
-background:#f3f4f8;
-overflow:hidden;
-display:flex;
-justify-content:center;
-align-items:center;
-height:100vh;
+  background:#f0f2f7;
+  width:100vw;
+  height:100vh;
+  overflow:hidden;
+  display:flex;
+  justify-content:center;
+  align-items:center;
 }
 
+#slide-wrapper{
+  width:100%;
+  height:100%;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+}
+
+/* 16:9 canvas with absolute bounds and dynamic JS transform scaling */
 #slide{
-width:1280px;
-height:720px;
-background:#f3f4f8;
-position:relative;
-overflow:hidden;
-padding:20px 30px;
+  width:1280px;
+  height:720px;
+  background:#f0f2f7;
+  position:relative;
+  overflow:hidden;
+  padding:24px 36px;
+  flex-shrink:0;
+  transform-origin:center center;
+  display:flex;
+  flex-direction:column;
+  justify-content:space-between;
+}
+
+/* HEADER */
+.header-area{
+  position:relative;
+  text-align:center;
+  padding-bottom:4px;
 }
 
 .title{
-font-size:42px;
-font-weight:700;
-color:#1d1b5d;
-text-align:center;
-margin-bottom:10px;
+  font-size:35px;
+  font-weight:800;
+  color:#191847;
+  letter-spacing:-0.5px;
 }
 
 .subtitle{
-text-align:center;
-font-size:18px;
-color:#6b7280;
-margin-bottom:15px;
+  font-size:15px;
+  color:#5d657b;
+  margin-top:3px;
 }
 
 .progress{
-position:absolute;
-top:20px;
-right:30px;
-background:white;
-padding:8px 16px;
-border-radius:12px;
-font-weight:600;
-box-shadow:0 3px 10px rgba(0,0,0,.08);
+  position:absolute;
+  top:2px;
+  right:0;
+  background:#ffffff;
+  padding:7px 16px;
+  border-radius:20px;
+  font-weight:700;
+  font-size:14px;
+  color:#191847;
+  box-shadow:0 3px 10px rgba(25,24,71,0.08);
+  border:1px solid #e2e6f0;
 }
 
+/* MAIN LAYOUT */
 .main{
-display:flex;
-gap:20px;
-height:570px;
+  display:flex;
+  gap:22px;
+  height:590px;
 }
 
+/* LEFT PANEL */
 .leftPanel{
-width:42%;
-background:#eceaf8;
-border-radius:18px;
-padding:25px;
-display:flex;
-flex-direction:column;
-justify-content:center;
+  width:43%;
+  background:linear-gradient(160deg, #ece9f8 0%, #f4f2fd 100%);
+  border:1.5px solid #ded9f5;
+  border-radius:20px;
+  padding:28px 26px;
+  display:flex;
+  flex-direction:column;
+  justify-content:space-between;
+}
+
+.stat-badge{
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  background:#5851df;
+  color:white;
+  font-size:12px;
+  font-weight:700;
+  text-transform:uppercase;
+  letter-spacing:0.6px;
+  padding:5px 12px;
+  border-radius:12px;
+  align-self:flex-start;
 }
 
 .leftPanel h2{
-font-size:28px;
-line-height:1.35;
-color:#1d1b5d;
-margin-bottom:20px;
+  font-size:23px;
+  line-height:1.32;
+  color:#191847;
+  font-weight:800;
+  margin-top:10px;
 }
 
 .leftPanel p{
-font-size:20px;
-line-height:1.5;
-color:#4b5563;
-margin-bottom:15px;
+  font-size:15px;
+  line-height:1.45;
+  color:#4f566b;
+  margin-top:6px;
 }
 
 .leftPanel ul{
-padding-left:25px;
+  list-style:none;
+  display:flex;
+  flex-direction:column;
+  gap:9px;
+  margin-top:4px;
 }
 
 .leftPanel li{
-font-size:18px;
-line-height:1.6;
-margin-bottom:8px;
-color:#4b5563;
+  font-size:14.5px;
+  line-height:1.38;
+  color:#3c4257;
+  display:flex;
+  align-items:flex-start;
+  gap:9px;
 }
 
+.leftPanel li::before{
+  content:"✔";
+  color:#5851df;
+  font-weight:800;
+  font-size:13px;
+  margin-top:1px;
+  flex-shrink:0;
+}
+
+.research-callout{
+  background:white;
+  border-left:4px solid #5851df;
+  border-radius:10px;
+  padding:10px 14px;
+  font-size:13px;
+  color:#475069;
+  line-height:1.4;
+}
+
+.research-callout strong{
+  color:#191847;
+}
+
+/* RIGHT PANEL */
 .rightPanel{
-width:58%;
-display:flex;
-flex-direction:column;
+  width:57%;
+  display:flex;
+  flex-direction:column;
+  justify-content:space-between;
+}
+
+.rightHeader{
+  display:flex;
+  justify-content:space-between;
+  align-items:baseline;
+  margin-bottom:4px;
 }
 
 .rightTitle{
-font-size:32px;
-font-weight:700;
-color:#1d1b5d;
-margin-bottom:20px;
-text-align:center;
+  font-size:24px;
+  font-weight:800;
+  color:#191847;
+}
+
+.rightHint{
+  font-size:13px;
+  color:#6b7385;
+  font-style:italic;
+}
+
+.factor-list{
+  display:flex;
+  flex-direction:column;
+  gap:11px;
 }
 
 .factor{
-background:white;
-height:95px;
-border-radius:16px;
-margin-bottom:15px;
-padding:15px 20px;
-cursor:pointer;
-transition:.3s;
-box-shadow:0 3px 10px rgba(0,0,0,.08);
-display:flex;
-flex-direction:column;
-justify-content:center;
+  background:#ffffff;
+  border-radius:16px;
+  padding:14px 20px;
+  cursor:pointer;
+  transition:all .22s ease;
+  box-shadow:0 3px 8px rgba(25,24,71,0.05);
+  border:2px solid #eef0f6;
+  position:relative;
 }
 
 .factor:hover{
-transform:translateX(8px);
+  transform:translateX(6px);
+  border-color:#b4b0f4;
+  box-shadow:0 6px 16px rgba(88,81,223,0.12);
 }
 
 .factor.visited{
-border:3px solid #34d399;
+  border-color:#2ecc71;
+  background:#fafdfe;
+}
+
+.factor-top{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:7px;
 }
 
 .label{
-font-size:22px;
-font-weight:700;
-color:#1d1b5d;
-margin-bottom:8px;
+  font-size:18px;
+  font-weight:700;
+  color:#191847;
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+
+.pct{
+  font-size:14px;
+  font-weight:700;
+  color:#5d657b;
 }
 
 .bar{
-height:16px;
-background:#dfe3ef;
-border-radius:20px;
-overflow:hidden;
+  height:11px;
+  background:#e5e8f2;
+  border-radius:10px;
+  overflow:hidden;
 }
 
 .fill{
-height:100%;
+  height:100%;
+  border-radius:10px;
 }
 
-.f1{width:95%;background:linear-gradient(90deg,#5b5eff,#7a5cff);}
-.f2{width:55%;background:#5f97e0;}
-.f3{width:45%;background:#9ca3af;}
-.f4{width:35%;background:#b3bac8;}
+.f1{width:92%;background:linear-gradient(90deg,#5851df,#7b4fe3);}
+.f2{width:54%;background:#4a8deb;}
+.f3{width:42%;background:#9aa3b6;}
+.f4{width:28%;background:#b9c0cf;}
 
+.factor-sub{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-top:6px;
+  font-size:12.5px;
+  color:#737b91;
+}
+
+.view-tag{
+  color:#5851df;
+  font-weight:700;
+  font-size:12px;
+}
+
+/* POPUP MODAL */
 .overlay{
-position:absolute;
-inset:0;
-background:rgba(0,0,0,.6);
-display:none;
-z-index:100;
+  position:absolute;
+  inset:0;
+  background:rgba(15,18,45,0.65);
+  backdrop-filter:blur(3px);
+  display:none;
+  z-index:100;
 }
 
 .popup{
-position:absolute;
-top:50%;
-left:50%;
-transform:translate(-50%,-50%);
-width:700px;
-background:white;
-border-radius:20px;
-padding:30px;
-display:none;
-z-index:101;
-text-align:center;
+  position:absolute;
+  top:50%;
+  left:50%;
+  transform:translate(-50%,-50%);
+  width:670px;
+  background:#ffffff;
+  border-radius:22px;
+  padding:32px 34px;
+  display:none;
+  z-index:101;
+  box-shadow:0 18px 45px rgba(10,13,35,0.35);
+}
+
+.popup-tag{
+  font-size:12px;
+  font-weight:700;
+  text-transform:uppercase;
+  letter-spacing:0.6px;
+  color:#5851df;
+  margin-bottom:6px;
 }
 
 .popup h2{
-font-size:32px;
-color:#1d1b5d;
-margin-bottom:15px;
+  font-size:26px;
+  font-weight:800;
+  color:#191847;
+  margin-bottom:12px;
 }
 
 .popup p{
-font-size:21px;
-line-height:1.6;
-color:#444;
+  font-size:16px;
+  line-height:1.52;
+  color:#434b60;
+  margin-bottom:14px;
+}
+
+.popup-box{
+  background:#f4f6fb;
+  border-left:4px solid #5851df;
+  border-radius:8px;
+  padding:12px 16px;
+  margin-bottom:18px;
+}
+
+.popup-box h4{
+  font-size:13px;
+  color:#191847;
+  font-weight:700;
+  text-transform:uppercase;
+  letter-spacing:0.5px;
+  margin-bottom:4px;
+}
+
+.popup-box p{
+  font-size:14.5px;
+  line-height:1.42;
+  color:#444d63;
+  margin:0;
 }
 
 .popup button{
-margin-top:20px;
-padding:12px 30px;
-border:none;
-border-radius:30px;
-background:#5b5eff;
-color:white;
-font-size:18px;
-cursor:pointer;
+  width:100%;
+  padding:12px;
+  border:none;
+  border-radius:12px;
+  background:#191847;
+  color:#ffffff;
+  font-size:16px;
+  font-weight:700;
+  cursor:pointer;
+  transition:background .2s;
 }
 
+.popup button:hover{
+  background:#29276f;
+}
+
+/* COMPLETION OVERLAY */
 .complete{
-position:absolute;
-inset:0;
-background:rgba(20,20,60,.96);
-display:none;
-justify-content:center;
-align-items:center;
-flex-direction:column;
-z-index:200;
-color:white;
-text-align:center;
+  position:absolute;
+  inset:0;
+  background:rgba(15,17,44,0.96);
+  display:none;
+  justify-content:center;
+  align-items:center;
+  flex-direction:column;
+  z-index:200;
+  color:white;
+  text-align:center;
+  padding:20px;
 }
 
 .complete h2{
-font-size:52px;
-margin-bottom:15px;
+  font-size:44px;
+  font-weight:800;
+  margin-bottom:10px;
 }
 
 .complete p{
-font-size:24px;
-margin-bottom:20px;
+  font-size:20px;
+  color:#c7cbe3;
+  max-width:620px;
+  line-height:1.45;
+  margin-bottom:22px;
 }
 
 .complete button{
-padding:12px 30px;
-border:none;
-border-radius:10px;
-background:#5b5eff;
-color:white;
-font-size:18px;
-cursor:pointer;
+  padding:13px 32px;
+  border:none;
+  border-radius:10px;
+  background:#2ecc71;
+  color:#072b15;
+  font-size:17px;
+  font-weight:700;
+  cursor:pointer;
+  transition:.2s;
+}
+
+.complete button:hover{
+  transform:scale(1.04);
 }
 </style>
 </head>
 
 <body>
 
+<div id="slide-wrapper">
 <div id="slide">
 
-<div class="title">The Leadership Predictor</div>
-<div class="subtitle">Click each factor to discover its influence on executive success</div>
+  <div class="header-area">
+    <div class="title">The Leadership Predictor</div>
+    <div class="subtitle">Click each factor below to analyze empirical predictive validity & real workplace examples</div>
+    <div class="progress">Explored: <span id="count">0</span>/4</div>
+  </div>
 
-<div class="progress">
-Viewed: <span id="count">0</span>/4
+  <div class="main">
+
+    <!-- LEFT PANEL -->
+    <div class="leftPanel">
+      <div>
+        <div class="stat-badge">⭐ Empirical Finding</div>
+        <h2>Learning Agility out-predicts IQ and Experience for executive career success.</h2>
+        <p>Decades of leadership research demonstrate that agile leaders do not rely strictly on static past recipes:</p>
+      </div>
+
+      <ul>
+        <li>Quickly extract lessons from unfamiliar & high-stakes situations</li>
+        <li>Rapidly adapt their mental models when operating without playbooks</li>
+        <li>Solicit corrective feedback and apply it without defensiveness</li>
+        <li>Consistently outperform peers when facing first-time market shifts</li>
+      </ul>
+
+      <div class="research-callout">
+        <strong>Executive Reality:</strong> Past track records predict performance only when conditions repeat. Learning agility predicts performance when conditions change.
+      </div>
+    </div>
+
+    <!-- RIGHT PANEL -->
+    <div class="rightPanel">
+      <div class="rightHeader">
+        <div class="rightTitle">Predictive Power for Future Success</div>
+        <div class="rightHint">Click a bar to see case studies</div>
+      </div>
+
+      <div class="factor-list">
+
+        <div class="factor" id="f1" onclick="showInfo(1)">
+          <div class="factor-top">
+            <div class="label">🚀 Learning Agility</div>
+            <div class="pct">Highest Predictor</div>
+          </div>
+          <div class="bar"><div class="fill f1"></div></div>
+          <div class="factor-sub">
+            <span>Adaptability in dynamic & unfamiliar conditions</span>
+            <span class="view-tag">Analyze Case →</span>
+          </div>
+        </div>
+
+        <div class="factor" id="f2" onclick="showInfo(2)">
+          <div class="factor-top">
+            <div class="label">📚 Past Experience</div>
+            <div class="pct">Moderate Predictor</div>
+          </div>
+          <div class="bar"><div class="fill f2"></div></div>
+          <div class="factor-sub">
+            <span>Historical tenure and repetitive domain mastery</span>
+            <span class="view-tag">Analyze Case →</span>
+          </div>
+        </div>
+
+        <div class="factor" id="f3" onclick="showInfo(3)">
+          <div class="factor-top">
+            <div class="label">🧠 IQ / Cognitive Ability</div>
+            <div class="pct">Conditional Threshold</div>
+          </div>
+          <div class="bar"><div class="fill f3"></div></div>
+          <div class="factor-sub">
+            <span>Raw problem-solving & information processing speed</span>
+            <span class="view-tag">Analyze Case →</span>
+          </div>
+        </div>
+
+        <div class="factor" id="f4" onclick="showInfo(4)">
+          <div class="factor-top">
+            <div class="label">🎓 Education Level</div>
+            <div class="pct">Weak Predictor</div>
+          </div>
+          <div class="bar"><div class="fill f4"></div></div>
+          <div class="factor-sub">
+            <span>Formal credentials, degrees, and academic pedagogy</span>
+            <span class="view-tag">Analyze Case →</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+
+  <!-- POPUP MODAL -->
+  <div class="overlay" id="overlay"></div>
+
+  <div class="popup" id="popup">
+    <div class="popup-tag" id="popTag"></div>
+    <h2 id="popTitle"></h2>
+    <p id="popText"></p>
+    <div class="popup-box">
+      <h4>Workplace Scenario & Example</h4>
+      <p id="popExample"></p>
+    </div>
+    <button onclick="closePopup()">Continue Review</button>
+  </div>
+
+  <!-- COMPLETION SCREEN -->
+  <div class="complete" id="complete">
+    <div style="font-size:70px; margin-bottom:10px;">🏆</div>
+    <h2>Predictor Master Unlocked!</h2>
+    <p>You reviewed all four leadership predictors and their empirical real-world impact. You understand why adaptive agility outperforms traditional pedigrees.</p>
+    <button onclick="location.reload()">Explore Again</button>
+  </div>
+
 </div>
-
-<div class="main">
-
-<div class="leftPanel">
-
-<h2>
-Learning agility surpasses intelligence and education as the most reliable indicator of executive success.
-</h2>
-
-<p>
-Three decades of research show that learning-agile leaders:
-</p>
-
-<ul>
-<li>Master new roles faster and more completely</li>
-<li>Derive more meaning from experiences</li>
-<li>Seek challenges and feedback continuously</li>
-<li>Outperform peers in unfamiliar situations</li>
-</ul>
-
-</div>
-
-<div class="rightPanel">
-
-<div class="rightTitle">
-Predictive Power of Success Factors
-</div>
-
-<div class="factor" id="f1" onclick="showInfo(1)">
-<div class="label">🚀 Learning Agility</div>
-<div class="bar"><div class="fill f1"></div></div>
-</div>
-
-<div class="factor" id="f2" onclick="showInfo(2)">
-<div class="label">📚 Past Experience</div>
-<div class="bar"><div class="fill f2"></div></div>
-</div>
-
-<div class="factor" id="f3" onclick="showInfo(3)">
-<div class="label">🧠 IQ / Intelligence</div>
-<div class="bar"><div class="fill f3"></div></div>
-</div>
-
-<div class="factor" id="f4" onclick="showInfo(4)">
-<div class="label">🎓 Education Level</div>
-<div class="bar"><div class="fill f4"></div></div>
-</div>
-
-</div>
-
-</div>
-
-<div class="overlay" id="overlay"></div>
-
-<div class="popup" id="popup">
-<h2 id="popTitle"></h2>
-<p id="popText"></p>
-<button onclick="closePopup()">Continue</button>
-</div>
-
-<div class="complete" id="complete">
-<h2>🏆 Leadership Predictor Master</h2>
-<p>You explored all four success predictors.</p>
-<button onclick="location.reload()">Play Again</button>
-</div>
-
 </div>
 
 <script>
-
-const info={
-
-1:{
-title:"Learning Agility",
-text:"Research consistently shows Learning Agility is the strongest predictor of leadership success because it measures how effectively leaders learn, adapt, and perform in unfamiliar situations."
-},
-
-2:{
-title:"Past Experience",
-text:"Experience helps, but success depends on how much learning a leader extracts from those experiences rather than the number of years accumulated."
-},
-
-3:{
-title:"IQ / Intelligence",
-text:"Intelligence contributes to performance, but it is less predictive than adaptability when leaders face ambiguity, change, and first-time challenges."
-},
-
-4:{
-title:"Education Level",
-text:"Formal education builds knowledge, but it is not a strong predictor of leadership success compared to the ability to learn and adapt continuously."
+// Auto-scale handler to guarantee exact 16:9 containment in any Storyline iframe
+function scaleSlide() {
+  const slide = document.getElementById('slide');
+  const targetW = 1280;
+  const targetH = 720;
+  const scale = Math.min(window.innerWidth / targetW, window.innerHeight / targetH);
+  slide.style.transform = `scale(${scale})`;
 }
+window.addEventListener('resize', scaleSlide);
+window.addEventListener('DOMContentLoaded', scaleSlide);
 
+const info = {
+  1: {
+    tag: "Primary Indicator of High Potentials",
+    title: "Learning Agility",
+    text: "Longitudinal research (Lombardo & Eichinger, Korn Ferry) demonstrates that learning agility is the single strongest indicator of long-term executive success. It measures how effectively someone navigates unfamiliar territory where no rulebook exists.",
+    example: "A VP of Sales transitions into COO overseeing software engineering and supply chains. Rather than imposing sales frameworks, they rapidly interview engineers, decipher constraints, iterate operational protocols, and lead the division to record profitability within 9 months."
+  },
+  2: {
+    tag: "Useful Baseline, Fragile in Novel Situations",
+    title: "Past Experience",
+    text: "Years on the job correlate well with immediate performance in static, identical roles. However, when the business landscape pivots, over-reliance on past experience often leads to cognitive rigidity—trying to solve tomorrow's problems with yesterday's tools.",
+    example: "A retail executive with 20 years of stellar brick-and-mortar success is hired to run an omnichannel brand. Insisting on traditional store real estate tactics while ignoring digital consumer shifts leads to lost market share and organizational derailing."
+  },
+  3: {
+    tag: "Necessary Threshold, Not Sufficient on Its Own",
+    title: "IQ / General Cognitive Ability",
+    text: "High IQ guarantees rapid data ingestion and analytical speed, functioning as a valuable baseline. However, without emotional resilience, people agility, and behavioral adaptability, intellectual horse-power often stalls in high-friction political environments.",
+    example: "A brilliant Chief Data Scientist develops mathematically optimal forecasting models, but rejects user feedback from regional managers as 'statistically unsophisticated'. As a result, field teams refuse adoption, rendering the project ineffective."
+  },
+  4: {
+    tag: "Poor Long-Term Indicator",
+    title: "Education Level & Pedigree",
+    text: "Graduating from an elite institution demonstrates discipline, early networking, and foundational theory. However, empirical studies show near-zero correlation between advanced degrees and executive adaptability or crisis resolution ability.",
+    example: "Two leaders manage parallel turnaround plants. The leader with multiple Ivy-League degrees stalls waiting for complete academic market reports, while the self-taught plant head walks the factory floor, runs daily tests with line workers, and restores yield 6 weeks faster."
+  }
 };
 
-let viewed=[];
+let viewed = [];
 
 function showInfo(id){
+  const data = info[id];
+  document.getElementById("popTag").innerText = data.tag;
+  document.getElementById("popTitle").innerText = data.title;
+  document.getElementById("popText").innerText = data.text;
+  document.getElementById("popExample").innerText = data.example;
 
-document.getElementById("popTitle").innerHTML=info[id].title;
-document.getElementById("popText").innerHTML=info[id].text;
+  document.getElementById("overlay").style.display = "block";
+  document.getElementById("popup").style.display = "block";
 
-document.getElementById("overlay").style.display="block";
-document.getElementById("popup").style.display="block";
+  if(!viewed.includes(id)){
+    viewed.push(id);
+    document.getElementById("f" + id).classList.add("visited");
+    document.getElementById("count").innerText = viewed.length;
 
-if(!viewed.includes(id)){
-
-viewed.push(id);
-
-document.getElementById("f"+id).classList.add("visited");
-
-document.getElementById("count").innerHTML=viewed.length;
-
-if(viewed.length===4){
-
-setTimeout(()=>{
-document.getElementById("complete").style.display="flex";
-},600);
-
-}
-
-}
-
+    if(viewed.length === 4){
+      setTimeout(() => {
+        document.getElementById("complete").style.display = "flex";
+      }, 700);
+    }
+  }
 }
 
 function closePopup(){
-
-document.getElementById("overlay").style.display="none";
-document.getElementById("popup").style.display="none";
-
+  document.getElementById("overlay").style.display = "none";
+  document.getElementById("popup").style.display = "none";
 }
-
 </script>
 
 </body>
