@@ -6,377 +6,356 @@
 <title>Learning Agility vs Traditional Learning</title>
 
 <style>
-
 *{
-margin:0;
-padding:0;
-box-sizing:border-box;
-font-family:Segoe UI,sans-serif;
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family:"Segoe UI", sans-serif;
 }
 
 body{
-background:#f3f4f8;
-display:flex;
-justify-content:center;
-align-items:center;
-height:100vh;
-overflow:hidden;
+  background:#f3f4f8;
+  width:100vw;
+  height:100vh;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  overflow:hidden;
 }
 
+#slide-wrapper{
+  width:100%;
+  height:100%;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+}
+
+/* Base resolution 16:9 (1280x720) with dynamic JS scaling */
 #slide{
-width:1280px;
-height:720px;
-background:#f3f4f8;
-position:relative;
-overflow:hidden;
-padding:20px;
+  width:1280px;
+  height:720px;
+  background:#f3f4f8;
+  position:relative;
+  overflow:hidden;
+  padding:25px 40px;
+  flex-shrink:0;
+  transform-origin:center center;
 }
 
 h1{
-text-align:center;
-font-size:40px;
-color:#1d1b5d;
-margin-bottom:5px;
+  text-align:center;
+  font-size:36px;
+  font-weight:800;
+  color:#1d1b5d;
 }
 
 .subtitle{
-text-align:center;
-font-size:18px;
-color:#6b7280;
-margin-bottom:15px;
+  text-align:center;
+  font-size:16px;
+  color:#6b7280;
+  margin-top:4px;
 }
 
 .progress{
-position:absolute;
-top:20px;
-right:20px;
-background:white;
-padding:8px 15px;
-border-radius:10px;
-font-weight:600;
-box-shadow:0 3px 10px rgba(0,0,0,.08);
+  position:absolute;
+  top:24px;
+  right:40px;
+  background:white;
+  padding:8px 18px;
+  border-radius:12px;
+  font-weight:600;
+  font-size:15px;
+  color:#1d1b5d;
+  box-shadow:0 3px 10px rgba(0,0,0,.08);
 }
 
 .container{
-display:flex;
-justify-content:space-between;
-align-items:flex-start;
-margin-top:10px;
-height:560px;
+  display:flex;
+  justify-content:space-between;
+  align-items:stretch;
+  margin-top:20px;
+  height:580px;
+  position:relative;
 }
 
 .column{
-width:560px;
+  width:565px;
+  display:flex;
+  flex-direction:column;
+  justify-content:space-between;
 }
 
 .header{
-height:60px;
-display:flex;
-justify-content:center;
-align-items:center;
-font-size:28px;
-font-weight:700;
-color:white;
-border-radius:12px;
-margin-bottom:12px;
+  height:55px;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  font-size:24px;
+  font-weight:700;
+  color:white;
+  border-radius:14px;
 }
 
 .leftHeader{
-background:#9ca3af;
+  background:#8e95a5;
 }
 
 .rightHeader{
-background:linear-gradient(90deg,#5b5eff,#7c5cff);
+  background:linear-gradient(90deg,#5b5eff,#7c5cff);
 }
 
 .row{
-height:78px;
-background:white;
-border-radius:12px;
-display:flex;
-align-items:center;
-padding:0 20px;
-font-size:20px;
-font-weight:600;
-margin-bottom:10px;
-box-shadow:0 3px 8px rgba(0,0,0,.06);
+  height:85px;
+  background:white;
+  border-radius:14px;
+  display:flex;
+  align-items:center;
+  padding:0 22px;
+  font-size:18px;
+  font-weight:600;
+  color:#1d1b5d;
+  box-shadow:0 3px 8px rgba(0,0,0,.06);
+  border:2px solid transparent;
 }
 
 .left{
-cursor:pointer;
-transition:.3s;
+  cursor:pointer;
+  transition:all .25s ease;
 }
 
 .left:hover{
-transform:translateX(5px);
-background:#e8ebff;
+  transform:translateX(6px);
+  background:#f0f2ff;
+  border-color:#5b5eff;
+}
+
+.left.visited{
+  border-color:#34d399;
 }
 
 .icon{
-font-size:28px;
-margin-right:12px;
+  font-size:24px;
+  margin-right:14px;
+  flex-shrink:0;
 }
 
 .vs{
-position:absolute;
-left:50%;
-top:330px;
-transform:translate(-50%,-50%);
-width:80px;
-height:80px;
-border-radius:50%;
-background:linear-gradient(135deg,#5b5eff,#7c5cff);
-display:flex;
-justify-content:center;
-align-items:center;
-font-size:30px;
-font-weight:700;
-color:white;
-box-shadow:0 8px 20px rgba(91,94,255,.4);
+  position:absolute;
+  left:50%;
+  top:54%;
+  transform:translate(-50%,-50%);
+  width:68px;
+  height:68px;
+  border-radius:50%;
+  background:linear-gradient(135deg,#5b5eff,#7c5cff);
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  font-size:24px;
+  font-weight:800;
+  color:white;
+  box-shadow:0 6px 18px rgba(91,94,255,.45);
+  z-index:10;
+  pointer-events:none;
 }
 
 /* POPUP */
-
 .overlay{
-position:absolute;
-inset:0;
-background:rgba(0,0,0,.6);
-display:none;
-z-index:100;
+  position:absolute;
+  inset:0;
+  background:rgba(0,0,0,.5);
+  display:none;
+  z-index:100;
 }
 
 .popup{
-position:absolute;
-top:50%;
-left:50%;
-transform:translate(-50%,-50%);
-width:700px;
-background:white;
-border-radius:20px;
-padding:30px;
-display:none;
-z-index:101;
-text-align:center;
+  position:absolute;
+  top:50%;
+  left:50%;
+  transform:translate(-50%,-50%);
+  width:650px;
+  background:white;
+  border-radius:20px;
+  padding:32px;
+  display:none;
+  z-index:101;
+  text-align:center;
 }
 
 .popup h2{
-font-size:32px;
-color:#1d1b5d;
-margin-bottom:15px;
+  font-size:28px;
+  color:#1d1b5d;
+  margin-bottom:12px;
 }
 
 .popup p{
-font-size:20px;
-line-height:1.6;
-color:#444;
+  font-size:19px;
+  line-height:1.5;
+  color:#444;
 }
 
 .popup button{
-margin-top:20px;
-padding:12px 25px;
-border:none;
-border-radius:30px;
-background:#5b5eff;
-color:white;
-cursor:pointer;
-font-size:16px;
+  margin-top:20px;
+  padding:12px 30px;
+  border:none;
+  border-radius:30px;
+  background:#5b5eff;
+  color:white;
+  cursor:pointer;
+  font-size:16px;
+  font-weight:600;
 }
 
 .complete{
-position:absolute;
-inset:0;
-background:rgba(15,15,50,.96);
-display:none;
-justify-content:center;
-align-items:center;
-flex-direction:column;
-color:white;
-z-index:200;
+  position:absolute;
+  inset:0;
+  background:rgba(15,15,50,.96);
+  display:none;
+  justify-content:center;
+  align-items:center;
+  flex-direction:column;
+  color:white;
+  z-index:200;
+  text-align:center;
 }
 
 .complete h2{
-font-size:52px;
-margin-bottom:15px;
+  font-size:46px;
+  margin-bottom:12px;
 }
 
 .complete p{
-font-size:22px;
-margin-bottom:20px;
+  font-size:22px;
+  margin-bottom:20px;
 }
 
 .complete button{
-padding:12px 25px;
-border:none;
-border-radius:10px;
-background:#5b5eff;
-color:white;
-font-size:18px;
-cursor:pointer;
+  padding:12px 28px;
+  border:none;
+  border-radius:10px;
+  background:#5b5eff;
+  color:white;
+  font-size:18px;
+  cursor:pointer;
+  font-weight:600;
 }
-
 </style>
 </head>
 
 <body>
 
+<div id="slide-wrapper">
 <div id="slide">
 
-<h1>Learning Agility vs Traditional Learning</h1>
-<div class="subtitle">Click each traditional learning point to compare approaches</div>
+  <h1>Learning Agility vs Traditional Learning</h1>
+  <div class="subtitle">Click each traditional learning point to compare approaches</div>
 
-<div class="progress">
-Viewed: <span id="count">0</span>/5
-</div>
+  <div class="progress">
+    Viewed: <span id="count">0</span>/5
+  </div>
 
-<div class="container">
+  <div class="container">
 
-<div class="column">
+    <div class="column">
+      <div class="header leftHeader">Traditional Learning</div>
+      <div class="row left" id="row1" onclick="showInfo(1)"><span class="icon">📚</span>Acquiring knowledge & skills</div>
+      <div class="row left" id="row2" onclick="showInfo(2)"><span class="icon">🧠</span>IQ and book smarts</div>
+      <div class="row left" id="row3" onclick="showInfo(3)"><span class="icon">📝</span>Measured by test scores</div>
+      <div class="row left" id="row4" onclick="showInfo(4)"><span class="icon">🔒</span>Fixed once learned</div>
+      <div class="row left" id="row5" onclick="showInfo(5)"><span class="icon">📖</span>Content-focused</div>
+    </div>
 
-<div class="header leftHeader">
-Traditional Learning
-</div>
+    <div class="column">
+      <div class="header rightHeader">Learning Agility</div>
+      <div class="row"><span class="icon">🚀</span>Applying lessons to new situations</div>
+      <div class="row"><span class="icon">🌟</span>Behavioral & experiential</div>
+      <div class="row"><span class="icon">🔄</span>Measured by adaptability in action</div>
+      <div class="row"><span class="icon">📈</span>Continuously evolving</div>
+      <div class="row"><span class="icon">🎯</span>Context-focused</div>
+    </div>
 
-<div class="row left" onclick="showInfo(1)">
-<span class="icon">📚</span>
-Acquiring knowledge & skills
-</div>
+    <div class="vs">VS</div>
+  </div>
 
-<div class="row left" onclick="showInfo(2)">
-<span class="icon">🧠</span>
-IQ and book smarts
-</div>
+  <div class="overlay" id="overlay"></div>
 
-<div class="row left" onclick="showInfo(3)">
-<span class="icon">📝</span>
-Measured by test scores
-</div>
+  <div class="popup" id="popup">
+    <h2 id="popupTitle"></h2>
+    <p id="popupText"></p>
+    <button onclick="closePopup()">Continue</button>
+  </div>
 
-<div class="row left" onclick="showInfo(4)">
-<span class="icon">🔒</span>
-Fixed once learned
-</div>
-
-<div class="row left" onclick="showInfo(5)">
-<span class="icon">📖</span>
-Content-focused
-</div>
-
-</div>
-
-<div class="column">
-
-<div class="header rightHeader">
-Learning Agility
-</div>
-
-<div class="row">
-🚀 Applying lessons to new situations
-</div>
-
-<div class="row">
-🌟 Behavioral & experiential
-</div>
-
-<div class="row">
-🔄 Measured by adaptability in action
-</div>
-
-<div class="row">
-📈 Continuously evolving
-</div>
-
-<div class="row">
-🎯 Context-focused
-</div>
+  <div class="complete" id="complete">
+    <h2>🏆 Comparison Complete!</h2>
+    <p>You explored all key differences between Traditional Learning and Learning Agility.</p>
+    <button onclick="location.reload()">Restart</button>
+  </div>
 
 </div>
-
-</div>
-
-<div class="vs">VS</div>
-
-<div class="overlay" id="overlay"></div>
-
-<div class="popup" id="popup">
-<h2 id="popupTitle"></h2>
-<p id="popupText"></p>
-<button onclick="closePopup()">Continue</button>
-</div>
-
-<div class="complete" id="complete">
-<h2>🏆 Comparison Complete!</h2>
-<p>You explored all key differences between Traditional Learning and Learning Agility.</p>
-<button onclick="location.reload()">Restart</button>
-</div>
-
 </div>
 
 <script>
-
-let viewed=[];
-
-const data={
-
-1:{
-title:"Knowledge vs Application",
-text:"Traditional learning focuses on acquiring knowledge. Learning agility focuses on applying lessons learned to new and unfamiliar situations."
-},
-
-2:{
-title:"Intelligence vs Experience",
-text:"Traditional learning emphasizes IQ and expertise. Learning agility values learning from experiences, feedback, and experimentation."
-},
-
-3:{
-title:"Scores vs Adaptability",
-text:"Traditional learning measures success through tests. Learning agility measures success through adaptability and performance in real situations."
-},
-
-4:{
-title:"Fixed vs Evolving",
-text:"Traditional learning assumes learning ends once knowledge is gained. Learning agility is an ongoing process of growth and adaptation."
-},
-
-5:{
-title:"Content vs Context",
-text:"Traditional learning focuses on mastering content. Learning agility focuses on applying knowledge across different contexts."
+// Auto-scale to fit Storyline iframe window exactly
+function scaleSlide() {
+  const slide = document.getElementById('slide');
+  const targetW = 1280;
+  const targetH = 720;
+  const scale = Math.min(window.innerWidth / targetW, window.innerHeight / targetH);
+  slide.style.transform = `scale(${scale})`;
 }
+window.addEventListener('resize', scaleSlide);
+window.addEventListener('DOMContentLoaded', scaleSlide);
 
+let viewed = [];
+
+const data = {
+  1:{
+    title:"Knowledge vs Application",
+    text:"Traditional learning focuses on acquiring knowledge. Learning agility focuses on applying lessons learned to new and unfamiliar situations."
+  },
+  2:{
+    title:"Intelligence vs Experience",
+    text:"Traditional learning emphasizes IQ and expertise. Learning agility values learning from experiences, feedback, and experimentation."
+  },
+  3:{
+    title:"Scores vs Adaptability",
+    text:"Traditional learning measures success through tests. Learning agility measures success through adaptability and performance in real situations."
+  },
+  4:{
+    title:"Fixed vs Evolving",
+    text:"Traditional learning assumes learning ends once knowledge is gained. Learning agility is an ongoing process of growth and adaptation."
+  },
+  5:{
+    title:"Content vs Context",
+    text:"Traditional learning focuses on mastering content. Learning agility focuses on applying knowledge across different contexts."
+  }
 };
 
 function showInfo(id){
+  document.getElementById("popupTitle").innerHTML = data[id].title;
+  document.getElementById("popupText").innerHTML = data[id].text;
 
-document.getElementById("popupTitle").innerHTML=data[id].title;
-document.getElementById("popupText").innerHTML=data[id].text;
+  document.getElementById("popup").style.display = "block";
+  document.getElementById("overlay").style.display = "block";
 
-document.getElementById("popup").style.display="block";
-document.getElementById("overlay").style.display="block";
+  if(!viewed.includes(id)){
+    viewed.push(id);
+    document.getElementById("row" + id).classList.add("visited");
+    document.getElementById("count").innerHTML = viewed.length;
 
-if(!viewed.includes(id)){
-
-viewed.push(id);
-
-document.getElementById("count").innerHTML=viewed.length;
-
-if(viewed.length===5){
-
-setTimeout(()=>{
-document.getElementById("complete").style.display="flex";
-},600);
-
-}
-
-}
-
+    if(viewed.length === 5){
+      setTimeout(()=>{
+        document.getElementById("complete").style.display = "flex";
+      }, 600);
+    }
+  }
 }
 
 function closePopup(){
-
-document.getElementById("popup").style.display="none";
-document.getElementById("overlay").style.display="none";
-
+  document.getElementById("popup").style.display = "none";
+  document.getElementById("overlay").style.display = "none";
 }
-
 </script>
 
 </body>
